@@ -8,6 +8,6 @@
     </div>
 
     <div>
-            <p>&copy; 2026 ThePiston. Tous droits réservés.</p>
+        <p>&copy; 2026 ThePiston. Tous droits réservés.</p>
     </div>
 </footer>
