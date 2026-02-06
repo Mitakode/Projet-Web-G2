@@ -34,8 +34,14 @@ header {
     height: 100%;
     display: flex;
     align-items: center;
-    gap: 10px;
     flex: 1; /* la moitié gauche */
+}
+
+.logo-link {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .logo {

@@ -9,8 +9,10 @@
 <body>
     <header>
         <div class="logo-group">
-            <img src="images/icon.png" alt="Icon" class="logo">
-            <img src="images/text.png" alt="The Piston" class="logo">
+            <a href="index.php" class="logo-link">
+                <img src="images/icon.png" alt="Icon" class="logo">
+                <img src="images/text.png" alt="The Piston" class="logo">
+            </a>
         </div>
 
         <nav>
