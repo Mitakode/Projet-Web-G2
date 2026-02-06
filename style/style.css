@@ -1,0 +1,125 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+    background-color: #fff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+/* --- HEADER --- */
+header {
+    width: 100%;
+    height: 50px;
+    background: #F2F2F2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Pour espacer le logo et la nav */
+    padding: 5px 20px;
+}
+
+.logo-group {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1; /* la moitié gauche */
+}
+
+.logo {
+    height: 100%;
+}
+
+header nav {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* espacement auto */
+    flex: 1; /* la moitié droite */
+}
+
+header nav a.nav-link {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    text-decoration: none; /* pas de soulignement */
+    color: inherit; /* pas de changement de couleur */
+}
+
+.btn-container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.btn {
+    background-color: #A1DE64;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 10px;
+    text-decoration: none; /* pas de soulignement */
+    font-weight: 500;
+    font-size: 14px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn:hover {
+    background-color: #93ca5b;
+    transform: scale(1.01); /** très leger zoom du bouton au survol */
+}
+
+.btn-connexion {
+    border-radius: 20px;
+}
+
+.btn-deconnexion {
+    border-radius: 20px;
+    border-color: #333;
+    border-width: 3px;
+    border-style: solid;
+    color: #333;
+    background-color: transparent;
+    padding: 5px 17px; /* On réduit le padding de 3px (taille bordure) pour compenser */
+}
+
+.btn-deconnexion:hover {
+    background-color: #333;
+    color: white;
+    transform: scale(1.01); /** très leger zoom du bouton au survol */
+}
+
+/* --- FOOTER --- */
+footer {
+    width: 100%;
+    height: auto;
+    padding: 20px 0;
+    background: #333;
+    color: #FFFFFF;
+    display: flex;
+    flex-direction: column; /* div verticales */
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+footer a {
+    color: #ffffff;
+    text-decoration: none;
+    margin: 0 10px; /* espacement entre les liens */
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
