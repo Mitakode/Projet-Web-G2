@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="images/icon.png">
     <title>ThePiston</title>
 </head>
 
 <body>
-    
+    <?php include 'header.php'; ?>
+
     <main>
         <header>
             <h1>Titre de l'offre</h1>
-            <p>Nom de l'entreprise</p>
+            <h3>Nom de l'entreprise</h3>
         </header>
 
         <div>
@@ -39,10 +41,10 @@
             <h2>Rémunération</h2>
             <p>1euro/mois</p>
         </div>
-              
-
 
     </main>
+
+    <?php include 'footer.php'; ?>
 
 </body>
 </html>
