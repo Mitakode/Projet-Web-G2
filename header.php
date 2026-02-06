@@ -1,7 +1,7 @@
 <header>
     <a href="index.php">
-        <img src="logo.png" alt="Logo ThePiston">
-        <img src="ThePiston.png" alt="Logo ThePiston">
+        <img src="images/icon.png" alt="Logo ThePiston">
+        <img src="images/logo.png" alt="Text ThePiston">
     </a>
 
     <!-- TEMPORAIRE : les liens sont à changer -->
