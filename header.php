@@ -1,27 +1,33 @@
-<header>
-    <a href="index.php">
-        <img src="images/icon.png" alt="Logo ThePiston">
-        <img src="images/logo.png" alt="Text ThePiston">
-    </a>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Piston</title>
+    <link rel="stylesheet" href="style/style.css">
+</head>
+<body>
+    <header>
+        <div class="logo-group">
+            <a href="index.php" class="logo-link">
+                <img src="images/icon.png" alt="Icon" class="logo">
+                <img src="images/text.png" alt="The Piston" class="logo">
+            </a>
+        </div>
 
-    <!-- TEMPORAIRE : les liens sont à changer -->
-    <nav>
-        <a href="index.php">Mon espace</a>
-        <a href="index.php">Les offres</a>
-        <a href="index.php">Les entreprises</a>
-    </nav>
+        <nav>
+            <a href="#" class="nav-link">Mon espace</a>
+            <a href="#" class="nav-link">Les offres</a>
+            <a href="#" class="nav-link">Les entreprises</a>
+            
+            <div class="btn-container">
+                <a href="login.php" class="btn btn-connexion">
+                    Connexion
+                </a>
 
-    <!-- TEMPORAIRE : switch en fonction de session PHP -->
-    <div class="auth">
-        <!-- Connexion -->
-        <a href="login.php">
-            <button type="button">Connexion</button>
-        </a>
-
-        <!--
-    <form action="logout.php" method="post">
-        <button type="submit">Déconnexion</button>
-    </form>
-    -->
-    </div>
-</header>
+                <a href="logout.php" class="btn btn-deconnexion">
+                    Déconnexion
+                </a>
+            </div>
+        </nav>
+    </header>
