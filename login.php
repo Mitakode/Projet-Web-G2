@@ -7,6 +7,7 @@
     <title>Connexion - ThePiston</title>
 </head>
 <body>
+    <?php include 'header.php'; ?>
 
     <h2>Connectez-vous</h2>
     <h3>Connectez-vous pour accéder à votre espace</h3>
@@ -31,5 +32,6 @@
         <p>Mot de passe oublié ? <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=xvFZjo5PgG0">réinitialiser le mot de passe</a></p>
     </form>
 
+    <?php include 'footer.php'; ?>
 </body>
 </html>

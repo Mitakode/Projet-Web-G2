@@ -7,6 +7,7 @@
     <title>Inscription - ThePiston</title>
 </head>
 <body>
+    <?php include 'header.php'; ?>
 
     <form>
         <h2>Créer un compte</h2>
@@ -42,5 +43,6 @@
         </button>
     </form>
 
+    <?php include 'footer.php'; ?>
 </body>
 </html>
