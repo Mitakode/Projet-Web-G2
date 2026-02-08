@@ -11,20 +11,22 @@
 <body>
     <?php include 'header.php'; ?>
 
-    <h2>Connectez-vous</h2>
-    <h3>Connectez-vous pour accéder à votre espace</h3>
+    <section class="frame-form">
+        <h1>Connectez-vous</h1>
+        <h2>Connectez-vous pour accéder à votre espace</h2>
 
-    <form action="/accueil" method="POST">
+        <form class ="form-test" action="/accueil" method="POST">
             <label for="username">Email</label>
-            <input type="text" id="username" name="username" required>
+            <input class="form-input" type="text" id="username" name="username" required>
         
             <label for="password">Mot de passe</label>
-            <input type="password" id="password" name="password" required>
+            <input class="form-input" type="password" id="password" name="password" required>
 
-        <button type="submit">Connexion</button>
+            <button class="form-button" type="submit">Connexion</button>
 
-        <p>Mot de passe oublié ? <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=xvFZjo5PgG0">réinitialiser le mot de passe</a></p>
-    </form>
+            <p class="infos">Mot de passe oublié ? <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=xvFZjo5PgG0">Réinitialiser le mot de passe</a></p>
+        </form>
+    </section>
 
     <?php include 'footer.php'; ?>
 </body>

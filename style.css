@@ -4,7 +4,7 @@
     --content-gray: #E9E9E9; /* Un gris légèrement plus foncé pour les titres et les bordures */
     --gray-dark: #D9D9D9; /* Un gris intermédiaire pour les barres de recherches */
     --font:#333; /* Couleur de texte principale */
-    --onblack: #FFFFFF; /* Couleur de texte sur fond sombre (sfooter) */
+    --white: #FFFFFF; /* Couleur de texte sur fond sombre (sfooter) */
 }
 
 body {
@@ -95,7 +95,7 @@ main {
 }
 
 .search-btn {
-    background: transparent;
+    background: var(--content-gray);
     border: none;
     padding: 0 15px;
     cursor: pointer;
@@ -113,7 +113,7 @@ main {
 }
 
 .filter-item:focus {
-    outline: none;
+    outline: 2px solid var(--green-piston);
     border: none;
 }
 
@@ -133,33 +133,107 @@ main {
 .info-column{
     display: flex;
     flex-direction: column;
-    gap: 20px; /* Espace entre les boîtes dans la même colonne */
     width: 48%; /* Chaque colonne prend 48% de la largeur pour laisser un peu d'espace entre les deux */
 }
 
 .info-box {
     background-color: var(--content-gray);
+    text-align: justify;
     border-radius: 25px;
-    padding: 20px;
-    /* On définit une largeur de 48% pour qu'elles soient moins larges 
-       et qu'elles tiennent à deux sur une ligne */
+    padding: 30px;
     box-sizing: border-box;
 }
 
 /* --- Style des formulaire de connexion/creation compte */
+
 label{
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     color: var(--font);
 }
 
-input, select {
-    background-color: var(--content-gray);
+input, select, .frame-form {
     border: none;
     border-radius: 10px;
-    padding: 10px 15px;
-    font-size: 1rem;
 }
+
+.form-input {
+    background-color: var(--content-gray);
+    padding: 12px 15px; /* Un peu plus d'espace interne */
+    margin-bottom: 25px;
+    width: 100%;
+    box-sizing: border-box; /* Très important pour que le padding ne déforme pas la largeur */
+    transition: all 0.2s ease;
+}
+
+input:focus, select:focus {
+    outline: 2px solid var(--green-piston);
+    background-color: var(--white);
+}
+
+input:hover, select:hover {
+    background-color: var(--gray-dark);
+    border:none;
+}
+
+.form-button[type="submit"] {
+    background-color: var(--green-piston);
+    color: var(--font);
+    border: none;
+    margin: 10px auto 10px auto;
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 400;
+    padding: 10px 50px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.form-button[type="submit"]:hover {
+    background-color: #93ca5b;
+    transform: scale(1.01); /* très léger zoom du bouton au survol */
+}
+
+.infos{
+    text-align: center;
+}
+
+.form-test{
+    background-color: var(--white);
+    padding: 10px;
+    margin: 20px auto 20px auto;
+    width: 80%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* Espace entre les champs du formulaire */
+}
+
+.frame-form{
+    background-color: var(--white);
+    border-radius: 10px;
+    padding: 30px;
+    margin: 40px auto 50px auto;
+    width: 60%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column; /* Espace entre les champs du formulaire */
+}
+
+.form-grid{
+    display: flex;
+    width: 100%;
+    justify-content: space-between; /* Espace les boîtes au maximum */
+    margin-top: 20px;
+}
+
+.form-column{
+    display: flex;
+    flex-direction: column;
+    width: 45%; /* Chaque colonne prend 40% de la largeur pour laisser un peu d'espace entre les deux */
+}
+
 
 /* --- 3. Responsive (STx 10) --- */
 @media (max-width: 768px) {
@@ -168,6 +242,14 @@ input, select {
         align-items: center;
     }
     .info-box {
+        width: 100%;
+    }
+
+    .form-grid {
+        flex-direction: column; /* Sur mobile, elles se remettent l'une sous l'autre */
+        align-items: center;
+    }
+    .form-column {
         width: 100%;
     }
 }
