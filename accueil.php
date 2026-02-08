@@ -22,7 +22,7 @@
         <form class="search-form"  action="offres.php" method="GET">
         <div class="search-bar-wrapper">
             <input class="search-input" type="text" name="recherche" placeholder="Rechercher...">
-            <button class="search-btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+            <button class="search-btn" type="submit">🔍</button>
         </div>
 
             <div class="filters-container">

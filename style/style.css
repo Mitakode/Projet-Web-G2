@@ -9,7 +9,6 @@
 body {
     font-family: 'Poppins', sans-serif;
     color: #333;
-    background-color: #fff;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
