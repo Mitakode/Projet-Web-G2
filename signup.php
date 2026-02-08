@@ -20,7 +20,7 @@
         <label>Type de compte</label>
         <select>
             <option>Étudiant</option>
-            <option>Intervenant</option>
+            <option>Pilote</option>
         </select>
 
         <label>Promotion</label>
