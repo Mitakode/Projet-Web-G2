@@ -40,7 +40,7 @@ body {
 
 main {
     flex: 1;
-    max-width: 1000px;
+    max-width: 90%;
     margin: 0 auto;
     padding: 20px;
     display: flex;
@@ -235,6 +235,7 @@ footer a:hover {
 
 .search-bar-wrapper:focus-within {
     outline: 2px solid var(--green-piston); /* La bordure verte entoure TOUT le bloc gris */
+    background-color: var(--white);
 }
 
 .search-input {
@@ -243,6 +244,15 @@ footer a:hover {
     border: none;
     background: transparent;
     padding: 12px 20px;
+    outline: none;
+}
+
+.search-input:hover{
+    background-color: var(--content-gray);
+}
+
+.search-input:focus{
+    background-color: transparent; /* Force la transparence pour garder le gris du wrapper */
     outline: none;
 }
 
@@ -281,7 +291,10 @@ footer a:hover {
     border-radius: 10px;
     padding: 8px 15px;
     font-size: 0.9rem;
-    cursor: pointer;
+}
+
+.filter-item:hover {
+    background-color: var(--content-gray);
 }
 
 /* ================== INFOS AREA ================== */
@@ -350,25 +363,6 @@ input:hover, select:hover, textarea:hover {
     border:none;
 }
 
-.form-button[type="submit"] {
-    background-color: var(--green-piston);
-    color: var(--font);
-    border: none;
-    margin: 10px auto 10px auto;
-    display: block;
-    font-size: 1.2rem;
-    font-weight: 400;
-    padding: 10px 50px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.form-button[type="submit"]:hover {
-    background-color: #93ca5b;
-    transform: scale(1.01); /* très léger zoom du bouton au survol */
-}
-
 .infos{
     text-align: center;
 }
@@ -428,17 +422,30 @@ input:hover, select:hover, textarea:hover {
         flex-direction: column; /* Sur mobile, elles se remettent l'une sous l'autre */
         align-items: center;
     }
+    .info-column{
+        width:100%
+    }
     .info-box {
         width: 100%;
     }
 
+    .frame-form{
+        width:90%
+    }
     .form-grid {
         flex-direction: column; /* Sur mobile, elles se remettent l'une sous l'autre */
         align-items: center;
+        gap: 0;
     }
-    .form-column {
+    .form-column, 
+    .form-column2, 
+    .form-column3 {
+        width: 100% !important; /* Le !important aide à écraser les 45% ou 67% */
+    }
+    .form-input{
         width: 100%;
     }
+
 }
 
 .skills-list {

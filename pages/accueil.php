@@ -13,7 +13,9 @@
 <body>
     <?php include '../partials/header.php'; ?>
     
+    <img src="/../assets/images/accueil_picture.jpg" alt="poignee de main" style="width:100%;height:30%;">
 <main>
+    
     <h1>Les offres disponibles</h1>
     <section class="search-section">
         
