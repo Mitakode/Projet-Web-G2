@@ -12,7 +12,7 @@
     <?php include 'header.php'; ?>
 
     <section class="frame-form">
-        <h1>Connectez-vous</h1>
+        <h1><i class="fa-solid fa-circle-user"></i>Connectez-vous</h1>
         <h2>Connectez-vous pour accéder à votre espace</h2>
 
         <form class ="form-test" action="/accueil" method="POST">

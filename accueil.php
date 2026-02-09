@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="images/icon.png">
-    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="style/style.css">
     <script src="https://kit.fontawesome.com/votre_codea076d05399.js" crossorigin="anonymous"></script>
     <title>Accueil - ThePiston</title>
@@ -22,7 +21,9 @@
         <form class="search-form"  action="offres.php" method="GET">
         <div class="search-bar-wrapper">
             <input class="search-input" type="text" name="recherche" placeholder="Rechercher...">
-            <button class="search-btn" type="submit">🔍</button>
+            <button type="submit" class="search-btn" aria-label="Rechercher">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
         </div>
 
             <div class="filters-container">
