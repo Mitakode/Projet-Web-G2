@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="images/icon.png">
-    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="style/style.css">
     <title>Connexion - ThePiston</title>
 </head>
@@ -22,7 +21,7 @@
             <label for="password">Mot de passe</label>
             <input class="form-input" type="password" id="password" name="password" required>
 
-            <button class="form-button" type="submit">Connexion</button>
+            <button class="btn" type="submit">Connexion</button>
 
             <p class="infos">Mot de passe oublié ? <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=xvFZjo5PgG0">Réinitialiser le mot de passe</a></p>
         </form>

@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="images/icon.png">
-    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="style/style.css">
     <title>Inscription - ThePiston</title>
 </head>
@@ -53,8 +52,7 @@
             <label>Confirmation du mot de passe</label>
             <input class="form-input" type="password">
 
-            <br><br>
-            <button class="form-button" type="submit">
+            <button class="btn" type="submit">
                 Créer un compte
             </button>
         </form>

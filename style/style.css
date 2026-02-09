@@ -6,6 +6,8 @@
     box-sizing: border-box;
 }
 
+/*  ================== COLOR VARIABLES ==================    */
+
 :root {
     --green-piston: #A1DE64;
     /* Le vert de ton bouton Postuler */
@@ -23,6 +25,8 @@
     --green-piston-dark: #93ca5b;
     --deconnexion-color: var(--text-color);
 }
+
+/* ================== GLOBAL STYLE ================== */
 
 body {
     font-family: 'Poppins', sans-serif;
@@ -45,7 +49,22 @@ main {
     /* Centre tout horizontalement */
 }
 
-/* --- HEADER --- */
+h1{
+    font-size: 2rem;
+    color: var(--font);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+h2{
+    font-size: 1.5rem;
+    color: var(--font);
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* ================== HEADER FOOTER ================== */
+
 header {
     width: 100%;
     height: 50px;
@@ -107,51 +126,6 @@ header nav a.nav-link {
     /* pas de changement de couleur */
 }
 
-.btn-container {
-    height: 100%;
-    display: flex;
-    align-items: center;
-}
-
-.btn {
-    background-color: var(--green-piston);
-    color: var(--white);
-    padding: 8px 20px;
-    border-radius: 10px;
-    text-decoration: none;
-    /* pas de soulignement */
-    font-weight: 500;
-    font-size: 13px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.btn:hover {
-    background-color: var(--green-piston-dark);
-    transform: scale(1.01);
-    /* très leger zoom du bouton au survol */
-}
-
-.btn-connexion {
-    border-radius: 20px;
-}
-
-.btn-deconnexion {
-    border-radius: 20px;
-    border-color: var(--deconnexion-color);
-    border-width: 2px;
-    border-style: solid;
-    color: var(--deconnexion-color);
-    background-color: transparent;
-    padding: 6px 18px;/* padding réduit de 3px pour compenser la bordure */
-}
-
-.btn-deconnexion:hover {
-    background-color: var(--deconnexion-color);
-    color: var(--white);
-    transform: scale(1.01); /* très leger zoom du bouton au survol */
-}
-
-/* --- FOOTER --- */
 footer {
     font-size: 12px;
     width: 100%;
@@ -179,7 +153,61 @@ footer a:hover {
     color: var(--green-piston);
 }
 
-/* --- ACCUEIL / RECHERCHE --- */
+/* ================== BUTTONS ================== */
+
+.btn-container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.btn {
+    background-color: var(--green-piston);
+    color: var(--white);
+    padding: 10px 50px;
+    margin: 10px auto 10px auto;
+    border:none;
+    font-size: 1.2rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn:hover {
+    background-color: var(--green-piston-dark);
+    transform: scale(1.01);
+    /* très leger zoom du bouton au survol */
+}
+
+.btn-connexion {
+    text-decoration: none; /* pas de soulignement */
+    border-radius: 20px;
+    font-weight: 500;
+    font-size: 13px;
+    padding: 8px 20px;
+}
+
+.btn-deconnexion {
+    text-decoration: none; /* pas de soulignement */
+    border-radius: 20px;
+    font-weight: 500;
+    font-size: 13px;
+    border-color: var(--deconnexion-color);
+    border-width: 2px;
+    border-style: solid;
+    color: var(--deconnexion-color);
+    background-color: transparent;
+    padding: 6px 18px;/* padding réduit de 3px pour compenser la bordure */
+}
+
+.btn-deconnexion:hover {
+    background-color: var(--deconnexion-color);
+    color: var(--white);
+    transform: scale(1.01); /* très leger zoom du bouton au survol */
+}
+
+/* ================== SEARCH BAR ================== */
+
 .search-section {
     width: 100%;
     text-align: center;
@@ -256,6 +284,8 @@ footer a:hover {
     cursor: pointer;
 }
 
+/* ================== INFOS AREA ================== */
+
 .info-grid {
     display: flex;
     width: 100%;
@@ -274,10 +304,169 @@ footer a:hover {
     box-sizing: border-box;
 }
 
+/* ================== FORMS ================== */
+
+label{
+    display: block;
+    margin-bottom: 10px;
+    color: var(--font);
+}
+
+input, select, textarea, .frame-form {
+    border: none;
+    border-radius: 10px;
+}
+
+.form-input {
+    background-color: var(--content-gray);
+    padding: 12px 15px; /* Un peu plus d'espace interne */
+    margin-bottom: 25px;
+    width: 100%;
+    box-sizing: border-box; /* Très important pour que le padding ne déforme pas la largeur */
+    transition: all 0.2s ease;
+}
+
+.form-textarea {
+    background-color: var(--content-gray);
+    padding: 12px 15px; /* Un peu plus d'espace interne */
+    margin-bottom: 25px;
+    width: 100%;
+    height: 150px; /* Hauteur fixe pour les textarea */
+    box-sizing: border-box; /* Très important pour que le padding ne déforme pas la largeur */
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: 2px solid var(--green-piston);
+    background-color: var(--white);
+}
+
+input:hover, select:hover, textarea:hover {
+    background-color: var(--gray-dark);
+    border:none;
+}
+
+.form-button[type="submit"] {
+    background-color: var(--green-piston);
+    color: var(--font);
+    border: none;
+    margin: 10px auto 10px auto;
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 400;
+    padding: 10px 50px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.form-button[type="submit"]:hover {
+    background-color: #93ca5b;
+    transform: scale(1.01); /* très léger zoom du bouton au survol */
+}
+
+.infos{
+    text-align: center;
+}
+
+.form-test{
+    background-color: var(--white);
+    padding: 10px;
+    margin: 20px auto 20px auto;
+    width: 80%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* Espace entre les champs du formulaire */
+}
+
+.frame-form{
+    background-color: var(--white);
+    border-radius: 10px;
+    padding: 30px;
+    margin: 40px auto 50px auto;
+    width: 60%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column; /* Espace entre les champs du formulaire */
+}
+
+.form-grid{
+    display: flex;
+    width: 100%;
+    justify-content: space-between; /* Espace les boîtes au maximum */
+    margin-top: 20px;
+}
+
+.form-column{
+    display: flex;
+    flex-direction: column;
+    width: 45%; /* Chaque colonne prend 40% de la largeur pour laisser un peu d'espace entre les deux */
+}
+
+.form-column2{
+    display: flex;
+    flex-direction: column;
+    width: 67%;
+}
+
+
+.form-column3{
+    display: flex;
+    flex-direction: column;
+    width: 27%;
+}
+
+
+/* --- 3. Responsive (STx 10) --- */
 @media (max-width: 768px) {
     .info-grid {
-        flex-direction: column;
-        /* Sur mobile, elles se remettent l'une sous l'autre */
+        flex-direction: column; /* Sur mobile, elles se remettent l'une sous l'autre */
+        align-items: center;
+    }
+    .info-box {
+        width: 100%;
+    }
+
+    .form-grid {
+        flex-direction: column; /* Sur mobile, elles se remettent l'une sous l'autre */
+        align-items: center;
+    }
+    .form-column {
+        width: 100%;
+    }
+}
+
+.skills-list {
+    background-color: var(--content-gray);
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 25px;
+    max-height: 130px; 
+    overflow-y: auto;  /* Ajoute le scroll vertical si besoin */
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    text-align: left; 
+}
+
+.skills-list label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.skills-list label:hover {
+    background-color: var(--gray-dark);
+    border-radius: 5px;
+}
+
+/* ================== Responsive Design ================== */
+
+@media (max-width: 768px) {
+    .info-grid {
+        flex-direction: column; /* Sur mobile, elles se remettent l'une sous l'autre */
         align-items: center;
     }
 
