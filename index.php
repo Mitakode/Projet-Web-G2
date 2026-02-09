@@ -1,5 +1,5 @@
 <?php
 // Redirige vers la page d'accueil
-header('Location: accueil.php');
+header('Location: pages/accueil.php');
 exit();
 ?>
