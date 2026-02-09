@@ -51,14 +51,14 @@ main {
 
 h1{
     font-size: 2rem;
-    color: var(--font);
+    color: var(--text-color);
     margin-bottom: 20px;
     text-align: center;
 }
 
 h2{
     font-size: 1.5rem;
-    color: var(--font);
+    color: var(--text-color);
     margin-bottom: 15px;
     text-align: center;
 }
@@ -208,24 +208,51 @@ footer a:hover {
 
 /* ================== SEARCH BAR ================== */
 
+/* Global */
 .search-section {
     width: 100%;
     text-align: center;
     margin-bottom: 40px;
 }
 
-.search-section h1 {
-    font-size: 2rem;
-    color: var(--text-color);
-    margin-bottom: 20px;
-}
-
 .search-form {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px;
-    /* Espace entre la barre principale et les filtres */
+    gap: 15px;    /* Espace entre la barre principale et les filtres */
+}
+
+/* Search bar */
+
+.search-bar-wrapper {
+    display: flex;
+    background-color: var(--gray-dark);
+    border-radius: 10px;
+    width: 80%;
+    overflow: hidden;    /* Pour que les bords de l'input ne dépassent pas de l'arrondi */
+    margin-bottom: 15px;
+}
+
+.search-bar-wrapper:focus-within {
+    outline: 2px solid var(--green-piston); /* La bordure verte entoure TOUT le bloc gris */
+}
+
+.search-input {
+    flex: 1;    /* L'input prend toute la place restante */
+    font-size: 1rem;
+    border: none;
+    background: transparent;
+    padding: 12px 20px;
+    outline: none;
+}
+
+.search-btn {
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 0 15px;
+    cursor: pointer;
+    font-size: 1.2rem;
 }
 
 .search-main {
@@ -238,6 +265,7 @@ footer a:hover {
     outline: none;
 }
 
+/* Other part of the search bar */
 .filters-container {
     display: flex;
     flex-wrap: wrap;
@@ -245,34 +273,6 @@ footer a:hover {
     justify-content: space-between;
     width: 80%;
     gap: 10px;
-}
-
-.search-bar-wrapper {
-    display: flex;
-    background-color: var(--gray-dark);
-    border-radius: 10px;
-    width: 80%;
-    overflow: hidden;
-    /* Pour que les bords de l'input ne dépassent pas de l'arrondi */
-    margin-bottom: 15px;
-}
-
-.search-input {
-    flex: 1;
-    /* L'input prend toute la place restante */
-    font-size: 1rem;
-    border: none;
-    background: transparent;
-    padding: 12px 20px;
-    outline: none;
-}
-
-.search-btn {
-    background: transparent;
-    border: none;
-    padding: 0 15px;
-    cursor: pointer;
-    font-size: 1.2rem;
 }
 
 .filter-item {
@@ -338,6 +338,7 @@ input, select, textarea, .frame-form {
     height: 150px; /* Hauteur fixe pour les textarea */
     box-sizing: border-box; /* Très important pour que le padding ne déforme pas la largeur */
 }
+
 
 input:focus, select:focus, textarea:focus {
     outline: 2px solid var(--green-piston);
