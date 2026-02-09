@@ -1,0 +1,303 @@
+:root {
+    --green-piston: #A1DE64; /* Le vert de ton bouton Postuler */
+    --bg-color: #F9F9F9;   /* Le gris de tes blocs de recherche/info */
+    --content-gray: #E9E9E9; /* Un gris légèrement plus foncé pour les titres et les bordures */
+    --gray-dark: #D9D9D9; /* Un gris intermédiaire pour les barres de recherches */
+    --font:#333; /* Couleur de texte principale */
+    --white: #FFFFFF; /* Couleur de texte sur fond sombre (footer) */
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-size: 1.1rem;
+    font-family: 'Poppins', sans-serif;
+    color: var(--font) ;
+    background-color: var(--bg-color);
+}
+
+h1{
+    font-size: 2rem;
+    color: var(--font);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+h2{
+    font-size: 1.5rem;
+    color: var(--font);
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* 2. Centrage du contenu principal */
+main {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centre tout horizontalement */
+}
+
+/* 3. Style de la section Recherche */
+.search-section {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+
+/* Le formulaire de recherche */
+.search-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px; /* Espace entre la barre principale et les filtres */
+}
+
+/* La barre de recherche principale */
+.search-main {
+    background-color: var(--gray-dark);
+    border: none;
+    border-radius: 10px; /* Bords arrondis comme demandé */
+    padding: 12px 20px;
+    font-size: 1rem;
+    outline: none;
+}
+
+/* Conteneur des filtres (les petits boutons en dessous) */
+.filters-container {
+    display: flex;
+    flex-wrap: wrap; /* Permet de passer à la ligne sur mobile */
+    justify-content: space-between;
+    width: 80%;
+    gap: 10px;
+}
+
+/* --- 1. La Barre de Recherche avec Loupe --- */
+.search-bar-wrapper {
+    display: flex;
+    background-color: var(--gray-dark);
+    border-radius: 10px;
+    width: 80%;
+    overflow: hidden; /* Pour que les bords de l'input ne dépassent pas de l'arrondi */
+    margin-bottom: 15px;
+}
+
+.search-input {
+    flex: 1; /* L'input prend toute la place restante */
+    font-size: 1rem;
+    border: none;
+    background: transparent;
+    padding: 12px 20px;
+    outline: none;
+}
+
+.search-btn {
+    background: var(--content-gray);
+    border: none;
+    padding: 0 15px;
+    cursor: pointer;
+}
+
+
+/* Style commun pour les boutons/selects de filtres */
+.filter-item {
+    background-color: var(--gray-dark);
+    border: none;
+    border-radius: 12px;
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.filter-item:focus {
+    outline: 2px solid var(--green-piston);
+    border: none;
+}
+
+.filter-item:hover {
+    background-color: var(--content-gray);
+    border:none;
+}
+
+.info-grid {
+    display: flex;
+    width: 100%;
+    justify-content: space-between; /* Espace les boîtes au maximum */
+    gap: 30px; /* Définit l'espace précis entre les deux */
+    margin-top: 20px;
+}
+
+.info-column{
+    display: flex;
+    flex-direction: column;
+    width: 48%; /* Chaque colonne prend 48% de la largeur pour laisser un peu d'espace entre les deux */
+}
+
+.info-box {
+    background-color: var(--content-gray);
+    text-align: justify;
+    border-radius: 25px;
+    padding: 30px;
+    box-sizing: border-box;
+}
+
+/* --- Style des formulaire de connexion/creation */
+
+label{
+    display: block;
+    margin-bottom: 10px;
+    color: var(--font);
+}
+
+input, select, textarea, .frame-form {
+    border: none;
+    border-radius: 10px;
+}
+
+.form-input {
+    background-color: var(--content-gray);
+    padding: 12px 15px; /* Un peu plus d'espace interne */
+    margin-bottom: 25px;
+    width: 100%;
+    box-sizing: border-box; /* Très important pour que le padding ne déforme pas la largeur */
+    transition: all 0.2s ease;
+}
+
+.form-textarea {
+    background-color: var(--content-gray);
+    padding: 12px 15px; /* Un peu plus d'espace interne */
+    margin-bottom: 25px;
+    width: 100%;
+    height: 150px; /* Hauteur fixe pour les textarea */
+    box-sizing: border-box; /* Très important pour que le padding ne déforme pas la largeur */
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: 2px solid var(--green-piston);
+    background-color: var(--white);
+}
+
+input:hover, select:hover, textarea:hover {
+    background-color: var(--gray-dark);
+    border:none;
+}
+
+.form-button[type="submit"] {
+    background-color: var(--green-piston);
+    color: var(--font);
+    border: none;
+    margin: 10px auto 10px auto;
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 400;
+    padding: 10px 50px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.form-button[type="submit"]:hover {
+    background-color: #93ca5b;
+    transform: scale(1.01); /* très léger zoom du bouton au survol */
+}
+
+.infos{
+    text-align: center;
+}
+
+.form-test{
+    background-color: var(--white);
+    padding: 10px;
+    margin: 20px auto 20px auto;
+    width: 80%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* Espace entre les champs du formulaire */
+}
+
+.frame-form{
+    background-color: var(--white);
+    border-radius: 10px;
+    padding: 30px;
+    margin: 40px auto 50px auto;
+    width: 60%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column; /* Espace entre les champs du formulaire */
+}
+
+.form-grid{
+    display: flex;
+    width: 100%;
+    justify-content: space-between; /* Espace les boîtes au maximum */
+    margin-top: 20px;
+}
+
+.form-column{
+    display: flex;
+    flex-direction: column;
+    width: 45%; /* Chaque colonne prend 40% de la largeur pour laisser un peu d'espace entre les deux */
+}
+
+.form-column2{
+    display: flex;
+    flex-direction: column;
+    width: 67%;
+}
+
+
+.form-column3{
+    display: flex;
+    flex-direction: column;
+    width: 27%;
+}
+
+
+/* --- 3. Responsive (STx 10) --- */
+@media (max-width: 768px) {
+    .info-grid {
+        flex-direction: column; /* Sur mobile, elles se remettent l'une sous l'autre */
+        align-items: center;
+    }
+    .info-box {
+        width: 100%;
+    }
+
+    .form-grid {
+        flex-direction: column; /* Sur mobile, elles se remettent l'une sous l'autre */
+        align-items: center;
+    }
+    .form-column {
+        width: 100%;
+    }
+}
+
+.skills-list {
+    background-color: var(--content-gray);
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 25px;
+    max-height: 130px; 
+    overflow-y: auto;  /* Ajoute le scroll vertical si besoin */
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    text-align: left; 
+}
+
+.skills-list label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.skills-list label:hover {
+    background-color: var(--gray-dark);
+    border-radius: 5px;
+}

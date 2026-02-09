@@ -4,33 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="images/icon.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style/style.css">
     <title>Connexion - ThePiston</title>
 </head>
 <body>
     <?php include 'header.php'; ?>
 
-    <h2><i class="fa-solid fa-circle-user"></i> Connectez-vous</h2> 
-    <h3>Connectez-vous pour accéder à votre espace</h3>
+    <section class="frame-form">
+        <h1><i class="fa-solid fa-circle-user"></i>Connectez-vous</h1>
+        <h2>Connectez-vous pour accéder à votre espace</h2>
 
-    <form action="/accueil" method="POST">
-        <div>
+        <form class ="form-test" action="/accueil" method="POST">
             <label for="username">Email</label>
-            <input type="text" id="username" name="username" required>
-        </div>
+            <input class="form-input" type="text" id="username" name="username" required>
         
-        <br>
-
-        <div>
             <label for="password">Mot de passe</label>
-            <input type="password" id="password" name="password" required>
-        </div>
+            <input class="form-input" type="password" id="password" name="password" required>
 
-        <br>
+            <button class="form-button" type="submit">Connexion</button>
 
-        <button type="submit">Connexion</button>
-
-        <p>Mot de passe oublié ? <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=xvFZjo5PgG0">réinitialiser le mot de passe</a></p>
-    </form>
+            <p class="infos">Mot de passe oublié ? <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=xvFZjo5PgG0">Réinitialiser le mot de passe</a></p>
+        </form>
+    </section>
 
     <?php include 'footer.php'; ?>
 </body>
