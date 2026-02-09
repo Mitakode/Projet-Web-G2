@@ -289,18 +289,22 @@ footer a:hover {
 .info-grid {
     display: flex;
     width: 100%;
-    justify-content: space-between;
-    /* Espace les boîtes au maximum */
-    gap: 30px;
-    /* Définit l'espace précis entre les deux */
+    justify-content: space-between; /* Espace les boîtes au maximum */
+    gap: 30px; /* Définit l'espace précis entre les deux */
     margin-top: 20px;
+}
+
+.info-column{
+    display: flex;
+    flex-direction: column;
+    width: 48%; /* Chaque colonne prend 48% de la largeur pour laisser un peu d'espace entre les deux */
 }
 
 .info-box {
     background-color: var(--content-gray);
+    text-align: justify;
     border-radius: 25px;
     padding: 30px;
-    width: 48%;
     box-sizing: border-box;
 }
 
