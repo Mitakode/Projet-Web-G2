@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/images/icon.png">
     <link rel="stylesheet" href="../assets/css/style.css">
+    <script src="https://kit.fontawesome.com/votre_codea076d05399.js" crossorigin="anonymous"></script>
     <title>Accueil - ThePiston</title>
 </head>
 
@@ -13,8 +14,9 @@
     <?php include '../partials/header.php'; ?>
     
 <main>
+    <h1>Les offres disponibles</h1>
     <section class="search-section">
-        <h1>Les offres disponibles</h1>
+        
 
         <form class="search-form"  action="offres.php" method="GET">
         <div class="search-bar-wrapper">
@@ -49,14 +51,14 @@
     
 
     <div class="info-grid">
-        <section class="info-box">
+        <section class="info-column">
             <h2>Qui sommes-nous ?</h2>
-            <p>Nous sommes nous mêmes 4 étudiants pour qui trouver un stage fut laborieux, très laborieux. Le monde du travail est une bêtre sauvage pour les étudiants. C'est pourquoi nous avons eu l'idée de créer ThePiston, le site regroupant un pannel d'offres de stage et de contrat d'apprentissage pour aider nos compagnons étudiants de  la France entière. </p>
+            <p class="info-box">Nous sommes nous mêmes 4 étudiants pour qui trouver un stage fut laborieux, très laborieux. Le monde du travail est une bêtre sauvage pour les étudiants. C'est pourquoi nous avons eu l'idée de créer ThePiston, le site regroupant un pannel d'offres de stage et de contrat d'apprentissage pour aider nos compagnons étudiants de  la France entière. </p>
         </section>
 
-        <section class="info-box">
+        <section class="info-column">
             <h2>Nos statistiques</h2>
-            <div>
+            <div class="info-box">
                 <div>
                     <div>
                         <h3>Statistiques générales</h3>

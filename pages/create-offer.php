@@ -9,31 +9,46 @@
 <body>
     <?php include '../partials/header.php'; ?>
 
-    <form>
-        <h2>Créer une offre</h2>
-
-        <label>Titre de l'offre</label>
-        <input type="text">
-
-        <label>Entreprise</label>
-        <input type="text">
-        <label>Rémunération</label>
-        <input type="text">
-
-        <label>Compétences requises</label>
-        <select>
-            <option>Compétence 1</option>
-            <option>Compétence 2</option>
-        </select>
-
-        <label>Description</label>
-        <input type="text">
+    <section class="frame-form">
+        <h1>Créer une offre</h1>
         
-        <br><br>
-        <button type="submit">
-            Créer une offre
-        </button>
-    </form>
+        <form class="form-test" action="/accueil" method="POST">
+
+            <label>Titre de l'offre</label>
+            <input class="form-input" type="text">
+
+            <div class="form-grid">
+                <div class="form-column2">
+                    <label>Entreprise</label>
+                    <input class="form-input" type="text">
+                </div>
+                <div class="form-column3">
+                    <label>Rémunération</label>
+                    <input class="form-input" type="text">
+                </div>
+            </div>
+
+            <label>Compétences requises</label>
+            <div class="skills-selector">
+                <p>Sélectionnez vos compétences :</p>
+                <div class="skills-list">
+                    <label><input type="checkbox" name="skill[]" value="comp1"> Compétence 1</label>
+                    <label><input type="checkbox" name="skill[]" value="comp2"> Compétence 2</label>
+                    <label><input type="checkbox" name="skill[]" value="comp3"> Compétence 3</label>
+                    <label><input type="checkbox" name="skill[]" value="comp4"> Compétence 4</label>
+                    <label><input type="checkbox" name="skill[]" value="comp5"> Compétence 5</label>
+                    </div>
+            </div>
+
+            <label>Description</label>
+            <textarea class="form-input" rows="10"></textarea>
+            
+            <br><br>
+            <button class="form-button" type="submit">
+                Créer une offre
+            </button>
+        </form>
+    </section>
 
     <?php include '../partials/footer.php'; ?>
 </body>
