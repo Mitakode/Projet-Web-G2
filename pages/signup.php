@@ -51,8 +51,7 @@
             <label>Confirmation du mot de passe</label>
             <input class="form-input" type="password">
 
-            <br><br>
-            <button class="form-button" type="submit">
+            <button class="btn" type="submit">
                 Créer un compte
             </button>
         </form>

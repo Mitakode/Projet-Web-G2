@@ -23,8 +23,8 @@
             <label>Description</label>
             <textarea class="form-input" rows="10"></textarea>
             
-            <br><br>
-            <button class="form-button" type="submit">
+
+            <button class="btn" type="submit">
                 Créer une entreprise
             </button>
         </form>
