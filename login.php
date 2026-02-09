@@ -9,7 +9,7 @@
 <body>
     <?php include 'header.php'; ?>
 
-    <h2><i class="fa-regular fa-circle-user"></i> Connectez-vous</h2>
+    <h2><i class="fa-solid fa-circle-user"></i> Connectez-vous</h2> 
     <h3>Connectez-vous pour accéder à votre espace</h3>
 
     <form action="/accueil" method="POST">
