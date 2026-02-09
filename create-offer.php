@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="images/icon.png">
-    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="style/style.css">
     <title>Créer une offre - ThePiston</title>
 </head>
@@ -45,8 +44,8 @@
             <label>Description</label>
             <textarea class="form-input" rows="10"></textarea>
             
-            <br><br>
-            <button class="form-button" type="submit">
+
+            <button class="btn" type="submit">
                 Créer une offre
             </button>
         </form>
