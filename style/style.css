@@ -21,6 +21,7 @@
     --header-bg: #F2F2F2;
     --white: #FFFFFF;
     --green-piston-dark: #93ca5b;
+    --deconnexion-color: var(--text-color);
 }
 
 body {
@@ -136,20 +137,18 @@ header nav a.nav-link {
 
 .btn-deconnexion {
     border-radius: 20px;
-    border-color: var(--text-color);
-    border-width: 3px;
+    border-color: var(--deconnexion-color);
+    border-width: 2px;
     border-style: solid;
-    color: var(--text-color);
+    color: var(--deconnexion-color);
     background-color: transparent;
-    padding: 5px 17px;
-    /* On réduit le padding de 3px pour compenser la bordure */
+    padding: 6px 18px;/* padding réduit de 3px pour compenser la bordure */
 }
 
 .btn-deconnexion:hover {
-    background-color: var(--text-color);
+    background-color: var(--deconnexion-color);
     color: var(--white);
-    transform: scale(1.01);
-    /* très leger zoom du bouton au survol */
+    transform: scale(1.01); /* très leger zoom du bouton au survol */
 }
 
 /* --- FOOTER --- */
