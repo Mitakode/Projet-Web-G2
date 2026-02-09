@@ -4,7 +4,7 @@
     --content-gray: #E9E9E9; /* Un gris légèrement plus foncé pour les titres et les bordures */
     --gray-dark: #D9D9D9; /* Un gris intermédiaire pour les barres de recherches */
     --font:#333; /* Couleur de texte principale */
-    --white: #FFFFFF; /* Couleur de texte sur fond sombre (sfooter) */
+    --white: #FFFFFF; /* Couleur de texte sur fond sombre (footer) */
 }
 
 body {
@@ -144,7 +144,7 @@ main {
     box-sizing: border-box;
 }
 
-/* --- Style des formulaire de connexion/creation compte */
+/* --- Style des formulaire de connexion/creation */
 
 label{
     display: block;
@@ -152,7 +152,7 @@ label{
     color: var(--font);
 }
 
-input, select, .frame-form {
+input, select, textarea, .frame-form {
     border: none;
     border-radius: 10px;
 }
@@ -166,12 +166,21 @@ input, select, .frame-form {
     transition: all 0.2s ease;
 }
 
-input:focus, select:focus {
+.form-textarea {
+    background-color: var(--content-gray);
+    padding: 12px 15px; /* Un peu plus d'espace interne */
+    margin-bottom: 25px;
+    width: 100%;
+    height: 150px; /* Hauteur fixe pour les textarea */
+    box-sizing: border-box; /* Très important pour que le padding ne déforme pas la largeur */
+}
+
+input:focus, select:focus, textarea:focus {
     outline: 2px solid var(--green-piston);
     background-color: var(--white);
 }
 
-input:hover, select:hover {
+input:hover, select:hover, textarea:hover {
     background-color: var(--gray-dark);
     border:none;
 }
@@ -234,6 +243,19 @@ input:hover, select:hover {
     width: 45%; /* Chaque colonne prend 40% de la largeur pour laisser un peu d'espace entre les deux */
 }
 
+.form-column2{
+    display: flex;
+    flex-direction: column;
+    width: 67%;
+}
+
+
+.form-column3{
+    display: flex;
+    flex-direction: column;
+    width: 27%;
+}
+
 
 /* --- 3. Responsive (STx 10) --- */
 @media (max-width: 768px) {
@@ -252,4 +274,30 @@ input:hover, select:hover {
     .form-column {
         width: 100%;
     }
+}
+
+.skills-list {
+    background-color: var(--content-gray);
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 25px;
+    max-height: 130px; 
+    overflow-y: auto;  /* Ajoute le scroll vertical si besoin */
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    text-align: left; 
+}
+
+.skills-list label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.skills-list label:hover {
+    background-color: var(--gray-dark);
+    border-radius: 5px;
 }
