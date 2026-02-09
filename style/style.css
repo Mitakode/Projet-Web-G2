@@ -107,6 +107,21 @@ header nav a.nav-link {
     /* pas de changement de couleur */
 }
 
+.form-button[type="submit"] {
+    background-color: var(--green-piston);
+    color: var(--font);
+    border: none;
+    margin: 10px auto 10px auto;
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 400;
+    padding: 10px 50px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+
 .btn-container {
     height: 100%;
     display: flex;
@@ -116,12 +131,12 @@ header nav a.nav-link {
 .btn {
     background-color: var(--green-piston);
     color: var(--white);
-    padding: 8px 20px;
+    padding: 10px 50px;
+    margin: 10px auto 10px auto;
+    border:none;
+    font-size: 1.2rem;
     border-radius: 10px;
-    text-decoration: none;
-    /* pas de soulignement */
-    font-weight: 500;
-    font-size: 13px;
+    cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
@@ -132,11 +147,18 @@ header nav a.nav-link {
 }
 
 .btn-connexion {
+    text-decoration: none; /* pas de soulignement */
     border-radius: 20px;
+    font-weight: 500;
+    font-size: 13px;
+    padding: 8px 20px;
 }
 
 .btn-deconnexion {
+    text-decoration: none; /* pas de soulignement */
     border-radius: 20px;
+    font-weight: 500;
+    font-size: 13px;
     border-color: var(--deconnexion-color);
     border-width: 2px;
     border-style: solid;
