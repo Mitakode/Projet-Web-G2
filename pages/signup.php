@@ -10,7 +10,7 @@
 <body>
     <?php include '../partials/header.php'; ?>
 
-    <section class="frame-form">
+    <section class="frame">
         <h1>Créez un compte</h1>
 
         <form class="form-test" action="/accueil" method="POST">
