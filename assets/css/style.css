@@ -329,7 +329,7 @@ label{
     color: var(--font);
 }
 
-input, select, textarea, .frame-form {
+input, select, textarea, .frame {
     border: none;
     border-radius: 10px;
 }
@@ -378,9 +378,10 @@ input:hover, select:hover, textarea:hover {
     gap: 5px; /* Espace entre les champs du formulaire */
 }
 
-.frame-form{
+.frame{
     background-color: var(--white);
     border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     padding: 30px;
     margin: 40px auto 50px auto;
     width: 60%;
@@ -429,7 +430,7 @@ input:hover, select:hover, textarea:hover {
         width: 100%;
     }
 
-    .frame-form{
+    .frame{
         width:90%
     }
     .form-grid {
@@ -497,7 +498,7 @@ label {
 input,
 select,
 textarea,
-.frame-form {
+.frame {
     border: none;
     border-radius: 10px;
 }
@@ -568,7 +569,7 @@ textarea:hover {
     gap: 5px;
 }
 
-.frame-form {
+.frame {
     background-color: var(--white);
     border-radius: 10px;
     padding: 30px;
@@ -577,6 +578,7 @@ textarea:hover {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
+    
 }
 
 .form-grid {

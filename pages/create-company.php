@@ -9,7 +9,7 @@
 <body>
     <?php include '../partials/header.php'; ?>
 
-    <section class="frame-form">
+    <section class="frame">
         <h1>Créer une entreprise</h1>
         
         <form class="form-test" action="/accueil" method="POST">
