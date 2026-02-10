@@ -313,6 +313,18 @@ footer a:hover {
     width: 48%; /* Chaque colonne prend 48% de la largeur pour laisser un peu d'espace entre les deux */
 }
 
+.info-column2{
+    display: flex;
+    flex-direction: column;
+    width: 67%; /* Chaque colonne prend 67% de la largeur pour laisser un peu d'espace entre les deux */
+}
+
+.info-column3{
+    display: flex;
+    flex-direction: column;
+    width: 27%; /* Chaque colonne prend 27% de la largeur pour laisser un peu d'espace entre les deux */
+}
+
 .info-box {
     background-color: var(--content-gray);
     text-align: justify;
@@ -579,6 +591,16 @@ textarea:hover {
     flex-direction: column;
 }
 
+.frame2{
+    background-color: var(--white);
+    border-radius: 10px;
+    padding: 30px;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
 .form-grid {
     display: flex;
     width: 100%;
@@ -748,4 +770,13 @@ table thead tr:first-child th {
 .actions {
     display: flex;
     gap: 10px;
+}
+
+.offer-header{
+    display: flex;
+    justify-content: space-between; /* Pousse les éléments aux extrémités */
+    align-items: bottom;
+    padding: auto auto auto auto;
+    width: 100%;
+    margin-bottom: 20px;
 }
