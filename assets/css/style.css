@@ -741,3 +741,125 @@ table thead tr:first-child th {
     display: flex;
     gap: 10px;
 }
+
+/* --- PAGE OFFRE ADMIN (VERSION FINALE CENTRÉE ET LARGUE) --- */
+
+/* 1. Mise en page du conteneur principal */
+main.admin-page {
+    flex: 1;
+    width: 95%;      /* Prend presque toute la largeur */
+    max-width: none;  /* Aucune limite de pixels */
+    margin: 20px auto;
+    display: block;   /* Permet aux cartes de s'empiler et s'étirer */
+}
+
+/* 2. Barre de recherche et Bouton + centrés */
+.admin-page .search-form {
+    display: flex;
+    flex-direction: row; 
+    justify-content: center; /* Centre le bloc recherche + bouton */
+    align-items: center;     /* Aligne les deux sur la même ligne */
+    gap: 15px;
+    margin: 0 auto 30px auto; 
+    width: 100%;             
+}
+
+.admin-page .search-bar-wrapper {
+    display: flex;
+    background-color: var(--gray-dark);
+    border-radius: 10px;
+    flex: 0 1 600px;         /* Largeur max de 600px pour la barre */
+    margin: 0;               
+}
+
+.admin-page .search-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 12px 20px;
+    outline: none;
+    font-family: inherit;
+}
+
+.admin-page .search-btn {
+    background: transparent;
+    border: none;
+    padding-right: 15px;
+    cursor: pointer;
+}
+
+.admin-page .btn-add {
+    background-color: var(--green-piston);
+    color: white;
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+    font-size: 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+/* 3. Filtres centrés */
+.admin-page .filters-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 40px;
+}
+
+/* 4. Cartes d'offres en pleine largeur */
+.admin-page .carte-offre {
+    background-color: var(--content-gray);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 25px;
+    position: relative; /* Référence pour le placement des boutons */
+    width: 100%;
+    display: block;
+}
+
+.admin-page .offre-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* 5. Boutons d'action en haut à droite */
+.admin-page .groupe-boutons {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    display: flex;
+    gap: 8px;
+}
+
+.admin-page .btn-action {
+    border: none;
+    border-radius: 8px;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.admin-page .poubelle { background-color: #e11d48; }
+.admin-page .crayon { background-color: var(--green-piston); }
+.admin-page .btn-action i { color: white; } /* Icônes en blanc */
+
+.admin-page .etoile { background: none; font-size: 1.4rem; }
+.admin-page .etoile i { color: var(--text-color-light); }
+.admin-page .etoile.active i { color: #fbbf24; }
+
+/* 6. Blocs de texte gris internes */
+.admin-page .bloc-gris {
+    background-color: var(--gray-dark);
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 10px;
+    width: 100%;
+}
