@@ -14,7 +14,7 @@
         <section class="offer-container">
 
             <header class="offer-header">
-                <h1>Titre de l'offre</h1>
+                <h1 class="h1-offer">Titre de l'offre</h1>
                 <h3>Nom de l'entreprise</h3>
             </header>
 

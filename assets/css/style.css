@@ -776,7 +776,11 @@ table thead tr:first-child th {
     display: flex;
     justify-content: space-between; /* Pousse les éléments aux extrémités */
     align-items: bottom;
-    padding: auto auto auto auto;
+    padding:auto;
     width: 100%;
     margin-bottom: 20px;
+}
+
+.h1-offer{
+    margin: 0; /* Supprime les marges par défaut pour un alignement parfait */
 }
