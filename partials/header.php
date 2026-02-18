@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Piston</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
     <header>
         <div class="logo-group">
-            <a href="accueil.php" class="logo-link">
-                <img src="../assets/images/icon.png" alt="Icon" class="logo">
-                <img src="../assets/images/text.png" alt="The Piston" class="logo">
+            <a href="/pages/accueil.php" class="logo-link">
+                <img src="/assets/images/icon.png" alt="Icon" class="logo">
+                <img src="/assets/images/text.png" alt="The Piston" class="logo">
             </a>
         </div>
 
@@ -21,11 +21,11 @@
             <a href="#" class="nav-link">Les entreprises</a>
             
             <div class="btn-container">
-                <a href="login.php" class="btn btn-connexion">
+                <a href="/pages/login.php" class="btn btn-connexion">
                     Connexion
                 </a>
 
-                <a href="logout.php" class="btn btn-deconnexion">
+                <a href="/pages/logout.php" class="btn btn-deconnexion">
                     Déconnexion
                 </a>
             </div>
