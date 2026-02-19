@@ -278,8 +278,7 @@ footer a:hover {
 /* Other part of the search bar */
 .filters-container {
     display: flex;
-    flex-wrap: wrap;
-    /* Permet de passer à la ligne sur mobile */
+    flex-wrap: wrap;    /* Permet de passer à la ligne sur mobile */
     justify-content: space-between;
     width: 80%;
     gap: 10px;
@@ -288,6 +287,7 @@ footer a:hover {
 .filter-item {
     background-color: var(--gray-dark);
     border: none;
+    width:20%;
     border-radius: 10px;
     padding: 8px 15px;
     font-size: 0.9rem;
@@ -427,12 +427,16 @@ input:hover, select:hover, textarea:hover {
     width: 27%;
 }
 
+.skills-selector {
+    font-size: 1rem;
+}
 
 .skills-list {
     background-color: var(--content-gray);
     border-radius: 10px;
     padding: 10px;
     margin-bottom: 25px;
+    margin-top: 10px;
     max-height: 130px; 
     overflow-y: auto;  /* Ajoute le scroll vertical si besoin */
     display: flex;
@@ -489,6 +493,9 @@ h2.offer{
 @media (max-width: 768px) {
     .filters-container{
         flex-direction: column;
+    }
+    .filter-item {
+        width: 100%;
     }
     .info-grid {
         flex-direction: column; /* Sur mobile, elles se remettent l'une sous l'autre */
