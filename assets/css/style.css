@@ -487,6 +487,9 @@ h2.offer{
 /* ================== Responsive Design ================== */
 /* --- 3. Responsive (STx 10) --- */
 @media (max-width: 768px) {
+    .filters-container{
+        flex-direction: column;
+    }
     .info-grid {
         flex-direction: column; /* Sur mobile, elles se remettent l'une sous l'autre */
         align-items: center;
