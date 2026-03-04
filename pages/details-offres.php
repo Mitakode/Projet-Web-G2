@@ -55,18 +55,18 @@
                             <button class="btn" type="button" id="postuler-btn">Postuler</button>
                         </div>
                         <div id="zone-depot" hidden>
-                            <form>
+                            <form class ="form-test" action="../upload.php" method="POST">
                                 <p class="small-text">Pour postuler à cette offre, vous devez déposer votre CV ainsi qu'une lettre de motivation.</p>
-                                <div class="file-upload-wrapper">
-                                    <label for="cv" class="file-label">Déposer votre CV</label>
-                                    <input id="cv" name="cv" class="input-file" type="file" accept=".pdf,.doc,.docx" required>
-                                    <span class="file-name">Aucun fichier choisi</span>
+                                <div>
+                                    <label for="cv" class="file-label">Déposer votre CV ici (pdf)</label>
+                                    <input id="cv" name="cv" class="input-file" type="file" accept=".pdf" required>
                                 </div>
-                                <div class="file-upload-wrapper">
-                                    <label for="lettre" class="file-label">Déposer votre lettre de motivation</label>
-                                    <input type="file" id="lettre" class="input-file" name="lettre" accept=".pdf,.doc,.docx" required>
-                                    <span class="file-name2">Aucun fichier choisi</span>
+                                <span class="file-name">Aucun fichier choisi</span>
+                                <div>
+                                    <label for="lettre" class="file-label">Déposer votre lettre de motivation ici (pdf)</label>
+                                    <input type="file" id="lettre" class="input-file" name="lettre" accept=".pdf" required>
                                 </div>
+                                <span class="file-name2">Aucun fichier choisi</span>
                                 <button class="btn" type="submit" id="valider" disabled>Valider</button>
                             </form>
                         </div>

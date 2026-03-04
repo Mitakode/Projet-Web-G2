@@ -937,6 +937,7 @@ ul.skills li
   border-style: solid;
   cursor: pointer;
   display: inline-block;
+  width: 100%;
 }
 
 .file-label:hover {
