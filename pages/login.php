@@ -9,7 +9,7 @@
 <body>
     <?php include '../partials/header.php'; ?>
 
-    <section class="frame-form">
+    <section class="frame">
         <h1><i class="fa-solid fa-circle-user"></i>Connectez-vous</h1>
         <h2>Connectez-vous pour accéder à votre espace</h2>
 
