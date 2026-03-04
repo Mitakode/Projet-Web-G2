@@ -441,7 +441,7 @@ input:hover, select:hover, textarea:hover {
 .form-column3{
     display: flex;
     flex-direction: column;
-    width: 27%;
+    width: 30%;
 }
 
 .skills-selector {
@@ -556,7 +556,7 @@ textarea:hover {
     gap: 5px;
 }
 
-.frame {
+.frame2 {
     background-color: var(--white);
     border-radius: 10px;
     padding: 30px;
@@ -922,3 +922,43 @@ ul.skills li
 }
 
 
+.input-file {
+  display: none;
+}
+
+.file-label {
+  background-color: transparent;
+  color: var(--deconnexion-color) ;
+  border-color: var(--deconnexion-color);
+  font-size: 1rem;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border-width: 2px;
+  border-style: solid;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.file-label:hover {
+  background-color: var(--deconnexion-color);
+  color: var(--white);
+  transform: scale(1.01); /* très leger zoom du bouton au survol */
+}
+
+.small-text{
+    text-align :justify;
+    font-size:1rem;
+    margin:10px 5px;
+}
+
+.file-name{
+    font-size: 0.9rem;
+    color: var(--text-color-light);
+    margin-bottom: 15px;
+}
+
+.file-name2{
+    font-size: 0.9rem;
+    color: var(--text-color-light);
+    margin-bottom: 15px;
+}

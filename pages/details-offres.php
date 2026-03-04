@@ -12,50 +12,70 @@
     <?php include '../partials/header.php'; ?>
 
     <main>
-        <div>
-            <h1>Titre de l'offre</h1>
-            <h1>Nom de l'entreprise</h1>
-        </div>
+        <section class="offer-container">
 
-        <div class="frame">
-            <button type="button" id="postuler-btn">Postuler</button>
-
-            <div id="zone-depot" hidden>
-                <form>
-                    <div>
-                        <label for="cv">Déposer votre CV</label>
-                        <input type="file" id="cv" name="cv" accept=".pdf,.doc,.docx" required>
-                    </div>
-                    <div>
-                        <label for="lettre">Déposer votre lettre de motivation</label>
-                        <input type="file" id="lettre" name="lettre" accept=".pdf,.doc,.docx" required>
-                    </div>
-                    <button type="submit" id="valider" disabled>Valider</button>
-                </form>
+            <div class="offer-header">
+                <h1 class="offer">Alternance- Mastère Développement de Systèmes d’Information Banque et Assurance LBP/CGI bla bla blablabla bla bla H/F</h1>
+                <h2 class="offer">La Banque Postale</h2>
             </div>
-        </div>
 
-        <div class="frame">
-            <h2>Compétences requises</h2>
-            <ul>
-                <li>Compétence 1</li>
-                <li>Compétence 2</li>
-                <li>Compétence 3</li>
-                <li>Compétence 4</li>
-            </ul>
-        </div>
+            <div class="form-grid">
+                
+                <div class="form-column2">
 
-        <div class="frame">
-            <h2>Description de l'offre</h2>
-            <div>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel sapien eget nunc efficitur bibendum. Sed at ligula a nunc efficitur bibendum. Sed at ligula a nunc efficitur bibendum.</p>
+                    <div class="frame2" >
+                        <div class="infos-offre"> 
+                            <p>Date de publication : 26/02/2026</p>
+                            <p>Nombre de candidature : 12</p>
+                        </div>
+
+                        <p style="text-align: justify;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel sapien eget nunc efficitur bibendum. Sed at ligula a nunc efficitur bibendum. Sed at ligula a nunc efficitur bibendum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel sapien eget nunc efficitur bibendum. Sed at ligula a nunc efficitur bibendum. Sed at ligula a nunc efficitur bibendum.</p>
+
+
+                        <div>
+                            <h2 style="margin-top: 20px;">Compétences requises</h2>
+                            <ul class="skills">
+                                <li>Compétence 1</li>
+                                <li>Compétence 2</li>
+                                <li>Compétence 3</li>
+                                <li>Compétence 4</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h2>Rémunération</h2>
+                            <p>1euro/mois</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-column3">
+
+                    <div class="frame2">
+                        <div class="btn-container">
+                            <button class="btn" type="button" id="postuler-btn">Postuler</button>
+                        </div>
+                        <div id="zone-depot" hidden>
+                            <form>
+                                <p class="small-text">Pour postuler à cette offre, vous devez déposer votre CV ainsi qu'une lettre de motivation.</p>
+                                <div class="file-upload-wrapper">
+                                    <label for="cv" class="file-label">Déposer votre CV</label>
+                                    <input id="cv" name="cv" class="input-file" type="file" accept=".pdf,.doc,.docx" required>
+                                    <span class="file-name">Aucun fichier choisi</span>
+                                </div>
+                                <div class="file-upload-wrapper">
+                                    <label for="lettre" class="file-label">Déposer votre lettre de motivation</label>
+                                    <input type="file" id="lettre" class="input-file" name="lettre" accept=".pdf,.doc,.docx" required>
+                                    <span class="file-name2">Aucun fichier choisi</span>
+                                </div>
+                                <button class="btn" type="submit" id="valider" disabled>Valider</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+        </section>
 
-        <div class="frame">
-            <h2>Rémunération</h2>
-            <p>1euro/mois</p>
-        </div>
+        
 
     </main>
 
