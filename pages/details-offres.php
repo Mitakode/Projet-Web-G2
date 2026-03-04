@@ -55,18 +55,18 @@
                             <button class="btn" type="button" id="postuler-btn">Postuler</button>
                         </div>
                         <div id="zone-depot" hidden>
-                            <form class ="form-test" action="../upload.php" method="POST">
+                            <form class ="form-test" action="../upload.php" method="POST" >
                                 <p class="small-text">Pour postuler à cette offre, vous devez déposer votre CV ainsi qu'une lettre de motivation.</p>
                                 <div>
-                                    <label for="cv" class="file-label">Déposer votre CV ici (pdf)</label>
-                                    <input id="cv" name="cv" class="input-file" type="file" accept=".pdf" required>
+                                    <label for="file" class="file-label">Déposer votre CV ici (pdf)</label>
+                                    <input id="file" name="file" class="input-file" type="file" accept=".pdf" required>
                                 </div>
                                 <span class="file-name">Aucun fichier choisi</span>
-                                <div>
+                                <!--<div>
                                     <label for="lettre" class="file-label">Déposer votre lettre de motivation ici (pdf)</label>
                                     <input type="file" id="lettre" class="input-file" name="lettre" accept=".pdf" required>
                                 </div>
-                                <span class="file-name2">Aucun fichier choisi</span>
+                                <span class="file-name2">Aucun fichier choisi</span>-->
                                 <button class="btn" type="submit" id="valider" disabled>Valider</button>
                             </form>
                         </div>
