@@ -56,15 +56,18 @@
                         </div>
                         <div id="zone-depot" hidden>
                             <form>
-                                <div>
-                                    <label for="cv">Déposer votre CV</label>
-                                    <input type="file" id="cv" name="cv" accept=".pdf,.doc,.docx" required>
+                                <p class="small-text">Pour postuler à cette offre, vous devez déposer votre CV ainsi qu'une lettre de motivation.</p>
+                                <div class="file-upload-wrapper">
+                                    <label for="cv" class="file-label">Déposer votre CV</label>
+                                    <input id="cv" name="cv" class="input-file" type="file" accept=".pdf,.doc,.docx" required>
+                                    <span class="file-name">Aucun fichier choisi</span>
                                 </div>
-                                <div>
-                                    <label for="lettre">Déposer votre lettre de motivation</label>
-                                    <input type="file" id="lettre" name="lettre" accept=".pdf,.doc,.docx" required>
+                                <div class="file-upload-wrapper">
+                                    <label for="lettre" class="file-label">Déposer votre lettre de motivation</label>
+                                    <input type="file" id="lettre" class="input-file" name="lettre" accept=".pdf,.doc,.docx" required>
+                                    <span class="file-name2">Aucun fichier choisi</span>
                                 </div>
-                                <button type="submit" id="valider" disabled>Valider</button>
+                                <button class="btn" type="submit" id="valider" disabled>Valider</button>
                             </form>
                         </div>
                     </div>
