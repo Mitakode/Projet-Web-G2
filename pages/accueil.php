@@ -21,12 +21,12 @@
         
 
         <form class="search-form"  action="offres.php" method="GET">
-        <div class="search-bar-wrapper">
-            <input class="search-input" type="text" name="recherche" placeholder="Rechercher...">
-            <button type="submit" class="search-btn" aria-label="Rechercher">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </button>
-        </div>
+            <div class="search-bar-wrapper">
+                <input class="search-input" type="text" name="recherche" placeholder="Rechercher...">
+                <button type="submit" class="search-btn" aria-label="Rechercher">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
 
             <div class="filters-container">
                 <select class="filter-item" name="competences">
