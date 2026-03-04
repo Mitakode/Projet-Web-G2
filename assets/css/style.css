@@ -63,6 +63,24 @@ h2{
     text-align: center;
 }
 
+.h1-student{
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    align-self: flex-start; /* Aligne le titre à gauche */
+}
+
+.h2-student{
+    font-size: 1.1rem;
+    text-align: left;
+    margin-bottom: 0;
+}
+
+.h3-student{
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
 /* ================== HEADER FOOTER ================== */
 
 header {
@@ -265,21 +283,11 @@ footer a:hover {
     font-size: 1.2rem;
 }
 
-.search-main {
-    background-color: var(--gray-dark);
-    border: none;
-    border-radius: 10px;
-    /* Bords arrondis comme demandé */
-    padding: 12px 20px;
-    font-size: 1rem;
-    outline: none;
-}
 
 /* Other part of the search bar */
 .filters-container {
     display: flex;
-    flex-wrap: wrap;
-    /* Permet de passer à la ligne sur mobile */
+    flex-wrap: wrap;    /* Permet de passer à la ligne sur mobile */
     justify-content: space-between;
     width: 80%;
     gap: 10px;
@@ -288,6 +296,7 @@ footer a:hover {
 .filter-item {
     background-color: var(--gray-dark);
     border: none;
+    width:20%;
     border-radius: 10px;
     padding: 8px 15px;
     font-size: 0.9rem;
@@ -297,7 +306,7 @@ footer a:hover {
     background-color: var(--content-gray);
 }
 
-/* ================== INFOS AREA ================== */
+/* ================== ACCUEIL INFOS AREA ================== */
 
 .info-grid {
     display: flex;
@@ -313,12 +322,31 @@ footer a:hover {
     width: 48%; /* Chaque colonne prend 48% de la largeur pour laisser un peu d'espace entre les deux */
 }
 
+.info-column2{
+    display: flex;
+    flex-direction: column;
+    width: 67%; /* Chaque colonne prend 67% de la largeur pour laisser un peu d'espace entre les deux */
+}
+
+.info-column3{
+    display: flex;
+    flex-direction: column;
+    width: 27%; /* Chaque colonne prend 27% de la largeur pour laisser un peu d'espace entre les deux */
+}
+
 .info-box {
     background-color: var(--content-gray);
     text-align: justify;
     border-radius: 25px;
     padding: 30px;
     box-sizing: border-box;
+}
+
+.info-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Espace entre les blocs Promotion, Email et la Liste */
 }
 
 /* ================== FORMS ================== */
@@ -416,37 +444,8 @@ input:hover, select:hover, textarea:hover {
     width: 27%;
 }
 
-
-/* --- 3. Responsive (STx 10) --- */
-@media (max-width: 768px) {
-    .info-grid {
-        flex-direction: column; /* Sur mobile, elles se remettent l'une sous l'autre */
-        align-items: center;
-    }
-    .info-column{
-        width:100%
-    }
-    .info-box {
-        width: 100%;
-    }
-
-    .frame{
-        width:90%
-    }
-    .form-grid {
-        flex-direction: column; /* Sur mobile, elles se remettent l'une sous l'autre */
-        align-items: center;
-        gap: 0;
-    }
-    .form-column, 
-    .form-column2, 
-    .form-column3 {
-        width: 100% !important; /* Le !important aide à écraser les 45% ou 67% */
-    }
-    .form-input{
-        width: 100%;
-    }
-
+.skills-selector {
+    font-size: 1rem;
 }
 
 .skills-list {
@@ -454,6 +453,7 @@ input:hover, select:hover, textarea:hover {
     border-radius: 10px;
     padding: 10px;
     margin-bottom: 25px;
+    margin-top: 10px;
     max-height: 130px; 
     overflow-y: auto;  /* Ajoute le scroll vertical si besoin */
     display: flex;
@@ -473,19 +473,6 @@ input:hover, select:hover, textarea:hover {
 .skills-list label:hover {
     background-color: var(--gray-dark);
     border-radius: 5px;
-}
-
-/* ================== Responsive Design ================== */
-
-@media (max-width: 768px) {
-    .info-grid {
-        flex-direction: column; /* Sur mobile, elles se remettent l'une sous l'autre */
-        align-items: center;
-    }
-
-    .info-box {
-        width: 100%;
-    }
 }
 
 /* --- FORMULAIRES --- */
@@ -573,38 +560,81 @@ textarea:hover {
     background-color: var(--white);
     border-radius: 10px;
     padding: 30px;
-    margin: 40px auto 50px;
-    width: 60%;
+    width: 100%;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     
 }
 
-.form-grid {
+.offer-header{
+    background-color: var(--content-gray);
     display: flex;
+    justify-content: space-between; /* Pousse les éléments aux extrémités */
+    align-items: bottom;
+    padding: 10px 10px 0;
     width: 100%;
-    justify-content: space-between;
-    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
-.form-column {
-    display: flex;
-    flex-direction: column;
-    width: 45%;
+h1.offer{
+    font-size: 1.5rem;
+    text-align: left;
 }
 
-.form-column2 {
-    display: flex;
-    flex-direction: column;
-    width: 67%;
+h2.offer{
+    font-size: 1.5rem;
+    text-align: left;
 }
 
-.form-column3 {
-    display: flex;
-    flex-direction: column;
-    width: 27%;
+/* ================== Responsive Design ================== */
+/* --- 3. Responsive (STx 10) --- */
+@media (max-width: 768px) {
+    .filters-container{
+        flex-direction: column;
+    }
+    .filter-item {
+        width: 100%;
+    }
+    .info-grid {
+        flex-direction: column; /* Sur mobile, elles se remettent l'une sous l'autre */
+        align-items: center;
+    }
+    .info-column{
+        width:100%
+    }
+    .info-box {
+        width: 100%;
+    }
+
+    .frame{
+        width:90% !important;
+    }
+    .form-grid {
+        flex-direction: column; /* Sur mobile, elles se remettent l'une sous l'autre */
+        align-items: center;
+        gap: 0;
+    }
+    .form-column, 
+    .form-column2, 
+    .form-column3 {
+        width: 100% !important; /* Le !important aide à écraser les 45% ou 67% */
+    }
+    .form-input{
+        width: 100%;
+    }
+    .infos-offre{
+        flex-direction:column;
+        gap:5px;
+    }
+    .offer-header{
+        justify-content: left;/* Aligne les éléments à gauche sur mobile */
+        flex-direction:column;
+        gap:5px;
+    }
+
 }
+
 
 /* --- DASHBOARDS --- */
 .main-title {
@@ -694,7 +724,7 @@ table {
 }
 
 thead th {
-    background-color: #D9D9D9;
+    background-color: #d2d2d2;
     padding: 12px;
     text-align: left;
     border: 1px solid #B0B0B0;
@@ -706,6 +736,10 @@ tbody td {
     border: 1px solid #B0B0B0;
     font-size: 0.95rem;
     color: var(--text-color);
+}
+
+.table-container tbody tr:nth-child(even) {
+    background-color: #e0e0e0;
 }
 
 .col-actions {
@@ -733,21 +767,158 @@ tbody td {
     background-color: #b71c1c;
 }
 
-table tr th:first-child,
-table tr td:first-child {
-    border-left: none;
-}
-
-table tr th:last-child,
-table tr td:last-child {
-    border-right: none;
-}
-
-table thead tr:first-child th {
-    border-top: none;
-}
-
 .actions {
     display: flex;
     gap: 10px;
 }
+
+/* --- PAGE OFFRE ADMIN (VERSION FINALE CENTRÉE ET LARGUE) --- */
+
+/* 1. Mise en page du conteneur principal */
+main.admin-page {
+    flex: 1;
+    width: 95%;      /* Prend presque toute la largeur */
+    max-width: none;  /* Aucune limite de pixels */
+    margin: 20px auto;
+    display: block;   /* Permet aux cartes de s'empiler et s'étirer */
+}
+
+/* 2. Barre de recherche et Bouton + centrés */
+.admin-page .search-form {
+    display: flex;
+    flex-direction: row; 
+    justify-content: center; /* Centre le bloc recherche + bouton */
+    align-items: center;     /* Aligne les deux sur la même ligne */
+    gap: 15px;
+    margin: 0 auto 30px auto; 
+    width: 100%;             
+}
+
+.admin-page .search-bar-wrapper {
+    display: flex;
+    background-color: var(--gray-dark);
+    border-radius: 10px;
+    flex: 0 1 600px;         /* Largeur max de 600px pour la barre */
+    margin: 0;               
+}
+
+.admin-page .search-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 12px 20px;
+    outline: none;
+    font-family: inherit;
+}
+
+.admin-page .search-btn {
+    background: transparent;
+    border: none;
+    padding-right: 15px;
+    cursor: pointer;
+}
+
+.admin-page .btn-add {
+    background-color: var(--green-piston);
+    color: white;
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+    font-size: 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+/* 3. Filtres centrés */
+.admin-page .filters-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 40px;
+}
+
+/* 4. Cartes d'offres en pleine largeur */
+.admin-page .carte-offre {
+    background-color: var(--content-gray);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 25px;
+    position: relative; /* Référence pour le placement des boutons */
+    width: 100%;
+    display: block;
+}
+
+.admin-page .offre-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* 5. Boutons d'action en haut à droite */
+.admin-page .groupe-boutons {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    display: flex;
+    gap: 8px;
+}
+
+.admin-page .btn-action {
+    border: none;
+    border-radius: 8px;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.admin-page .poubelle { background-color: #e11d48; }
+.admin-page .crayon { background-color: var(--green-piston); }
+.admin-page .btn-action i { color: white; } /* Icônes en blanc */
+
+.admin-page .etoile { background: none; font-size: 1.4rem; }
+.admin-page .etoile i { color: var(--text-color-light); }
+.admin-page .etoile.active i { color: #fbbf24; }
+
+/* 6. Blocs de texte gris internes */
+.admin-page .bloc-gris {
+    background-color: var(--gray-dark);
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+ul.skills
+{
+    list-style: none;
+    margin-bottom: 20px;
+}
+ul.skills li
+{
+    font-size: 1rem;
+    border: 1px solid var(--gray-dark);
+    background-color: var(--content-gray);
+    display: inline-block;
+    padding: 5px 10px;
+    margin-right: 5px;
+    border-radius: 5px;
+}
+
+.infos-offre {
+    display: flex;
+    text-align: left;
+    justify-content: space-between; /* Pousse les éléments aux extrémités */
+    align-items: bottom;
+    width: 100%;
+    margin-bottom: 20px;
+    line-height: 1.2em;
+    font-weight: 600;
+}
+
+
