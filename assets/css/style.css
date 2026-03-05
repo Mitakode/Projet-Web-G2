@@ -632,6 +632,15 @@ h2.offer{
         flex-direction:column;
         gap:5px;
     }
+    
+    .offres-table td{
+        display: block;
+        width: 70%;
+    }
+
+    .groupe-boutons{
+        flex-direction: column;
+    }
 
 }
 
@@ -723,13 +732,60 @@ table {
     background-color: transparent;
 }
 
-thead th {
-    background-color: #d2d2d2;
-    padding: 12px;
-    text-align: left;
-    border: 1px solid #B0B0B0;
-    font-weight: 500;
+.offres-table {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
 }
+
+.offres-table tbody {
+    display: flex;
+    flex-direction: column;
+}
+
+.offres-table tbody tr {
+    /*display: flex;*/
+    align-items: center;
+    gap: 0;
+    /*border-bottom: 1px solid var(--gray-dark);*/
+    padding: 0;
+    background-color: var(--content-gray);
+    border-radius: 15px;
+    /*padding: 25px;*/
+    margin-bottom: 25px;
+    /*position: relative; /* Référence pour le placement des boutons */
+    width: 100%;
+    border:none;
+    display: block;
+}
+
+.offres-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.offres-table td {
+    border: none;
+    padding: 10px 10px;
+    color: var(--text-color);
+}
+
+.offres-table td:nth-child(1) {
+    font-size: 1.1rem;
+    font-weight: 800;
+    text-align: justify;
+    margin: 5px;
+    
+}
+
+.offres-table td:nth-child(2) {
+    font-size: 1rem;
+}
+
+.offres-table td:nth-child(3) {
+    text-align: right;
+}
+
 
 tbody td {
     padding: 10px 12px;
@@ -777,69 +833,25 @@ tbody td {
 /* 1. Mise en page du conteneur principal */
 main.admin-page {
     flex: 1;
-    width: 95%;      /* Prend presque toute la largeur */
-    max-width: none;  /* Aucune limite de pixels */
+    width: 90%;      /* Prend presque toute la largeur */
     margin: 20px auto;
     display: block;   /* Permet aux cartes de s'empiler et s'étirer */
 }
 
-/* 2. Barre de recherche et Bouton + centrés */
-.admin-page .search-form {
-    display: flex;
-    flex-direction: row; 
-    justify-content: center; /* Centre le bloc recherche + bouton */
-    align-items: center;     /* Aligne les deux sur la même ligne */
-    gap: 15px;
-    margin: 0 auto 30px auto; 
-    width: 100%;             
-}
 
-.admin-page .search-bar-wrapper {
-    display: flex;
-    background-color: var(--gray-dark);
-    border-radius: 10px;
-    flex: 0 1 600px;         /* Largeur max de 600px pour la barre */
-    margin: 0;               
-}
-
-.admin-page .search-input {
-    flex: 1;
-    border: none;
-    background: transparent;
-    padding: 12px 20px;
-    outline: none;
-    font-family: inherit;
-}
-
-.admin-page .search-btn {
-    background: transparent;
-    border: none;
-    padding-right: 15px;
-    cursor: pointer;
-}
 
 .admin-page .btn-add {
     background-color: var(--green-piston);
     color: white;
-    width: 45px;
-    height: 45px;
+    padding: 6px 14px;
+    margin: 10px;
     border-radius: 10px;
     font-size: 1.8rem;
     display: flex;
-    align-items: center;
-    justify-content: center;
     border: none;
     cursor: pointer;
-    flex-shrink: 0;
 }
 
-/* 3. Filtres centrés */
-.admin-page .filters-container {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 40px;
-}
 
 /* 4. Cartes d'offres en pleine largeur */
 .admin-page .carte-offre {
@@ -849,6 +861,7 @@ main.admin-page {
     margin-bottom: 25px;
     position: relative; /* Référence pour le placement des boutons */
     width: 100%;
+    border:none;
     display: block;
 }
 
@@ -937,7 +950,6 @@ ul.skills li
   border-style: solid;
   cursor: pointer;
   display: inline-block;
-  width: 100%;
 }
 
 .file-label:hover {
