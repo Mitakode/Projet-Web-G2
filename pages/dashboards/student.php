@@ -11,10 +11,10 @@
 </head>
 
 <body>
-    <?php include '../partials/header.php'; 
+    <?php include '../../partials/header.php'; 
     require_once '../../pagination.php'?>
 
-    <main>
+    <main class="admin-page">
         <h1 class="main-title">Mon espace étudiant</h1>
 
         <section class="dashboards-section">
@@ -63,12 +63,16 @@
                                         <?php echo htmlspecialchars($candidatures['LM']); ?>
                                     </td>
                                 </tr>
-                            </table>
+                        
                         </div>
                         <?php
-                    }
-
-                    // Affichage des liens de pagination en dessous
+                    }?>
+                
+                    </table>
+                </div>
+                    
+                <?php
+                // Affichage des liens de pagination en dessous
                     $paginator->renderLinks();
                     ?>
         </section>
@@ -103,27 +107,31 @@
                         </thead>
 
                     <?php
-                    foreach ($paginator->getCurrentPageItems() as $candidatures) {
+                    foreach ($paginator2->getCurrentPageItems() as $wishlist) {
                         ?>
                                 <tr>
                                     <td>
-                                        <?php echo htmlspecialchars($candidatures['offre']); ?>
+                                        <?php echo htmlspecialchars($wishlist['offre']); ?>
                                     </td>
                                     <td>
-                                        <?php echo htmlspecialchars($candidatures['entreprise']); ?>
+                                        <?php echo htmlspecialchars($wishlist['entreprise']); ?>
                                     </td>
                                     <td>
                                         <button class="btn-action poubelle"><i class="fa-solid fa-trash"></i></button>
                                     </td>
                                 </tr>
                                 
-                            </table>
+                           
                         </div>
                         <?php
-                    }
+                    }   
+                    ?>
+                    </table>
+                </div>
 
+                    <?php
                     // Affichage des liens de pagination en dessous
-                    $paginator->renderLinks();
+                    $paginator2->renderLinks();
                     ?>
         </section>
 

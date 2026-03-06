@@ -23,40 +23,47 @@
                     <input type="text" name="nom" placeholder="Nom">
                     <input type="text" name="prenom" placeholder="Prénom">
                     <input type="text" name="promotion" placeholder="Promotion">
-                    <input type="text" name="campus" placeholder="Campus">
-                    <button type="submit" class="search-btn">🔍</button>
-                    <button type="button" class="btn">+</button>
+                    <button type="submit" class="search-btn" aria-label="Rechercher">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                    <button class="btn-add" id="ouvrirPopup">+</button>
                 </form>
             </div>
 
+            <?php
+            $etudiants = [['nom' => 'Dupont', 'prénom' => 'Jean', 'promotion' => 'A1'],
+                    ['nom' => 'Martin', 'prénom' => 'Marie', 'promotion' => 'A2'],
+                    ['nom' => 'Bernard', 'prénom' => 'Pierre', 'promotion' => 'A1'],
+                    ['nom' => 'Dubois', 'prénom' => 'Sophie', 'promotion' => 'A2'],
+                    ['nom' => 'Lecrom', 'prénom' => 'Luc', 'promotion' => 'A1'],
+                    ['nom' => 'Richard', 'prénom' => 'Claire', 'promotion' => 'A2'],
+                    ['nom' => 'Petit', 'prénom' => 'Thomas', 'promotion' => 'A1'],
+                    ['nom' => 'Lubin', 'prénom' => 'Emma', 'promotion' => 'A2'],
+                    ['nom' => 'Girard', 'prénom' => 'Hugo', 'promotion' => 'A1'],
+                    ['nom' => 'Moreau', 'prénom' => 'Léa', 'promotion' => 'A2']
+                ];
+
+                $paginator = new Paginator($etudiants, 5);
+            ?>
+            
             <div class="box-list">
-                <div class="admin-item">
-                    <span class="user-name">Nom Prenom Etudiant 1</span>
-                    <span class="stats"><strong>Nombre de candidatures : 35</strong></span>
-                    <div class="actions">
-                        <button type="button" class="btn-delete">🗑️</button>
-                        <button type="button" class="btn">✏️</button>
-                    </div>
-                </div>
 
-                <div class="admin-item">
-                    <span class="user-name">Nom Prenom Etudiant 2</span>
-                    <span class="stats"><strong>Nombre de candidatures : 35</strong></span>
-                    <div class="actions">
-                        <button type="button" class="btn-delete">🗑️</button>
-                        <button type="button" class="btn">✏️</button>
-                    </div>
-                </div>
-
-                <div class="admin-item">
-                    <span class="user-name">Nom Prenom Etudiant 2</span>
-                    <span class="stats"><strong>Nombre de candidatures : 35</strong></span>
-                    <div class="actions">
-                        <button type="button" class="btn-delete">🗑️</button>
-                        <button type="button" class="btn">✏️</button>
-                    </div>
-                </div>
-
+                <?php foreach ($paginator->getCurrentPageItems() as $etudiants) {?>
+                <table class="admin-item">
+                    <tr>
+                        <td class="user-name"><?php echo htmlspecialchars($etudiants['nom'] . ' ' . $etudiants['prénom']); ?></td>
+                        <td class="stats"><strong>Nombre de candidatures : 35</strong></td>
+                        <td class="actions">
+                            <div class="groupe-boutons">
+                                <button class="btn-action poubelle"><i class="fa-solid fa-trash"></i></button>
+                                <button class="btn-action crayon"><i class="fa-solid fa-pen-to-square"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <?php }
+                $paginator->renderLinks();
+                ?>
             </div>
         </section>
 
@@ -67,32 +74,55 @@
                 <form action="/rechercher-pilote" method="GET" class="search-bar-admin">
                     <input type="text" name="nom" placeholder="Nom">
                     <input type="text" name="prenom" placeholder="Prénom">
-                    <input type="text" name="campus" placeholder="Campus">
-                    <button type="submit" class="search-btn">🔍</button>
-                    <button type="button" class="btn">+</button>
+                    <button type="submit" class="search-btn" aria-label="Rechercher">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                    <button class="btn-add" id="ouvrirPopup">+</button>
                 </form>
             </div>
 
-            <div class="box-list">
-                <div class="admin-item">
-                    <span class="user-name">Nom Prenom Pilote 1</span>
-                    <div class="actions">
-                        <button type="button" class="btn-delete">🗑️</button>
-                        <button type="button" class="btn">✏️</button>
-                    </div>
-                </div>
+            <?php
+            $pilotes = [['nom' => 'Durand', 'prénom' => 'Jacques'],
+                    ['nom' => 'Rougerie', 'prénom' => 'Laurent'],
+                    ['nom' => 'Lemoine', 'prénom' => 'Sophie'],
+                    ['nom' => 'Morel', 'prénom' => 'Isabelle'],
+                    ['nom' => 'Fournier', 'prénom' => 'Nicolas'],
+                    ['nom' => 'Garnier', 'prénom' => 'Céline'],
+                    ['nom' => 'Chevalier', 'prénom' => 'David'],
+                    ['nom' => 'Blanc', 'prénom' => 'Sophie'],
+                    ['nom' => 'Rousseau', 'prénom' => 'Jean'],
+                    ['nom' => 'Faure', 'prénom' => 'Marie']
+                ];
 
-                <div class="admin-item">
-                    <span class="user-name">Nom Prenom Pilote 2</span>
-                    <div class="actions">
-                        <button type="button" class="btn-delete">🗑️</button>
-                        <button type="button" class="btn">✏️</button>
-                    </div>
-                </div>
+                $paginator2 = new Paginator($pilotes, 5);
+            ?>
+            
+            <div class="box-list">
+
+                <?php foreach ($paginator2->getCurrentPageItems() as $pilotes) {?>
+                <table class="admin-item">
+                    <tr>
+                        <td class="user-name"><?php echo htmlspecialchars($pilotes['nom'] . ' ' . $pilotes['prénom']); ?></td>
+                        <td class="stats"><strong>Nombre d'élèves : 35</strong></td>
+                        <td class="actions">
+                            <div class="groupe-boutons">
+                                <button class="btn-action poubelle"><i class="fa-solid fa-trash"></i></button>
+                                <button class="btn-action crayon"><i class="fa-solid fa-pen-to-square"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <?php }
+                
+                $paginator2->renderLinks();
+                ?>
             </div>
+        </section>
         </section>
     </main>
 
     <?php include '../../partials/footer.php'; ?>
 </body>
 </html>
+
+
