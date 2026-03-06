@@ -745,11 +745,19 @@ table {
 }
 
 .offres-table tbody tr {
-    display: flex;
+    /*display: flex;*/
     align-items: center;
     gap: 0;
-    border-bottom: 1px solid var(--gray-dark);
+    /*border-bottom: 1px solid var(--gray-dark);*/
     padding: 0;
+    background-color: var(--content-gray);
+    border-radius: 15px;
+    /*padding: 25px;*/
+    margin-bottom: 25px;
+    /*position: relative; /* Référence pour le placement des boutons */
+    width: 100%;
+    border:none;
+    display: block;
 }
 
 .offres-table tbody tr:last-child {

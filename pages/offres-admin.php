@@ -11,9 +11,10 @@ require_once '../pagination.php';?>
     <link rel="icon" type="image/png" href="../assets/images/icon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="icon" type="image/png" href="../assets/images/icon.png">
 </head>
-<body>
 
+<body>
     <?php include '../partials/header.php'; ?>
 
     <main class="admin-page">
