@@ -732,6 +732,10 @@ table {
     background-color: transparent;
 }
 
+table thead {
+    font-size: 1.1rem;
+}
+
 .offres-table {
     width: 100%;
     display: flex;
