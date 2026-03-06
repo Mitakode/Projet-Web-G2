@@ -1,67 +1,55 @@
 <?php
 
-require_once 'validateInput.php';
+class FileUploader {
+    private $file;
+    private $uploadDir = 'uploads/';
+    private $allowedType = 'application/pdf';
 
-//Vérification qu'un fichier a été televersé via un formulaire POST
-if($_SERVER['REQUEST_METHOD'] === 'POST') {
-    //Recupérer les infos du fichier
-    $file = $_FILES['file'];
+    public function __construct(array $file) {$this->file = $file;}
 
-    //Définition du répertoire où le fichier sera stocké
-    $uploadDir = 'uploads/';
+    public function validate(): bool {
+        if ($this->file['error'] !== UPLOAD_ERR_OK) {
+            echo "Erreur lors de l'upload du fichier".basename($this->file['name']).".";
 
-    //Définitionde la taille maximale autorisée pour le fichier (2Mo ici)
-    $maxFileSize = 2*1024*1024; //2Mo converti en octets
-    $allowedMimeType = 'application/pdf';
+            return false;
+        }
 
-    // On vérifie que les deux fichiers sont présents dans la requête
-    if (isset($_FILES['cv']) && isset($_FILES['lettre'])) {
-        
-        $filesToProcess = [
-            'cv' => $_FILES['cv'],
-            'lettre' => $_FILES['lettre']
-        ];
+        if ($this->file['type'] !== $this->allowedType) {
+            echo "Le fichier".basename($this->file['name'])." doit être au format PDF.";
+            return false;
+        }
+        //$safeName = validateInput($originalName); à utiliser pour vérif le nom ??
+        return true;
+    }
 
-        foreach ($filesToProcess as $key => $file) {
+    public function upload(): bool {
+        $uploadPath = $this->uploadDir . basename($this->file['name']);
+        if (move_uploaded_file($this->file['tmp_name'], $uploadPath)) {
+            echo basename($this->file['name'])." a été envoyée avec succès !";
+            return true;
+        } else {
+            echo "Erreur lors de l'upload du fichier".basename($this->file['name']).".";
+            return false;
+        }
+    }
+}
 
-            //Vérification des errreurs de téléversement
-            //UPLOAD_ERR_OK = 0 ; pas d'erreur
-            if($file['error'] !== UPLOAD_ERR_OK){
-                die('Erreur lors du téléversement. Code: '.$file['error']);
-                //Arrête le script et affiche le code d'erreur
-            }
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $cvPresent = isset($_FILES['cv']);
+    $lettrePresent = isset($_FILES['lettre']);
 
-            //Vérification de la taille du fichier
-            if($file['size'] > $maxFileSize){
-                die('Le fichier est trop volumineux (max 2Mo).');
-                //Arrête le script si trop gros
-            }
+    if (!$cvPresent || !$lettrePresent) {
+        echo "Veuillez remplir correctement tous les champs.";
+    } else {
+        $uploaderCV = new FileUploader($_FILES['cv']);
+        $uploaderLettre = new FileUploader($_FILES['lettre']);
 
-            //Vérification du type MIME du fichier (PDF)
-            $fileType = mime_content_type($file['tmp_name']);
-            
-            if($fileType !== $allowedMimeType){
-                die('Le fichier doit être au format PDF.');
-                // Arrête le script si le fichier n'est pas un PDF
-            }
+        if ($uploaderCV->validate()) {
+            $uploaderCV->upload();
+        }
 
-            // Validation du nom de fichier original avant toute utilisation
-            // Récupération du nom sans extension
-            $originalName = pathinfo($file['name'], PATHINFO_FILENAME);
-            // Validation avec validateInput
-            $safeName = validateInput($originalName);
-            //Génération d'un nom de fichier unique pour éviter d'écraser un fichier existant
-            //uniqid('file_',true) crée un identifiant unique basé sur le temps actuel
-            $fileName = uniqid($safeName . '_'.$key.'_', true) . '.pdf';
-
-            //Déplacement du fichier depuis le dossier temporaire vers le répertoire final
-            if(move_uploaded_file($file['tmp_name'],$uploadDir . $fileName)){
-                //Succès : message de validation et lien vers le fichier
-                echo 'Fichier téléversé avec succès ! <a href="'.$uploadDir . $fileName .'">Voir le fichier</a>';
-            }
-            else{
-                echo 'Erreur lors du déplacement du fichier.';
-            }
+        if ($uploaderLettre->validate()) {
+            $uploaderLettre->upload();
         }
     }
 }
