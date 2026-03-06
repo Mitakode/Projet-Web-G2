@@ -11,11 +11,12 @@
 </head>
 
 <body>
-    <?php include '../partials/header.php'; ?>
+    <?php include '../partials/header.php'; 
+    require_once '../pagination.php'?>
 
     <main>
+        <h1>Les entreprises</h1>
         <section class="search-section">
-            <h1>Les entreprises</h1>
             
             <form class="search-form">
                 <div class="search-bar-wrapper">
@@ -26,57 +27,9 @@
             </form>
         </section>
 
+
+
         <?php
-
-        class Paginator {
-
-        private $items;
-        private $perPage;
-        private $currentPage;
-
-
-        public function __construct(array $items, int $perPage = 5) {
-            $this->items = $items;
-            $this->perPage = $perPage;
-            $this->currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-        }
-
-
-        public function getCurrentPageItems(): array {
-            $start = ($this->currentPage - 1) * $this->perPage;
-            return array_slice($this->items, $start, $this->perPage);
-        }
-
-
-        public function getTotalPages(): int {
-            return ceil(count($this->items) / $this->perPage);
-        }
-
-
-        public function renderLinks(): void {
-            $totalPages = $this->getTotalPages();
-            echo '<div class="pagination">';
-            echo '<a href="?page=1">Première page</a>';
-            echo '<a href="?page=' . max(1, $this->currentPage - 1) . '">Précédent</a>';
-
-            for ($i = 1; $i <= $totalPages; $i++) {
-                if ($i === $this->currentPage) {
-                    echo "<strong>$i</strong> ";
-                } else {
-                    echo '<a href="?page=' . $i . '">' . $i . '</a> ';
-                }
-            }
-
-            echo '<a href="?page=' . min($totalPages, $this->currentPage + 1) . '">Suivant</a>';
-            echo '<a href="?page=' . $totalPages . '">Dernière page</a>';
-            echo '</div>';
-        }
-
-        }
-
-
-        // Exemple d'utilisation sans SQL
-
         $entreprises = [
             ['nom' => 'RoboticsX', 'description' => 'RoboticsX est une entreprise spécialisée dans la conception de robots industriels et de solutions d’automatisation intelligente. Elle développe des systèmes robotisés avancés destinés à l’industrie, à la logistique et à la recherche. Ses équipes travaillent sur l’intégration de capteurs, d’IA embarquée et de logiciels temps réel.', 'contact' => '0145632890 - contact@roboticsx.com'],
             ['nom' => 'TechNova', 'description' => 'TechNova conçoit des solutions logicielles et des plateformes numériques pour accompagner la transformation digitale des entreprises. L’entreprise développe des applications cloud, des infrastructures sécurisées et des outils d’analyse de données. Elle intervient dans de nombreux secteurs technologiques.', 'contact' => '0182745632 - contact@technova.com'],
