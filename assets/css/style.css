@@ -975,3 +975,59 @@ ul.skills li
     color: var(--text-color-light);
     margin-bottom: 15px;
 }
+.company-table {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto 20px auto; /* Centre le tableau et ajoute de l'espace en bas */
+    border-collapse: collapse;
+    background-color: #f0f0f0; /* Gris clair */
+    border-radius: 12px;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Optionnel: petite ombre pour le relief */
+}
+
+.company-table td, .company-table th {
+    padding: 12px 20px;
+    text-align: left;
+    border: none; /* On retire les bordures internes */
+}
+
+.company-name {
+    font-size: 1.3rem;
+    color: var(--text-color-strong);
+}
+
+.company-rating {
+    text-align: right !important;
+    color: var(--text-color-light);
+    width: 150px;
+}
+
+.company-info {
+    font-size: 0.9rem;
+    color: var(--text-color-light);
+    padding-top: 0 !important;
+    font-style: italic;
+}
+
+.company-description {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--text-color);
+    padding-bottom: 20px !important;
+}
+
+/* Style rapide pour la pagination */
+.pagination {
+    text-align: center;
+    margin-top: 30px;
+}
+.pagination a, .pagination strong {
+    padding: 8px 12px;
+    margin: 0 4px;
+    text-decoration: none;
+    border-radius: 4px;
+}
+.pagination a { background:var(--white); color: var(--deconnexion-color); }
+.pagination strong { background: var(--green-piston); color: var(--white); }

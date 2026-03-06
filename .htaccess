@@ -3,7 +3,3 @@ RewriteRule ^index\.php$ /pages/accueil.php [R=301,L]
 
 #Redirect 301 /index.php /pages/accueil.php
 
-# Vérification si la requête est HTTP
-RewriteCond %{HTTPS} off
-# Redirection vers la même URL, en HTTPS
-RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
