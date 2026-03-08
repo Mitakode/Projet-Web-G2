@@ -79,7 +79,7 @@
 
 
         <section class="dashboards-section">
-            <h2 class="dashboard-title">Mes candidatures</h2>
+            <h2 class="dashboard-title">Ma Wishlist</h2>
             
             <?php
                 $wishlist = [['offre' => 'Alternance - Chef de Projet IT', 'entreprise' => 'FinanciaGroup'],
