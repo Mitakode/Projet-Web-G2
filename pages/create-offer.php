@@ -10,7 +10,7 @@
     <?php include '../partials/header.php'; ?>
 
     <section class="frame">
-        <h1>Créer une offre</h1>
+        <h1 class="main-title">Créer une offre</h1>
         
         <form class="form-test" action="/accueil" method="POST">
 
