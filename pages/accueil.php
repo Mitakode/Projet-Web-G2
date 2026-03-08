@@ -54,7 +54,9 @@
     <div class="info-grid">
         <section class="info-column">
             <h2>Qui sommes-nous ?</h2>
-            <p class="info-box">Nous sommes nous mêmes 4 étudiants pour qui trouver un stage fut laborieux, très laborieux. Le monde du travail est une bêtre sauvage pour les étudiants. C'est pourquoi nous avons eu l'idée de créer ThePiston, le site regroupant un pannel d'offres de stage et de contrat d'apprentissage pour aider nos compagnons étudiants de  la France entière. </p>
+            <p class="info-box">Nous sommes nous mêmes 4 étudiants du CESI, pour qui trouver un stage fut très laborieux. <br><br>
+                 Le monde du travail est une bête sauvage pour les étudiants. Il existe tellement d'offres de stage et d'alternances, avec des centaines de sites les regroupant. Avoir une bonne gestion de ses recherches peut donc être parfois difficile. <br><br>
+                 C'est pourquoi nous avons eu l'idée de créer <strong>ThePiston</strong>, le site regroupant un large pannel d'offres de stage et de contrat d'apprentissage pour aider nos compagnons étudiants de la France entière. Vos candidatures pouvant être consultées par vos pilotes, la gestion des recherche sera plus efficace ! </p>
         </section>
 
         <section class="info-column">
