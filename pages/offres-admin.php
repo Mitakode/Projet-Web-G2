@@ -15,7 +15,7 @@ require_once '../pagination.php';?>
 
     <?php include '../partials/header.php'; ?>
 
-    <main class="admin-page">
+    <main class="list-page">
 
         <h1 class="main-title">Les offres disponibles</h1>
         <section class="search-section">
