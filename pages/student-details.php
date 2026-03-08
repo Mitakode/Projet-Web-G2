@@ -11,8 +11,7 @@
     <?php include '../partials/header.php'; ?>
     <main>
         <section class="info-section">
-            <h1 class="h1-student">Prénom Nom de l'étudiant</h1>
-            <div class="info-box"><h2 class="h2-student">Promotion</h2></div>
+            <h1 class="h1-student">Prénom Nom et Promo de l'étudiant</h1>
             <div class="info-box" style="padding: 8px;">Email</div>
 
             <div class="info-box">

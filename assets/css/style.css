@@ -63,24 +63,6 @@ h2{
     text-align: center;
 }
 
-.h1-student{
-    font-size: 1.8rem;
-    margin-bottom: 10px;
-    align-self: flex-start; /* Aligne le titre à gauche */
-}
-
-.h2-student{
-    font-size: 1.1rem;
-    text-align: left;
-    margin-bottom: 0;
-}
-
-.h3-student{
-    font-size: 1.3rem;
-    margin-bottom: 20px;
-    font-weight: 500;
-}
-
 /* ================== HEADER FOOTER ================== */
 
 header {
@@ -179,49 +161,55 @@ footer a:hover {
     align-items: center;
 }
 
-.btn {
-    background-color: var(--green-piston);
-    color: var(--white);
-    padding: 10px 50px;
-    margin: 10px auto 10px auto;
-    border:none;
-    font-size: 1.2rem;
+.btn, .form-button[type="submit"], .file-label {
+    border: none;
     border-radius: 10px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.btn:hover {
+.btn, .form-button[type="submit"] {
+    background-color: var(--green-piston);
+    color: var(--white);
+    padding: 10px 50px;
+    margin: 10px auto;
+    font-size: 1.2rem;
+}
+
+.btn:hover, .form-button[type="submit"]:hover {
     background-color: var(--green-piston-dark);
     transform: scale(1.01);
-    /* très leger zoom du bouton au survol */
 }
 
 .btn-connexion {
-    text-decoration: none; /* pas de soulignement */
+    text-decoration: none;
     border-radius: 20px;
     font-weight: 500;
     font-size: 13px;
     padding: 8px 20px;
 }
 
-.btn-deconnexion {
-    text-decoration: none; /* pas de soulignement */
+.btn-deconnexion, .file-label {
+    text-decoration: none;
     border-radius: 20px;
     font-weight: 500;
     font-size: 13px;
-    border-color: var(--deconnexion-color);
-    border-width: 2px;
-    border-style: solid;
+    border: 2px solid var(--deconnexion-color);
     color: var(--deconnexion-color);
     background-color: transparent;
-    padding: 6px 18px;/* padding réduit de 3px pour compenser la bordure */
+    padding: 6px 18px;
 }
 
-.btn-deconnexion:hover {
+.file-label {
+    font-size: 1rem;
+    padding: 10px 20px;
+    display: inline-block;
+}
+
+.btn-deconnexion:hover, .file-label:hover {
     background-color: var(--deconnexion-color);
     color: var(--white);
-    transform: scale(1.01); /* très leger zoom du bouton au survol */
+    transform: scale(1.01);
 }
 
 /* ================== SEARCH BAR ================== */
@@ -311,27 +299,9 @@ footer a:hover {
 .info-grid {
     display: flex;
     width: 100%;
-    justify-content: space-between; /* Espace les boîtes au maximum */
-    gap: 30px; /* Définit l'espace précis entre les deux */
+    justify-content: space-between;
+    gap: 30px;
     margin-top: 20px;
-}
-
-.info-column{
-    display: flex;
-    flex-direction: column;
-    width: 48%; /* Chaque colonne prend 48% de la largeur pour laisser un peu d'espace entre les deux */
-}
-
-.info-column2{
-    display: flex;
-    flex-direction: column;
-    width: 67%; /* Chaque colonne prend 67% de la largeur pour laisser un peu d'espace entre les deux */
-}
-
-.info-column3{
-    display: flex;
-    flex-direction: column;
-    width: 27%; /* Chaque colonne prend 27% de la largeur pour laisser un peu d'espace entre les deux */
 }
 
 .info-box {
@@ -346,7 +316,7 @@ footer a:hover {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 15px; /* Espace entre les blocs Promotion, Email et la Liste */
+    gap: 15px;
 }
 
 /* ================== FORMS ================== */
@@ -354,32 +324,26 @@ footer a:hover {
 label{
     display: block;
     margin-bottom: 10px;
-    color: var(--font);
+    color: var(--text-color);
 }
 
-input, select, textarea, .frame {
+input, select, textarea {
     border: none;
     border-radius: 10px;
 }
 
-.form-input {
+.form-input, .form-textarea {
     background-color: var(--content-gray);
-    padding: 12px 15px; /* Un peu plus d'espace interne */
+    padding: 12px 15px;
     margin-bottom: 25px;
     width: 100%;
-    box-sizing: border-box; /* Très important pour que le padding ne déforme pas la largeur */
+    box-sizing: border-box;
     transition: all 0.2s ease;
 }
 
 .form-textarea {
-    background-color: var(--content-gray);
-    padding: 12px 15px; /* Un peu plus d'espace interne */
-    margin-bottom: 25px;
-    width: 100%;
-    height: 150px; /* Hauteur fixe pour les textarea */
-    box-sizing: border-box; /* Très important pour que le padding ne déforme pas la largeur */
+    height: 150px;
 }
-
 
 input:focus, select:focus, textarea:focus {
     outline: 2px solid var(--green-piston);
@@ -388,7 +352,6 @@ input:focus, select:focus, textarea:focus {
 
 input:hover, select:hover, textarea:hover {
     background-color: var(--gray-dark);
-    border:none;
 }
 
 .infos{
@@ -398,49 +361,55 @@ input:hover, select:hover, textarea:hover {
 .form-test{
     background-color: var(--white);
     padding: 10px;
-    margin: 20px auto 20px auto;
+    margin: 20px auto;
     width: 80%;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    gap: 5px; /* Espace entre les champs du formulaire */
+    gap: 5px;
+}
+
+.frame, .frame2{
+    background-color: var(--white);
+    border-radius: 10px;
+    padding: 30px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
 }
 
 .frame{
-    background-color: var(--white);
-    border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    padding: 30px;
     margin: 40px auto 50px auto;
     width: 60%;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column; /* Espace entre les champs du formulaire */
+}
+
+.frame2{
+    width: 100%;
 }
 
 .form-grid{
     display: flex;
     width: 100%;
-    justify-content: space-between; /* Espace les boîtes au maximum */
+    justify-content: space-between;
     margin-top: 20px;
 }
 
-.form-column{
+.form-column, .form-column2, .form-column3,
+.info-column, .info-column2, .info-column3 {
     display: flex;
     flex-direction: column;
-    width: 45%; /* Chaque colonne prend 40% de la largeur pour laisser un peu d'espace entre les deux */
 }
 
-.form-column2{
-    display: flex;
-    flex-direction: column;
+.form-column, .info-column{
+    width: 45%;
+}
+
+.form-column2, .info-column2{
     width: 67%;
 }
 
-
-.form-column3{
-    display: flex;
-    flex-direction: column;
+.form-column3, .info-column3{
     width: 30%;
 }
 
@@ -475,120 +444,17 @@ input:hover, select:hover, textarea:hover {
     border-radius: 5px;
 }
 
-/* --- FORMULAIRES --- */
-label {
-    display: block;
-    margin-bottom: 10px;
-    color: var(--text-color);
-}
-
-input,
-select,
-textarea,
-.frame {
-    border: none;
-    border-radius: 10px;
-}
-
-.form-input {
-    background-color: var(--content-gray);
-    padding: 12px 15px;
-    margin-bottom: 25px;
-    width: 100%;
-    box-sizing: border-box;
-    transition: all 0.2s ease;
-}
-
-.form-textarea {
-    background-color: var(--content-gray);
-    padding: 12px 15px;
-    margin-bottom: 25px;
-    width: 100%;
-    height: 150px;
-    box-sizing: border-box;
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-    outline: 2px solid var(--green-piston);
-    background-color: var(--white);
-}
-
-input:hover,
-select:hover,
-textarea:hover {
-    background-color: var(--gray-dark);
-    border: none;
-}
-
-.form-button[type="submit"] {
-    background-color: var(--green-piston);
-    color: var(--text-color);
-    border: none;
-    margin: 10px auto;
-    display: block;
-    font-size: 1.2rem;
-    font-weight: 400;
-    padding: 10px 50px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s ease;
-}
-
-.form-button[type="submit"]:hover {
-    background-color: var(--green-piston-dark);
-    transform: scale(1.01);
-}
-
-.infos {
-    text-align: center;
-}
-
-.form-test {
-    background-color: var(--white);
-    padding: 10px;
-    margin: 20px auto;
-    width: 80%;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.frame2 {
-    background-color: var(--white);
-    border-radius: 10px;
-    padding: 30px;
-    width: 100%;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    
-}
-
 .offer-header{
     background-color: var(--content-gray);
     display: flex;
-    justify-content: space-between; /* Pousse les éléments aux extrémités */
+    justify-content: space-between;
     align-items: bottom;
     padding: 10px 10px 0;
     width: 100%;
     margin-bottom: 20px;
 }
 
-h1.offer{
-    font-size: 1.5rem;
-    text-align: left;
-}
-
-h2.offer{
-    font-size: 1.5rem;
-    text-align: left;
-}
-
 /* ================== Responsive Design ================== */
-/* --- 3. Responsive (STx 10) --- */
 @media (max-width: 768px) {
     .filters-container{
         flex-direction: column;
@@ -596,56 +462,37 @@ h2.offer{
     .filter-item {
         width: 100%;
     }
-    .info-grid {
-        flex-direction: column; /* Sur mobile, elles se remettent l'une sous l'autre */
-        align-items: center;
-    }
-    .info-column{
-        width:100%
-    }
-    .info-box {
-        width: 100%;
-    }
-
-    .frame{
-        width:90% !important;
-    }
-    .form-grid {
-        flex-direction: column; /* Sur mobile, elles se remettent l'une sous l'autre */
+    .info-grid, .form-grid {
+        flex-direction: column;
         align-items: center;
         gap: 0;
     }
-    .form-column, 
-    .form-column2, 
-    .form-column3 {
-        width: 100% !important; /* Le !important aide à écraser les 45% ou 67% */
+    .info-column, .info-column2, .info-column3,
+    .form-column, .form-column2, .form-column3 {
+        width: 100% !important;
     }
-    .form-input{
+    .info-box, .form-input {
         width: 100%;
     }
-    .infos-offre{
-        flex-direction:column;
-        gap:5px;
+    .frame{
+        width: 90% !important;
     }
-    .offer-header{
-        justify-content: left;/* Aligne les éléments à gauche sur mobile */
-        flex-direction:column;
-        gap:5px;
+    .infos-offre, .offer-header{
+        justify-content: left;
+        flex-direction: column;
+        gap: 5px;
     }
-    
     .offres-table td{
         display: block;
         width: 70%;
     }
-
     .groupe-boutons{
         flex-direction: column;
     }
-
 }
 
 
-/* --- DASHBOARDS --- */
+/* ================== DASHBOARDS & ADMIN ================== */
 .main-title {
     margin-top: 20px;
     margin-bottom: 30px;
@@ -660,11 +507,19 @@ h2.offer{
     padding: 20px;
 }
 
-.section-title {
-    font-size: 1.1rem;
+.section-title, .dashboard-title {
     margin-bottom: 15px;
     text-align: left;
     width: 100%;
+}
+
+.section-title {
+    font-size: 1.1rem;
+}
+
+.dashboard-title {
+    font-size: 1.4rem;
+    color: #555;
 }
 
 .search-bar-admin {
@@ -689,36 +544,42 @@ h2.offer{
 .box-list {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 15px;
 }
 
 .admin-item {
+    width: 100%;
     background-color: #EDEDED;
     border-radius: 10px;
-    padding: 15px 25px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    border: none;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.admin-item td {
+    border: none;
+    padding: 15px 20px;
+    vertical-align: middle;
 }
 
 .user-name {
-    font-size: 1rem;
-    flex: 2;
-    color: var(--text-color-light);
+    font-size: 1.1rem;
+    color: #666;
+    text-align: left;
 }
 
 .stats {
-    flex: 2;
     text-align: right;
-    margin-right: 20px;
     font-size: 0.95rem;
+    white-space: nowrap;
 }
 
-.dashboard-title {
-    font-size: 1.4rem;
-    color: #555;
-    margin-bottom: 15px;
-    text-align: left;
+.actions {
+    width: 150px;
+    text-align: right;
+    display: flex;
+    gap: 10px;
+    align-items: right !important;
 }
 
 .table-container {
@@ -732,52 +593,9 @@ table {
     background-color: transparent;
 }
 
-.offres-table {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-}
-
-.offres-table tbody {
-    display: flex;
-    flex-direction: column;
-}
-
-.offres-table tbody tr {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    border-bottom: 1px solid var(--gray-dark);
-    padding: 0;
-}
-
-.offres-table tbody tr:last-child {
-    border-bottom: none;
-}
-
-.offres-table td {
-    border: none;
-    padding: 10px 10px;
-    color: var(--text-color);
-}
-
-.offres-table td:nth-child(1) {
+table thead {
     font-size: 1.1rem;
-    font-weight: 800;
-    text-align: justify;
-    margin: 5px;
-    
 }
-
-.offres-table td:nth-child(2) {
-    font-size: 1rem;
-}
-
-.offres-table td:nth-child(3) {
-    text-align: right;
-}
-
 
 tbody td {
     padding: 10px 12px;
@@ -796,41 +614,90 @@ tbody td {
     border-left: none;
 }
 
-.btn-delete {
-    background-color: #D32F2F;
-    color: white;
+.btn-delete, .btn-action {
     border: none;
     border-radius: 5px;
-    width: 28px;
-    height: 28px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.8rem;
     margin: 0 auto;
+}
+
+.btn-delete {
+    background-color: #D32F2F;
+    color: white;
+    width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
 }
 
 .btn-delete:hover {
     background-color: #b71c1c;
 }
 
-.actions {
-    display: flex;
-    gap: 10px;
+.btn-action {
+    border-radius: 8px;
+    width: 35px;
+    height: 35px;
 }
 
-/* --- PAGE OFFRE ADMIN (VERSION FINALE CENTRÉE ET LARGUE) --- */
+.admin-page .offre-link {
+    text-decoration: none;
+    color: inherit;
+}
 
-/* 1. Mise en page du conteneur principal */
+.admin-page .groupe-boutons {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    display: flex;
+    gap: 8px;
+}
+
+.poubelle { 
+    background-color: #e11d48; 
+}
+
+.admin-page .crayon { 
+    background-color: var(--green-piston); 
+}
+
+.admin-page .btn-action i { 
+    color: white; 
+}
+
+.admin-page .etoile { 
+    background: none; 
+    font-size: 1.4rem; 
+}
+
+.admin-page .etoile i { 
+    color: var(--text-color-light); 
+}
+
+.admin-page .etoile.active i { 
+    color: #fbbf24; 
+}
+
+.admin-page .bloc-gris {
+    background-color: var(--gray-dark);
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 10px;
+    width: 100%;
+}
+
 main.admin-page {
     flex: 1;
-    width: 90%;      /* Prend presque toute la largeur */
+    width: 90%;
     margin: 20px auto;
-    display: block;   /* Permet aux cartes de s'empiler et s'étirer */
+    display: block;
 }
 
-
+.dashboard{
+    width:70% !important;
+}
 
 .admin-page .btn-add {
     background-color: var(--green-piston);
@@ -844,68 +711,13 @@ main.admin-page {
     cursor: pointer;
 }
 
-
-/* 4. Cartes d'offres en pleine largeur */
-.admin-page .carte-offre {
-    background-color: var(--content-gray);
-    border-radius: 15px;
-    padding: 25px;
-    margin-bottom: 25px;
-    position: relative; /* Référence pour le placement des boutons */
-    width: 100%;
-    border:none;
-    display: block;
-}
-
-.admin-page .offre-link {
-    text-decoration: none;
-    color: inherit;
-}
-
-/* 5. Boutons d'action en haut à droite */
-.admin-page .groupe-boutons {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    display: flex;
-    gap: 8px;
-}
-
-.admin-page .btn-action {
-    border: none;
-    border-radius: 8px;
-    width: 35px;
-    height: 35px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
-
-.admin-page .poubelle { background-color: #e11d48; }
-.admin-page .crayon { background-color: var(--green-piston); }
-.admin-page .btn-action i { color: white; } /* Icônes en blanc */
-
-.admin-page .etoile { background: none; font-size: 1.4rem; }
-.admin-page .etoile i { color: var(--text-color-light); }
-.admin-page .etoile.active i { color: #fbbf24; }
-
-/* 6. Blocs de texte gris internes */
-.admin-page .bloc-gris {
-    background-color: var(--gray-dark);
-    padding: 15px;
-    border-radius: 10px;
-    margin-top: 10px;
-    width: 100%;
-}
-
-ul.skills
-{
+/* ================== MISC ELEMENTS ================== */
+ul.skills {
     list-style: none;
     margin-bottom: 20px;
 }
-ul.skills li
-{
+
+ul.skills li {
     font-size: 1rem;
     border: 1px solid var(--gray-dark);
     background-color: var(--content-gray);
@@ -918,7 +730,7 @@ ul.skills li
 .infos-offre {
     display: flex;
     text-align: left;
-    justify-content: space-between; /* Pousse les éléments aux extrémités */
+    justify-content: space-between;
     align-items: bottom;
     width: 100%;
     margin-bottom: 20px;
@@ -926,43 +738,17 @@ ul.skills li
     font-weight: 600;
 }
 
-
 .input-file {
-  display: none;
+    display: none;
 }
 
-.file-label {
-  background-color: transparent;
-  color: var(--deconnexion-color) ;
-  border-color: var(--deconnexion-color);
-  font-size: 1rem;
-  padding: 10px 20px;
-  border-radius: 10px;
-  border-width: 2px;
-  border-style: solid;
-  cursor: pointer;
-  display: inline-block;
+.small-text {
+    text-align: justify;
+    font-size: 1rem;
+    margin: 10px 5px;
 }
 
-.file-label:hover {
-  background-color: var(--deconnexion-color);
-  color: var(--white);
-  transform: scale(1.01); /* très leger zoom du bouton au survol */
-}
-
-.small-text{
-    text-align :justify;
-    font-size:1rem;
-    margin:10px 5px;
-}
-
-.file-name{
-    font-size: 0.9rem;
-    color: var(--text-color-light);
-    margin-bottom: 15px;
-}
-
-.file-name2{
+.file-name, .file-name2 {
     font-size: 0.9rem;
     color: var(--text-color-light);
     margin-bottom: 15px;

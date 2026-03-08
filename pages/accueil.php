@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/images/icon.png">
     <link rel="stylesheet" href="../assets/css/style.css">
-    <script src="https://kit.fontawesome.com/votre_codea076d05399.js" crossorigin="anonymous"></script>
     <title>Accueil - ThePiston</title>
 </head>
 
@@ -16,7 +15,7 @@
     <img src="/../assets/images/accueil_picture.jpg" alt="poignee de main" style="width:100%;height:30%;">
 <main>
     
-    <h1>Les offres disponibles</h1>
+    <h1 class="main-title">Les offres disponibles</h1>
     <section class="search-section">
         
 

@@ -18,7 +18,7 @@ require_once '../pagination.php';?>
 
     <main class="admin-page">
 
-        <h1>Les offres disponibles</h1>
+        <h1 class="main-title">Les offres disponibles</h1>
         <section class="search-section">
             <form class="search-form"  action="offres.php" method="GET">
                 <div class="search-bar-wrapper">
