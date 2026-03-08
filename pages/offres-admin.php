@@ -1,5 +1,4 @@
 <?php 
-require_once '../validateInput.php';
 require_once '../pagination.php';?>
 
 <!DOCTYPE html>
@@ -91,25 +90,21 @@ $offres = [['offre' => 'Alternance - Développeur Systèmes Embarqués', 'entrep
 
         foreach ($paginator->getCurrentPageItems() as $offres) {
             ?>
-            <div class="offres-liste">
-                <table class="company-table">
-                    <tr>
-                        <th class="company-name"><?php echo htmlspecialchars($offres['offre']); ?></th>
-                        <td class="company-rating">
-                            <div class="groupe-boutons">
-                                <button class="btn-action poubelle"><i class="fa-solid fa-trash"></i></button>
-                                <button class="btn-action crayon"><i class="fa-solid fa-pen-to-square"></i></button>
-                                <button class="btn-action etoile active"><i class="fa-solid fa-star"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" class="company-info">
-                            <?php echo htmlspecialchars($offres['entreprise']); ?>
-                        </td>
-                    </tr>
-                </table>
-            </div>
+            <table class="company-table">
+                <tr>
+                    <th class="company-name"><?php echo htmlspecialchars($offres['offre']); ?></th>
+                    <td class="actions">
+                        <button class="btn-action poubelle"><i class="fa-solid fa-trash"></i></button>
+                        <button class="btn-action crayon"><i class="fa-solid fa-pen-to-square"></i></button>
+                        <button class="btn-action etoile active"><i class="fa-solid fa-star"></i></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="company-info">
+                        <?php echo htmlspecialchars($offres['entreprise']); ?>
+                    </td>
+                </tr>
+            </table>
             <?php
         }
 
