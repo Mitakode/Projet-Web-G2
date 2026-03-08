@@ -1,5 +1,4 @@
 <?php 
-require_once '../validateInput.php';
 require_once '../pagination.php';?>
 
 <!DOCTYPE html>
@@ -7,7 +6,7 @@ require_once '../pagination.php';?>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administration des Offres - ThePiston</title>
+    <title>Les offres - ThePiston</title>
     <link rel="icon" type="image/png" href="../assets/images/icon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="/assets/css/style.css">
@@ -95,12 +94,10 @@ $offres = [['offre' => 'Alternance - Développeur Systèmes Embarqués', 'entrep
                 <table class="company-table">
                     <tr>
                         <th class="company-name"><?php echo htmlspecialchars($offres['offre']); ?></th>
-                        <td class="company-rating">
-                            <div class="groupe-boutons">
-                                <button class="btn-action poubelle"><i class="fa-solid fa-trash"></i></button>
-                                <button class="btn-action crayon"><i class="fa-solid fa-pen-to-square"></i></button>
-                                <button class="btn-action etoile active"><i class="fa-solid fa-star"></i></button>
-                            </div>
+                        <td class="btn-table">
+                            <button class="btn-action poubelle"><i class="fa-solid fa-trash"></i></button>
+                            <button class="btn-action crayon"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button class="btn-action etoile active"><i class="fa-solid fa-star"></i></button>
                         </td>
                     </tr>
                     <tr>
