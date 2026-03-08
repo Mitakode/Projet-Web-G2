@@ -13,7 +13,7 @@
     <?php include '../partials/header.php'; 
     require_once '../pagination.php'?>
 
-    <main class="admin-page">
+    <main class="list-page">
         <h1 class="main-title">Les entreprises</h1>
         <section class="search-section">
             
