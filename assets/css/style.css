@@ -844,14 +844,5 @@ main.list-page {
         flex-direction:column;
         gap:5px;
     }
-    
-    .offres-table td{
-        display: block;
-        width: 70%;
-    }
-
-    .groupe-boutons{
-        flex-direction: column;
-    }
 
 }
