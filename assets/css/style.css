@@ -689,29 +689,39 @@ h2.offer{
 .box-list {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 15px; /* Espace entre les blocs */
 }
 
 .admin-item {
+    width: 100%;
     background-color: #EDEDED;
     border-radius: 10px;
-    padding: 15px 25px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    border: none;
+    border-collapse: separate; /* Important pour garder l'arrondi */
+    border-spacing: 0;
+}
+
+.admin-item td {
+    border: none;
+    padding: 20px 25px;
+    vertical-align: middle;
 }
 
 .user-name {
-    font-size: 1rem;
-    flex: 2;
-    color: var(--text-color-light);
+    font-size: 1.1rem;
+    color: #666; /* Ajustez selon votre variable --text-color-light */
+    text-align: left;
 }
 
 .stats {
-    flex: 2;
     text-align: right;
-    margin-right: 20px;
     font-size: 0.95rem;
+    white-space: nowrap; /* Évite que le texte ne revienne à la ligne */
+}
+
+.actions {
+    width: 150px; /* Largeur fixe pour la zone des boutons */
+    text-align: right;
 }
 
 .dashboard-title {
@@ -730,6 +740,10 @@ table {
     width: 100%;
     border-collapse: collapse;
     background-color: transparent;
+}
+
+table thead {
+    font-size: 1.1rem;
 }
 
 .offres-table {
@@ -879,7 +893,7 @@ main.admin-page {
     gap: 8px;
 }
 
-.admin-page .btn-action {
+.btn-action {
     border: none;
     border-radius: 8px;
     width: 35px;
@@ -890,7 +904,7 @@ main.admin-page {
     cursor: pointer;
 }
 
-.admin-page .poubelle { background-color: #e11d48; }
+.poubelle { background-color: #e11d48; }
 .admin-page .crayon { background-color: var(--green-piston); }
 .admin-page .btn-action i { color: white; } /* Icônes en blanc */
 

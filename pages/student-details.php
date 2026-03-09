@@ -8,48 +8,73 @@
     <title>ThePiston</title>
 </head>
 <body>
-    <?php include '../partials/header.php'; ?>
+    <?php include '../partials/header.php'; 
+    require_once '../pagination.php';
+    ?>
     <main>
-        <section class="info-section">
-            <h1 class="h1-student">Prénom Nom de l'étudiant</h1>
-            <div class="info-box"><h2 class="h2-student">Promotion</h2></div>
-            <div class="info-box" style="padding: 8px;">Email</div>
+        <h1>Sarah Durand A2</h1>
+        <div class="info-box ib2">sarah.durand@viacesi.fr</div>
 
-            <div class="info-box">
-                <h3 class="h3-student">Liste des candidatures</h3>
+        <section class="dashboards-section">
+            <h2 class="dashboard-titl   e">Liste des candidatures</h2>
+            
+            <?php
+            $candidatures = [['offre' => 'Alternance - Développeur Systèmes Embarqués', 'entreprise' => 'RoboticsX'],
+            ['offre' => 'Stage Développeur Full Stack', 'entreprise' => 'TechNova'],
+            ['offre' => 'Alternance - Ingénieur Cybersécurité', 'entreprise' => 'CyberShield'],
+            ['offre' => 'Stage Data Analyst', 'entreprise' => 'DataFlow'],
+            ['offre' => 'Alternance - Développeur IA embarquée', 'entreprise' => 'AI Dynamics'],
+            ['offre' => 'Stage Conception Électronique', 'entreprise' => 'MicroChip Solutions'],
+            ['offre' => 'Alternance - Administrateur Réseaux', 'entreprise' => 'SecureNet'],
+            ['offre' => 'Stage Développeur Applications Mobiles', 'entreprise' => 'CloudMatrix'],
+            ['offre' => 'Alternance - Ingénieur DevOps', 'entreprise' => 'TechNova'],
+            ['offre' => 'Stage Testeur Logiciel', 'entreprise' => 'BuildTech'],
+            ['offre' => 'Alternance - Analyste de données', 'entreprise' => 'DataInsights'],
+            ['offre' => 'Stage Développeur Front-end', 'entreprise' => 'WebSolutions'],
+            ['offre' => 'Alternance - Ingénieur en apprentissage automatique', 'entreprise' => 'AI Innovations'],
+            ['offre' => 'Stage Conception de circuits intégrés', 'entreprise' => 'ChipDesign Inc.'],
+            ['offre' => 'Alternance - Spécialiste en cybersécurité', 'entreprise' => 'SecureTech'],
+            ['offre' => 'Stage Développeur de jeux vidéo', 'entreprise' => 'GameStudio'],
+            ['offre' => 'Alternance - Administrateur de bases de données', 'entreprise' => 'DataManagement Co.'],
+            ['offre' => 'Stage Développeur d’applications mobiles', 'entreprise' => 'AppCreators'],
+            ['offre' => 'Alternance - Ingénieur DevOps', 'entreprise' => 'TechNova'],
+            ['offre' => 'Stage Testeur Logiciel', 'entreprise' => 'BuildTech']
+            ];
+            $paginator = new Paginator($candidatures, 10);
+            ?>
 
-                <table class="table-container">
+            <div class="table-container">
+                <table>
                     <thead>
                         <tr>
                             <th>Titre de l'offre</th>
                             <th>Entreprise</th>
-                            <th>CV</th>
-                            <th>Lettre de motivation</th>
                         </tr>
                     </thead>
 
-                    <tbody>
-                        <tr>
-                            <td>Titre de l'offre 1</td>
-                            <td>Entreprise 1</td>
-                            <td>CV_1.pdf</td> 
-                            <td>LM_1.pdf</td>
-                        </tr>
-                        <tr>
-                            <td>Titre de l'offre 2</td>
-                            <td>Entreprise 2</td>
-                            <td>CV_2.pdf</td> 
-                            <td>LM_2.pdf</td>
-                        </tr>
-                        <tr>
-                            <td>Titre de l'offre 3</td>
-                            <td>Entreprise 3</td>
-                            <td>CV_3.pdf</td> 
-                            <td>LM_3.pdf</td>
-                        </tr>
-                    </tbody>
+                <?php
+                foreach ($paginator->getCurrentPageItems() as $candidatures) {
+                    ?>
+                            <tr>
+                                <td>
+                                    <?php echo htmlspecialchars($candidatures['offre']); ?>
+                                </td>
+                                <td>
+                                    <?php echo htmlspecialchars($candidatures['entreprise']); ?>
+                                </td>
+                            </tr>
+                    
+                    </div>
+                    <?php
+                }?>
+            
                 </table>
             </div>
+                
+            <?php
+            // Affichage des liens de pagination en dessous
+                $paginator->renderLinks();
+                ?>
         </section>
     </main>
     <?php include '../partials/footer.php'; ?>
