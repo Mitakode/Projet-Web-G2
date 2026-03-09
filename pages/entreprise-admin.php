@@ -6,22 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/images/icon.png">
     <link rel="stylesheet" href="../assets/css/style.css">
-    <script src="https://kit.fontawesome.com/votre_codea076d05399.js" crossorigin="anonymous"></script>
-    <title>Accueil - ThePiston</title>
+    <title>Les entreprise - ThePiston</title>
 </head>
 
 <body>
     <?php include '../partials/header.php'; 
     require_once '../pagination.php'?>
 
-    <main>
-        <h1>Les entreprises</h1>
+    <main class="list-page">
+        <h1 class="main-title">Les entreprises</h1>
         <section class="search-section">
             
             <form class="search-form">
                 <div class="search-bar-wrapper">
                     <input type="text" class="search-input" placeholder="Rechercher une entreprise...">
                     <button class="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    <button class="btn-add" id="ouvrirPopup">+</button>
                 </div>
                 
             </form>
@@ -62,6 +62,9 @@
                     <tr>
                         <th class="company-name"><?php echo htmlspecialchars($entreprise['nom']); ?></th>
                         <td class="company-rating">Note : <strong>7/10</strong></td>
+                        <td class="btn-table">
+                            <button class="btn-action poubelle"><i class="fa-solid fa-trash"></i></button>
+                        </td>
                     </tr>
                     <tr>
                         <td colspan="2" class="company-info">

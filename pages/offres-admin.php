@@ -6,7 +6,7 @@ require_once '../pagination.php';?>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administration des Offres - ThePiston</title>
+    <title>Les offres - ThePiston</title>
     <link rel="icon" type="image/png" href="../assets/images/icon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="/assets/css/style.css">
@@ -16,9 +16,9 @@ require_once '../pagination.php';?>
 <body>
     <?php include '../partials/header.php'; ?>
 
-    <main class="admin-page">
+    <main class="list-page">
 
-        <h1>Les offres disponibles</h1>
+        <h1 class="main-title">Les offres disponibles</h1>
         <section class="search-section">
             <form class="search-form"  action="offres.php" method="GET">
                 <div class="search-bar-wrapper">
@@ -91,21 +91,23 @@ $offres = [['offre' => 'Alternance - Développeur Systèmes Embarqués', 'entrep
 
         foreach ($paginator->getCurrentPageItems() as $offres) {
             ?>
-            <table class="company-table">
-                <tr>
-                    <th class="company-name"><?php echo htmlspecialchars($offres['offre']); ?></th>
-                    <td class="actions">
-                        <button class="btn-action poubelle"><i class="fa-solid fa-trash"></i></button>
-                        <button class="btn-action crayon"><i class="fa-solid fa-pen-to-square"></i></button>
-                        <button class="btn-action etoile active"><i class="fa-solid fa-star"></i></button>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2" class="company-info">
-                        <?php echo htmlspecialchars($offres['entreprise']); ?>
-                    </td>
-                </tr>
-            </table>
+            <div class="offres-liste">
+                <table class="company-table">
+                    <tr>
+                        <th class="company-name"><?php echo htmlspecialchars($offres['offre']); ?></th>
+                        <td class="btn-table">
+                            <button class="btn-action poubelle"><i class="fa-solid fa-trash"></i></button>
+                            <button class="btn-action crayon"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button class="btn-action etoile active"><i class="fa-solid fa-star"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="company-info">
+                            <?php echo htmlspecialchars($offres['entreprise']); ?>
+                        </td>
+                    </tr>
+                </table>
+            </div>
             <?php
         }
 
