@@ -25,10 +25,10 @@ class FileUploader {
     public function upload(): bool {
         $uploadPath = $this->uploadDir . basename($this->file['name']);
         if (move_uploaded_file($this->file['tmp_name'], $uploadPath)) {
-            echo basename($this->file['name'])." a été envoyée avec succès !";
+            echo basename($this->file['name'])." a été envoyée avec succès !<br>";
             return true;
         } else {
-            echo "Erreur lors de l'upload du fichier".basename($this->file['name']).".";
+            echo "Erreur lors de l'upload du fichier".basename($this->file['name']).". <br>";
             return false;
         }
     }
