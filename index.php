@@ -25,6 +25,7 @@ try {
 $enterpriseModel = new EnterpriseModel($pdo);
 
 // Contrôleurs
+$mainCtrl = new App\Controllers\MainController($twig, $offerModel, $enterpriseModel);
 $enterpriseCtrl = new App\Controllers\EnterpriseController($twig, $enterpriseModel);
 $offerCtrl      = new App\Controllers\OfferController($twig, $offerModel, $enterpriseModel);
 $userCtrl       = new App\Controllers\UserController($twig, $userModel);
@@ -38,9 +39,18 @@ $userModel       = new App\Models\UserModel($pdo); // Gère Etudiants, Pilotes, 
 $uri = $_GET['uri'] ?? '/';
 
 switch ($uri) {
+    // Pages Globales
     case '/':
-        $enterpriseController->welcomePage();
+        $mainCtrl->home();
         break;
+    case 'stats':
+        $mainCtrl->showStats();
+        break;
+    case 'mentions-legales':
+        $mainCtrl->legal();
+        break;
+
+    // Gestion des entreprises
     case 'enterprises': // Rechercher et afficher
         $enterpriseController->list();
         break;
@@ -64,8 +74,10 @@ switch ($uri) {
     case 'offer/delete':
         $offerCtrl->delete();
         break;
-    case 'stats':
-        $offerCtrl->statistics();
+
+    // Candidatures
+    case 'apply':
+        $offerCtrl->apply($_GET['id_offre']);
         break;
 
     // Gestion des Utilisateurs
@@ -74,11 +86,6 @@ switch ($uri) {
         break;
     case 'users/pilots':
         $userCtrl->listPilots();
-        break;
-    
-    // Candidatures
-    case 'apply':
-        $offerCtrl->apply($_GET['id_offre']);
         break;
 
     default:
