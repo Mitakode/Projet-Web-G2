@@ -1,5 +1,88 @@
 <?php
-// Redirige vers la page d'accueil
-header('Location: pages/accueil.php');
-exit();
-?>
+require "vendor/autoload.php";
+
+use App\Controllers\EnterpriseController;
+use App\Models\EnterpriseModel; // On importe le modèle
+
+// Configuration de Twig
+$loader = new \Twig\Loader\FilesystemLoader('templates');
+$twig = new \Twig\Environment($loader, ['debug' => true]);
+
+// Connexion à la base de données
+$dsn = 'mysql:host=localhost;dbname=nom_de_ta_base;charset=utf8';
+$username = 'root';
+$password = '';
+
+try {
+    $pdo = new PDO($dsn, $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die('Erreur de connexion : ' . $e->getMessage());
+}
+
+// Initialisation des composants
+// On crée le modèle avec la connexion PDO
+$enterpriseModel = new EnterpriseModel($pdo);
+
+// Contrôleurs
+$enterpriseCtrl = new App\Controllers\EnterpriseController($twig, $enterpriseModel);
+$offerCtrl      = new App\Controllers\OfferController($twig, $offerModel, $enterpriseModel);
+$userCtrl       = new App\Controllers\UserController($twig, $userModel);
+
+// Modèles
+$enterpriseModel = new App\Models\EnterpriseModel($pdo);
+$offerModel      = new App\Models\OfferModel($pdo);
+$userModel       = new App\Models\UserModel($pdo); // Gère Etudiants, Pilotes, Admins
+
+// Routage simple
+$uri = $_GET['uri'] ?? '/';
+
+switch ($uri) {
+    case '/':
+        $enterpriseController->welcomePage();
+        break;
+    case 'enterprises': // Rechercher et afficher
+        $enterpriseController->list();
+        break;
+    case 'enterprise/create': // Créer
+        $enterpriseController->create();
+        break;
+    case 'enterprise/delete': // Supprimer
+        $enterpriseController->delete();
+        break;
+
+    // Gestion des Offres
+    case 'offers':
+        $offerCtrl->list();
+        break;
+    case 'offer/details':
+        $offerCtrl->details($_GET['id']);
+        break;
+    case 'offer/create':
+        $offerCtrl->create();
+        break;
+    case 'offer/delete':
+        $offerCtrl->delete();
+        break;
+    case 'stats':
+        $offerCtrl->statistics();
+        break;
+
+    // Gestion des Utilisateurs
+    case 'users/students':
+        $userCtrl->listStudents();
+        break;
+    case 'users/pilots':
+        $userCtrl->listPilots();
+        break;
+    
+    // Candidatures
+    case 'apply':
+        $offerCtrl->apply($_GET['id_offre']);
+        break;
+
+    default:
+        header("HTTP/1.0 404 Not Found");
+        echo $twig->render('404.twig');
+        break;
+}
