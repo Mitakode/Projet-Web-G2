@@ -25,10 +25,10 @@ try {
 $enterpriseModel = new EnterpriseModel($pdo);
 
 // Contrôleurs
-$mainCtrl = new App\Controllers\MainController($twig, $offerModel, $enterpriseModel);
-$enterpriseCtrl = new App\Controllers\EnterpriseController($twig, $enterpriseModel);
-$offerCtrl      = new App\Controllers\OfferController($twig, $offerModel, $enterpriseModel);
-$userCtrl       = new App\Controllers\UserController($twig, $userModel);
+$mainController = new App\Controllers\MainController($twig, $offerModel, $enterpriseModel);
+$enterpriseController = new App\Controllers\EnterpriseController($twig, $enterpriseModel);
+$offerController = new App\Controllers\OfferController($twig, $offerModel, $enterpriseModel);
+$userController = new App\Controllers\UserController($twig, $userModel);
 
 // Modèles
 $enterpriseModel = new App\Models\EnterpriseModel($pdo);
@@ -41,13 +41,13 @@ $uri = $_GET['uri'] ?? '/';
 switch ($uri) {
     // Pages Globales
     case '/':
-        $mainCtrl->home();
+        $mainController->home();
         break;
     case 'stats':
-        $mainCtrl->showStats();
+        $mainController->showStats();
         break;
     case 'mentions-legales':
-        $mainCtrl->legal();
+        $mainController->legal();
         break;
 
     // Gestion des entreprises
@@ -63,29 +63,29 @@ switch ($uri) {
 
     // Gestion des Offres
     case 'offers':
-        $offerCtrl->list();
+        $offerController->list();
         break;
     case 'offer/details':
-        $offerCtrl->details($_GET['id']);
+        $offerController->details($_GET['id']);
         break;
     case 'offer/create':
-        $offerCtrl->create();
+        $offerController->create();
         break;
     case 'offer/delete':
-        $offerCtrl->delete();
+        $offerController->delete();
         break;
 
     // Candidatures
     case 'apply':
-        $offerCtrl->apply($_GET['id_offre']);
+        $offerController->apply($_GET['id_offre']);
         break;
 
     // Gestion des Utilisateurs
     case 'users/students':
-        $userCtrl->listStudents();
+        $userController->listStudents();
         break;
     case 'users/pilots':
-        $userCtrl->listPilots();
+        $userController->listPilots();
         break;
 
     default:
