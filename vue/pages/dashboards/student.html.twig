@@ -1,0 +1,77 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Mon espace - ThePiston{% endblock %}
+
+{% block content %}
+{% set candidatures = [
+    {'offre': 'Alternance - Developpeur Systemes Embarques', 'entreprise': 'RoboticsX', 'cv': 'CV_RoboticsX.pdf', 'lm': 'LM_RoboticsX.pdf'},
+    {'offre': 'Stage Developpeur Full Stack', 'entreprise': 'TechNova', 'cv': 'CV_TechNova.pdf', 'lm': 'LM_TechNova.pdf'},
+    {'offre': 'Alternance - Ingenieur Cybersecurite', 'entreprise': 'CyberShield', 'cv': 'CV_CyberShield.pdf', 'lm': 'LM_CyberShield.pdf'},
+    {'offre': 'Stage Data Analyst', 'entreprise': 'DataFlow', 'cv': 'CV_DataFlow.pdf', 'lm': 'LM_DataFlow.pdf'},
+    {'offre': 'Alternance - Developpeur IA embarquee', 'entreprise': 'AI Dynamics', 'cv': 'CV_AI_Dynamics.pdf', 'lm': 'LM_AI_Dynamics.pdf'}
+] %}
+
+{% set wishlist = [
+    {'offre': 'Alternance - Chef de Projet IT', 'entreprise': 'FinanciaGroup'},
+    {'offre': 'Stage Business Analyst', 'entreprise': 'FinanciaGroup'},
+    {'offre': 'Alternance - Developpeur Web', 'entreprise': 'Ecomarket'},
+    {'offre': 'Stage UX/UI Designer', 'entreprise': 'MediaConnect'},
+    {'offre': 'Alternance - Developpeur Backend Java', 'entreprise': 'EduSmart'}
+] %}
+
+<main class="admin-page">
+    <h1 class="main-title">Mon espace etudiant</h1>
+
+    <section class="dashboards-section">
+        <h2 class="dashboard-title">Mes candidatures</h2>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Titre de l'offre</th>
+                        <th>Entreprise</th>
+                        <th>CV</th>
+                        <th>Lettre de motivation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for candidature in candidatures %}
+                    <tr>
+                        <td>{{ candidature.offre }}</td>
+                        <td>{{ candidature.entreprise }}</td>
+                        <td>{{ candidature.cv }}</td>
+                        <td>{{ candidature.lm }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="dashboards-section">
+        <h2 class="dashboard-title">Ma Wishlist</h2>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Titre de l'offre</th>
+                        <th>Entreprise</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in wishlist %}
+                    <tr>
+                        <td>{{ item.offre }}</td>
+                        <td>{{ item.entreprise }}</td>
+                        <td><button class="btn-action poubelle"><i class="fa-solid fa-trash"></i></button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+{% endblock %}

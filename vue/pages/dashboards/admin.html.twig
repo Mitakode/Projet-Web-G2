@@ -1,0 +1,86 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Mon espace - ThePiston{% endblock %}
+
+{% block content %}
+{% set etudiants = [
+    {'nom': 'Dupont', 'prenom': 'Jean', 'promotion': 'A1'},
+    {'nom': 'Martin', 'prenom': 'Marie', 'promotion': 'A2'},
+    {'nom': 'Bernard', 'prenom': 'Pierre', 'promotion': 'A1'},
+    {'nom': 'Dubois', 'prenom': 'Sophie', 'promotion': 'A2'},
+    {'nom': 'Lecrom', 'prenom': 'Luc', 'promotion': 'A1'}
+] %}
+
+{% set pilotes = [
+    {'nom': 'Durand', 'prenom': 'Jacques'},
+    {'nom': 'Rougerie', 'prenom': 'Laurent'},
+    {'nom': 'Lemoine', 'prenom': 'Sophie'},
+    {'nom': 'Morel', 'prenom': 'Isabelle'},
+    {'nom': 'Fournier', 'prenom': 'Nicolas'}
+] %}
+
+<main>
+    <h1 class="main-title">Mon espace Administrateur</h1>
+
+    <section class="dashboards-section">
+        <h2 class="dashboard-title">Les comptes eleves</h2>
+
+        <div class="search-container">
+            <form action="/rechercher-etudiant" method="GET" class="search-bar-admin">
+                <input type="text" name="nom" placeholder="Nom">
+                <input type="text" name="prenom" placeholder="Prenom">
+                <input type="text" name="promotion" placeholder="Promotion">
+                <button type="submit" class="search-btn" aria-label="Rechercher">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+                <button class="btn-add" id="ouvrirPopup">+</button>
+            </form>
+        </div>
+
+        <div class="box-list">
+            {% for etudiant in etudiants %}
+            <table class="admin-item">
+                <tr>
+                    <td class="user-name">{{ etudiant.nom }} {{ etudiant.prenom }} {{ etudiant.promotion }}</td>
+                    <td class="stats"><strong>Nombre de candidatures : 35</strong></td>
+                    <td class="actions">
+                        <button class="btn-action poubelle"><i class="fa-solid fa-trash"></i></button>
+                        <button class="btn-action crayon"><i class="fa-solid fa-pen-to-square"></i></button>
+                    </td>
+                </tr>
+            </table>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="dashboards-section">
+        <h2 class="dashboard-title">Les comptes pilotes</h2>
+
+        <div class="search-container">
+            <form action="/rechercher-pilote" method="GET" class="search-bar-admin">
+                <input type="text" name="nom" placeholder="Nom">
+                <input type="text" name="prenom" placeholder="Prenom">
+                <button type="submit" class="search-btn" aria-label="Rechercher">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+                <button class="btn-add" id="ouvrirPopup">+</button>
+            </form>
+        </div>
+
+        <div class="box-list">
+            {% for pilote in pilotes %}
+            <table class="admin-item">
+                <tr>
+                    <td class="user-name">{{ pilote.nom }} {{ pilote.prenom }}</td>
+                    <td class="stats"><strong>Nombre d'eleves : 35</strong></td>
+                    <td class="actions">
+                        <button class="btn-action poubelle"><i class="fa-solid fa-trash"></i></button>
+                        <button class="btn-action crayon"><i class="fa-solid fa-pen-to-square"></i></button>
+                    </td>
+                </tr>
+            </table>
+            {% endfor %}
+        </div>
+    </section>
+</main>
+{% endblock %}
