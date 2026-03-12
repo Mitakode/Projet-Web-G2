@@ -20,13 +20,13 @@ class EnterpriseModel extends Model {
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute($params);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     public function createCompany(){
         if($_SERVER['REQUEST_METHOD']==='POST'){
             $Name= isset($_POST['nameCompany']) ? htmlspecialchars(trim($_POST['nameCompany'])):'';
-            $Description=isset($_POST['descriptonCompany']) ? htmlspecialchars(trim($_POST['descriptionCompany'])):'';
+            $Description=isset($_POST['descriptionCompany']) ? htmlspecialchars(trim($_POST['descriptionCompany'])):'';
             $Contact=isset($_POST['contactCompany']) ? htmlspecialchars(trim($_POST['contactCompany'])):'';
 
             if(empty($Name)||empty($Description)||empty($Contact)){

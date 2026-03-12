@@ -17,6 +17,10 @@ class SqlDatabase implements Database {
         $this->primaryKey = $primaryKey;
     }
 
+    public function getConnection() {
+        return $this->pdo;
+    }
+
     public function getAllRecords() {
         // On récupère tout dans la table spécifiée
         $stmt = $this->pdo->query("SELECT * FROM {$this->tableName}");

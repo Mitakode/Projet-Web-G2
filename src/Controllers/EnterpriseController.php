@@ -1,6 +1,8 @@
 <?php
 namespace App\Controllers;
 
+use App\Models\Paginator;
+
 class EnterpriseController {
     private $twig;
     private $model;
@@ -18,10 +20,10 @@ class EnterpriseController {
         $allEnterprises = $this->model->searchEnterprises($search);
 
         // Gérer la pagination
-        $paginator = new \Paginator($allEnterprises, 10);
+        $paginator = new Paginator($allEnterprises, 10);
         
         // Envoyer le tout à la vue Twig
-        echo $this->twig->render('entreprises.twig', [
+        echo $this->twig->render('entreprises.twig.html', [
             'entreprises_page' => $paginator->getCurrentPageItems(),
             'total_pages'      => $paginator->getTotalPages(),
             'current_page'     => $_GET['page'] ?? 1,
@@ -38,6 +40,6 @@ class EnterpriseController {
         if ($id) {
             $this->model->deleteCompany($id);
         }
-        header('Location: /enterprises');
+        header('Location: /entreprises');
     }
 }

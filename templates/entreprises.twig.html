@@ -1,0 +1,67 @@
+{% extends "layout.twig.html" %}
+
+{% block content %}
+<main class="list-page">
+    <h1 class="main-title">Les entreprises</h1>
+    
+    <section class="search-section">
+        {# Le formulaire doit envoyer vers index.php avec l'uri #}
+        <form action="index.php" method="GET" class="search-form">
+            <input type="hidden" name="uri" value="entreprises">
+            <div class="search-bar-wrapper">
+                <input type="text" name="recherche" class="search-input" 
+                       value="{{ search_term }}" placeholder="Rechercher une entreprise...">
+                <button type="submit" class="search-btn">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+                <button type="button" class="btn-add" id="ouvrirPopup">+</button>
+            </div>
+        </form>
+    </section>
+
+    <div class="list-container">
+        {% for entreprise in entreprises_page %}
+            <div class="offres-liste">
+                <table class="company-table">
+                    <tr>
+                        <th class="company-name">{{ entreprise.Nom_entreprise }}</th>
+                        <td class="company-rating">Note : <strong>7/10</strong></td>
+                        <td class="btn-table">
+                            {# Lien de suppression avec l'ID dynamique #}
+                            <a href="index.php?uri=entreprise/delete&id={{ entreprise.ID_entreprise }}" 
+                               class="btn-action poubelle" 
+                               onclick="return confirm('Supprimer cette entreprise ?')">
+                                <i class="fa-solid fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="company-info">
+                            {{ entreprise.Contact }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="company-description">
+                            {{ entreprise.Description }}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        {% else %}
+            <p>Aucune entreprise trouvée.</p>
+        {% endfor %}
+    </div>
+
+    {# Système de pagination avec tes classes CSS #}
+    <div class="pagination">
+        {% if total_pages > 1 %}
+            {% for i in 1..total_pages %}
+                <a href="index.php?uri=entreprises&recherche={{ search_term }}&page={{ i }}" 
+                   class="page-link {{ i == current_page ? 'active' : '' }}">
+                    {{ i }}
+                </a>
+            {% endfor %}
+        {% endif %}
+    </div>
+</main>
+{% endblock %}

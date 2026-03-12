@@ -1,5 +1,8 @@
 RewriteEngine On
-RewriteRule ^index\.php$ /pages/accueil.php [R=301,L]
 
-#Redirect 301 /index.php /pages/accueil.php
-
+# Si ce n'est pas un répertoire réel
+RewriteCond %{REQUEST_FILENAME} !-d
+# Et si ce n'est pas un fichier réel
+RewriteCond %{REQUEST_FILENAME} !-f
+# On renvoie tout vers index.php avec l'URI dans le paramètre 'uri'
+RewriteRule ^(.*)$ index.php?uri=$1 [QSA,L]

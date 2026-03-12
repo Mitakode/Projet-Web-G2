@@ -9,9 +9,9 @@ $loader = new \Twig\Loader\FilesystemLoader('templates');
 $twig = new \Twig\Environment($loader, ['debug' => true]);
 
 // Connexion à la base de données
-$dsn = 'mysql:host=localhost;dbname=nom_de_ta_base;charset=utf8';
+$dsn = 'mysql:host=localhost;dbname=thepiston;charset=utf8';
 $username = 'root';
-$password = '';
+$password = '4NTFDDZVyqot?';
 
 try {
     $pdo = new PDO($dsn, $username, $password);
@@ -22,18 +22,18 @@ try {
 
 // Initialisation des composants
 // Adaptateur BDD des différentes tables
-$enterpriseDbAdapter = new \App\Models\SqlDatabase($pdo, 'Entreprise');
+$enterpriseDbAdapter = new \App\Models\SqlDatabase($pdo, 'Entreprise', 'ID_entreprise');
 
 // On crée le modèle avec la connexion PDO
 $enterpriseModel = new App\Models\EnterpriseModel($enterpriseDbAdapter);
-$offerModel      = new App\Models\OfferModel($pdo);
-$userModel       = new App\Models\UserModel($pdo); // Gère Etudiants, Pilotes, Admins
+//$offerModel      = new App\Models\OfferModel($pdo);
+//$userModel       = new App\Models\UserModel($pdo); // Gère Etudiants, Pilotes, Admins
 
 // Contrôleurs
-$mainController = new App\Controllers\MainController($twig, $offerModel, $enterpriseModel);
+//$mainController = new App\Controllers\MainController($twig, $offerModel, $enterpriseModel);
 $enterpriseController = new App\Controllers\EnterpriseController($twig, $enterpriseModel);
-$offerController = new App\Controllers\OfferController($twig, $offerModel, $enterpriseModel);
-$userController = new App\Controllers\UserController($twig, $userModel);
+//$offerController = new App\Controllers\OfferController($twig, $offerModel, $enterpriseModel);
+//$userController = new App\Controllers\UserController($twig, $userModel);
 
 // Routage simple
 $uri = $_GET['uri'] ?? '/';
@@ -51,13 +51,13 @@ switch ($uri) {
         break;
 
     // Gestion des entreprises
-    case 'enterprises': // Rechercher et afficher
+    case 'entreprises': // Rechercher et afficher
         $enterpriseController->list();
         break;
-    case 'enterprise/create': // Créer
+    case 'entreprise/create': // Créer
         $enterpriseController->create();
         break;
-    case 'enterprise/delete': // Supprimer
+    case 'entreprise/delete': // Supprimer
         $enterpriseController->delete();
         break;
 
