@@ -1,0 +1,49 @@
+{% extends "base.html.twig" %}
+
+{% block title %}ThePiston{% endblock %}
+
+{% block content %}
+{% set candidatures = [
+    {'offre': 'Alternance - Developpeur Systemes Embarques', 'entreprise': 'RoboticsX'},
+    {'offre': 'Stage Developpeur Full Stack', 'entreprise': 'TechNova'},
+    {'offre': 'Alternance - Ingenieur Cybersecurite', 'entreprise': 'CyberShield'},
+    {'offre': 'Stage Data Analyst', 'entreprise': 'DataFlow'},
+    {'offre': 'Alternance - Developpeur IA embarquee', 'entreprise': 'AI Dynamics'}
+] %}
+
+<main>
+    <h1>Sarah Durand A2</h1>
+    <div class="info-box ib2">sarah.durand@viacesi.fr</div>
+
+    <section class="dashboards-section">
+        <h2 class="dashboard-title">Liste des candidatures</h2>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Titre de l'offre</th>
+                        <th>Entreprise</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for candidature in candidatures %}
+                    <tr>
+                        <td>{{ candidature.offre }}</td>
+                        <td>{{ candidature.entreprise }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination">
+            <a href="#">Premiere page</a>
+            <a href="#">Precedent</a>
+            <strong>1</strong>
+            <a href="#">Suivant</a>
+            <a href="#">Derniere page</a>
+        </div>
+    </section>
+</main>
+{% endblock %}

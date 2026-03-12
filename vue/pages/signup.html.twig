@@ -1,0 +1,50 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Inscription - ThePiston{% endblock %}
+
+{% block content %}
+<section class="frame">
+    <h1 class="main-title">Creez un compte</h1>
+
+    <form class="form-test" action="/accueil" method="POST">
+        <div class="form-grid">
+            <div class="form-column">
+                <label>Prenom</label>
+                <input class="form-input" type="text">
+            </div>
+            <div class="form-column">
+                <label>Nom</label>
+                <input class="form-input" type="text">
+            </div>
+        </div>
+
+        <label>Type de compte</label>
+        <select class="form-input">
+            <option>Etudiant</option>
+            <option>Pilote</option>
+        </select>
+
+        <div class="form-grid">
+            <div class="form-column">
+                <label>Promotion</label>
+                <input class="form-input" type="text">
+            </div>
+            <div class="form-column">
+                <label>Campus</label>
+                <input class="form-input" type="text">
+            </div>
+        </div>
+
+        <label>Email</label>
+        <input class="form-input" type="email">
+
+        <label>Mot de passe</label>
+        <input class="form-input" type="password">
+
+        <label>Confirmation du mot de passe</label>
+        <input class="form-input" type="password">
+
+        <button class="btn" type="submit">Creer un compte</button>
+    </form>
+</section>
+{% endblock %}

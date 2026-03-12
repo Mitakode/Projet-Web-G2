@@ -1,0 +1,77 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Les offres - ThePiston{% endblock %}
+
+{% block content %}
+{% set offres = [
+    {'offre': 'Alternance - Developpeur Systemes Embarques', 'entreprise': 'RoboticsX'},
+    {'offre': 'Stage Developpeur Full Stack', 'entreprise': 'TechNova'},
+    {'offre': 'Alternance - Ingenieur Cybersecurite', 'entreprise': 'CyberShield'},
+    {'offre': 'Stage Data Analyst', 'entreprise': 'DataFlow'},
+    {'offre': 'Alternance - Developpeur IA embarquee', 'entreprise': 'AI Dynamics'},
+    {'offre': 'Stage Conception Electronique', 'entreprise': 'MicroChip Solutions'},
+    {'offre': 'Alternance - Administrateur Reseaux', 'entreprise': 'SecureNet'},
+    {'offre': 'Stage Developpeur Applications Mobiles', 'entreprise': 'CloudMatrix'},
+    {'offre': 'Alternance - Ingenieur DevOps', 'entreprise': 'TechNova'},
+    {'offre': 'Stage Testeur Logiciel', 'entreprise': 'BuildTech'}
+] %}
+
+<main class="list-page">
+    <h1 class="main-title">Les offres disponibles</h1>
+    <section class="search-section">
+        <form class="search-form" action="/offres" method="GET">
+            <div class="search-bar-wrapper">
+                <input class="search-input" type="text" name="recherche" placeholder="Rechercher...">
+                <button type="submit" class="search-btn" aria-label="Rechercher">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+                <button class="btn-add" id="ouvrirPopup">+</button>
+            </div>
+
+            <div class="filters-container">
+                <select class="filter-item" name="competences">
+                    <option value="">Mes competences</option>
+                    <option value="competence1">Competence 1</option>
+                    <option value="competence2">Competence 2</option>
+                    <option value="competence3">Competence 3</option>
+                </select>
+
+                <select class="filter-item" name="type">
+                    <option value="">Type d'offre</option>
+                    <option value="stage">Stage</option>
+                    <option value="Alternance">Alternance</option>
+                </select>
+
+                <input type="text" class="filter-item" name="loc" placeholder="Localisation...">
+                <input type="text" class="filter-item" name="ent" placeholder="Entreprise...">
+            </div>
+        </form>
+    </section>
+
+    {% for item in offres %}
+    <div class="offres-liste">
+        <table class="company-table">
+            <tr>
+                <th class="company-name">{{ item.offre }}</th>
+                <td class="btn-table">
+                    <button class="btn-action poubelle"><i class="fa-solid fa-trash"></i></button>
+                    <button class="btn-action crayon"><i class="fa-solid fa-pen-to-square"></i></button>
+                    <button class="btn-action etoile active"><i class="fa-solid fa-star"></i></button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="company-info">{{ item.entreprise }}</td>
+            </tr>
+        </table>
+    </div>
+    {% endfor %}
+
+    <div class="pagination">
+        <a href="#">Premiere page</a>
+        <a href="#">Precedent</a>
+        <strong>1</strong>
+        <a href="#">Suivant</a>
+        <a href="#">Derniere page</a>
+    </div>
+</main>
+{% endblock %}

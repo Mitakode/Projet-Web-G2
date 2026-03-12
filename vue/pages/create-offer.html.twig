@@ -1,0 +1,42 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Creer une offre - ThePiston{% endblock %}
+
+{% block content %}
+<section class="frame">
+    <h1 class="main-title">Creer une offre</h1>
+
+    <form class="form-test" action="/accueil" method="POST">
+        <label>Titre de l'offre</label>
+        <input class="form-input" type="text">
+
+        <div class="form-grid">
+            <div class="form-column2">
+                <label>Entreprise</label>
+                <input class="form-input" type="text">
+            </div>
+            <div class="form-column3">
+                <label>Remuneration</label>
+                <input class="form-input" type="text">
+            </div>
+        </div>
+
+        <label>Competences requises</label>
+        <div class="skills-selector">
+            <p>Selectionnez vos competences :</p>
+            <div class="skills-list">
+                <label><input type="checkbox" name="skill[]" value="comp1"> Competence 1</label>
+                <label><input type="checkbox" name="skill[]" value="comp2"> Competence 2</label>
+                <label><input type="checkbox" name="skill[]" value="comp3"> Competence 3</label>
+                <label><input type="checkbox" name="skill[]" value="comp4"> Competence 4</label>
+                <label><input type="checkbox" name="skill[]" value="comp5"> Competence 5</label>
+            </div>
+        </div>
+
+        <label>Description</label>
+        <textarea class="form-input" rows="10"></textarea>
+
+        <button class="btn" type="submit">Creer une offre</button>
+    </form>
+</section>
+{% endblock %}
