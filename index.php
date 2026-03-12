@@ -21,19 +21,19 @@ try {
 }
 
 // Initialisation des composants
+// Adaptateur BDD des différentes tables
+$enterpriseDbAdapter = new \App\Models\SqlDatabase($pdo, 'Entreprise');
+
 // On crée le modèle avec la connexion PDO
-$enterpriseModel = new EnterpriseModel($pdo);
+$enterpriseModel = new App\Models\EnterpriseModel($enterpriseDbAdapter);
+$offerModel      = new App\Models\OfferModel($pdo);
+$userModel       = new App\Models\UserModel($pdo); // Gère Etudiants, Pilotes, Admins
 
 // Contrôleurs
 $mainController = new App\Controllers\MainController($twig, $offerModel, $enterpriseModel);
 $enterpriseController = new App\Controllers\EnterpriseController($twig, $enterpriseModel);
 $offerController = new App\Controllers\OfferController($twig, $offerModel, $enterpriseModel);
 $userController = new App\Controllers\UserController($twig, $userModel);
-
-// Modèles
-$enterpriseModel = new App\Models\EnterpriseModel($pdo);
-$offerModel      = new App\Models\OfferModel($pdo);
-$userModel       = new App\Models\UserModel($pdo); // Gère Etudiants, Pilotes, Admins
 
 // Routage simple
 $uri = $_GET['uri'] ?? '/';

@@ -7,4 +7,8 @@ abstract class Model {
 
     // Déclaration d'une propriété protégée nommée $connection
     protected $connection = null;
+
+    public function __construct(Database $connection) {
+        $this->connection = $connection;
+    }
 }
