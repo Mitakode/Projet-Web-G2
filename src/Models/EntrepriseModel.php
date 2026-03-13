@@ -12,13 +12,17 @@ class EntrepriseModel extends Model {
     }
     
     public function searchEntreprises($keyword = "") {
-        $sql = "SELECT * FROM Entreprise WHERE 1=1";
+        $sql = "SELECT Entreprise.*, AVG(Evalue.Note_entreprise) as Moyenne_Note
+        FROM Entreprise 
+        LEFT JOIN Evalue ON Entreprise.ID_entreprise = Evalue.ID_entreprise
+        WHERE 1=1";
         $params = [];
 
         if (!empty($keyword)) {
-            $sql .= " AND (Nom_entreprise LIKE :key OR Description LIKE :key)";
+            $sql .= " AND (Entreprise.Nom_entreprise LIKE :key OR Entreprise.Description LIKE :key)";
             $params['key'] = '%' . $keyword . '%';
         }
+        $sql .= " GROUP BY Entreprise.ID_entreprise";
 
         $pdo = $this->connection->getConnection();
 

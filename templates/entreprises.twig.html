@@ -25,7 +25,13 @@
                 <table class="company-table">
                     <tr>
                         <th class="company-name">{{ entreprise.Nom_entreprise }}</th>
-                        <td class="company-rating">Note : <strong>7/10</strong></td>
+                        <td class="company-rating">Note : <strong>
+                            {% if entreprise.Moyenne_Note %}
+                                {{ entreprise.Moyenne_Note|round(1) }}/10
+                            {% else %}
+                                Pas de note
+                            {% endif %}
+                        </strong></td>
                         <td class="btn-table">
                             <a href="index.php?uri=entreprise/update&id={{ entreprise.ID_entreprise }}" 
                                 class="btn-action crayon">
