@@ -1,8 +1,8 @@
 <?php
 require "vendor/autoload.php";
 
-use App\Controllers\EnterpriseController;
-use App\Models\EnterpriseModel; // On importe le modèle
+use App\Controllers\EntrepriseController;
+use App\Models\EntrepriseModel; // On importe le modèle
 
 // Configuration de Twig
 $loader = new \Twig\Loader\FilesystemLoader('templates');
@@ -22,16 +22,16 @@ try {
 
 // Initialisation des composants
 // Adaptateur BDD des différentes tables
-$enterpriseDbAdapter = new \App\Models\SqlDatabase($pdo, 'Entreprise', 'ID_entreprise');
+$entrepriseDbAdapter = new \App\Models\SqlDatabase($pdo, 'Entreprise', 'ID_entreprise');
 
 // On crée le modèle avec la connexion PDO
-$enterpriseModel = new App\Models\EnterpriseModel($enterpriseDbAdapter);
+$entrepriseModel = new App\Models\EntrepriseModel($entrepriseDbAdapter);
 //$offerModel      = new App\Models\OfferModel($pdo);
 //$userModel       = new App\Models\UserModel($pdo); // Gère Etudiants, Pilotes, Admins
 
 // Contrôleurs
 //$mainController = new App\Controllers\MainController($twig, $offerModel, $enterpriseModel);
-$enterpriseController = new App\Controllers\EnterpriseController($twig, $enterpriseModel);
+$entrepriseController = new App\Controllers\EntrepriseController($twig, $entrepriseModel);
 //$offerController = new App\Controllers\OfferController($twig, $offerModel, $enterpriseModel);
 //$userController = new App\Controllers\UserController($twig, $userModel);
 
@@ -52,13 +52,16 @@ switch ($uri) {
 
     // Gestion des entreprises
     case 'entreprises': // Rechercher et afficher
-        $enterpriseController->list();
+        $entrepriseController->list();
         break;
     case 'entreprise/create': // Créer
-        $enterpriseController->create();
+        $entrepriseController->create();
+        break;
+    case 'entreprise/update': //Modifier
+        $entrepriseController->update();
         break;
     case 'entreprise/delete': // Supprimer
-        $enterpriseController->delete();
+        $entrepriseController->delete();
         break;
 
     // Gestion des Offres

@@ -34,7 +34,7 @@ class SqlDatabase implements Database {
      * @return array|null Enregistrement trouvé ou null
      */
     public function getRecord($id) {
-        $stmt = $this->pdo->prepare("SELECT * FROM {$this->tableName} WHERE id = ?");
+        $stmt = $this->pdo->prepare("SELECT * FROM {$this->tableName} WHERE {$this->primaryKey} = ?");
         $stmt->execute([$id]);
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
     }
@@ -67,7 +67,7 @@ class SqlDatabase implements Database {
         foreach (array_keys($record) as $key) {
             $sets[] = "$key = ?";
         }
-        $sql = "UPDATE {$this->tableName} SET " . implode(', ', $sets) . " WHERE id = ?";
+        $sql = "UPDATE {$this->tableName} SET " . implode(', ', $sets) . " WHERE {$this->primaryKey} = ?";
         
         $params = array_values($record);
         $params[] = $id; // L'ID pour le WHERE
