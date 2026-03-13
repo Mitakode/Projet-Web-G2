@@ -3,7 +3,7 @@
         'name' => 'mitaweb/thepiston',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'c32e0c7250ddc46f841794373bad51f07b6f5809',
+        'reference' => 'cf85df74884d5965fc598f11ca308b2bee5a6d89',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'mitaweb/thepiston' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'c32e0c7250ddc46f841794373bad51f07b6f5809',
+            'reference' => 'cf85df74884d5965fc598f11ca308b2bee5a6d89',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
