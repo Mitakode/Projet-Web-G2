@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/assets/images/icon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <title>{% block title %}ThePiston{% endblock %}</title>
+</head>
+<body>
+    {% block body %}
+    <header>
+        <div class="logo-group">
+            <a href="/" class="logo-link">
+                <img src="/assets/images/icon.png" alt="Icon" class="logo">
+                <img src="/assets/images/text.png" alt="The Piston" class="logo">
+            </a>
+        </div>
+
+        <nav>
+            <a href="#" class="nav-link">Mon espace</a>
+            <a href="#" class="nav-link">Les offres</a>
+            <a href="#" class="nav-link">Les entreprises</a>
+
+            <div class="btn-container">
+                <a href="/login" class="btn btn-connexion">
+                    Connexion
+                </a>
+
+                <a href="/logout" class="btn btn-deconnexion">
+                    Déconnexion
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    {% block hero %}{% endblock %}
+
+    {% block content %}{% endblock %}
+
+    <footer>
+        <div>
+            <a href="/cgu">CGU</a>
+            <a href="/contact">Contact</a>
+            <a href="/legal">Mentions légales</a>
+            <a href="/privacy">Politique de confidentialité</a>
+            <a href="/terms">Conditions d'utilisation</a>
+        </div>
+
+        <div>
+            <p>&copy; 2026 ThePiston. Tous droits réservés.</p>
+        </div>
+    </footer>
+    {% endblock %}
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

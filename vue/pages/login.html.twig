@@ -1,0 +1,22 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Connexion - ThePiston{% endblock %}
+
+{% block content %}
+<section class="frame">
+    <h1><i class="fa-solid fa-circle-user"></i>Connectez-vous</h1>
+    <h2>Connectez-vous pour acceder a votre espace</h2>
+
+    <form class="form-test" action="/accueil" method="POST">
+        <label for="username">Email</label>
+        <input class="form-input" type="text" id="username" name="username" required>
+
+        <label for="password">Mot de passe</label>
+        <input class="form-input" type="password" id="password" name="password" required>
+
+        <button class="btn" type="submit">Connexion</button>
+
+        <p class="infos">Mot de passe oublie ? <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=xvFZjo5PgG0">Reinitialiser le mot de passe</a></p>
+    </form>
+</section>
+{% endblock %}
