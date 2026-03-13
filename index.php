@@ -10,8 +10,8 @@ $twig = new \Twig\Environment($loader, ['debug' => true]);
 
 // Connexion à la base de données
 $dsn = 'mysql:host=localhost;dbname=thepiston;charset=utf8';
-$username = 'root';
-$password = 'REDACTED';
+$username = 'userthepiston';
+$password = 'Thepiston1%';
 
 try {
     $pdo = new PDO($dsn, $username, $password);
