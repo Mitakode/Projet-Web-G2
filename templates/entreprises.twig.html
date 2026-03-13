@@ -1,7 +1,7 @@
 {% extends "layout.twig.html" %}
-
+{% block main_class %}list-page{% endblock %}
 {% block content %}
-<main class="list-page">
+
     <h1 class="main-title">Les entreprises</h1>
     
     <section class="search-section">
@@ -63,5 +63,4 @@
             {% endfor %}
         {% endif %}
     </div>
-</main>
 {% endblock %}
