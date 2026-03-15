@@ -33,15 +33,15 @@ class CompanyController {
 
     public function create(){
         if($_SERVER['REQUEST_METHOD']==='POST'){
-            $Name= isset($_POST['nameCompany']) ? htmlspecialchars(trim($_POST['nameCompany'])):'';
-            $Description=isset($_POST['descriptionCompany']) ? htmlspecialchars(trim($_POST['descriptionCompany'])):'';
-            $Contact=isset($_POST['contactCompany']) ? htmlspecialchars(trim($_POST['contactCompany'])):'';
+            $name= isset($_POST['nameCompany']) ? htmlspecialchars(trim($_POST['nameCompany'])):'';
+            $description=isset($_POST['descriptionCompany']) ? htmlspecialchars(trim($_POST['descriptionCompany'])):'';
+            $contact=isset($_POST['contactCompany']) ? htmlspecialchars(trim($_POST['contactCompany'])):'';
 
-            if(empty($Name)||empty($Description)||empty($Contact)){
+            if(empty($name)||empty($description)||empty($contact)){
                 echo "Veulliez remplir correctement tous les champs.";
             }
             else{
-                $this->model->createCompany(['Nom_entreprise'=> $Name, 'Description'=> $Description, 'Contact'=> $Contact]);
+                $this->model->createCompany(['Nom_entreprise'=> $name, 'Description'=> $description, 'Contact'=> $contact]);
                 header('Location: /entreprises');
                 exit;
             } 

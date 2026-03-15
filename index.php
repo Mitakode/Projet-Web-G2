@@ -65,16 +65,16 @@ switch ($uri) {
         break;
 
     // Gestion des Offres
-    case 'offers':
+    case 'offres':
         $offerController->list();
         break;
-    case 'offer/details':
+    case 'offres/details':
         $offerController->details($_GET['id']);
         break;
-    case 'offer/create':
+    case 'offres/create':
         $offerController->create();
         break;
-    case 'offer/delete':
+    case 'offres/delete':
         $offerController->delete();
         break;
 
