@@ -9,7 +9,7 @@
 <body>
     <header>
         <div class="logo-group">
-            <a href="/pages/accueil.php" class="logo-link">
+            <a href="/pages/Homepage.php" class="logo-link">
                 <img src="/assets/images/icon.png" alt="Icon" class="logo">
                 <img src="/assets/images/text.png" alt="The Piston" class="logo">
             </a>
@@ -21,7 +21,7 @@
             <a href="#" class="nav-link">Les entreprises</a>
             
             <div class="btn-container">
-                <a href="/pages/login.php" class="btn btn-connexion">
+                <a href="/pages/Login.php" class="btn btn-connexion">
                     Connexion
                 </a>
 

@@ -3,7 +3,7 @@ namespace App\Controllers;
 
 use App\Models\Paginator;
 
-class EntrepriseController {
+class CompanyController {
     private $twig;
     private $model;
 
@@ -17,13 +17,13 @@ class EntrepriseController {
         $search = $_GET['recherche'] ?? '';
         
         // Demander les données filtrées au modèle
-        $allEntreprises = $this->model->searchEntreprises($search);
+        $allCompanies = $this->model->searchCompanies($search);
 
         // Gérer la pagination
-        $paginator = new Paginator($allEntreprises, 10);
+        $paginator = new Paginator($allCompanies, 10);
         
         // Envoyer le tout à la vue Twig
-        echo $this->twig->render('entreprises.twig.html', [
+        echo $this->twig->render('Companies.html.twig', [
             'entreprises_page' => $paginator->getCurrentPageItems(),
             'total_pages'      => $paginator->getTotalPages(),
             'current_page'     => $_GET['page'] ?? 1,
@@ -47,7 +47,7 @@ class EntrepriseController {
             } 
         }
 
-        echo $this->twig->render('entreprise_form.twig.html', [
+        echo $this->twig->render('CompaniesForm.html.twig', [
         'is_edit'=> false
     ]);
     }
@@ -72,10 +72,10 @@ class EntrepriseController {
         exit;
     }
 
-    $entreprise = $this->model->getEntrepriseById($id);
+    $company = $this->model->getCompanyById($id);
 
-    echo $this->twig->render('entreprise_form.twig.html', [
-        'entreprise' => $entreprise,
+    echo $this->twig->render('CompaniesForm.html.twig', [
+        'entreprise' => $company,
         'is_edit'    => true
     ]);
 }
