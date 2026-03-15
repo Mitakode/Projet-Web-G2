@@ -19,16 +19,17 @@
         </div>
 
         <nav>
-            <a href="#" class="nav-link">Mon espace</a>
-            <a href="#" class="nav-link">Les offres</a>
-            <a href="#" class="nav-link">Les entreprises</a>
+            <a href="/?uri=dashboard" class="nav-link">Mon espace</a>
+            <a href="/?uri=offres" class="nav-link">Les offres</a>
+            <a href="/?uri=entreprises" class="nav-link">Les entreprises</a>
+
 
             <div class="btn-container">
-                <a href="/login" class="btn btn-connexion">
+                <a href="/?uri=login" class="btn btn-connexion">
                     Connexion
                 </a>
 
-                <a href="/logout" class="btn btn-deconnexion">
+                <a href="/?uri=logout" class="btn btn-deconnexion">
                     Déconnexion
                 </a>
             </div>
@@ -37,15 +38,19 @@
 
     {% block hero %}{% endblock %}
 
-    {% block content %}{% endblock %}
+    <main class="{% block main_class %}{% endblock %}">
+        {% block content %}
+        
+        {% endblock %}
+    </main>
 
     <footer>
         <div>
-            <a href="/cgu">CGU</a>
-            <a href="/contact">Contact</a>
-            <a href="/legal">Mentions légales</a>
-            <a href="/privacy">Politique de confidentialité</a>
-            <a href="/terms">Conditions d'utilisation</a>
+            <a href="/?uri=cgu">CGU</a>
+            <a href="/?uri=contact">Contact</a>
+            <a href="/?uri=legal">Mentions légales</a>
+            <a href="/?uri=privacy">Politique de confidentialité</a>
+            <a href="/?uri=terms">Conditions d'utilisation</a>
         </div>
 
         <div>

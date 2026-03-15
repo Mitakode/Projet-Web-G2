@@ -5,7 +5,7 @@ use App\Controllers\CompanyController;
 use App\Models\CompanyModel; // On importe le modèle
 
 // Configuration de Twig
-$loader = new \Twig\Loader\FilesystemLoader('templates');
+$loader = new \Twig\Loader\FilesystemLoader('vue');
 $twig = new \Twig\Environment($loader, ['debug' => true]);
 
 // Connexion à la base de données
