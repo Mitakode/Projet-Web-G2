@@ -42,7 +42,7 @@ class CompanyController {
             }
             else{
                 $this->model->createCompany(['Nom_entreprise'=> $name, 'Description'=> $description, 'Contact'=> $contact]);
-                header('Location: /entreprises');
+                header('Location: /companies');
                 exit;
             } 
         }
@@ -56,7 +56,7 @@ class CompanyController {
     $id = $_GET['id'] ?? null;
 
     if (!$id) {
-        header('Location: /entreprises');
+        header('Location: /companies');
         exit;
     }
 
@@ -68,7 +68,7 @@ class CompanyController {
         ];
 
         $this->model->updateCompany($id, $data);
-        header('Location: /entreprises');
+        header('Location: /companies');
         exit;
     }
 
@@ -85,6 +85,6 @@ class CompanyController {
         if ($id) {
             $this->model->deleteCompany($id);
         }
-        header('Location: /entreprises');
+        header('Location: /companies');
     }
 }

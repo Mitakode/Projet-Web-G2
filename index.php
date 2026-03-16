@@ -51,30 +51,30 @@ switch ($uri) {
         break;
 
     // Gestion des entreprises
-    case 'entreprises': // Rechercher et afficher
+    case 'companies': // Rechercher et afficher
         $companyController->list();
         break;
-    case 'entreprise/create': // Créer
+    case 'companies/create': // Créer
         $companyController->create();
         break;
-    case 'entreprise/update': //Modifier
+    case 'companies/update': //Modifier
         $companyController->update();
         break;
-    case 'entreprise/delete': // Supprimer
+    case 'companies/delete': // Supprimer
         $companyController->delete();
         break;
 
     // Gestion des Offres
-    case 'offres':
+    case 'offers':
         $offerController->list();
         break;
-    case 'offres/details':
+    case 'offers/details':
         $offerController->details($_GET['id']);
         break;
-    case 'offres/create':
+    case 'offers/create':
         $offerController->create();
         break;
-    case 'offres/delete':
+    case 'offers/delete':
         $offerController->delete();
         break;
 
