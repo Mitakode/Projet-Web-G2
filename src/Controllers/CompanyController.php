@@ -3,7 +3,7 @@ namespace App\Controllers;
 
 use App\Models\Paginator;
 
-class EntrepriseController {
+class CompanyController {
     private $twig;
     private $model;
 
@@ -17,13 +17,13 @@ class EntrepriseController {
         $search = $_GET['recherche'] ?? '';
         
         // Demander les données filtrées au modèle
-        $allEntreprises = $this->model->searchEntreprises($search);
+        $allCompanies = $this->model->searchCompanies($search);
 
         // Gérer la pagination
-        $paginator = new Paginator($allEntreprises, 10);
+        $paginator = new Paginator($allCompanies, 10);
         
         // Envoyer le tout à la vue Twig
-        echo $this->twig->render('entreprises.twig.html', [
+        echo $this->twig->render('Companies.html.twig', [
             'entreprises_page' => $paginator->getCurrentPageItems(),
             'total_pages'      => $paginator->getTotalPages(),
             'current_page'     => $_GET['page'] ?? 1,
@@ -33,21 +33,21 @@ class EntrepriseController {
 
     public function create(){
         if($_SERVER['REQUEST_METHOD']==='POST'){
-            $Name= isset($_POST['nameCompany']) ? htmlspecialchars(trim($_POST['nameCompany'])):'';
-            $Description=isset($_POST['descriptionCompany']) ? htmlspecialchars(trim($_POST['descriptionCompany'])):'';
-            $Contact=isset($_POST['contactCompany']) ? htmlspecialchars(trim($_POST['contactCompany'])):'';
+            $name= isset($_POST['nameCompany']) ? htmlspecialchars(trim($_POST['nameCompany'])):'';
+            $description=isset($_POST['descriptionCompany']) ? htmlspecialchars(trim($_POST['descriptionCompany'])):'';
+            $contact=isset($_POST['contactCompany']) ? htmlspecialchars(trim($_POST['contactCompany'])):'';
 
-            if(empty($Name)||empty($Description)||empty($Contact)){
+            if(empty($name)||empty($description)||empty($contact)){
                 echo "Veulliez remplir correctement tous les champs.";
             }
             else{
-                $this->model->createCompany(['Nom_entreprise'=> $Name, 'Description'=> $Description, 'Contact'=> $Contact]);
-                header('Location: /entreprises');
+                $this->model->createCompany(['Nom_entreprise'=> $name, 'Description'=> $description, 'Contact'=> $contact]);
+                header('Location: /companies');
                 exit;
             } 
         }
 
-        echo $this->twig->render('entreprise_form.twig.html', [
+        echo $this->twig->render('CompaniesForm.html.twig', [
         'is_edit'=> false
     ]);
     }
@@ -56,7 +56,7 @@ class EntrepriseController {
     $id = $_GET['id'] ?? null;
 
     if (!$id) {
-        header('Location: /entreprises');
+        header('Location: /companies');
         exit;
     }
 
@@ -68,14 +68,14 @@ class EntrepriseController {
         ];
 
         $this->model->updateCompany($id, $data);
-        header('Location: /entreprises');
+        header('Location: /companies');
         exit;
     }
 
-    $entreprise = $this->model->getEntrepriseById($id);
+    $company = $this->model->getCompanyById($id);
 
-    echo $this->twig->render('entreprise_form.twig.html', [
-        'entreprise' => $entreprise,
+    echo $this->twig->render('CompaniesForm.html.twig', [
+        'entreprise' => $company,
         'is_edit'    => true
     ]);
 }
@@ -85,6 +85,6 @@ class EntrepriseController {
         if ($id) {
             $this->model->deleteCompany($id);
         }
-        header('Location: /entreprises');
+        header('Location: /companies');
     }
 }

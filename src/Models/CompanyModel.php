@@ -1,17 +1,17 @@
 <?php
 namespace App\Models;
 
-class EntrepriseModel extends Model {
+class CompanyModel extends Model {
 
     public function __construct(Database $connection) {
         parent::__construct($connection);
     }
 
-    public function getEntrepriseById($id) {
+    public function getCompanyById($id) {
         return $this->connection->getRecord($id);
     }
     
-    public function searchEntreprises($keyword = "") {
+    public function searchCompanies($keyword = "") {
         $sql = "SELECT Entreprise.*, AVG(Evalue.Note_entreprise) as Moyenne_Note
         FROM Entreprise 
         LEFT JOIN Evalue ON Entreprise.ID_entreprise = Evalue.ID_entreprise

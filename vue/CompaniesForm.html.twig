@@ -1,12 +1,13 @@
-{% extends "layout.twig.html" %}
+{% extends "base.html.twig" %}
 
 {% block title %}{{ is_edit ? 'Modifier' : 'Ajouter' }} une entreprise - ThePiston{% endblock %}
 
+{% block main_class %}list-page{% endblock %}
 {% block content %}
 <section class="frame">
     <h1 class="main-title">{{ is_edit ? 'Modifier' : 'Ajouter' }} une entreprise</h1>
 
-    <form class="form-test" action="/{{ is_edit ? 'entreprise/update&id=' ~ entreprise.ID_entreprise : 'entreprise/create' }}" method="POST">
+    <form class="form-test" action="/{{ is_edit ? 'companies/update&id=' ~ entreprise.ID_entreprise : 'companies/create' }}" method="POST">
         <label>Nom de l'entreprise</label>
         <input class="form-input" type="text" name="nameCompany" value="{{ entreprise.Nom_entreprise ?? '' }}" required>
 
@@ -17,7 +18,7 @@
         <textarea class="form-input" rows="10"name="descriptionCompany" required>{{ entreprise.Description ?? '' }}</textarea>
 
         <button class="btn" type="submit">Valider</button>
-        <a href="/entreprises">Annuler</a>
+        <a href="/companies">Annuler</a>
     </form>
 </section>
 {% endblock %}
