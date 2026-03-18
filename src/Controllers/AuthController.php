@@ -17,6 +17,11 @@ class AuthController
     {
         $error = null;
 
+        if (!empty($_SESSION)) {
+            $this->redirectToDashboardByRole($_SESSION['user_role']);
+        }
+
+        // on traite le résultat du form de connexion
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = trim($_POST['email'] ?? '');
             $password = $_POST['password'] ?? '';
@@ -34,26 +39,14 @@ class AuthController
                 // détermine le rôle
                 $role = $this->detectRole($id);
 
-                // enregistre la session
+                // enregistre la session de façon sécurisée en remplaçant l'ancienne
                 session_regenerate_id(true);
                 $_SESSION['user_id']   = $id;
                 $_SESSION['user_role'] = $role;
                 $_SESSION['user_nom']  = $user['Nom'];
                 $_SESSION['user_prenom'] = $user['Prenom'];
 
-                // redirige selon le rôle
-                switch ($role) {
-                    case 'admin':
-                        header('Location: index.php?uri=dashboard/admin');
-                        break;
-                    case 'pilote':
-                        header('Location: index.php?uri=dashboard/pilote');
-                        break;
-                    default: // etudiant
-                        header('Location: index.php?uri=dashboard/student');
-                        break;
-                }
-                exit;
+                $this->redirectToDashboardByRole($role);
             }
 
             $error = 'Email ou mot de passe incorrect.';
@@ -62,6 +55,7 @@ class AuthController
         echo $this->twig->render('Login.html.twig', ['error' => $error]);
     }
 
+    // détecte le rôle de l'utilisateur en testant chaque table avec l'ID_utilisateur
     private function detectRole(int $id): string
     {
         $stmt = $this->pdo->prepare(
@@ -74,13 +68,64 @@ class AuthController
         );
         $stmt->execute([$id, $id, $id]);
         $result = $stmt->fetch(\PDO::FETCH_ASSOC);
-        return $result['role'] ?? 'etudiant';
+        return $result['role'];
     }
 
     public function logout()
     {
+        $_SESSION = [];
         session_destroy();
-        header('Location: ?uri=login');
+        header('Location: /login');
+        exit;
+    }
+
+    public function dashboard()
+    {
+        $this->requireAuthenticated();
+
+        $role = $_SESSION['user_role'] ?? '';
+
+        switch ($role) {
+            case 'admin':
+                echo $this->twig->render('admin.html.twig');
+                return;
+            case 'pilote':
+                echo $this->twig->render('admin.html.twig');
+                return;
+            case 'etudiant':
+                echo $this->twig->render('student.html.twig');
+                return;
+            default:
+                header('Location: /login');
+                exit;
+        }
+    }
+
+    private function requireAuthenticated(): void
+    {
+        if (empty($_SESSION['user_id']) || empty($_SESSION['user_role'])) {
+            header('Location: /login');
+            exit;
+        }
+    }
+
+    private function redirectToDashboardByRole(string $role): void
+    {
+        switch ($role) {
+            case 'admin':
+                header('Location: /dashboard');
+                break;
+            case 'pilote':
+                header('Location: /dashboard');
+                break;
+            case 'etudiant':
+                header('Location: /dashboard');
+                break;
+            default:
+                header('Location: /login');
+                break;
+        }
+
         exit;
     }
 }
