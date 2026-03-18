@@ -6,16 +6,17 @@ use App\Models\Paginator;
 class OfferController {
     private $twig;
     private $model;
+    private $companyModel;
 
-    public function __construct($twig, $model) {
+    public function __construct($twig, $model, $companyModel) {
         $this->twig = $twig;
         $this->model = $model;
+        $this->companyModel = $companyModel;
     }
 
     public function list() {
         $search = $_GET['recherche'] ?? '';
         
-        // Le modèle doit retourner les offres avec le nom de l'entreprise (via JOIN)
         $allOffers = $this->model->searchOffers($search);
 
         $paginator = new Paginator($allOffers, 10);
@@ -30,47 +31,55 @@ class OfferController {
 
     public function create() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Récupération des données du formulaire
-            $data = [
-                'Titre'             => htmlspecialchars(trim($_POST['title'])),
-                'Description'       => htmlspecialchars(trim($_POST['description'])),
-                'Base_remuneration' => $_POST['salary'] ?? 0,
-                'Duree'             => $_POST['duration'] ?? 0,
-                'Liste_competences' => htmlspecialchars(trim($_POST['skills'])),
-                'ID_entreprise'     => $_POST['companyId'],
-                'Date_publication'  => date('Y-m-d')
-            ];
+            $titre = isset($_POST['Titre']) ? htmlspecialchars(trim($_POST['Titre'])) : '';
+            $description = isset($_POST['Description']) ? htmlspecialchars(trim($_POST['Description'])) : '';
+            $baseRemuneration = isset($_POST['Base_remuneration']) ? floatval($_POST['Base_remuneration']) : null;
+            $duree = isset($_POST['Duree']) ? intval($_POST['Duree']) : null;
+            $listeCompetences = isset($_POST['Liste_competences']) ? htmlspecialchars(trim($_POST['Liste_competences'])) : '';
+            $idEntreprise = isset($_POST['ID_entreprise']) ? intval($_POST['ID_entreprise']) : null;
+            $datePublication = date('Y-m-d');
 
-            // Validation simple
-            if (empty($data['Titre']) || empty($data['ID_entreprise'])) {
-                $error = "Le titre et l'entreprise sont obligatoires.";
+            if (empty($titre) || empty($description) || empty($idEntreprise)) {
+                echo "Veuillez remplir correctement tous les champs obligatoires.";
             } else {
-                $this->model->createOffer($data);
+                $this->model->createOffer([
+                    'Titre'             => $titre,
+                    'Description'       => $description,
+                    'Base_remuneration' => $baseRemuneration,
+                    'Date_publication'  => $datePublication,
+                    'Duree'             => $duree,
+                    'Liste_competences' => $listeCompetences,
+                    'ID_entreprise'     => $idEntreprise
+                ]);
                 header('Location: /offers');
                 exit;
-            }
+            } 
         }
 
-        $companies = $this->model->getAllCompanies(); 
+        $entreprises = $this->companyModel->searchCompanies();
+
         echo $this->twig->render('OffersForm.html.twig', [
-            'is_edit'   => false,
-            'companies' => $companies,
-            'error'     => $error ?? null
+            'is_edit'     => false,
+            'entreprises' => $entreprises
         ]);
     }
 
     public function update() {
         $id = $_GET['id'] ?? null;
-        if (!$id) { header('Location: /offers'); exit; }
+
+        if (!$id) {
+            header('Location: /offers');
+            exit;
+        }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = [
-                'Titre'             => htmlspecialchars(trim($_POST['title'])),
-                'Description'       => htmlspecialchars(trim($_POST['description'])),
-                'Base_remuneration' => $_POST['salary'],
-                'Duree'             => $_POST['duration'],
-                'Liste_competences' => htmlspecialchars(trim($_POST['skills'])),
-                'ID_entreprise'     => $_POST['companyId']
+                'Titre'             => htmlspecialchars(trim($_POST['Titre'])),
+                'Description'       => htmlspecialchars(trim($_POST['Description'])),
+                'Base_remuneration' => floatval($_POST['Base_remuneration']),
+                'Duree'             => intval($_POST['Duree']),
+                'Liste_competences' => htmlspecialchars(trim($_POST['Liste_competences'])),
+                'ID_entreprise'     => intval($_POST['ID_entreprise'])
             ];
 
             $this->model->updateOffer($id, $data);
@@ -79,12 +88,12 @@ class OfferController {
         }
 
         $offer = $this->model->getOfferById($id);
-        $companies = $this->model->getAllCompanies();
+        $entreprises = $this->companyModel->searchCompanies();
 
         echo $this->twig->render('OffersForm.html.twig', [
-            'offre'     => $offer,
-            'companies' => $companies,
-            'is_edit'   => true
+            'offre'       => $offer,
+            'entreprises' => $entreprises,
+            'is_edit'     => true
         ]);
     }
 
