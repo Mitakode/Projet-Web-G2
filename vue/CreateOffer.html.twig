@@ -1,42 +1,54 @@
 {% extends "base.html.twig" %}
 
-{% block title %}Creer une offre - ThePiston{% endblock %}
+{% block title %}{{ is_edit ? 'Modifier' : 'Créer' }} une offre - ThePiston{% endblock %}
 
 {% block content %}
 <section class="frame">
-    <h1 class="main-title">Creer une offre</h1>
+    <h1 class="main-title">{{ is_edit ? 'Modifier' : 'Créer' }} une offre</h1>
 
-    <form class="form-test" action="/accueil" method="POST">
+    <form class="form-test" action="/{{ is_edit ? 'offers/update&id=' ~ offre.ID_offre : 'offers/create' }}" method="POST">
+        
         <label>Titre de l'offre</label>
-        <input class="form-input" type="text">
+        <input class="form-input" type="text" name="Titre" value="{{ offre.Titre ?? '' }}" required>
 
         <div class="form-grid">
             <div class="form-column2">
                 <label>Entreprise</label>
-                <input class="form-input" type="text">
+                <select class="form-input" name="ID_entreprise" required>
+                    <option value="">Sélectionnez une entreprise</option>
+                    {% for entreprise in entreprises %}
+                        <option value="{{ entreprise.ID_entreprise }}" {{ offre.ID_entreprise is defined and offre.ID_entreprise == entreprise.ID_entreprise ? 'selected' : '' }}>
+                            {{ entreprise.Nom_entreprise }}
+                        </option>
+                    {% endfor %}
+                </select>
             </div>
+            
             <div class="form-column3">
-                <label>Remuneration</label>
-                <input class="form-input" type="text">
+                <label>Rémunération de base (€)</label>
+                <input class="form-input" type="number" step="0.01" name="Base_remuneration" value="{{ offre.Base_remuneration ?? '' }}">
             </div>
         </div>
 
-        <label>Competences requises</label>
-        <div class="skills-selector">
-            <p>Selectionnez vos competences :</p>
-            <div class="skills-list">
-                <label><input type="checkbox" name="skill[]" value="comp1"> Competence 1</label>
-                <label><input type="checkbox" name="skill[]" value="comp2"> Competence 2</label>
-                <label><input type="checkbox" name="skill[]" value="comp3"> Competence 3</label>
-                <label><input type="checkbox" name="skill[]" value="comp4"> Competence 4</label>
-                <label><input type="checkbox" name="skill[]" value="comp5"> Competence 5</label>
+        <div class="form-grid">
+            <div class="form-column2">
+                <label>Durée (mois)</label>
+                <input class="form-input" type="number" name="Duree" value="{{ offre.Duree ?? '' }}">
+            </div>
+            
+            <div class="form-column3">
+                <label>Compétences requises (séparées par des virgules)</label>
+                <input class="form-input" type="text" name="Liste_competences" value="{{ offre.Liste_competences ?? '' }}" placeholder="Ex: PHP, Twig, SQL">
             </div>
         </div>
 
         <label>Description</label>
-        <textarea class="form-input" rows="10"></textarea>
+        <textarea class="form-input" rows="10" name="Description" required>{{ offre.Description ?? '' }}</textarea>
 
-        <button class="btn" type="submit">Creer une offre</button>
+        <div class="btn-container" style="margin-top: 20px;">
+            <button class="btn" type="submit">{{ is_edit ? 'Valider les modifications' : 'Créer l\'offre' }}</button>
+            <a href="/offers" class="btn" style="background-color: #ccc; margin-left: 10px;">Annuler</a>
+        </div>
     </form>
 </section>
 {% endblock %}
