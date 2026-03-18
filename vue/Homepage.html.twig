@@ -44,34 +44,51 @@
         <section class="info-column">
             <h2>Nos statistiques</h2>
             <div class="info-box">
-                <div>
-                    <div>
-                        <h3>Statistiques générales</h3>
-                        <ul>
-                            <li>Nombre d'étudiants inscrits : {{ students[0].count_etudiant }}</li>
-                            <li>Nombre d'offres disponibles : {{ offers[0].count_offre }} </li>
-                            <li>Nombre moyen de canidature par offre : {{ apply[0].moyenne_candidature|round(1) }} </li>
-                        </ul>
+                <div class="container">
+                    <!-- Élément carrousel -->
+                    <div class="carousel">
+                        <!-- Conteneur interne pour les diapositives -->
+                        <div class="carousel-inner">
+                            <!-- Première diapositive -->
+                            <div class="slide">
+                                <h3>Statistiques générales</h3>
+                                <ul>
+                                    <li>Nombre d'étudiants inscrits : {{ students[0].count_etudiant }}</li>
+                                    <li>Nombre d'offres disponibles : {{ offers[0].count_offre }} </li>
+                                    <li>Nombre moyen de canidature par offre : {{ apply[0].moyenne_candidature|round(1) }} </li>
+                                </ul>
+                            </div>
+                            <!-- Deuxième diapositive -->
+                            <div class="slide">
+                            <h3>Top des offres</h3>
+                                <ul>
+                                    <li>{{topOffers[0].Titre}} : {{topOffers[0].Nb_wishlist}} fois ajouté en wishlist</li>
+                                    <li>{{topOffers[1].Titre}} : {{topOffers[1].Nb_wishlist}} fois ajouté en wishlist</li>
+                                    <li>{{topOffers[2].Titre}} : {{topOffers[2].Nb_wishlist}} fois ajouté en wishlist</li>
+                                </ul>
+                            </div>
+                            <!-- Troisième diapositive -->
+                            <div class="slide">
+                            <h3>Répartition des offres par rapport à leur durée</h3>
+                                <div>1-3 mois : {{timeDistribution[0].total_court}}</div>
+                                <div>4-6 mois : {{timeDistribution[0].total_moyen}}</div>
+                                <div>6+ mois : {{timeDistribution[0].total_long}}</div>
+                            </div>
+                        </div>
+                        <!-- Conteneur pour les boutons de navigation -->
+                        <div class="carousel-controls">
+                            <!-- Bouton pour passer à la diapositive précédente -->
+                            <button id="prev">Précédent</button>
+                            <!-- Bouton pour passer à la diapositive suivante -->
+                            <button id="next">Suivant</button>
+                        </div>
+                        <!-- Conteneur pour les points de navigation -->
+                        <div class="carousel-dots"></div>
                     </div>
-
-                    <div>
-                        <h3>Top des offres</h3>
-                        <ul>
-                            <li>{{topOffers[0].Titre}} : {{topOffers[0].Nb_wishlist}} fois ajouté en wishlist</li>
-                            <li>{{topOffers[1].Titre}} : {{topOffers[1].Nb_wishlist}} fois ajouté en wishlist</li>
-                            <li>{{topOffers[2].Titre}} : {{topOffers[2].Nb_wishlist}} fois ajouté en wishlist</li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <h3>Répartition des offres par rapport à leur durée</h3>
-                        <div>1-3 mois : {{timeDistribution[0].total_court}}</div>
-                        <div>4-6 mois : {{timeDistribution[0].total_moyen}}</div>
-                        <div>6+ mois : {{timeDistribution[0].total_long}}</div>
-                    </div>
-
                 </div>
             </div>
         </section>
     </div>
 {% endblock %}
+
+{% block scripts %}<script src="/assets/js/Carousel.js" async></script>{% endblock %}
