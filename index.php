@@ -24,18 +24,19 @@ try {
 // Adaptateur BDD des différentes tables
 $companyDbAdapter = new \App\Models\SqlDatabase($pdo, 'Entreprise', 'ID_entreprise');
 $homepageDbAdapter = new \App\Models\SqlDatabase($pdo, 'Offre', 'ID_offre');
+$studentDbAdapter = new \App\Models\SqlDatabase($pdo, 'Offre', 'ID_offre');
 
 // On crée le modèle avec la connexion PDO
 $companyModel = new App\Models\CompanyModel($companyDbAdapter);
 $homepageModel = new App\Models\HomepageModel($homepageDbAdapter);
+$studentModel = new App\Models\StudentModel($studentDbAdapter);
 //$offerModel      = new App\Models\OfferModel($pdo);
-//$userModel       = new App\Models\UserModel($pdo); // Gère Etudiants, Pilotes, Admins
 
 // Contrôleurs
 $companyController = new App\Controllers\CompanyController($twig, $companyModel);
 $homepageController = new App\Controllers\HomepageController($twig, $homepageModel);
+$studentController = new App\Controllers\StudentController($twig, $studentModel);
 //$offerController = new App\Controllers\OfferController($twig, $offerModel, $enterpriseModel);
-//$userController = new App\Controllers\UserController($twig, $userModel);
 
 // Routage simple
 $uri = $_GET['uri'] ?? '/';
@@ -83,6 +84,7 @@ switch ($uri) {
         break;
 
     // Gestion des Utilisateurs
+    // Students
     case 'users/students':
         $userController->listStudents();
         break;
