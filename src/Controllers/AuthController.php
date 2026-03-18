@@ -28,7 +28,7 @@ class AuthController
 
             // recherche l'utilisateur par email
             $stmt = $this->pdo->prepare(
-                "SELECT * FROM utilisateur WHERE Email = ? LIMIT 1"
+                "SELECT * FROM Utilisateur WHERE Email = ? LIMIT 1"
             );
             $stmt->execute([$email]);
             $user = $stmt->fetch(\PDO::FETCH_ASSOC);
@@ -59,11 +59,11 @@ class AuthController
     private function detectRole(int $id): string
     {
         $stmt = $this->pdo->prepare(
-            "SELECT 'admin' AS role FROM administrateur WHERE ID_utilisateur = ?
+            "SELECT 'admin' AS role FROM Administrateur WHERE ID_utilisateur = ?
              UNION
-             SELECT 'pilote' FROM pilote WHERE ID_utilisateur = ?
+             SELECT 'pilote' FROM Pilote WHERE ID_utilisateur = ?
              UNION
-             SELECT 'etudiant' FROM etudiant WHERE ID_utilisateur = ?
+             SELECT 'etudiant' FROM Etudiant WHERE ID_utilisateur = ?
              LIMIT 1"
         );
         $stmt->execute([$id, $id, $id]);
