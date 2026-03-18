@@ -2,36 +2,30 @@
 
 {% block title %}Accueil - ThePiston{% endblock %}
 
+{% block hero %}<img src="/assets/images/accueil_picture.jpg" alt="poignee de main" style="width:100%;height:30%;">{% endblock %}
 {% block content %}
-<img src="/assets/images/accueil_picture.jpg" alt="poignee de main" style="width:100%;height:30%;">
-<main>
-    
     <h1 class="main-title">Les offres disponibles</h1>
     <section class="search-section">
-        
-        <form class="search-form" action="/offres" method="GET">
+        {# Le formulaire doit envoyer vers index.php avec l'uri #}
+        <form action="index.php" method="GET" class="search-form">
+            <input type="hidden" name="uri" value="offers">
+
             <div class="search-bar-wrapper">
-                <input class="search-input" type="text" name="recherche" placeholder="Rechercher...">
-                <button type="submit" class="search-btn" aria-label="Rechercher">
+                <input type="text" name="recherche" class="search-input" 
+                       value="{{ search_term }}" placeholder="Rechercher une offre...">
+
+                <button type="submit" class="search-btn">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
-            </div>
 
-            <div class="filters-container">
-                <select class="filter-item" name="competences">
-                    <option value="">Mes compétences</option>
-                    <option value="competence1">Compétence 1</option>
-                    <option value="competence2">Compétence 2</option>
-                    <option value="competence3">Compétence 3</option>
-                </select>
+                <a href="index.php?uri=offers/create" type="button" class="btn-add link" id="ouvrirPopup">+</a>
+            </div>
 
                 <select class="filter-item" name="type">
                     <option value="">Type d'offre</option>
                     <option value="stage">Stage</option>
                     <option value="Alternance">Alternance</option>
                 </select>
-
-                <input type="text" class="filter-item" name="loc" placeholder="Localisation...">
                 
                 <input type="text" class="filter-item" name="ent" placeholder="Entreprise...">
             </div>
@@ -54,31 +48,30 @@
                     <div>
                         <h3>Statistiques générales</h3>
                         <ul>
-                            <li>Nombre d'étudiants inscrits : </li>
-                            <li>Nombre d'offres disponibles : </li>
-                            <li>Nombre moyen de canidature par offre : </li>
+                            <li>Nombre d'étudiants inscrits : {{ students[0].count_etudiant }}</li>
+                            <li>Nombre d'offres disponibles : {{ offers[0].count_offre }} </li>
+                            <li>Nombre moyen de canidature par offre : {{ apply[0].moyenne_candidature|round(1) }} </li>
                         </ul>
                     </div>
 
                     <div>
                         <h3>Top des offres</h3>
                         <ul>
-                            <li>Offre 1 : Nombre de candidatures</li>
-                            <li>Offre 2 : Nombre de candidatures</li>
-                            <li>Offre 3 : Nombre de candidatures</li>
+                            <li>{{topOffers[0].Titre}} : {{topOffers[0].Nb_wishlist}} fois ajouté en wishlist</li>
+                            <li>{{topOffers[1].Titre}} : {{topOffers[1].Nb_wishlist}} fois ajouté en wishlist</li>
+                            <li>{{topOffers[2].Titre}} : {{topOffers[2].Nb_wishlist}} fois ajouté en wishlist</li>
                         </ul>
                     </div>
 
                     <div>
                         <h3>Répartition des offres par rapport à leur durée</h3>
-                        <div>1-3</div>
-                        <div>4-6</div>
-                        <div>6+</div>
+                        <div>1-3 mois : {{timeDistribution[0].total_court}}</div>
+                        <div>4-6 mois : {{timeDistribution[0].total_moyen}}</div>
+                        <div>6+ mois : {{timeDistribution[0].total_long}}</div>
                     </div>
 
                 </div>
             </div>
         </section>
     </div>
-</main>
 {% endblock %}

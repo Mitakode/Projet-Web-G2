@@ -23,15 +23,17 @@ try {
 // Initialisation des composants
 // Adaptateur BDD des différentes tables
 $companyDbAdapter = new \App\Models\SqlDatabase($pdo, 'Entreprise', 'ID_entreprise');
+$homepageDbAdapter = new \App\Models\SqlDatabase($pdo, 'Offre', 'ID_offre');
 
 // On crée le modèle avec la connexion PDO
 $companyModel = new App\Models\CompanyModel($companyDbAdapter);
+$homepageModel = new App\Models\HomepageModel($homepageDbAdapter);
 //$offerModel      = new App\Models\OfferModel($pdo);
 //$userModel       = new App\Models\UserModel($pdo); // Gère Etudiants, Pilotes, Admins
 
 // Contrôleurs
-//$mainController = new App\Controllers\MainController($twig, $offerModel, $enterpriseModel);
 $companyController = new App\Controllers\CompanyController($twig, $companyModel);
+$homepageController = new App\Controllers\HomepageController($twig, $homepageModel);
 //$offerController = new App\Controllers\OfferController($twig, $offerModel, $enterpriseModel);
 //$userController = new App\Controllers\UserController($twig, $userModel);
 
@@ -41,13 +43,10 @@ $uri = $_GET['uri'] ?? '/';
 switch ($uri) {
     // Pages Globales
     case '/':
-        $mainController->home();
-        break;
-    case 'stats':
-        $mainController->showStats();
+        $homepageController->home();
         break;
     case 'mentions-legales':
-        $mainController->legal();
+        $homepageController->legal();
         break;
 
     // Gestion des entreprises
