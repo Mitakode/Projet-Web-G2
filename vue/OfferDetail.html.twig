@@ -1,38 +1,49 @@
 {% extends "base.html.twig" %}
 
-{% block title %}ThePiston - Titre de l'offre{% endblock %}
+{# Le titre de l'onglet prend le nom de l'offre #}
+{% block title %}ThePiston - {{ offre.Titre }}{% endblock %}
 
 {% block content %}
 <main>
     <section class="offer-container">
         <div class="offer-header">
-            <h1 class="offer">Alternance- Mastere Developpement de Systemes d'Information Banque et Assurance LBP/CGI bla bla blablabla bla bla H/F</h1>
-            <h2 class="offer">La Banque Postale</h2>
+            {# Affichage dynamique du titre et de l'entreprise #}
+            <h1 class="offer">{{ offre.Titre }}</h1>
+            <h2 class="offer">{{ offre.Nom_entreprise }}</h2>
         </div>
 
         <div class="form-grid">
             <div class="form-column2">
                 <div class="frame2">
                     <div class="infos-offre">
-                        <p>Date de publication : 26/02/2026</p>
-                        <p>Nombre de candidature : 12</p>
+                        {# Formatage de la date à la française #}
+                        <p>Date de publication : {{ offre.Date_publication|date("d/m/Y") }}</p>
+                        {# Variable fictive pour l'instant, à lier plus tard à une table de candidatures #}
+                        <p>Nombre de candidatures : {{ nb_candidatures ?? 'Non spécifié' }}</p>
                     </div>
 
-                    <p style="text-align: justify;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel sapien eget nunc efficitur bibendum. Sed at ligula a nunc efficitur bibendum. Sed at ligula a nunc efficitur bibendum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel sapien eget nunc efficitur bibendum. Sed at ligula a nunc efficitur bibendum. Sed at ligula a nunc efficitur bibendum.</p>
+                    {# nl2br permet de respecter les retours à la ligne faits dans la description #}
+                    <p style="text-align: justify;">{{ offre.Description|nl2br }}</p>
 
                     <div>
-                        <h2 style="margin-top: 20px;">Competences requises</h2>
+                        <h2 style="margin-top: 20px;">Compétences requises</h2>
                         <ul class="skills">
-                            <li>Competence 1</li>
-                            <li>Competence 2</li>
-                            <li>Competence 3</li>
-                            <li>Competence 4</li>
+                            {# On découpe la chaîne de texte à chaque virgule pour créer un tableau #}
+                            {% if offre.Liste_competences %}
+                                {% set competences = offre.Liste_competences|split(',') %}
+                                {% for competence in competences %}
+                                    {# trim enlève les espaces en trop avant ou après le mot #}
+                                    <li>{{ competence|trim }}</li>
+                                {% endfor %}
+                            {% else %}
+                                <li>Aucune compétence spécifique renseignée.</li>
+                            {% endif %}
                         </ul>
                     </div>
 
                     <div>
-                        <h2>Remuneration</h2>
-                        <p>1euro/mois</p>
+                        <h2>Rémunération</h2>
+                        <p>{{ offre.Base_remuneration }} €/mois</p>
                     </div>
                 </div>
             </div>
@@ -44,17 +55,23 @@
                     </div>
                     <div id="zone-depot" hidden>
                         <form class="form-test" action="/upload.php" method="POST" enctype="multipart/form-data">
-                            <p class="small-text">Pour postuler a cette offre, vous devez deposer votre CV ainsi qu'une lettre de motivation.</p>
+                            
+                            {# J'ajoute un champ caché très important pour que ton script PHP sache à quelle offre l'étudiant postule #}
+                            <input type="hidden" name="id_offre" value="{{ offre.ID_offre }}">
+
+                            <p class="small-text">Pour postuler à cette offre, vous devez déposer votre CV ainsi qu'une lettre de motivation.</p>
                             <div>
-                                <label for="cv" class="file-label">Deposer votre CV ici (pdf)</label>
+                                <label for="cv" class="file-label">Déposer votre CV ici (pdf)</label>
                                 <input id="cv" name="cv" class="input-file" type="file" accept=".pdf" required>
                             </div>
                             <span class="file-name">Aucun fichier choisi</span>
+                            
                             <div>
-                                <label for="lettre" class="file-label">Deposer votre lettre de motivation ici (pdf)</label>
+                                <label for="lettre" class="file-label">Déposer votre lettre de motivation ici (pdf)</label>
                                 <input type="file" id="lettre" class="input-file" name="lettre" accept=".pdf" required>
                             </div>
                             <span class="file-name2">Aucun fichier choisi</span>
+                            
                             <button class="btn" type="submit" id="valider">Valider</button>
                         </form>
                     </div>
