@@ -28,7 +28,11 @@
             <div class="offres-liste">
                 <table class="company-table">
                     <tr>
-                        <th class="company-name">{{ offre.Titre }}</th>
+                        <th class="company-name">
+                            <a href="index.php?uri=offers/detail&id={{ offre.ID_offre }}" class="link-offer">
+                                {{ offre.Titre }}
+                            </a>
+                        </th>
                         {# L'affichage du nom de l'entreprise est possible grâce au JOIN dans le Modèle #}
                         <td class="company-rating">Entreprise : <strong>{{ offre.Nom_entreprise }}</strong></td>
                         <td class="btn-table">
