@@ -1,19 +1,29 @@
 {% extends "base.html.twig" %}
 
+{# titre de l'onglet qui s'adapte automatiquement (Création ou Modification) #}
 {% block title %}{{ is_edit ? 'Modifier' : 'Créer' }} une offre - ThePiston{% endblock %}
 
 {% block content %}
 <section class="frame">
+    {# titre principal de la page qui s'adapte également #}
     <h1 class="main-title">{{ is_edit ? 'Modifier' : 'Créer' }} une offre</h1>
 
+    {# 
+       L'action du formulaire est dynamique :
+       - Si is_edit est vrai, on envoie vers la route d'update avec l'ID
+       - Sinon, on envoie vers la route de création
+    #}
     <form class="form-test" action="/{{ is_edit ? 'offers/update&id=' ~ offre.ID_offre : 'offers/create' }}" method="POST">
         
         <label>Titre de l'offre</label>
+        {# Les attributs 'name' doivent correspondre exactement à ce que le contrôleur attend en $_POST #}
         <input class="form-input" type="text" name="Titre" value="{{ offre.Titre ?? '' }}" required>
 
+        {# Utilisation de la structure en grille pour un affichage propre sur deux colonnes #}
         <div class="form-grid">
             <div class="form-column2">
                 <label>Entreprise</label>
+                {# Liste déroulante générée dynamiquement depuis la base de données via le contrôleur #}
                 <select class="form-input" name="ID_entreprise" required>
                     <option value="">Sélectionnez une entreprise</option>
                     {% for entreprise in entreprises %}
@@ -37,6 +47,9 @@
             </div>
             
             <div class="form-column3">
+                {# 
+                   text input au lieu des checkboxes pour les compétences, car la base de données stocke les compétences sous forme de chaîne (VARCHAR "C++, Python").
+                #}
                 <label>Compétences requises (séparées par des virgules)</label>
                 <input class="form-input" type="text" name="Liste_competences" value="{{ offre.Liste_competences ?? '' }}" placeholder="Ex: PHP, Twig, SQL">
             </div>
@@ -46,6 +59,7 @@
         <textarea class="form-input" rows="10" name="Description" required>{{ offre.Description ?? '' }}</textarea>
 
         <div class="btn-container" style="margin-top: 20px;">
+            {# Le texte du bouton s'adapte à l'action en cours #}
             <button class="btn" type="submit">{{ is_edit ? 'Valider les modifications' : 'Créer l\'offre' }}</button>
             <a href="/offers" class="btn" style="background-color: #ccc; margin-left: 10px;">Annuler</a>
         </div>
