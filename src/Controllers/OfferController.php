@@ -6,9 +6,9 @@ use App\Models\Paginator;
 class OfferController {
     private $twig;
     private $model;          // Gère les données des Offres
-    private $companyModel;   // Gère les données des Entreprises (nécessaire pour le formulaire)
+    private $companyModel;   // Gère les données des Entreprises (nécessaire pour les formulaires)
 
-    // Injection des dépendances : on fournit au contrôleur les outils dont il a besoin
+    // Injection des dépendances
     public function __construct($twig, $model, $companyModel) {
         $this->twig = $twig;
         $this->model = $model;
@@ -25,25 +25,52 @@ class OfferController {
         // Demande au modèle de trouver les offres correspondantes
         $allOffers = $this->model->searchOffers($search);
 
-        // Divise les résultats pour en afficher que 10 par page
+        // Divise les résultats pour n'en afficher que 10 par page
         $paginator = new Paginator($allOffers, 10);
         
-        // Envoie les variables à la vue Twig pour générer le html
+        // Envoie les variables à la vue Twig pour générer le HTML
         echo $this->twig->render('Offers.html.twig', [
-            'offres_page'  => $paginator->getCurrentPageItems(), // offres de la page actuelle
-            'total_pages'  => $paginator->getTotalPages(),       // nombre total de pages
-            'current_page' => $_GET['page'] ?? 1,                // numéro de la page actuelle
-            'search_term'  => $search                            // permet de garder le mot-clé dans la barre de recherche
+            'offres_page'  => $paginator->getCurrentPageItems(),
+            'total_pages'  => $paginator->getTotalPages(),
+            'current_page' => $_GET['page'] ?? 1,
+            'search_term'  => $search
         ]);
     }
 
     /**
-     * Gère l'ajout d'une nouvelle offre (Affichage du formulaire et traitement).
+     * Affiche la page de détails d'une offre spécifique (NOUVEAU)
+     */
+    public function detail() {
+        $id = $_GET['id'] ?? null;
+
+        // Si aucun ID n'est fourni, on redirige vers la liste des offres
+        if (!$id) {
+            header('Location: /offers');
+            exit;
+        }
+
+        // On récupère les informations de l'offre depuis la base de données
+        $offer = $this->model->getOfferById($id);
+
+        // Sécurité supplémentaire : si l'ID tapé n'existe pas en BDD
+        if (!$offer) {
+            header('Location: /offers');
+            exit;
+        }
+
+        // On affiche le template de détail en lui passant la variable "offre"
+        echo $this->twig->render('OfferDetail.html.twig', [
+            'offre' => $offer
+        ]);
+    }
+
+    /**
+     * Gère l'ajout d'une nouvelle offre (Affichage du formulaire + Traitement).
      */
     public function create() {
-        // Si le formulaire a été soumis (méthode POST)
+        // Si le formulaire a été soumis
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Nettoyage des données pour éviter les failles XSS (htmlspecialchars)
+            // Nettoyage des données
             $titre = isset($_POST['Titre']) ? htmlspecialchars(trim($_POST['Titre'])) : '';
             $description = isset($_POST['Description']) ? htmlspecialchars(trim($_POST['Description'])) : '';
             $baseRemuneration = isset($_POST['Base_remuneration']) ? floatval($_POST['Base_remuneration']) : null;
@@ -52,11 +79,11 @@ class OfferController {
             $idEntreprise = isset($_POST['ID_entreprise']) ? intval($_POST['ID_entreprise']) : null;
             $datePublication = date('Y-m-d'); // Date du jour automatique
 
-            // Vérification basique des champs obligatoires
+            // Vérification basique
             if (empty($titre) || empty($description) || empty($idEntreprise)) {
                 echo "Veuillez remplir correctement tous les champs obligatoires.";
             } else {
-                // Envoi des données nettoyées au modèle pour insertion en BDD
+                // Insertion en BDD
                 $this->model->createOffer([
                     'Titre'             => $titre,
                     'Description'       => $description,
@@ -66,17 +93,15 @@ class OfferController {
                     'Liste_competences' => $listeCompetences,
                     'ID_entreprise'     => $idEntreprise
                 ]);
-                // Redirection vers la liste des offres après succès
                 header('Location: /offers');
                 exit;
             } 
         }
 
-        // Si on est en méthode GET (simple affichage de la page), on récupère la liste des entreprises 
-        // pour que l'utilisateur puisse choisir à quelle entreprise lier l'offre
+        // Récupère la liste des entreprises pour le <select> du formulaire
         $entreprises = $this->companyModel->searchCompanies();
 
-        // Affiche le formulaire en mode "Création" (is_edit = false)
+        // Affiche le formulaire vierge
         echo $this->twig->render('OffersForm.html.twig', [
             'is_edit'     => false,
             'entreprises' => $entreprises
@@ -89,13 +114,11 @@ class OfferController {
     public function update() {
         $id = $_GET['id'] ?? null;
 
-        // Si aucun ID n'est fourni dans l'URL, on redirige par sécurité
         if (!$id) {
             header('Location: /offers');
             exit;
         }
 
-        // Si le formulaire de modification est soumis
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = [
                 'Titre'             => htmlspecialchars(trim($_POST['Titre'])),
@@ -111,11 +134,10 @@ class OfferController {
             exit;
         }
 
-        // Récupération des données actuelles de l'offre pour pré-remplir les champs
         $offer = $this->model->getOfferById($id);
         $entreprises = $this->companyModel->searchCompanies();
 
-        // Affiche le formulaire en mode "Édition" (is_edit = true)
+        // Affiche le formulaire pré-rempli
         echo $this->twig->render('OffersForm.html.twig', [
             'offre'       => $offer,
             'entreprises' => $entreprises,
@@ -131,7 +153,6 @@ class OfferController {
         if ($id) {
             $this->model->deleteOffer($id);
         }
-        // Redirige vers la liste une fois supprimée
         header('Location: /offers');
     }
 }
