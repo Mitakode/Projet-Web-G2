@@ -1,6 +1,5 @@
 <?php
 session_start();
-//$twig->addGlobal('session', $_SESSION); // Permet d'accéder à la session dans tous les templates Twig
 require "vendor/autoload.php";
 
 use App\Controllers\CompanyController;
@@ -10,6 +9,7 @@ use App\Controllers\AuthController;
 // Configuration de Twig
 $loader = new \Twig\Loader\FilesystemLoader('vue');
 $twig = new \Twig\Environment($loader, ['debug' => true]);
+$twig->addGlobal('session', $_SESSION); // Permet d'accéder à la session dans tous les templates Twig
 
 // Connexion à la base de données
 $dsn = 'mysql:host=localhost;dbname=thepiston;charset=utf8';

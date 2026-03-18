@@ -19,17 +19,17 @@
         </div>
 
         <nav>
-            <a href="/?uri=dashboard" class="nav-link">Mon espace</a>
+            <a href="/dashboard" class="nav-link">Mon espace</a>
             <a href="/?uri=offers" class="nav-link">Les offres</a>
             <a href="/?uri=companies" class="nav-link">Les entreprises</a>
 
-            {% if session.id %}
+            {% if session.user_id %}
             <div class="btn-container">
-                <a href="/?uri=logout" class="btn btn-deconnexion">
+                <a href="/logout" class="btn btn-deconnexion">
                     Déconnexion
                 </a>
             {% else %}  
-                <a href="/?uri=login" class="btn btn-connexion">
+                <a href="/login" class="btn btn-connexion">
                     Connexion
                 </a>
             {% endif %}
