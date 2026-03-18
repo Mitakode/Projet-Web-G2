@@ -23,16 +23,17 @@ try {
 // Initialisation des composants
 // Adaptateur BDD des différentes tables
 $companyDbAdapter = new \App\Models\SqlDatabase($pdo, 'Entreprise', 'ID_entreprise');
+$offerDbAdapter = new \App\Models\SqlDatabase($pdo, 'Offre', 'ID_offre'); // AJOUT : Adaptateur pour les offres
 
 // On crée le modèle avec la connexion PDO
 $companyModel = new App\Models\CompanyModel($companyDbAdapter);
-//$offerModel      = new App\Models\OfferModel($pdo);
+$offerModel = new App\Models\OfferModel($offerDbAdapter); // MODIFICATION : Décommenté et adapté avec offerDbAdapter
 //$userModel       = new App\Models\UserModel($pdo); // Gère Etudiants, Pilotes, Admins
 
 // Contrôleurs
 //$mainController = new App\Controllers\MainController($twig, $offerModel, $enterpriseModel);
 $companyController = new App\Controllers\CompanyController($twig, $companyModel);
-//$offerController = new App\Controllers\OfferController($twig, $offerModel, $enterpriseModel);
+$offerController = new App\Controllers\OfferController($twig, $offerModel, $companyModel); // MODIFICATION : Décommenté avec les bons arguments
 //$userController = new App\Controllers\UserController($twig, $userModel);
 
 // Routage simple
@@ -68,11 +69,14 @@ switch ($uri) {
     case 'offers':
         $offerController->list();
         break;
-    case 'offers/details':
-        $offerController->details($_GET['id']);
+    case 'offers/detail': // MODIFICATION : 'details' devient 'detail' pour matcher l'URL
+        $offerController->detail(); // MODIFICATION : Retrait de l'argument $_GET['id'] géré par le contrôleur
         break;
     case 'offers/create':
         $offerController->create();
+        break;
+    case 'offers/update': // AJOUT : Route manquante pour modifier une offre
+        $offerController->update();
         break;
     case 'offers/delete':
         $offerController->delete();
