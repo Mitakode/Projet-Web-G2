@@ -95,14 +95,8 @@ switch ($uri) {
         break;
 
     // Dashboards
-    case 'dashboard/student':
-        echo $twig->render('student.html.twig');
-        break;
-    case 'dashboard/admin':
-        echo $twig->render('admin.html.twig');
-        break;
-    case 'dashboard/pilote':
-        echo $twig->render('admin.html.twig');
+    case 'dashboard':
+        $authController->dashboard();
         break;
 
     case 'login':
