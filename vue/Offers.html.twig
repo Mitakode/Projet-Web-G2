@@ -6,31 +6,38 @@
     <h1 class="main-title">Les offres</h1>
     
     <section class="search-section">
+        {# Le formulaire de recherche renvoie vers index.php en méthode GET #}
         <form action="index.php" method="GET" class="search-form">
             <input type="hidden" name="uri" value="offers">
             <div class="search-bar-wrapper">
+                {# Pré-remplissage avec {{ search_term }} pour garder la recherche affichée après validation #}
                 <input type="text" name="recherche" class="search-input" 
                        value="{{ search_term }}" placeholder="Rechercher une offre...">
                 <button type="submit" class="search-btn">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
+                {# Bouton pour ajouter une nouvelle offre #}
                 <a href="index.php?uri=offers/create" type="button" class="btn-add link" id="ouvrirPopup">+</a>
             </div>
         </form>
     </section>
 
     <div class="list-container">
+        {# Boucle Twig : Parcours chaque offre envoyée par le contrôleur dans 'offres_page' #}
         {% for offre in offres_page %}
             <div class="offres-liste">
                 <table class="company-table">
                     <tr>
                         <th class="company-name">{{ offre.Titre }}</th>
+                        {# L'affichage du nom de l'entreprise est possible grâce au JOIN dans le Modèle #}
                         <td class="company-rating">Entreprise : <strong>{{ offre.Nom_entreprise }}</strong></td>
                         <td class="btn-table">
+                            {# Lien vers la page de modification avec l'ID de l'offre concernée #}
                             <a href="index.php?uri=offers/update&id={{ offre.ID_offre }}" 
                                 class="btn-action crayon">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </a>
+                            {# Lien de suppression avec une popup de confirmation JavaScript #}
                             <a href="index.php?uri=offers/delete&id={{ offre.ID_offre }}" 
                                class="btn-action poubelle" 
                                onclick="return confirm('Supprimer cette offre ?')">
@@ -40,6 +47,7 @@
                     </tr>
                     <tr>
                         <td colspan="2" class="company-info">
+                            {# Affichage des données de base de l'offre avec formatage de la date #}
                             Durée : {{ offre.Duree }} mois | Rémunération : {{ offre.Base_remuneration }} € | Publié le : {{ offre.Date_publication|date("d/m/Y") }}
                         </td>
                     </tr>
@@ -55,14 +63,18 @@
                     </tr>
                 </table>
             </div>
+        {# S'exécute si le tableau 'offres_page' est vide (aucune offre ne correspond à la recherche) #}
         {% else %}
             <p>Aucune offre trouvée.</p>
         {% endfor %}
     </div>
 
+    {# Système de pagination #}
     <div class="pagination">
         {% if total_pages > 1 %}
+            {# Boucle de 1 jusqu'au nombre total de pages #}
             {% for i in 1..total_pages %}
+                {# Ajout de la classe 'active' si 'i' correspond à la page actuelle #}
                 <a href="index.php?uri=offers&recherche={{ search_term }}&page={{ i }}" 
                    class="page-link {{ i == current_page ? 'active' : '' }}">
                     {{ i }}
