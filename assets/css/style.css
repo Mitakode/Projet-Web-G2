@@ -259,8 +259,33 @@ footer a:hover {
 .search-form {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 15px;    /* Espace entre la barre principale et les filtres */
+    /* On aligne les blocs enfants à gauche au lieu de center */
+    align-items: flex-start; 
+    gap: 15px;
+    /* Si tu veux que ton formulaire soit centré dans la PAGE mais 
+       que son contenu interne soit aligné à gauche, ajoute ceci : */
+    max-width: 1000px; /* Ou la largeur de ta barre de recherche */
+    margin: 0 auto;   /* Centre le bloc formulaire sur la page */
+    width: 100%;
+}
+
+.filters-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* Aligne les deux filtres à gauche */
+    gap: 15px;
+    width: 100%; /* Important pour que le 'gauche' soit le même que la barre */
+}
+
+.filter-item {
+    background-color: var(--gray-dark);
+    border: none;
+    /* On évite le width: 48% ici pour ne pas qu'ils s'étirent trop, 
+       ou on met un max-width */
+    min-width: 300px; 
+    border-radius: 10px;
+    padding: 8px 15px;
+    font-size: 0.9rem;
 }
 
 /* Search bar */
@@ -269,7 +294,7 @@ footer a:hover {
     display: flex;
     background-color: var(--gray-dark);
     border-radius: 10px;
-    width: 80%;
+    width: 100%;
     overflow: hidden;    /* Pour que les bords de l'input ne dépassent pas de l'arrondi */
     margin-bottom: 15px;
 }
@@ -297,24 +322,6 @@ footer a:hover {
     outline: none;
 }
 
-
-/* Other part of the search bar */
-.filters-container {
-    display: flex;
-    flex-wrap: wrap;    /* Permet de passer à la ligne sur mobile */
-    justify-content: space-between;
-    width: 70%;
-    gap: 10px;
-}
-
-.filter-item {
-    background-color: var(--gray-dark);
-    border: none;
-    width:48%;
-    border-radius: 10px;
-    padding: 8px 15px;
-    font-size: 0.9rem;
-}
 
 .filter-item:hover {
     background-color: var(--content-gray);
@@ -920,6 +927,7 @@ main.list-page {
 .stat-card span {
     font-size: 0.9rem;
     line-height: 1.2;
+    margin-top: 20px;
 }
 
 /* --- SLIDE 2: WISHLIST --- */
@@ -980,9 +988,12 @@ main.list-page {
 
 .bar {
     height: 100%;
-    background-color: var(--green-main);
     border-radius: 0 5px 5px 0; /* Arrondi uniquement à droite */
 }
+
+.bar.dark { background-color: #bdf290 !important; }
+.bar.medium { background-color: #cbf6a6 !important; }
+.bar.light { background-color: #d8f9bb !important; }
 
 /* Définition des boutons de contrôle du carousel */
 .carousel-controls {
