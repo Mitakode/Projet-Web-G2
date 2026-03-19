@@ -9,8 +9,9 @@
 /*  ==================================== COLOR VARIABLES ====================================    */
 
 :root {
-    --green-main: #d4f8a1; /* Le vert clair de ton image */
-    --green-dark: #b8e67a;
+    --green1: #bdf290; 
+    --green2: #cbf6A6;
+    --green3: #d8f9Bb;
     --gray-bg: #e0e0e0;    /* Fond des barres/items */
     --green-piston: #A1DE64;
     /* Le vert de ton bouton Postuler */
@@ -880,12 +881,6 @@ main.list-page {
     /* Ajout d'une animation douce pour la transition entre les diapositives */
 }
 
-:root {
-    --green-main: #d4f8a1; /* Le vert clair de ton image */
-    --green-dark: #b8e67a;
-    --gray-bg: #e0e0e0;    /* Fond des barres/items */
-}
-
 /* Style commun aux titres des slides */
 .slide h3 {
     text-align: left;
@@ -902,7 +897,6 @@ main.list-page {
 }
 
 .stat-card {
-    background-color: var(--green-main);
     padding: 20px 10px;
     border-radius: 15px;
     flex: 1;
@@ -913,10 +907,14 @@ main.list-page {
     min-height: 200px;
 }
 
+.stat-card.dark { background-color: #bdf290 !important; }
+.stat-card.medium { background-color: #cbf6a6 !important; }
+.stat-card.light { background-color: #d8f9bb !important; }
+
 .stat-card strong {
     font-size: 2.2rem;
     display: block;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 .stat-card span {

@@ -17,8 +17,6 @@
                 <button type="submit" class="search-btn">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
-
-                <a href="index.php?uri=offers/create" type="button" class="btn-add link" id="ouvrirPopup">+</a>
             </div>
             <div class="filters">
                 <select class="filter-item" name="type">
@@ -50,25 +48,25 @@
                         <!-- Conteneur interne pour les diapositives -->
                         <div class="carousel-inner">
                             <!-- Première diapositive -->
-                            <div class="slide slide-stats">
+                            <div class="slide">
                                 <h3>Statistiques Générales</h3>
                                 <div class="stats-grid">
-                                    <div class="stat-card">
+                                    <div class="stat-card dark">
                                         <strong>{{ students[0].count_etudiant }}</strong>
                                         <span>étudiants dévoués à leur recherches avec ThePiston</span>
                                     </div>
-                                    <div class="stat-card">
+                                    <div class="stat-card medium">
                                         <strong>{{ offers[0].count_offre }}</strong>
                                         <span>offres succulentes vous attendent</span>
                                     </div>
-                                    <div class="stat-card">
+                                    <div class="stat-card light">
                                         <strong>{{ apply[0].moyenne_candidature|round(1) }}</strong>
                                         <span>candidatures par offre en moyenne</span>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="slide slide-wishlist">
+                            <div class="slide">
                                 <h3>Top des offres ajoutées en wishlist</h3>
                                 <div class="wishlist-container">
                                     {% for offer in topOffers|slice(0, 3) %}
