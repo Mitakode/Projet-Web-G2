@@ -17,14 +17,21 @@
                 <button type="submit" class="search-btn">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
-
-                <a href="index.php?uri=offers/create" type="button" class="btn-add link" id="ouvrirPopup">+</a>
             </div>
-
+            <div class="filters-container">
                 <select class="filter-item" name="type">
                     <option value="">Type d'offre</option>
-                    <option value="stage">Stage</option>
+                    <option value="Stage">Stage</option>
                     <option value="Alternance">Alternance</option>
+                </select>
+
+                <select class="filter-item" name="duree">
+                    <option value="">Durée</option>
+                    <option value="3">1-3 mois</option>
+                    <option value="6">4-6 mois</option>
+                    <option value="12">6-12 mois</option>
+                    <option value="24">2 ans</option>
+                    <option value="24+">Plus de 2 ans</option>
                 </select>
                 
                 <input type="text" class="filter-item" name="ent" placeholder="Entreprise...">
@@ -44,34 +51,74 @@
         <section class="info-column">
             <h2>Nos statistiques</h2>
             <div class="info-box">
-                <div>
-                    <div>
-                        <h3>Statistiques générales</h3>
-                        <ul>
-                            <li>Nombre d'étudiants inscrits : {{ students[0].count_etudiant }}</li>
-                            <li>Nombre d'offres disponibles : {{ offers[0].count_offre }} </li>
-                            <li>Nombre moyen de canidature par offre : {{ apply[0].moyenne_candidature|round(1) }} </li>
-                        </ul>
-                    </div>
+                <div class="container">
+                    <!-- Élément carrousel -->
+                    <div class="carousel">
+                        <!-- Conteneur interne pour les diapositives -->
+                        <div class="carousel-inner">
+                            <!-- Première diapositive -->
+                            <div class="slide">
+                                <h3>Statistiques Générales</h3>
+                                <div class="stats-grid">
+                                    <div class="stat-card dark">
+                                        <strong>{{ students[0].count_etudiant }}</strong>
+                                        <span>étudiants dévoués à leur recherches avec ThePiston</span>
+                                    </div>
+                                    <div class="stat-card medium">
+                                        <strong>{{ offers[0].count_offre }}</strong>
+                                        <span>offres succulentes vous attendent</span>
+                                    </div>
+                                    <div class="stat-card light">
+                                        <strong>{{ apply[0].moyenne_candidature|round(1) }}</strong>
+                                        <span>candidatures par offre en moyenne</span>
+                                    </div>
+                                </div>
+                            </div>
 
-                    <div>
-                        <h3>Top des offres</h3>
-                        <ul>
-                            <li>{{topOffers[0].Titre}} : {{topOffers[0].Nb_wishlist}} fois ajouté en wishlist</li>
-                            <li>{{topOffers[1].Titre}} : {{topOffers[1].Nb_wishlist}} fois ajouté en wishlist</li>
-                            <li>{{topOffers[2].Titre}} : {{topOffers[2].Nb_wishlist}} fois ajouté en wishlist</li>
-                        </ul>
-                    </div>
+                            <div class="slide">
+                                <h3>Top des offres ajoutées en wishlist</h3>
+                                <div class="wishlist-container">
+                                    {% for offer in topOffers|slice(0, 3) %}
+                                    <a href="index.php?uri=offers/{{offer.ID_offre}}" class="wishlist-item">
+                                        <span>{{offer.Titre}}</span>
+                                        <span class="count">{{offer.Nb_wishlist}}</span>
+                                    </a>
+                                    {% endfor %}
+                                </div>
+                            </div>
 
-                    <div>
-                        <h3>Répartition des offres par rapport à leur durée</h3>
-                        <div>1-3 mois : {{timeDistribution[0].total_court}}</div>
-                        <div>4-6 mois : {{timeDistribution[0].total_moyen}}</div>
-                        <div>6+ mois : {{timeDistribution[0].total_long}}</div>
+                            <div class="slide slide-duration">
+                                <h3>Répartition des offres par rapport à leur durée</h3>
+                                <div class="chart-container">
+                                    <div class="chart-row">
+                                        <label>1-3 mois</label>
+                                        <div class="bar-bg"><div class="bar dark" style="width: 60%;"></div></div> </div>
+                                    <div class="chart-row">
+                                        <label>4-6 mois</label>
+                                        <div class="bar-bg"><div class="bar medium" style="width: 30%;"></div></div>
+                                    </div>
+                                    <div class="chart-row">
+                                        <label>6+ mois</label>
+                                        <div class="bar-bg"><div class="bar light" style="width: 85%;"></div></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Conteneur pour les boutons de navigation -->
+                        <div class="carousel-controls">
+                            <!-- Bouton pour passer à la diapositive précédente -->
+                            <button id="prev"><i class="fa-duotone fa-solid fa-chevron-left"></i></button>
+                            <!-- Bouton pour passer à la diapositive suivante -->
+                            <button id="next"><i class="fa-duotone fa-solid fa-chevron-right"></i></button>
+                        </div>
+                        <!-- Conteneur pour les points de navigation -->
+                        <div class="carousel-dots"></div>
                     </div>
-
                 </div>
             </div>
         </section>
     </div>
 {% endblock %}
+
+{% block scripts %}<script src="/assets/js/Carousel.js" async></script>{% endblock %}
+

@@ -1,12 +1,15 @@
 <?php
+session_start();
 require "vendor/autoload.php";
 
 use App\Controllers\CompanyController;
 use App\Models\CompanyModel; // On importe le modèle
+use App\Controllers\AuthController;
 
 // Configuration de Twig
 $loader = new \Twig\Loader\FilesystemLoader('vue');
 $twig = new \Twig\Environment($loader, ['debug' => true]);
+$twig->addGlobal('session', $_SESSION); // Permet d'accéder à la session dans tous les templates Twig
 
 // Connexion à la base de données
 $dsn = 'mysql:host=localhost;dbname=thepiston;charset=utf8';
@@ -23,20 +26,22 @@ try {
 // Initialisation des composants
 // Adaptateur BDD des différentes tables
 $companyDbAdapter = new \App\Models\SqlDatabase($pdo, 'Entreprise', 'ID_entreprise');
+$offerDbAdapter = new \App\Models\SqlDatabase($pdo, 'Offre', 'ID_offre'); // AJOUT : Adaptateur pour les offres
 $homepageDbAdapter = new \App\Models\SqlDatabase($pdo, 'Offre', 'ID_offre');
-$studentDbAdapter = new \App\Models\SqlDatabase($pdo, 'Offre', 'ID_offre');
+$DashboardDbAdapter = new \App\Models\SqlDatabase($pdo, 'Offre', 'ID_offre');
 
 // On crée le modèle avec la connexion PDO
 $companyModel = new App\Models\CompanyModel($companyDbAdapter);
+$offerModel = new App\Models\OfferModel($offerDbAdapter); // MODIFICATION : Modèle décommenté avec le bon adaptateur
 $homepageModel = new App\Models\HomepageModel($homepageDbAdapter);
-$studentModel = new App\Models\StudentModel($studentDbAdapter);
-//$offerModel      = new App\Models\OfferModel($pdo);
+$DashboardModel = new App\Models\DashboardModel($DashboardDbAdapter);
 
 // Contrôleurs
 $companyController = new App\Controllers\CompanyController($twig, $companyModel);
+$offerController = new App\Controllers\OfferController($twig, $offerModel, $companyModel); // MODIFICATION : Contrôleur décommenté avec les bons arguments
 $homepageController = new App\Controllers\HomepageController($twig, $homepageModel);
-$studentController = new App\Controllers\StudentController($twig, $studentModel);
-//$offerController = new App\Controllers\OfferController($twig, $offerModel, $enterpriseModel);
+$DashboardController = new App\Controllers\DashboardController($twig, $DashboardModel);
+$authController = new App\Controllers\AuthController($twig, $pdo);
 
 // Routage simple
 $uri = $_GET['uri'] ?? '/';
@@ -68,11 +73,14 @@ switch ($uri) {
     case 'offers':
         $offerController->list();
         break;
-    case 'offers/details':
-        $offerController->details($_GET['id']);
+    case 'offers/detail': // MODIFICATION : 'details' devient 'detail' pour correspondre à la méthode
+        $offerController->detail(); 
         break;
     case 'offers/create':
         $offerController->create();
+        break;
+    case 'offers/update': // AJOUT : Route update
+        $offerController->update();
         break;
     case 'offers/delete':
         $offerController->delete();
@@ -113,8 +121,18 @@ switch ($uri) {
     case 'dashboard/student/delete-wishlist':
         $dashboardController->deleteWishlist();
         break;
+
+    
+    // Authentification
+    case 'login':
+        $authController->login();
+        break;
+    case 'logout':
+        $authController->logout();
+        break;
+
     default:
         header("HTTP/1.0 404 Not Found");
-        echo $twig->render('404.twig');
+        echo '<h1>404 - Page introuvable</h1>';
         break;
 }

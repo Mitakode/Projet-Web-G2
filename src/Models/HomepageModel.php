@@ -39,7 +39,7 @@ class HomepageModel extends Model {
     }
 
     public function topOffers(){
-        $sql = "SELECT COUNT(*) AS Nb_wishlist, o.Titre FROM Souhaite s JOIN Offre o ON s.ID_offre=o.ID_offre
+        $sql = "SELECT COUNT(*) AS Nb_wishlist, o.ID_offre, o.Titre FROM Souhaite s JOIN Offre o ON s.ID_offre=o.ID_offre
         GROUP BY s.ID_offre 
         ORDER BY Nb_wishlist DESC
         LIMIT 3";
