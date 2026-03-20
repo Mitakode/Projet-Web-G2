@@ -9,6 +9,10 @@
 /*  ==================================== COLOR VARIABLES ====================================    */
 
 :root {
+    --green1: #bdf290; 
+    --green2: #cbf6A6;
+    --green3: #d8f9Bb;
+    --gray-bg: #e0e0e0;    /* Fond des barres/items */
     --green-piston: #A1DE64;
     /* Le vert de ton bouton Postuler */
     --bg-color: #F9F9F9;
@@ -116,6 +120,7 @@ header nav {
     /* espacement auto */
     flex: 1;
     /* la moitié droite */
+    gap:20px;
 }
 
 header nav a.nav-link {
@@ -255,8 +260,28 @@ footer a:hover {
 .search-form {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 15px;    /* Espace entre la barre principale et les filtres */
+    align-items: center; 
+    gap: 15px;
+    max-width: 1000px; /* Ou la largeur de ta barre de recherche */
+    margin: 0 auto;   /* Centre le bloc formulaire sur la page */
+    width: 100%;
+}
+
+.filters-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%; /* Important pour que le 'gauche' soit le même que la barre */
+}
+
+.filter-item {
+    background-color: var(--gray-dark);
+    border: none;
+    width:30%;
+    border-radius: 10px;
+    padding: 8px 15px;
+    font-size: 0.9rem;
 }
 
 /* Search bar */
@@ -265,7 +290,7 @@ footer a:hover {
     display: flex;
     background-color: var(--gray-dark);
     border-radius: 10px;
-    width: 80%;
+    width: 100%;
     overflow: hidden;    /* Pour que les bords de l'input ne dépassent pas de l'arrondi */
     margin-bottom: 15px;
 }
@@ -293,24 +318,6 @@ footer a:hover {
     outline: none;
 }
 
-
-/* Other part of the search bar */
-.filters-container {
-    display: flex;
-    flex-wrap: wrap;    /* Permet de passer à la ligne sur mobile */
-    justify-content: space-between;
-    width: 80%;
-    gap: 10px;
-}
-
-.filter-item {
-    background-color: var(--gray-dark);
-    border: none;
-    width:22%;
-    border-radius: 10px;
-    padding: 8px 15px;
-    font-size: 0.9rem;
-}
 
 .filter-item:hover {
     background-color: var(--content-gray);
@@ -845,4 +852,209 @@ main.list-page {
         gap:5px;
     }
 
+}
+
+.container {
+    overflow: hidden;
+    /* Cache les éléments qui dépassent du container */
+}
+/* Définition du carousel */
+.carousel {
+    position: relative;
+    /* Le carousel est positionné relativement à son parent */
+}
+/* Définition de l'élément contenant les diapositives */
+.carousel-inner {
+    display: flex;
+    /* Affiche les éléments en ligne */
+    overflow: hidden;
+    /* Cache les éléments qui dépassent */
+    height: 45vh;
+    /* Hauteur égale à 100% de la hauteur de la vue */
+    flex-wrap: nowrap;
+    /* Empêche les éléments de se placer sur plusieurs lignes */
+}
+/* Définition des diapositives */
+.slide {
+    flex: 0 0 100%;
+    /* Largeur de chaque diapositive est de 100% */
+    height: 100%;
+    /* Hauteur de chaque diapositive est de 100% */
+    transition: .5s ease-in-out;
+    /* Ajout d'une animation douce pour la transition entre les diapositives */
+}
+
+/* Style commun aux titres des slides */
+.slide h3 {
+    text-align: left;
+    margin-bottom: 25px;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+/* --- SLIDE 1: STATS GENERALES --- */
+.stats-grid {
+    display: flex;
+    gap: 15px;
+    justify-content: space-between;
+}
+
+.stat-card {
+    padding: 20px 10px;
+    border-radius: 15px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: left;
+    min-height: 200px;
+}
+
+.stat-card.dark { background-color: #bdf290 !important; }
+.stat-card.medium { background-color: #cbf6a6 !important; }
+.stat-card.light { background-color: #d8f9bb !important; }
+
+.stat-card strong {
+    font-size: 2.2rem;
+    display: block;
+    margin-bottom: 20px;
+}
+
+.stat-card span {
+    font-size: 0.9rem;
+    line-height: 1.2;
+    margin-top: 20px;
+}
+
+/* --- SLIDE 2: WISHLIST --- */
+.wishlist-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.wishlist-item {
+    background-color: var(--gray-bg);
+    padding: 15px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.2s;
+}
+
+.wishlist-item:hover {
+    transform: translateX(5px);
+    background-color: #d8d8d8;
+}
+
+.wishlist-item .count {
+    font-weight: bold;
+    border-left: 1px solid #bbb;
+    padding-left: 15px;
+}
+
+/* --- SLIDE 3: DURÉE (GRAPHIQUE) --- */
+.chart-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-left: 10px;
+}
+
+.chart-row {
+    display: flex;
+    align-items: center;
+}
+
+.chart-row label {
+    width: 100px;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.bar-bg {
+    flex-grow: 1;
+    height: 60px;
+    background-color: transparent; /* Fond transparent pour laisser voir le gris de la box */
+    border-left: 1px solid #333; /* La ligne d'axe vertical */
+}
+
+.bar {
+    height: 100%;
+    border-radius: 0 5px 5px 0; /* Arrondi uniquement à droite */
+}
+
+.bar.dark { background-color: #bdf290 !important; }
+.bar.medium { background-color: #cbf6a6 !important; }
+.bar.light { background-color: #d8f9bb !important; }
+
+/* Définition des boutons de contrôle du carousel */
+.carousel-controls {
+    position: absolute;
+    /* Les boutons sont absolument positionnés */
+    z-index: 5;
+    /* Ils sont placés au-dessus des autres éléments */
+    left: 5%;
+    /* La distance à gauche est de 10% */
+    right: 5%;
+    /* La distance à droite est de 10% */
+    bottom:5%;
+    /* La distance du haut est de 50% */
+    display: flex;
+    /* Affiche les boutons en ligne */
+    justify-content: space-between;
+    /* Espacement égal entre les boutons */
+}
+/* Style des boutons de contrôle */
+.carousel-controls button {
+    padding: 10px;
+    font-size: 1.5rem;    /* Ajout de padding pour un meilleur contrôle */
+    background: none;
+    border: none;
+    /* Arrière-plan en aquamarine */
+}
+ .carousel-controls button:hover {
+    background-color: var(--green-piston-dark);
+    cursor: pointer;
+    border-radius: 10px;
+    /* Arrière-plan en aquamarine */
+ }
+/* Définition des points de contrôle */
+.carousel-dots {
+    position: absolute;
+    /* Les points sont absolument positionnés */
+    z-index: 5;
+    /* Ils sont placés au-dessus des autres éléments */
+    left: 50%;
+    /* La distance à gauche est de 50% */
+    right: 50%;
+    /* La distance à droite est de 50% */
+    bottom: 0%;
+    /*La distance du bas est de 10% */
+    display: flex;
+    /* Affiche les points en ligne */
+    justify-content: center;
+    /* Centrage des points */
+}
+/* Style des points de contrôle */
+.carousel-dots .dot {
+    border-radius: 50%;
+    /* Les points sont en forme de cercle */
+    margin: 5px;
+    /* Ajout d'un margin pour un meilleur contrôle */
+    cursor: pointer;
+    /* Curseur en forme de main pour un meilleur contrôle */
+}
+/* Styles pour les points de navigation du carrousel */
+.carousel-dots .active {
+    /* Border de 10px pour le point actif */
+    border: 10px solid var(--green-piston-dark) !important;
+    /* !important permet de surcharger les autres styles éventuels */
+}
+.carousel-dots .inactive {
+    /* Border de 10px pour les points inactifs */
+    border: 10px solid var(--white) !important;
 }

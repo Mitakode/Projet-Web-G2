@@ -1,12 +1,15 @@
 <?php
+session_start();
 require "vendor/autoload.php";
 
 use App\Controllers\CompanyController;
 use App\Models\CompanyModel; // On importe le modèle
+use App\Controllers\AuthController;
 
 // Configuration de Twig
 $loader = new \Twig\Loader\FilesystemLoader('vue');
 $twig = new \Twig\Environment($loader, ['debug' => true]);
+$twig->addGlobal('session', $_SESSION); // Permet d'accéder à la session dans tous les templates Twig
 
 // Connexion à la base de données
 $dsn = 'mysql:host=localhost;dbname=thepiston;charset=utf8';
@@ -24,17 +27,20 @@ try {
 // Adaptateur BDD des différentes tables
 $companyDbAdapter = new \App\Models\SqlDatabase($pdo, 'Entreprise', 'ID_entreprise');
 $offerDbAdapter = new \App\Models\SqlDatabase($pdo, 'Offre', 'ID_offre'); // AJOUT : Adaptateur pour les offres
+$homepageDbAdapter = new \App\Models\SqlDatabase($pdo, 'Offre', 'ID_offre');
 
 // On crée le modèle avec la connexion PDO
 $companyModel = new App\Models\CompanyModel($companyDbAdapter);
 $offerModel = new App\Models\OfferModel($offerDbAdapter); // MODIFICATION : Modèle décommenté avec le bon adaptateur
+$homepageModel = new App\Models\HomepageModel($homepageDbAdapter);
 //$userModel       = new App\Models\UserModel($pdo); // Gère Etudiants, Pilotes, Admins
 
 // Contrôleurs
-//$mainController = new App\Controllers\MainController($twig, $offerModel, $enterpriseModel);
 $companyController = new App\Controllers\CompanyController($twig, $companyModel);
 $offerController = new App\Controllers\OfferController($twig, $offerModel, $companyModel); // MODIFICATION : Contrôleur décommenté avec les bons arguments
+$homepageController = new App\Controllers\HomepageController($twig, $homepageModel);
 //$userController = new App\Controllers\UserController($twig, $userModel);
+$authController = new App\Controllers\AuthController($twig, $pdo);
 
 // Routage simple
 $uri = $_GET['uri'] ?? '/';
@@ -42,13 +48,10 @@ $uri = $_GET['uri'] ?? '/';
 switch ($uri) {
     // Pages Globales
     case '/':
-        $mainController->home();
-        break;
-    case 'stats':
-        $mainController->showStats();
+        $homepageController->home();
         break;
     case 'mentions-legales':
-        $mainController->legal();
+        $homepageController->legal();
         break;
 
     // Gestion des entreprises
@@ -95,8 +98,20 @@ switch ($uri) {
         $userController->listPilots();
         break;
 
+    // Dashboards
+    case 'dashboard':
+        $authController->dashboard();
+        break;
+
+    case 'login':
+        $authController->login();
+        break;
+    case 'logout':
+        $authController->logout();
+        break;
+
     default:
         header("HTTP/1.0 404 Not Found");
-        echo $twig->render('404.twig');
+        echo '<h1>404 - Page introuvable</h1>';
         break;
 }
