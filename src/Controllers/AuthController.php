@@ -33,7 +33,7 @@ class AuthController
             $stmt->execute([$email]);
             $user = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-            if ($user && $user['Mot_de_passe'] === $password) {
+            if ($user && $this->verifyPassword($user, $password)) {
                 $id = $user['ID_utilisateur'];
 
                 // détermine le rôle
@@ -127,5 +127,16 @@ class AuthController
         }
 
         exit;
+    }
+
+    private function verifyPassword(array $user, string $plainPassword): bool
+    {
+        $storedPassword = $user['Mot_de_passe'] ?? '';
+
+        if ($storedPassword === '') {
+            return false;
+        }
+
+        return password_verify($plainPassword, $storedPassword);
     }
 }
