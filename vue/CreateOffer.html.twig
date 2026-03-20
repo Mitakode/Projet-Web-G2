@@ -1,42 +1,68 @@
 {% extends "base.html.twig" %}
 
-{% block title %}Creer une offre - ThePiston{% endblock %}
+{# titre de l'onglet qui s'adapte automatiquement (Création ou Modification) #}
+{% block title %}{{ is_edit ? 'Modifier' : 'Créer' }} une offre - ThePiston{% endblock %}
 
 {% block content %}
 <section class="frame">
-    <h1 class="main-title">Creer une offre</h1>
+    {# titre principal de la page qui s'adapte également #}
+    <h1 class="main-title">{{ is_edit ? 'Modifier' : 'Créer' }} une offre</h1>
 
-    <form class="form-test" action="/accueil" method="POST">
+    {# 
+       L'action du formulaire est dynamique :
+       - Si is_edit est vrai, on envoie vers la route d'update avec l'ID
+       - Sinon, on envoie vers la route de création
+    #}
+    <form class="form-test" action="/{{ is_edit ? 'offers/update&id=' ~ offre.ID_offre : 'offers/create' }}" method="POST">
+        
         <label>Titre de l'offre</label>
-        <input class="form-input" type="text">
+        {# Les attributs 'name' doivent correspondre exactement à ce que le contrôleur attend en $_POST #}
+        <input class="form-input" type="text" name="Titre" value="{{ offre.Titre ?? '' }}" required>
 
+        {# Utilisation de la structure en grille pour un affichage propre sur deux colonnes #}
         <div class="form-grid">
             <div class="form-column2">
                 <label>Entreprise</label>
-                <input class="form-input" type="text">
+                {# Liste déroulante générée dynamiquement depuis la base de données via le contrôleur #}
+                <select class="form-input" name="ID_entreprise" required>
+                    <option value="">Sélectionnez une entreprise</option>
+                    {% for entreprise in entreprises %}
+                        <option value="{{ entreprise.ID_entreprise }}" {{ offre.ID_entreprise is defined and offre.ID_entreprise == entreprise.ID_entreprise ? 'selected' : '' }}>
+                            {{ entreprise.Nom_entreprise }}
+                        </option>
+                    {% endfor %}
+                </select>
             </div>
+            
             <div class="form-column3">
-                <label>Remuneration</label>
-                <input class="form-input" type="text">
+                <label>Rémunération de base (€)</label>
+                <input class="form-input" type="number" step="0.01" name="Base_remuneration" value="{{ offre.Base_remuneration ?? '' }}">
             </div>
         </div>
 
-        <label>Competences requises</label>
-        <div class="skills-selector">
-            <p>Selectionnez vos competences :</p>
-            <div class="skills-list">
-                <label><input type="checkbox" name="skill[]" value="comp1"> Competence 1</label>
-                <label><input type="checkbox" name="skill[]" value="comp2"> Competence 2</label>
-                <label><input type="checkbox" name="skill[]" value="comp3"> Competence 3</label>
-                <label><input type="checkbox" name="skill[]" value="comp4"> Competence 4</label>
-                <label><input type="checkbox" name="skill[]" value="comp5"> Competence 5</label>
+        <div class="form-grid">
+            <div class="form-column2">
+                <label>Durée (mois)</label>
+                <input class="form-input" type="number" name="Duree" value="{{ offre.Duree ?? '' }}">
+            </div>
+            
+            <div class="form-column3">
+                {# 
+                   text input au lieu des checkboxes pour les compétences, car la base de données stocke les compétences sous forme de chaîne (VARCHAR "C++, Python").
+                #}
+                <label>Compétences requises (séparées par des virgules)</label>
+                <input class="form-input" type="text" name="Liste_competences" value="{{ offre.Liste_competences ?? '' }}" placeholder="Ex: PHP, Twig, SQL">
             </div>
         </div>
 
         <label>Description</label>
-        <textarea class="form-input" rows="10"></textarea>
+        <textarea class="form-input" rows="10" name="Description" required>{{ offre.Description ?? '' }}</textarea>
 
-        <button class="btn" type="submit">Creer une offre</button>
+        <div class="btn-container" style="margin-top: 20px;">
+            {# Le texte du bouton s'adapte à l'action en cours #}
+            <button class="btn" type="submit">{{ is_edit ? 'Valider les modifications' : 'Créer l\'offre' }}</button>
+            <a href="/offers" class="btn" style="background-color: #ccc; margin-left: 10px;">Annuler</a>
+        </div>
     </form>
 </section>
 {% endblock %}

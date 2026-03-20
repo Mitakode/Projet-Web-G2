@@ -26,18 +26,19 @@ try {
 // Initialisation des composants
 // Adaptateur BDD des différentes tables
 $companyDbAdapter = new \App\Models\SqlDatabase($pdo, 'Entreprise', 'ID_entreprise');
+$offerDbAdapter = new \App\Models\SqlDatabase($pdo, 'Offre', 'ID_offre'); // AJOUT : Adaptateur pour les offres
 $homepageDbAdapter = new \App\Models\SqlDatabase($pdo, 'Offre', 'ID_offre');
 
 // On crée le modèle avec la connexion PDO
 $companyModel = new App\Models\CompanyModel($companyDbAdapter);
+$offerModel = new App\Models\OfferModel($offerDbAdapter); // MODIFICATION : Modèle décommenté avec le bon adaptateur
 $homepageModel = new App\Models\HomepageModel($homepageDbAdapter);
-//$offerModel      = new App\Models\OfferModel($pdo);
 //$userModel       = new App\Models\UserModel($pdo); // Gère Etudiants, Pilotes, Admins
 
 // Contrôleurs
 $companyController = new App\Controllers\CompanyController($twig, $companyModel);
+$offerController = new App\Controllers\OfferController($twig, $offerModel, $companyModel); // MODIFICATION : Contrôleur décommenté avec les bons arguments
 $homepageController = new App\Controllers\HomepageController($twig, $homepageModel);
-//$offerController = new App\Controllers\OfferController($twig, $offerModel, $enterpriseModel);
 //$userController = new App\Controllers\UserController($twig, $userModel);
 $authController = new App\Controllers\AuthController($twig, $pdo);
 
@@ -71,11 +72,14 @@ switch ($uri) {
     case 'offers':
         $offerController->list();
         break;
-    case 'offers/details':
-        $offerController->details($_GET['id']);
+    case 'offers/detail': // MODIFICATION : 'details' devient 'detail' pour correspondre à la méthode
+        $offerController->detail(); 
         break;
     case 'offers/create':
         $offerController->create();
+        break;
+    case 'offers/update': // AJOUT : Route update
+        $offerController->update();
         break;
     case 'offers/delete':
         $offerController->delete();
