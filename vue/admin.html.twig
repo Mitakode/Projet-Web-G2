@@ -27,9 +27,9 @@
 
         <div class="search-container">
             <form action="/rechercher-etudiant" method="GET" class="search-bar-admin">
-                <input type="text" name="nom" placeholder="Nom">
-                <input type="text" name="prenom" placeholder="Prenom">
-                <input type="text" name="promotion" placeholder="Promotion">
+                <input type="text" name="nom" value="{{surname}}" placeholder="Nom">
+                <input type="text" name="prenom" value="{{name}}" placeholder="Prenom">
+                <input type="text" name="promotion" value="{{promotion}}" placeholder="Promotion">
                 <button type="submit" class="search-btn" aria-label="Rechercher">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
@@ -42,7 +42,7 @@
             <table class="admin-item">
                 <tr>
                     <td class="user-name">{{ etudiant.nom }} {{ etudiant.prenom }} {{ etudiant.promotion }}</td>
-                    <td class="stats"><strong>Nombre de candidatures : 35</strong></td>
+                    <td class="stats"><strong>Nombre de candidatures : {{ etudiant.nb_candidature }}</strong></td>
                     <td class="actions">
                         <button class="btn-action poubelle"><i class="fa-solid fa-trash"></i></button>
                         <button class="btn-action crayon"><i class="fa-solid fa-pen-to-square"></i></button>
