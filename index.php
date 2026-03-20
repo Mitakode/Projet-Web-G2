@@ -84,14 +84,35 @@ switch ($uri) {
         break;
 
     // Gestion des Utilisateurs
-    // Students
-    case 'users/students':
-        $userController->listStudents();
+    // Pilot et Administrateur
+    case 'dashboard':
+        $dashboardController->list();
         break;
-    case 'users/pilots':
-        $userController->listPilots();
+    case 'dashboard/create-student':
+        $dashboardController->createStudent();
         break;
-
+    case 'dashboard/delete-student':
+        $dashboardController->deleteStudent();
+        break;
+    case 'dashboard/update-student':
+        $dashboardController->updateStudent();
+        break;
+    case 'dashboard/create-pilot':
+        $dashboardController->createPilot();
+        break;
+    case 'dashboard/delete-pilot':
+        $dashboardController->deletePilot();
+        break;
+    case 'dashboard/update-pilot':
+        $dashboardController->updatePilot();
+        break;
+    // Student
+    case 'dashboard/student':
+        $studentController->list();
+        break;
+    case 'dashboard/student/delete-wishlist':
+        $dashboardController->deleteWishlist();
+        break;
     default:
         header("HTTP/1.0 404 Not Found");
         echo $twig->render('404.twig');
