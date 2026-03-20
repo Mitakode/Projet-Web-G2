@@ -120,6 +120,7 @@ header nav {
     /* espacement auto */
     flex: 1;
     /* la moitié droite */
+    gap:20px;
 }
 
 header nav a.nav-link {

@@ -23,8 +23,8 @@
             <a href="/?uri=offers" class="nav-link">Les offres</a>
             <a href="/?uri=companies" class="nav-link">Les entreprises</a>
 
-            {% if session.user_id %}
-            <div class="btn-container">
+            
+            <div class="btn-container">{% if session.user_id %}
                 <a href="/logout" class="btn btn-deconnexion">
                     Déconnexion
                 </a>
