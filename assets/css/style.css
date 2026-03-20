@@ -259,11 +259,8 @@ footer a:hover {
 .search-form {
     display: flex;
     flex-direction: column;
-    /* On aligne les blocs enfants à gauche au lieu de center */
-    align-items: flex-start; 
+    align-items: center; 
     gap: 15px;
-    /* Si tu veux que ton formulaire soit centré dans la PAGE mais 
-       que son contenu interne soit aligné à gauche, ajoute ceci : */
     max-width: 1000px; /* Ou la largeur de ta barre de recherche */
     margin: 0 auto;   /* Centre le bloc formulaire sur la page */
     width: 100%;
@@ -272,17 +269,15 @@ footer a:hover {
 .filters-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start; /* Aligne les deux filtres à gauche */
-    gap: 15px;
+    justify-content: space-between;
+    gap: 10px;
     width: 100%; /* Important pour que le 'gauche' soit le même que la barre */
 }
 
 .filter-item {
     background-color: var(--gray-dark);
     border: none;
-    /* On évite le width: 48% ici pour ne pas qu'ils s'étirent trop, 
-       ou on met un max-width */
-    min-width: 300px; 
+    width:30%;
     border-radius: 10px;
     padding: 8px 15px;
     font-size: 0.9rem;
