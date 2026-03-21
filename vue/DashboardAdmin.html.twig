@@ -2,7 +2,7 @@
 
 {% block title %}Mon espace - ThePiston{% endblock %}
 
-{% block main_class %}list-page-bis{% endblock %}
+
 {% block content %}
     {% if session['user_role'] == 'admin' %}
         <h1 class="main-title">Mon espace Administrateur</h1>
@@ -57,7 +57,6 @@
                     <a href="/index.php?uri=dashboard/admin&surname={{ surname }}&name={{ name }}&promotion={{ promotion }}&page={{ i }}" 
                     class="{{ i == current_page ? 'active' : '' }}">
                         {{ i }}
-                    </a>
                 {% endfor %}
             {% endif %}
         </div>

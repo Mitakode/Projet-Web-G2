@@ -19,60 +19,61 @@
             </div>
         </form>
     </section>
-
-    <div class="list-container">
-        {% for entreprise in entreprises_page %}
-            <div class="offres-liste">
-                <table class="company-table">
-                    <tr>
-                        <th class="company-name">{{ entreprise.Nom_entreprise }}</th>
-                        <td class="company-rating">Note : <strong>
-                            {% if entreprise.Moyenne_Note %}
-                                {{ entreprise.Moyenne_Note|round(1) }}/10
-                            {% else %}
-                                Pas de note
-                            {% endif %}
-                        </strong></td>
-                        <td class="btn-table">
-                            <a href="index.php?uri=companies/update&id={{ entreprise.ID_entreprise }}" 
-                                class="btn-action crayon">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                            </a>
-                            {# Lien de suppression avec l'ID dynamique #}
-                            <a href="index.php?uri=companies/delete&id={{ entreprise.ID_entreprise }}" 
-                               class="btn-action poubelle" 
-                               onclick="return confirm('Supprimer cette entreprise ?')">
-                                <i class="fa-solid fa-trash"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" class="company-info">
-                            {{ entreprise.Contact }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" class="company-description">
-                            {{ entreprise.Description }}
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        {% else %}
-            <p>Aucune entreprise trouvée.</p>
-        {% endfor %}
-    </div>
-
-    {# Système de pagination avec tes classes CSS #}
-    <div class="pagination">
-        {% if total_pages > 1 %}
-            {% for i in 1..total_pages %}
-                <a href="index.php?uri=companies&recherche={{ search_term }}&page={{ i }}" 
-                   class="{{ i == current_page ? 'active' : '' }}">
-                    {{ i }}
-                </a>
+    </section>
+        <div class="list-container">
+            {% for entreprise in entreprises_page %}
+                <div class="offres-liste">
+                    <table class="company-table">
+                        <tr>
+                            <th class="company-name">{{ entreprise.Nom_entreprise }}</th>
+                            <td class="company-rating">Note : <strong>
+                                {% if entreprise.Moyenne_Note %}
+                                    {{ entreprise.Moyenne_Note|round(1) }}/10
+                                {% else %}
+                                    Pas de note
+                                {% endif %}
+                            </strong></td>
+                            <td class="btn-table">
+                                <a href="index.php?uri=companies/update&id={{ entreprise.ID_entreprise }}" 
+                                    class="btn-action crayon">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
+                                {# Lien de suppression avec l'ID dynamique #}
+                                <a href="index.php?uri=companies/delete&id={{ entreprise.ID_entreprise }}" 
+                                class="btn-action poubelle" 
+                                onclick="return confirm('Supprimer cette entreprise ?')">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="company-info">
+                                {{ entreprise.Contact }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="company-description">
+                                {{ entreprise.Description }}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            {% else %}
+                <p>Aucune entreprise trouvée.</p>
             {% endfor %}
-        {% endif %}
-    </div>
+        </div>
+
+        {# Système de pagination avec tes classes CSS #}
+        <div class="pagination">
+            {% if total_pages > 1 %}
+                {% for i in 1..total_pages %}
+                    <a href="index.php?uri=companies&recherche={{ search_term }}&page={{ i }}" 
+                    class="{{ i == current_page ? 'active' : '' }}">
+                        {{ i }}
+                    </a>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </section>
     
 {% endblock %}
