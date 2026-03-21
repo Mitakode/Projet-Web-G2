@@ -2,33 +2,22 @@
 
 {% block title %}Mon espace - ThePiston{% endblock %}
 
+{% block main_class %}list-page-bis{% endblock %}
 {% block content %}
-{% set etudiants = [
-    {'nom': 'Dupont', 'prenom': 'Jean', 'promotion': 'A1'},
-    {'nom': 'Martin', 'prenom': 'Marie', 'promotion': 'A2'},
-    {'nom': 'Bernard', 'prenom': 'Pierre', 'promotion': 'A1'},
-    {'nom': 'Dubois', 'prenom': 'Sophie', 'promotion': 'A2'},
-    {'nom': 'Lecrom', 'prenom': 'Luc', 'promotion': 'A1'}
-] %}
-
-{% set pilotes = [
-    {'nom': 'Durand', 'prenom': 'Jacques'},
-    {'nom': 'Rougerie', 'prenom': 'Laurent'},
-    {'nom': 'Lemoine', 'prenom': 'Sophie'},
-    {'nom': 'Morel', 'prenom': 'Isabelle'},
-    {'nom': 'Fournier', 'prenom': 'Nicolas'}
-] %}
-
-<main>
-    <h1 class="main-title">Mon espace Administrateur</h1>
+    {% if session['user_role'] == 'admin' %}
+        <h1 class="main-title">Mon espace Administrateur</h1>
+    {% else %}
+        <h1 class="main-title">Mon espace Pilote</h1>
+    {% endif %}
 
     <section class="dashboards-section">
         <h2 class="dashboard-title">Les comptes eleves</h2>
 
         <div class="search-container">
-            <form action="/rechercher-etudiant" method="GET" class="search-bar-admin">
-                <input type="text" name="nom" value="{{surname}}" placeholder="Nom">
-                <input type="text" name="prenom" value="{{name}}" placeholder="Prenom">
+            <form action="/../index.php" method="GET" class="search-bar-admin">
+                <input type="hidden" name="uri" value="dashboard/admin">
+                <input type="text" name="surname" value="{{surname}}" placeholder="Nom">
+                <input type="text" name="name" value="{{name}}" placeholder="Prenom">
                 <input type="text" name="promotion" value="{{promotion}}" placeholder="Promotion">
                 <button type="submit" class="search-btn" aria-label="Rechercher">
                     <i class="fa-solid fa-magnifying-glass"></i>
@@ -39,27 +28,49 @@
 
         <div class="box-list">
             {% for etudiant in etudiants %}
-            <table class="admin-item">
+            <table class="company-table admin">
                 <tr>
-                    <td class="user-name">{{ etudiant.nom }} {{ etudiant.prenom }} {{ etudiant.promotion }}</td>
+                    <td class="user-name">{{ etudiant.Nom }} {{ etudiant.Prenom }} </td>
+                    <td class="user-promotion">{{ etudiant.Promotion }}</td>
                     <td class="stats"><strong>Nombre de candidatures : {{ etudiant.nb_candidature }}</strong></td>
-                    <td class="actions">
-                        <button class="btn-action poubelle"><i class="fa-solid fa-trash"></i></button>
-                        <button class="btn-action crayon"><i class="fa-solid fa-pen-to-square"></i></button>
+                    <td class="btn-table">
+                        <a href="/index.php?uri=dashboard/admin/update-student&id={{ etudiant.ID_utilisateur }}" 
+                            class="btn-action crayon">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </a>
+                        {# Lien de suppression avec l'ID dynamique #}
+                        <a href="/index.php?uri=dashboard/admin/delete-student&id={{ etudiant.ID_utilisateur }}" 
+                            class="btn-action poubelle" 
+                            onclick="return confirm('Supprimer cet étudiant ?')">
+                            <i class="fa-solid fa-trash"></i>
+                        </a>
                     </td>
                 </tr>
             </table>
             {% endfor %}
         </div>
+
+        {# Système de pagination avec tes classes CSS #}
+        <div class="pagination">
+            {% if total_pages > 1 %}
+                {% for i in 1..total_pages %}
+                    <a href="/index.php?uri=dashboard/admin&surname={{ surname }}&name={{ name }}&promotion={{ promotion }}&page={{ i }}" 
+                    class="{{ i == current_page ? 'active' : '' }}">
+                        {{ i }}
+                    </a>
+                {% endfor %}
+            {% endif %}
+        </div>
     </section>
 
+{% if (session['user_role'] == 'admin') %}
     <section class="dashboards-section">
         <h2 class="dashboard-title">Les comptes pilotes</h2>
 
         <div class="search-container">
             <form action="/rechercher-pilote" method="GET" class="search-bar-admin">
-                <input type="text" name="nom" placeholder="Nom">
-                <input type="text" name="prenom" placeholder="Prenom">
+                <input type="text" name="surname" placeholder="Nom">
+                <input type="text" name="name" placeholder="Prenom">
                 <button type="submit" class="search-btn" aria-label="Rechercher">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
@@ -82,5 +93,5 @@
             {% endfor %}
         </div>
     </section>
-</main>
+{% endif %}
 {% endblock %}

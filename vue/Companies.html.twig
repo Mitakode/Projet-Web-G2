@@ -68,10 +68,11 @@
         {% if total_pages > 1 %}
             {% for i in 1..total_pages %}
                 <a href="index.php?uri=companies&recherche={{ search_term }}&page={{ i }}" 
-                   class="page-link {{ i == current_page ? 'active' : '' }}">
+                   class="{{ i == current_page ? 'active' : '' }}">
                     {{ i }}
                 </a>
             {% endfor %}
         {% endif %}
     </div>
+    
 {% endblock %}

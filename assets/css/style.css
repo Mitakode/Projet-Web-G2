@@ -263,7 +263,7 @@ footer a:hover {
     align-items: center; 
     gap: 15px;
     max-width: 1000px; /* Ou la largeur de ta barre de recherche */
-    margin: 0 auto;   /* Centre le bloc formulaire sur la page */
+    margin: 0 auto;   /* Centre le bloc formulaire sur la n */
     width: 100%;
 }
 
@@ -640,13 +640,15 @@ ul.skills li
     gap: 15px; /* Espace entre les blocs */
 }
 
+
 .admin-item {
     width: 100%;
     background-color: #EDEDED;
     border-radius: 10px;
     border: none;
-    border-collapse: separate; /* Important pour garder l'arrondi */
+    border-collapse: collapse; /* Important pour garder l'arrondi */
     border-spacing: 0;
+    overflow: hidden;
 }
 
 .admin-item td {
@@ -656,20 +658,24 @@ ul.skills li
 }
 
 .user-name {
+    width:45%;
+    font-size: 1.1rem;
+    color: #666; /* Ajustez selon votre variable --text-color-light */
+    text-align: left;
+}
+
+.user-promotion {
+    width:10%;
     font-size: 1.1rem;
     color: #666; /* Ajustez selon votre variable --text-color-light */
     text-align: left;
 }
 
 .stats {
+    width: 40%;
     text-align: right;
     font-size: 0.95rem;
     white-space: nowrap; /* Évite que le texte ne revienne à la ligne */
-}
-
-.actions {
-    width: 150px; /* Largeur fixe pour la zone des boutons */
-    text-align: right;
 }
 
 .dashboard-title {
@@ -707,6 +713,7 @@ main.list-page {
     margin: 20px auto;
     display: block;   /* Permet aux cartes de s'empiler et s'étirer */
 }
+
 
 .btn-add {
     background-color: var(--green-piston);
@@ -774,14 +781,38 @@ main.list-page {
     text-align: center;
     margin-top: 30px;
 }
-.pagination a, .pagination strong {
+
+.pagination a {
     padding: 8px 12px;
     margin: 0 4px;
     text-decoration: none;
     border-radius: 4px;
+    background: var(--white); 
+    color: var(--deconnexion-color);
+    transition: all 0.3s; /* Petit bonus pour la fluidité */
 }
-.pagination a { background:var(--white); color: var(--deconnexion-color); }
-.pagination strong { background: var(--green-piston); color: var(--white); }
+
+/* On cible la classe .active générée par Twig */
+.pagination a.active {
+    background: var(--green-piston);
+    color: var(--white);
+    font-weight: bold; /* Optionnel : pour mieux la voir */
+}
+
+/* On garde le hover pour les autres pages */
+.pagination a:hover {
+    background: var(--green-piston);
+    color: var(--white);
+}
+
+/* Garder le style pour le tag strong si tu l'utilises ailleurs */
+.pagination strong { 
+    background: var(--green-piston); 
+    color: var(--white); 
+    padding: 8px 12px;
+    margin: 0 4px;
+    border-radius: 4px;
+}
 
 /*dozkdzk */
 
