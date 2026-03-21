@@ -79,28 +79,6 @@ class AuthController
         exit;
     }
 
-    public function dashboard()
-    {
-        $this->requireAuthenticated();
-
-        $role = $_SESSION['user_role'] ?? '';
-
-        switch ($role) {
-            case 'admin':
-                echo $this->twig->render('admin.html.twig');
-                return;
-            case 'pilote':
-                echo $this->twig->render('admin.html.twig');
-                return;
-            case 'etudiant':
-                echo $this->twig->render('student.html.twig');
-                return;
-            default:
-                header('Location: /login');
-                exit;
-        }
-    }
-
     private function requireAuthenticated(): void
     {
         if (empty($_SESSION['user_id']) || empty($_SESSION['user_role'])) {
@@ -113,13 +91,13 @@ class AuthController
     {
         switch ($role) {
             case 'admin':
-                header('Location: /dashboard');
+                header('Location: /dashboard/admin');
                 break;
             case 'pilote':
-                header('Location: /dashboard');
+                header('Location: /dashboard/admin');
                 break;
             case 'etudiant':
-                header('Location: /dashboard');
+                header('Location: /dashboard/student');
                 break;
             default:
                 header('Location: /login');

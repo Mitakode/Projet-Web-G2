@@ -3,7 +3,7 @@ namespace App\Controllers;
 
 use App\Models\Paginator;
 
-class StudentController{
+class DashboardController{
     private $twig;
     private $model;
 
@@ -17,7 +17,7 @@ class StudentController{
         $name = $_GET['name'] ?? '';
         $promotion = $_GET['promotion'] ?? '';
 
-        $students = $model->searchStudents($surname, $name, $promotion);
+        $students = $this->model->searchStudents($surname, $name, $promotion);
         echo $this->twig->render('admin.html.twig', ['etudiants' => $students]);
     }
 
