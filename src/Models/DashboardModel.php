@@ -1,7 +1,7 @@
 <?php
 namespace App\Models;
 
-class StudentModel extends Model{
+class DashboardModel extends Model{
 
     public function __construct(Database $connection) {
         parent::__construct($connection);
@@ -12,19 +12,22 @@ class StudentModel extends Model{
     }
 
     public function searchStudents($surname = "", $name = "", $promotion = "") {
-        $sql = "SELECT Etudiant.*, COUNT(Postule.ID_utilisateur) as nb_candidature
-        FROM Etudiant 
-        LEFT JOIN Postule ON Etudiant.ID_utilisateur = Postule.ID_utilisateur
-        WHERE Etudiant.ID_Pilote=" . $_SESSION['user_id'];
+        $sql = "SELECT Utilisateur.*, Etudiant.Promotion, Etudiant.ID_Pilote, COUNT(Postule.ID_utilisateur) as nb_candidature 
+        FROM Utilisateur JOIN Etudiant ON Utilisateur.ID_utilisateur = Etudiant.ID_utilisateur LEFT JOIN Postule ON Etudiant.ID_utilisateur = Postule.ID_utilisateur 
+        WHERE 1=1 ";
         $params = [];
 
+        if($_SESSION['user_role'] === 'pilote') {
+            $sql .= " AND Etudiant.ID_Pilote=". $_SESSION['user_id'];
+        }
+
         if (!empty($surname)) {
-            $sql .= " AND Etudiant.Nom LIKE :surname";
+            $sql .= " AND Utilisateur.Nom LIKE :surname";
             $params['surname'] = '%' . $surname . '%';
         }
 
         if (!empty($name)) {
-            $sql .= " AND Etudiant.Prenom LIKE :name";
+            $sql .= " AND Utilisateur.Prenom LIKE :name";
             $params['name'] = '%' . $name . '%';
         }
 

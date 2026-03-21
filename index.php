@@ -5,6 +5,12 @@ require "vendor/autoload.php";
 use App\Controllers\CompanyController;
 use App\Models\CompanyModel; // On importe le modèle
 use App\Controllers\AuthController;
+use App\Controllers\OfferController;
+use App\Models\OfferModel;
+use App\Controllers\HomepageController;
+use App\Models\HomepageModel;
+use App\Controllers\DashboardController;
+use App\Models\DashboardModel;
 
 // Configuration de Twig
 $loader = new \Twig\Loader\FilesystemLoader('vue');
@@ -28,27 +34,28 @@ try {
 $companyDbAdapter = new \App\Models\SqlDatabase($pdo, 'Entreprise', 'ID_entreprise');
 $offerDbAdapter = new \App\Models\SqlDatabase($pdo, 'Offre', 'ID_offre'); // AJOUT : Adaptateur pour les offres
 $homepageDbAdapter = new \App\Models\SqlDatabase($pdo, 'Offre', 'ID_offre');
-$DashboardDbAdapter = new \App\Models\SqlDatabase($pdo, 'Offre', 'ID_offre');
+$dashboardDbAdapter = new \App\Models\SqlDatabase($pdo, 'Offre', 'ID_offre');
 
 // On crée le modèle avec la connexion PDO
 $companyModel = new App\Models\CompanyModel($companyDbAdapter);
 $offerModel = new App\Models\OfferModel($offerDbAdapter); // MODIFICATION : Modèle décommenté avec le bon adaptateur
 $homepageModel = new App\Models\HomepageModel($homepageDbAdapter);
-$DashboardModel = new App\Models\DashboardModel($DashboardDbAdapter);
+$dashboardModel = new App\Models\DashboardModel($dashboardDbAdapter);
 
 // Contrôleurs
 $companyController = new App\Controllers\CompanyController($twig, $companyModel);
 $offerController = new App\Controllers\OfferController($twig, $offerModel, $companyModel); // MODIFICATION : Contrôleur décommenté avec les bons arguments
 $homepageController = new App\Controllers\HomepageController($twig, $homepageModel);
-$DashboardController = new App\Controllers\DashboardController($twig, $DashboardModel);
+$dashboardController = new App\Controllers\DashboardController($twig, $dashboardModel);
 $authController = new App\Controllers\AuthController($twig, $pdo);
 
 // Routage simple
 $uri = $_GET['uri'] ?? '/';
+$uri = trim($uri, '/');
 
 switch ($uri) {
     // Pages Globales
-    case '/':
+    case '':
         $homepageController->home();
         break;
     case 'mentions-legales':
@@ -93,35 +100,35 @@ switch ($uri) {
 
     // Gestion des Utilisateurs
     // Pilot et Administrateur
-    case 'dashboard':
-        $dashboardController->list();
+    case 'dashboard/admin':
+        $dashboardController->listStudents();
         break;
-    case 'dashboard/create-student':
+    case 'dashboard/admin/create-student':
         $dashboardController->createStudent();
         break;
-    case 'dashboard/delete-student':
+    case 'dashboard/admin/delete-student':
         $dashboardController->deleteStudent();
         break;
-    case 'dashboard/update-student':
+    case 'dashboard/admin/update-student':
         $dashboardController->updateStudent();
         break;
-    case 'dashboard/create-pilot':
+    case 'dashboard/admin/create-pilot':
         $dashboardController->createPilot();
         break;
-    case 'dashboard/delete-pilot':
+    case 'dashboard/admin/delete-pilot':
         $dashboardController->deletePilot();
         break;
-    case 'dashboard/update-pilot':
+    case 'dashboard/admin/update-pilot':
         $dashboardController->updatePilot();
         break;
-    // Student
+    /* Student
     case 'dashboard/student':
         $studentController->list();
         break;
     case 'dashboard/student/delete-wishlist':
         $dashboardController->deleteWishlist();
         break;
-
+*/
     
     // Authentification
     case 'login':

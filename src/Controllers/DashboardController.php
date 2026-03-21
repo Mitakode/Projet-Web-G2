@@ -3,7 +3,7 @@ namespace App\Controllers;
 
 use App\Models\Paginator;
 
-class StudentController{
+class DashboardController{
     private $twig;
     private $model;
 
@@ -17,8 +17,20 @@ class StudentController{
         $name = $_GET['name'] ?? '';
         $promotion = $_GET['promotion'] ?? '';
 
-        $students = $model->searchStudents($surname, $name, $promotion);
-        echo $this->twig->render('admin.html.twig', ['etudiants' => $students]);
+        $students = $this->model->searchStudents($surname, $name, $promotion);
+
+        // Gérer la pagination
+        $paginator = new Paginator($students, 5);
+        
+        // Envoyer le tout à la vue Twig
+        echo $this->twig->render('DashboardAdmin.html.twig', [
+            'etudiants' => $paginator->getCurrentPageItems(),
+            'total_pages'      => $paginator->getTotalPages(),
+            'current_page'     => $_GET['page'] ?? 1,
+            'surname'      => $surname,
+            'name'             => $name,
+            'promotion'        => $promotion
+        ]);
     }
 
 }
