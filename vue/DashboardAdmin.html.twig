@@ -57,6 +57,7 @@
                     <a href="/index.php?uri=dashboard/admin&surname={{ surname }}&name={{ name }}&promotion={{ promotion }}&page={{ i }}" 
                     class="{{ i == current_page ? 'active' : '' }}">
                         {{ i }}
+                    </a>
                 {% endfor %}
             {% endif %}
         </div>
@@ -67,9 +68,10 @@
         <h2 class="dashboard-title">Les comptes pilotes</h2>
 
         <div class="search-container">
-            <form action="/rechercher-pilote" method="GET" class="search-bar-admin">
-                <input type="text" name="surname" placeholder="Nom">
-                <input type="text" name="name" placeholder="Prenom">
+            <form action="/../index.php" method="GET" class="search-bar-admin">
+                <input type="hidden" name="uri" value="dashboard/admin">
+                <input type="text" name="surnameP" value="{{ surnameP }}" placeholder="Nom">
+                <input type="text" name="nameP" value="{{ nameP }}" placeholder="Prenom">
                 <button type="submit" class="search-btn" aria-label="Rechercher">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
@@ -79,17 +81,36 @@
 
         <div class="box-list">
             {% for pilote in pilotes %}
-            <table class="admin-item">
+            <table class="company-table admin">
                 <tr>
-                    <td class="user-name">{{ pilote.nom }} {{ pilote.prenom }}</td>
-                    <td class="stats"><strong>Nombre d'eleves : 35</strong></td>
-                    <td class="actions">
-                        <button class="btn-action poubelle"><i class="fa-solid fa-trash"></i></button>
-                        <button class="btn-action crayon"><i class="fa-solid fa-pen-to-square"></i></button>
+                    <td class="user-name">{{ pilote.Nom }} {{ pilote.Prenom }}</td>
+                    <td class="user-stats">{{ pilote.Email }}</td>
+                    <td class="btn-table">
+                        <a href="/index.php?uri=dashboard/admin/update-pilot&id={{ pilote.ID_utilisateur }}" 
+                            class="btn-action crayon">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </a>
+                        {# Lien de suppression avec l'ID dynamique #}
+                        <a href="/index.php?uri=dashboard/admin/delete-pilot&id={{ pilote.ID_utilisateur }}" 
+                            class="btn-action poubelle" 
+                            onclick="return confirm('Supprimer ce pilote ?')">
+                            <i class="fa-solid fa-trash"></i>
+                        </a>
                     </td>
                 </tr>
             </table>
             {% endfor %}
+        </div>
+
+        <div class="pagination">
+            {% if total_pagesP > 1 %}
+                {% for i in 1..total_pagesP %}
+                    <a href="/index.php?uri=dashboard/admin&surnameP={{ surnameP }}&nameP={{ nameP }}&page={{ i }}" 
+                    class="{{ i == current_pageP ? 'active' : '' }}">
+                        {{ i }}
+                    </a>
+                {% endfor %}
+            {% endif %}
         </div>
     </section>
 {% endif %}

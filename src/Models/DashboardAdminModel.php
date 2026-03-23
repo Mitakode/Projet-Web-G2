@@ -1,7 +1,7 @@
 <?php
 namespace App\Models;
 
-class DashboardModel extends Model{
+class DashboardAdminModel extends Model{
 
     public function __construct(Database $connection) {
         parent::__construct($connection);
@@ -37,6 +37,29 @@ class DashboardModel extends Model{
         }
         $sql .= " GROUP BY Etudiant.ID_utilisateur";
 
+        $pdo = $this->connection->getConnection();
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function searchPilots($surnameP = "", $nameP = "") {
+        $sql = "SELECT Utilisateur.*
+        FROM Utilisateur JOIN Pilote ON Utilisateur.ID_utilisateur = Pilote.ID_utilisateur 
+        WHERE 1=1 ";
+        $params = [];
+
+        if (!empty($surnameP)) {
+            $sql .= " AND Utilisateur.Nom LIKE :surnameP";
+            $params['surnameP'] = '%' . $surnameP . '%';
+        }
+
+        if (!empty($nameP)) {
+            $sql .= " AND Utilisateur.Prenom LIKE :nameP";
+            $params['nameP'] = '%' . $nameP . '%';
+        }
+        
         $pdo = $this->connection->getConnection();
 
         $stmt = $pdo->prepare($sql);

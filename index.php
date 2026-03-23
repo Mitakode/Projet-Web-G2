@@ -34,19 +34,19 @@ try {
 $companyDbAdapter = new \App\Models\SqlDatabase($pdo, 'Entreprise', 'ID_entreprise');
 $offerDbAdapter = new \App\Models\SqlDatabase($pdo, 'Offre', 'ID_offre'); // AJOUT : Adaptateur pour les offres
 $homepageDbAdapter = new \App\Models\SqlDatabase($pdo, 'Offre', 'ID_offre');
-$dashboardDbAdapter = new \App\Models\SqlDatabase($pdo, 'Offre', 'ID_offre');
+$dashboardAdminDbAdapter = new \App\Models\SqlDatabase($pdo, 'Etudiant', 'ID_utilisateur');
 
 // On crée le modèle avec la connexion PDO
 $companyModel = new App\Models\CompanyModel($companyDbAdapter);
 $offerModel = new App\Models\OfferModel($offerDbAdapter); // MODIFICATION : Modèle décommenté avec le bon adaptateur
 $homepageModel = new App\Models\HomepageModel($homepageDbAdapter);
-$dashboardModel = new App\Models\DashboardModel($dashboardDbAdapter);
+$dashboardAdminModel = new App\Models\DashboardAdminModel($dashboardAdminDbAdapter);
 
 // Contrôleurs
 $companyController = new App\Controllers\CompanyController($twig, $companyModel);
 $offerController = new App\Controllers\OfferController($twig, $offerModel, $companyModel); // MODIFICATION : Contrôleur décommenté avec les bons arguments
 $homepageController = new App\Controllers\HomepageController($twig, $homepageModel);
-$dashboardController = new App\Controllers\DashboardController($twig, $dashboardModel);
+$dashboardAdminController = new App\Controllers\DashboardAdminController($twig, $dashboardAdminModel);
 $authController = new App\Controllers\AuthController($twig, $pdo);
 
 // Routage simple
@@ -101,25 +101,25 @@ switch ($uri) {
     // Gestion des Utilisateurs
     // Pilot et Administrateur
     case 'dashboard/admin':
-        $dashboardController->listStudents();
+        $dashboardAdminController->list();
         break;
     case 'dashboard/admin/create-student':
-        $dashboardController->createStudent();
+        $dashboardAdminController->createStudent();
         break;
     case 'dashboard/admin/delete-student':
-        $dashboardController->deleteStudent();
+        $dashboardAdminController->deleteStudent();
         break;
     case 'dashboard/admin/update-student':
-        $dashboardController->updateStudent();
+        $dashboardAdminController->updateStudent();
         break;
     case 'dashboard/admin/create-pilot':
-        $dashboardController->createPilot();
+        $dashboardAdminController->createPilot();
         break;
     case 'dashboard/admin/delete-pilot':
-        $dashboardController->deletePilot();
+        $dashboardAdminController->deletePilot();
         break;
     case 'dashboard/admin/update-pilot':
-        $dashboardController->updatePilot();
+        $dashboardAdminController->updatePilot();
         break;
     /* Student
     case 'dashboard/student':
