@@ -3,6 +3,9 @@
 {# titre de l'onglet qui s'adapte automatiquement (Création ou Modification) #}
 {% block title %}{{ is_edit ? 'Modifier' : 'Créer' }} une offre - ThePiston{% endblock %}
 
+{% block main_class %}list-page{% endblock %}
+
+{# contenu principal de la page #}
 {% block content %}
 <section class="frame">
     {# titre principal de la page qui s'adapte également #}
@@ -33,20 +36,21 @@
                     {% endfor %}
                 </select>
             </div>
-            
-            <div class="form-column3">
-                <label>Rémunération de base (€)</label>
-                <input class="form-input" type="number" step="0.01" name="Base_remuneration" value="{{ offre.Base_remuneration ?? '' }}">
-            </div>
-        </div>
 
-        <div class="form-grid">
-            <div class="form-column2">
+            <div class="form-column3">
                 <label>Durée (mois)</label>
                 <input class="form-input" type="number" name="Duree" value="{{ offre.Duree ?? '' }}">
             </div>
             
+        </div>
+
+        <div class="form-grid">
             <div class="form-column3">
+                <label>Rémunération de base (€)</label>
+                <input class="form-input" type="number" step="0.01" name="Base_remuneration" value="{{ offre.Base_remuneration ?? '' }}">
+            </div>
+            
+            <div class="form-column2">
                 {# 
                    text input au lieu des checkboxes pour les compétences, car la base de données stocke les compétences sous forme de chaîne (VARCHAR "C++, Python").
                 #}
@@ -61,7 +65,7 @@
         <div class="btn-container" style="margin-top: 20px;">
             {# Le texte du bouton s'adapte à l'action en cours #}
             <button class="btn" type="submit">{{ is_edit ? 'Valider les modifications' : 'Créer l\'offre' }}</button>
-            <a href="/offers" class="btn" style="background-color: #ccc; margin-left: 10px;">Annuler</a>
+            <a href="/offers" class="btn-annuler">Annuler</a>
         </div>
     </form>
 </section>
