@@ -412,6 +412,25 @@ input:hover, select:hover, textarea:hover {
     text-align: center;
 }
 
+.label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+}
+
+.label-row label {
+    margin-bottom: 10px;
+}
+
+.infos.infos-error {
+    color: #c62828 !important;
+    text-align: right;
+    margin: 0 0 10px 0;
+    font-size: 0.95rem;
+    white-space: nowrap;
+}
+
 .form-test{
     background-color: var(--white);
     padding: 10px;

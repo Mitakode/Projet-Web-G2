@@ -33,7 +33,11 @@ class AuthController
             $stmt->execute([$email]);
             $user = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-            if ($user && $this->verifyPassword($user, $password)) {
+            if (!$user) {
+                $error = '1';
+            } elseif (!$this->verifyPassword($user, $password)) {
+                $error = '2';
+            } else {
                 $id = $user['ID_utilisateur'];
 
                 // détermine le rôle
@@ -48,8 +52,6 @@ class AuthController
 
                 $this->redirectToDashboardByRole($role);
             }
-
-            $error = 'Email ou mot de passe incorrect.';
         }
 
         echo $this->twig->render('Login.html.twig', ['error' => $error]);
