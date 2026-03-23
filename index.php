@@ -99,6 +99,10 @@ switch ($uri) {
         break;
 
     // Gestion des Utilisateurs
+    case 'dashboard':
+        $authController->dashboard();
+        break;
+
     // Pilot et Administrateur
     case 'dashboard/admin':
         $dashboardController->listStudents();

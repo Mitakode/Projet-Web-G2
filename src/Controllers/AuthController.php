@@ -79,6 +79,12 @@ class AuthController
         exit;
     }
 
+    public function dashboard()
+    {
+        $this->requireAuthenticated();
+        $this->redirectToDashboardByRole($_SESSION['user_role'] ?? '');
+    }
+
     private function requireAuthenticated(): void
     {
         if (empty($_SESSION['user_id']) || empty($_SESSION['user_role'])) {
