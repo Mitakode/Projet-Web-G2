@@ -4,34 +4,35 @@
 
 {% block content %}
 <main>
-    <h1 class="main-title" style="text-align: center; margin-bottom: 40px;">Mon espace étudiant</h1>
+    <h1 class="main-title">Mon espace étudiant</h1>
 
-    <section class="dashboards-section" style="background-color: #e5e5e5; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
+    {# Section : Mes candidatures #}
+    <section class="dashboards-section">
         <h2 class="dashboard-title">Mes candidatures</h2>
 
         <div class="box-list">
-            <table class="company-table admin" style="width: 100%; text-align: left; border-collapse: collapse;">
+            <table class="company-table admin">
                 <thead>
-                    <tr style="border-bottom: 1px solid #ccc;">
-                        <th style="padding: 10px;">Titre de l'offre</th>
-                        <th style="padding: 10px;">Entreprise</th>
-                        <th style="padding: 10px; border-left: 1px solid #ccc;">CV</th>
-                        <th style="padding: 10px; border-left: 1px solid #ccc;">Lettre de motivation</th>
+                    <tr>
+                        <th>Titre de l'offre</th>
+                        <th>Entreprise</th>
+                        <th>CV</th>
+                        <th>Lettre de motivation</th>
                     </tr>
                 </thead>
                 <tbody>
                     {# Boucle sur les candidatures récupérées depuis le contrôleur #}
                     {% for candidature in candidatures %}
-                    <tr style="border-bottom: 1px solid #ccc;">
-                        <td style="padding: 10px;">{{ candidature.Titre }}</td>
-                        <td style="padding: 10px;">{{ candidature.Nom_entreprise }}</td>
-                        {# basename permet d'afficher uniquement le nom du fichier et pas tout le chemin (/var/www/...) #}
-                        <td style="padding: 10px; border-left: 1px solid #ccc;">{{ candidature.CV|split('/')|last }}</td>
-                        <td style="padding: 10px; border-left: 1px solid #ccc;">{{ candidature.Lettre_motivation|split('/')|last }}</td>
+                    <tr>
+                        <td>{{ candidature.Titre }}</td>
+                        <td>{{ candidature.Nom_entreprise }}</td>
+                        {# Le filtre |split('/')|last permet de n'afficher que le nom du fichier PDF, sans tout le chemin du serveur #}
+                        <td>{{ candidature.CV|split('/')|last }}</td>
+                        <td>{{ candidature.Lettre_motivation|split('/')|last }}</td>
                     </tr>
                     {% else %}
                     <tr>
-                        <td colspan="4" style="padding: 10px; text-align: center;">Vous n'avez pas encore postulé à une offre.</td>
+                        <td colspan="4" style="text-align: center;">Vous n'avez pas encore postulé à une offre.</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -39,29 +40,29 @@
         </div>
     </section>
 
-    <section class="dashboards-section" style="background-color: #e5e5e5; padding: 20px; border-radius: 8px;">
+    {# Section : Ma wishlist #}
+    <section class="dashboards-section">
         <h2 class="dashboard-title">Ma wishlist</h2>
 
         <div class="box-list">
-            <table class="company-table admin" style="width: 100%; text-align: left; border-collapse: collapse;">
+            <table class="company-table admin">
                 <thead>
-                    <tr style="border-bottom: 1px solid #ccc;">
-                        <th style="padding: 10px;">Titre de l'offre</th>
-                        <th style="padding: 10px; border-left: 1px solid #ccc;">Entreprise</th>
-                        <th style="padding: 10px; width: 50px;"></th>
+                    <tr>
+                        <th>Titre de l'offre</th>
+                        <th>Entreprise</th>
+                        <th></th> {# Colonne vide pour aligner la poubelle #}
                     </tr>
                 </thead>
                 <tbody>
                     {# Boucle sur la wishlist récupérée depuis le contrôleur #}
                     {% for souhait in wishlist %}
-                    <tr style="border-bottom: 1px solid #ccc;">
-                        <td style="padding: 10px;">{{ souhait.Titre }}</td>
-                        <td style="padding: 10px; border-left: 1px solid #ccc;">{{ souhait.Nom_entreprise }}</td>
-                        <td style="padding: 10px; text-align: center;">
+                    <tr>
+                        <td>{{ souhait.Titre }}</td>
+                        <td>{{ souhait.Nom_entreprise }}</td>
+                        <td class="btn-table">
                             {# Lien dynamique vers l'action de suppression dans le routeur #}
                             <a href="index.php?uri=dashboard/student/remove-wishlist&id={{ souhait.ID_offre }}" 
                                class="btn-action poubelle" 
-                               style="background-color: #dc3545; color: white; padding: 5px 10px; border-radius: 5px; text-decoration: none;"
                                onclick="return confirm('Retirer cette offre de la wishlist ?')">
                                 <i class="fa-solid fa-trash"></i>
                             </a>
@@ -69,7 +70,7 @@
                     </tr>
                     {% else %}
                     <tr>
-                        <td colspan="3" style="padding: 10px; text-align: center;">Votre wishlist est vide.</td>
+                        <td colspan="3" style="text-align: center;">Votre wishlist est vide.</td>
                     </tr>
                     {% endfor %}
                 </tbody>
