@@ -16,8 +16,10 @@
                 <button type="submit" class="search-btn">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
+                {% if (session['user_role'] == 'admin' or session['user_role'] == 'pilote') %}
                 {# Bouton pour ajouter une nouvelle offre #}
                 <a href="index.php?uri=offers/create" type="button" class="btn-add link" id="ouvrirPopup">+</a>
+                {% endif %}
             </div>
         </form>
     </section>
@@ -35,6 +37,7 @@
                         </th>
                         {# L'affichage du nom de l'entreprise est possible grâce au JOIN dans le Modèle #}
                         <td class="company-rating">Entreprise : <strong>{{ offre.Nom_entreprise }}</strong></td>
+                        {% if (session['user_role'] == 'admin' or session['user_role'] == 'pilote') %}
                         <td class="btn-table">
                             {# Lien vers la page de modification avec l'ID de l'offre concernée #}
                             <a href="index.php?uri=offers/update&id={{ offre.ID_offre }}" 
@@ -48,16 +51,12 @@
                                 <i class="fa-solid fa-trash"></i>
                             </a>
                         </td>
+                        {% endif %}
                     </tr>
                     <tr>
                         <td colspan="2" class="company-info">
                             {# Affichage des données de base de l'offre avec formatage de la date #}
-                            Durée : {{ offre.Duree }} mois | Rémunération : {{ offre.Base_remuneration }} € | Publié le : {{ offre.Date_publication|date("d/m/Y") }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" class="company-info">
-                            Compétences : {{ offre.Liste_competences }}
+                            Durée : {{ offre.Duree }} mois | Publié le : {{ offre.Date_publication|date("d/m/Y") }}
                         </td>
                     </tr>
                     <tr>
