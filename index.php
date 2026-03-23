@@ -10,7 +10,7 @@ use App\Models\OfferModel;
 use App\Controllers\HomepageController;
 use App\Models\HomepageModel;
 use App\Controllers\DashboardController;
-use App\Controllers\PagesController;
+use App\Controllers\FooterPageController;
 use App\Models\DashboardModel;
 
 // Configuration de Twig
@@ -49,7 +49,7 @@ $offerController = new App\Controllers\OfferController($twig, $offerModel, $comp
 $homepageController = new App\Controllers\HomepageController($twig, $homepageModel);
 $dashboardController = new App\Controllers\DashboardController($twig, $dashboardModel);
 $authController = new App\Controllers\AuthController($twig, $pdo);
-$pagesController = new App\Controllers\PagesController($twig);
+$pagesController = new App\Controllers\FooterPageController($twig);
 
 // Routage simple
 $uri = $_GET['uri'] ?? '/';
