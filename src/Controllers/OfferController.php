@@ -26,8 +26,12 @@ class OfferController
     {
         // Récupère le mot-clé tapé dans la barre de recherche (ou vide par défaut)
         $search = $_GET['recherche'] ?? '';
+        $company = $_GET['company'] ?? '';
+        $type = $_GET['type'] ?? '';
+        $duree = $_GET['duree'] ?? '';
+
 // Demande au modèle de trouver les offres correspondantes
-        $allOffers = $this->model->searchOffers($search);
+        $allOffers = $this->model->searchOffers($search, $company, $type, $duree);
 // Divise les résultats pour n'en afficher que 10 par page
         $paginator = new Paginator($allOffers, 10);
 // Envoie les variables à la vue Twig pour générer le HTML
@@ -35,7 +39,10 @@ class OfferController
             'offres_page'  => $paginator->getCurrentPageItems(),
             'total_pages'  => $paginator->getTotalPages(),
             'current_page' => $_GET['page'] ?? 1,
-            'search_term'  => $search
+            'search_term'  => $search,
+            'selected_company' => $company,
+            'selected_type' => $type,
+            'selected_duree' => $duree
         ]);
     }
 
@@ -158,4 +165,5 @@ class OfferController
         }
         header('Location: /offers');
     }
+
 }

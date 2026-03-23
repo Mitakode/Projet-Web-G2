@@ -6,25 +6,46 @@
     <h1 class="main-title">Les offres</h1>
     
     <section class="search-section">
-        {# Le formulaire de recherche renvoie vers index.php en méthode GET #}
+        {# Le formulaire doit envoyer vers index.php avec l'uri #}
         <form action="index.php" method="GET" class="search-form">
             <input type="hidden" name="uri" value="offers">
+
             <div class="search-bar-wrapper">
-                {# Pré-remplissage avec {{ search_term }} pour garder la recherche affichée après validation #}
                 <input type="text" name="recherche" class="search-input" 
                        value="{{ search_term }}" placeholder="Rechercher une offre...">
+
                 <button type="submit" class="search-btn">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
                 {% if (session['user_role'] == 'admin' or session['user_role'] == 'pilote') %}
                 {# Bouton pour ajouter une nouvelle offre #}
-                <a href="index.php?uri=offers/create" class="btn-add link" id="ouvrirPopup">+</a>
+                <a href="index.php?uri=offers/create" class="btn-add add-link" id="ouvrirPopup">+</a>
                 {% endif %}
+            </div>
+            <div class="filters-container">
+                <div class="filters-container">
+                <select class="filter-item" name="type">
+                    <option value="">Type d'offre</option>
+                    <option value="Stage" {{ selected_type == 'Stage' ? 'selected' : '' }}>Stage</option>
+                    <option value="Alternance" {{ selected_type == 'Alternance' ? 'selected' : '' }}>Alternance</option>
+                </select>
+
+                <select class="filter-item" name="duree">
+                    <option value="">Durée</option>
+                    <option value="1,3" {{ selected_duree == '1,3' ? 'selected' : '' }}>1-3 mois</option>
+                    <option value="4,6" {{ selected_duree == '4,6' ? 'selected' : '' }}>4-6 mois</option>
+                    <option value="12"  {{ selected_duree == '12'  ? 'selected' : '' }}>1 an</option>
+                    <option value="24"  {{ selected_duree == '24'  ? 'selected' : '' }}>2 ans</option>
+                    <option value="36"  {{ selected_duree == '36'  ? 'selected' : '' }}>3 ans</option>
+                </select>
+                
+                <input type="text" name="company" class="filter-item" 
+                       value="{{ company }}" placeholder="Entreprise...">
             </div>
         </form>
     </section>
 
-    <div class="list-container">
+    <div class="list-container"> 
         {# Boucle Twig : Parcours chaque offre envoyée par le contrôleur dans 'offres_page' #}
         {% for offre in offres_page %}
             <div class="offres-liste">
@@ -78,7 +99,7 @@
             {# Boucle de 1 jusqu'au nombre total de pages #}
             {% for i in 1..total_pages %}
                 {# Ajout de la classe 'active' si 'i' correspond à la page actuelle #}
-                <a href="index.php?uri=offers&recherche={{ search_term }}&page={{ i }}" 
+                <a href="index.php?uri=offers&recherche={{ search_term }}&company={{ selected_company }}&type={{ selected_type }}&duree={{ selected_duree }}&page={{ i }}" 
                    class="page-link {{ i == current_page ? 'active' : '' }}">
                     {{ i }}
                 </a>
