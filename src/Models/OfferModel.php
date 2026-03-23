@@ -30,7 +30,7 @@ class OfferModel extends Model
      * Recherche des offres en fonction d'un mot-clé.
      * La jointure permet d'afficher le nom de l'entreprise dans la liste des résultats.
      */
-    public function searchOffers($keyword = "")
+    public function searchOffers($keyword = "", $company = "", $type = "", $duree = "")
     {
         $sql = "SELECT Offre.*, Entreprise.Nom_entreprise 
                 FROM Offre 
@@ -43,6 +43,28 @@ class OfferModel extends Model
             $sql .= " AND (Offre.Titre LIKE :key OR Offre.Description LIKE :key OR Offre.Liste_competences LIKE :key)";
             $params['key'] = '%' . $keyword . '%';
 // Les '%' permettent de chercher le mot n'importe où dans la chaîne
+        }
+
+        if (!empty($company)) {
+            $sql .= " AND Entreprise.Nom_entreprise LIKE :company";
+            $params['company'] = '%' . $company . '%';
+        }
+
+        if (!empty($type)) {
+            $sql .= " AND Offre.Titre LIKE :type";
+            $params['type'] = '%' . $type . '%';
+        }
+
+        if (!empty($duree)) {
+            $bornes = explode(',', $duree);
+            if (count($bornes) == 1) {
+                $sql .= " AND Offre.Duree = :duree";
+                $params['duree'] = $bornes[0];
+            } else {
+                $sql .= " AND Offre.Duree BETWEEN :duree_min AND :duree_max";
+                $params['duree_min'] = $bornes[0];
+                $params['duree_max'] = $bornes[1];
+            }
         }
 
         $stmt = $this->connection->getConnection()->prepare($sql);
@@ -74,4 +96,5 @@ class OfferModel extends Model
     {
         return $this->connection->deleteRecord($id);
     }
+
 }

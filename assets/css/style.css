@@ -772,6 +772,11 @@ main.list-page {
     cursor: pointer;
 }
 
+.add-link {
+    text-decoration: none;
+    color: var(--white);
+}
+
 .link {
     text-decoration: none;
     color: var(--text-color);
