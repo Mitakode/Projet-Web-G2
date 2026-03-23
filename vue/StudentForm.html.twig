@@ -10,7 +10,7 @@
     <form class="form-test" action="/{{ is_edit ? 'dashboard/admin/update-student&id=' ~ etudiant.ID_utilisateur : 'dashboard/admin/create-student' }}" method="POST">
         {% if session.user_role == 'admin' %}
             <label>ID du Pilote référent</label>
-            <input class="form-input" type="number" name="id_pilote" required>
+            <input class="form-input" type="number" name="id_pilote" value="{{ etudiant.ID_pilote ?? '' }}" required>
         {% endif %}
         
         <label>Nom</label>
@@ -26,7 +26,7 @@
         <input class="form-input" type="text" name="email" value="{{ etudiant.Email ?? '' }}" required>
 
         <label>Mot de passe</label>
-        <input class="form-input" type="text" name="password" value="{{ etudiant.Mot_de_passe ?? '' }}"required>
+        <input class="form-input" type="text" name="password" placeholder="Laissez vide pour ne pas modifier" {% if not is_edit %}required{% endif %}>
 
         <button class="btn" type="submit">Valider</button>
         <a href="/dashboard/admin" class="btn-annuler">Annuler</a>

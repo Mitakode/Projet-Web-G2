@@ -2,13 +2,22 @@
 namespace App\Models;
 
 class DashboardAdminModel extends Model{
+    private $pdo;
 
     public function __construct(Database $connection) {
         parent::__construct($connection);
+        $this->pdo = $this->connection->getConnection();
     }
 
     public function getStudentById($id) {
-        return $this->connection->getRecord($id);
+        $sql = "SELECT Utilisateur.*, Etudiant.Promotion, Etudiant.ID_pilote 
+                FROM Utilisateur  
+                JOIN Etudiant ON Utilisateur.ID_utilisateur = Etudiant.ID_utilisateur 
+                WHERE Utilisateur.ID_utilisateur = ?";
+    
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$id]);
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 
     public function searchStudents($surname = "", $name = "", $promotion = "") {
@@ -91,9 +100,38 @@ class DashboardAdminModel extends Model{
         $this->pdo->commit();
         return $userId;
 
-    } catch (\Exception $e) {
-        $this->pdo->rollBack();
-        throw $e;
+        } catch (\Exception $e) {
+            $this->pdo->rollBack();
+            throw $e;
+        }
     }
-}
+
+    public function updateStudent($id, $userData, $studentData){
+        try {
+            $this->pdo->beginTransaction();
+
+            $userSets = implode(' = ?, ', array_keys($userData)) . ' = ?';
+            $sqlUser = "UPDATE Utilisateur SET $userSets WHERE ID_utilisateur = ?";
+            $userParams = array_values($userData);
+            $userParams[] = $id;
+
+            $stmt = $this->pdo->prepare($sqlUser);
+            $stmt->execute(array_values($userParams));
+            
+            $studentSets = implode(' = ?, ', array_keys($studentData)) . ' = ?';
+            $sqlStudent = "UPDATE Etudiant SET $studentSets WHERE ID_utilisateur = ?";
+            $studentParams = array_values($studentData);
+            $studentParams[] = $id;
+
+            $stmt = $this->pdo->prepare($sqlStudent);
+            $stmt->execute(array_values($studentParams));
+
+            $this->pdo->commit();
+            return true;
+
+        } catch (\Exception $e) {
+            $this->pdo->rollBack();
+            throw $e;
+        }
+    }
 }

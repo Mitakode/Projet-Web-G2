@@ -97,7 +97,43 @@ class DashboardAdminController{
     }
 
     public function updateStudent(){
+        $id = $_GET['id'] ?? null;
 
+        if (!$id) {
+            header('Location: /dashboard/admin');
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $userdata = [
+                'Nom' => htmlspecialchars(trim($_POST['surname'])),
+                'Prenom' => htmlspecialchars(trim($_POST['name'])),
+                'Email' => htmlspecialchars(trim($_POST['email']))
+            ];
+            if(!empty($_POST['password'])){
+               $userData['Mot_de_passe'] = password_hash($_POST['password'], PASSWORD_BCRYPT);
+            }
+
+            $studentData = [
+                'Promotion' => htmlspecialchars(trim($_POST['promotion'])),
+            ];
+
+            if (isset($_POST['id_pilote'])) {
+                $studentData['ID_pilote'] = intval($_POST['id_pilote']);
+            }
+
+            $this->model->updateStudent($id, $userData, $studentData);
+            header('Location: /dashboard/admin');
+            exit;
+        }
+
+        $student = $this->model->getStudentById($id);
+
+        echo $this->twig->render('StudentForm.html.twig', [
+            'etudiant' => $student,
+            'is_edit'  => true,
+            'session'  => $_SESSION
+        ]);
     }
 
     public function createPilot(){
