@@ -7,6 +7,10 @@ class DashboardStudentModel extends Model {
         parent::__construct($connection);
     }
 
+    /**
+     * Récupère les candidatures d'un étudiant avec les détails de l'offre et de l'entreprise.
+     * Utilisation de JOIN pour croiser les tables Postule, Offre et Entreprise.
+     */
     public function getCandidatures($idUtilisateur) {
         $sql = "SELECT Offre.ID_offre, Offre.Titre, Entreprise.Nom_entreprise, Postule.CV, Postule.Lettre_motivation 
                 FROM Postule 
@@ -20,6 +24,9 @@ class DashboardStudentModel extends Model {
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Récupère la wishlist (offres sauvegardées) d'un étudiant.
+     */
     public function getWishlist($idUtilisateur) {
         $sql = "SELECT Offre.ID_offre, Offre.Titre, Entreprise.Nom_entreprise 
                 FROM Souhaite 
@@ -33,6 +40,9 @@ class DashboardStudentModel extends Model {
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Supprime une offre de la wishlist de l'étudiant.
+     */
     public function removeFromWishlist($idUtilisateur, $idOffre) {
         $sql = "DELETE FROM Souhaite WHERE ID_utilisateur = :idUtilisateur AND ID_offre = :idOffre";
         $pdo = $this->connection->getConnection();
