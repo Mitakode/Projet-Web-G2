@@ -1,7 +1,9 @@
 <?php
+
 namespace App\Models;
 
-interface Database {
+interface Database
+{
     /**
      * Retrieves all records from the database.
      *

@@ -1,64 +1,53 @@
 <?php
+
 session_start();
 require "vendor/autoload.php";
-
-use App\Controllers\CompanyController;
-use App\Models\CompanyModel; // On importe le modèle
-use App\Controllers\AuthController;
-use App\Controllers\OfferController;
-use App\Models\OfferModel;
-use App\Controllers\HomepageController;
-use App\Models\HomepageModel;
-use App\Controllers\DashboardController;
-use App\Controllers\FooterPageController;
-use App\Models\DashboardModel;
 
 // Configuration de Twig
 $loader = new \Twig\Loader\FilesystemLoader('vue');
 $twig = new \Twig\Environment($loader, ['debug' => true]);
-$twig->addGlobal('session', $_SESSION); // Permet d'accéder à la session dans tous les templates Twig
+$twig->addGlobal('session', $_SESSION);
 
-// Connexion à la base de données
+// Connexion a la base de donnees
 $dsn = 'mysql:host=localhost;dbname=thepiston;charset=utf8';
 $username = 'userthepiston';
 $password = 'Thepiston1%';
 
 try {
-    $pdo = new PDO($dsn, $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
+    $pdo = new \PDO($dsn, $username, $password);
+    $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+} catch (\PDOException $e) {
     die('Erreur de connexion : ' . $e->getMessage());
 }
 
 // Initialisation des composants
-// Adaptateur BDD des différentes tables
 $companyDbAdapter = new \App\Models\SqlDatabase($pdo, 'Entreprise', 'ID_entreprise');
-$offerDbAdapter = new \App\Models\SqlDatabase($pdo, 'Offre', 'ID_offre'); // AJOUT : Adaptateur pour les offres
+$offerDbAdapter = new \App\Models\SqlDatabase($pdo, 'Offre', 'ID_offre');
 $homepageDbAdapter = new \App\Models\SqlDatabase($pdo, 'Offre', 'ID_offre');
 $dashboardDbAdapter = new \App\Models\SqlDatabase($pdo, 'Offre', 'ID_offre');
 
-// On crée le modèle avec la connexion PDO
-$companyModel = new App\Models\CompanyModel($companyDbAdapter);
-$offerModel = new App\Models\OfferModel($offerDbAdapter); // MODIFICATION : Modèle décommenté avec le bon adaptateur
-$homepageModel = new App\Models\HomepageModel($homepageDbAdapter);
-$dashboardModel = new App\Models\DashboardModel($dashboardDbAdapter);
 
-// Contrôleurs
-$companyController = new App\Controllers\CompanyController($twig, $companyModel);
-$offerController = new App\Controllers\OfferController($twig, $offerModel, $companyModel); // MODIFICATION : Contrôleur décommenté avec les bons arguments
-$homepageController = new App\Controllers\HomepageController($twig, $homepageModel);
-$dashboardController = new App\Controllers\DashboardController($twig, $dashboardModel);
-$authController = new App\Controllers\AuthController($twig, $pdo);
-$pagesController = new App\Controllers\FooterPageController($twig);
+$companyModel = new \App\Models\CompanyModel($companyDbAdapter);
+$offerModel = new \App\Models\OfferModel($offerDbAdapter);
+$homepageModel = new \App\Models\HomepageModel($homepageDbAdapter);
+$dashboardModel = new \App\Models\DashboardModel($dashboardDbAdapter);
+
+$companyController = new \App\Controllers\CompanyController($twig, $companyModel);
+$offerController = new \App\Controllers\OfferController($twig, $offerModel, $companyModel);
+$homepageController = new \App\Controllers\HomepageController($twig, $homepageModel);
+$dashboardController = new \App\Controllers\DashboardController($twig, $dashboardModel);
+$authController = new \App\Controllers\AuthController($twig, $pdo);
+$pagesController = new \App\Controllers\FooterPageController($twig);
 
 // Routage simple
 $uri = $_GET['uri'] ?? '/';
 $uri = trim($uri, '/');
 
 switch ($uri) {
-    // Pages Globales
+    // Pages globales
     case '':
         $homepageController->home();
+        break;
 
     // Pages statiques
     case 'cgu':
@@ -77,36 +66,35 @@ switch ($uri) {
         $pagesController->page('terms');
         break;
 
-        break;
     case 'mentions-legales':
         $homepageController->legal();
         break;
 
     // Gestion des entreprises
-    case 'companies': // Rechercher et afficher
+    case 'companies':
         $companyController->list();
         break;
-    case 'companies/create': // Créer
+    case 'companies/create':
         $companyController->create();
         break;
-    case 'companies/update': //Modifier
+    case 'companies/update':
         $companyController->update();
         break;
-    case 'companies/delete': // Supprimer
+    case 'companies/delete':
         $companyController->delete();
         break;
 
-    // Gestion des Offres
+    // Gestion des offres
     case 'offers':
         $offerController->list();
         break;
-    case 'offers/detail': // MODIFICATION : 'details' devient 'detail' pour correspondre à la méthode
-        $offerController->detail(); 
+    case 'offers/detail':
+        $offerController->detail();
         break;
     case 'offers/create':
         $offerController->create();
         break;
-    case 'offers/update': // AJOUT : Route update
+    case 'offers/update':
         $offerController->update();
         break;
     case 'offers/delete':
@@ -118,12 +106,12 @@ switch ($uri) {
         $offerController->apply($_GET['id_offre']);
         break;
 
-    // Gestion des Utilisateurs
+    // Gestion des utilisateurs
     case 'dashboard':
         $authController->dashboard();
         break;
 
-    // Pilot et Administrateur
+    // Pilot et administrateur
     case 'dashboard/admin':
         $dashboardController->listStudents();
         break;
@@ -145,15 +133,7 @@ switch ($uri) {
     case 'dashboard/admin/update-pilot':
         $dashboardController->updatePilot();
         break;
-    /* Student
-    case 'dashboard/student':
-        $studentController->list();
-        break;
-    case 'dashboard/student/delete-wishlist':
-        $dashboardController->deleteWishlist();
-        break;
-*/
-    
+
     // Authentification
     case 'login':
         $authController->login();
@@ -163,7 +143,7 @@ switch ($uri) {
         break;
 
     default:
-        header("HTTP/1.0 404 Not Found");
+        header('HTTP/1.0 404 Not Found');
         echo '<h1>404 - Page introuvable</h1>';
         break;
 }

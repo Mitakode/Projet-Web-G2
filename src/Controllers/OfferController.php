@@ -1,15 +1,19 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Models\Paginator;
 
-class OfferController {
+class OfferController
+{
     private $twig;
-    private $model;          // Gère les données des Offres
+    private $model;
+// Gère les données des Offres
     private $companyModel;   // Gère les données des Entreprises (nécessaire pour les formulaires)
 
     // Injection des dépendances
-    public function __construct($twig, $model, $companyModel) {
+    public function __construct($twig, $model, $companyModel)
+    {
         $this->twig = $twig;
         $this->model = $model;
         $this->companyModel = $companyModel;
@@ -18,17 +22,15 @@ class OfferController {
     /**
      * Gère l'affichage de la liste des offres avec recherche et pagination.
      */
-    public function list() {
+    public function list()
+    {
         // Récupère le mot-clé tapé dans la barre de recherche (ou vide par défaut)
         $search = $_GET['recherche'] ?? '';
-        
-        // Demande au modèle de trouver les offres correspondantes
+// Demande au modèle de trouver les offres correspondantes
         $allOffers = $this->model->searchOffers($search);
-
-        // Divise les résultats pour n'en afficher que 10 par page
+// Divise les résultats pour n'en afficher que 10 par page
         $paginator = new Paginator($allOffers, 10);
-        
-        // Envoie les variables à la vue Twig pour générer le HTML
+// Envoie les variables à la vue Twig pour générer le HTML
         echo $this->twig->render('Offers.html.twig', [
             'offres_page'  => $paginator->getCurrentPageItems(),
             'total_pages'  => $paginator->getTotalPages(),
@@ -40,10 +42,10 @@ class OfferController {
     /**
      * Affiche la page de détails d'une offre spécifique (NOUVEAU)
      */
-    public function detail() {
+    public function detail()
+    {
         $id = $_GET['id'] ?? null;
-
-        // Si aucun ID n'est fourni, on redirige vers la liste des offres
+// Si aucun ID n'est fourni, on redirige vers la liste des offres
         if (!$id) {
             header('Location: /offers');
             exit;
@@ -51,8 +53,7 @@ class OfferController {
 
         // On récupère les informations de l'offre depuis la base de données
         $offer = $this->model->getOfferById($id);
-
-        // Sécurité supplémentaire : si l'ID tapé n'existe pas en BDD
+// Sécurité supplémentaire : si l'ID tapé n'existe pas en BDD
         if (!$offer) {
             header('Location: /offers');
             exit;
@@ -67,23 +68,27 @@ class OfferController {
     /**
      * Gère l'ajout d'une nouvelle offre (Affichage du formulaire + Traitement).
      */
-    public function create() {
+    public function create()
+    {
         // Si le formulaire a été soumis
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Nettoyage des données
+// Nettoyage des données
             $titre = isset($_POST['Titre']) ? htmlspecialchars(trim($_POST['Titre'])) : '';
             $description = isset($_POST['Description']) ? htmlspecialchars(trim($_POST['Description'])) : '';
             $baseRemuneration = isset($_POST['Base_remuneration']) ? floatval($_POST['Base_remuneration']) : null;
             $duree = isset($_POST['Duree']) ? intval($_POST['Duree']) : null;
-            $listeCompetences = isset($_POST['Liste_competences']) ? htmlspecialchars(trim($_POST['Liste_competences'])) : '';
+            $listeCompetences = isset($_POST['Liste_competences'])
+            ? htmlspecialchars(trim($_POST['Liste_competences']))
+            : '';
             $idEntreprise = isset($_POST['ID_entreprise']) ? intval($_POST['ID_entreprise']) : null;
-            $datePublication = date('Y-m-d'); // Date du jour automatique
+            $datePublication = date('Y-m-d');
+// Date du jour automatique
 
             // Vérification basique
             if (empty($titre) || empty($description) || empty($idEntreprise)) {
                 echo "Veuillez remplir correctement tous les champs obligatoires.";
             } else {
-                // Insertion en BDD
+            // Insertion en BDD
                 $this->model->createOffer([
                     'Titre'             => $titre,
                     'Description'       => $description,
@@ -95,13 +100,12 @@ class OfferController {
                 ]);
                 header('Location: /offers');
                 exit;
-            } 
+            }
         }
 
         // Récupère la liste des entreprises pour le <select> du formulaire
         $entreprises = $this->companyModel->searchCompanies();
-
-        // Affiche le formulaire vierge
+// Affiche le formulaire vierge
         echo $this->twig->render('OffersForm.html.twig', [
             'is_edit'     => false,
             'entreprises' => $entreprises
@@ -111,9 +115,9 @@ class OfferController {
     /**
      * Gère la modification d'une offre existante.
      */
-    public function update() {
+    public function update()
+    {
         $id = $_GET['id'] ?? null;
-
         if (!$id) {
             header('Location: /offers');
             exit;
@@ -128,7 +132,6 @@ class OfferController {
                 'Liste_competences' => htmlspecialchars(trim($_POST['Liste_competences'])),
                 'ID_entreprise'     => intval($_POST['ID_entreprise'])
             ];
-
             $this->model->updateOffer($id, $data);
             header('Location: /offers');
             exit;
@@ -136,8 +139,7 @@ class OfferController {
 
         $offer = $this->model->getOfferById($id);
         $entreprises = $this->companyModel->searchCompanies();
-
-        // Affiche le formulaire pré-rempli
+// Affiche le formulaire pré-rempli
         echo $this->twig->render('OffersForm.html.twig', [
             'offre'       => $offer,
             'entreprises' => $entreprises,
@@ -148,7 +150,8 @@ class OfferController {
     /**
      * Gère la suppression d'une offre.
      */
-    public function delete() {
+    public function delete()
+    {
         $id = $_GET['id'] ?? null;
         if ($id) {
             $this->model->deleteOffer($id);
