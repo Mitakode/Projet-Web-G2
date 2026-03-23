@@ -66,10 +66,6 @@ switch ($uri) {
         $pagesController->page('terms');
         break;
 
-    case 'mentions-legales':
-        $homepageController->legal();
-        break;
-
     // Gestion des entreprises
     case 'companies':
         $companyController->list();
