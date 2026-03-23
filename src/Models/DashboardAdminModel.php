@@ -127,7 +127,6 @@ class DashboardAdminModel extends Model{
             $stmt->execute(array_values($studentParams));
 
             $this->pdo->commit();
-            return true;
 
         } catch (\Exception $e) {
             $this->pdo->rollBack();

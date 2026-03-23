@@ -105,7 +105,7 @@ class DashboardAdminController{
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $userdata = [
+            $userData = [
                 'Nom' => htmlspecialchars(trim($_POST['surname'])),
                 'Prenom' => htmlspecialchars(trim($_POST['name'])),
                 'Email' => htmlspecialchars(trim($_POST['email']))
@@ -128,7 +128,7 @@ class DashboardAdminController{
         }
 
         $student = $this->model->getStudentById($id);
-
+        
         echo $this->twig->render('StudentForm.html.twig', [
             'etudiant' => $student,
             'is_edit'  => true,
