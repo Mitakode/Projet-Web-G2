@@ -10,6 +10,7 @@ use App\Models\OfferModel;
 use App\Controllers\HomepageController;
 use App\Models\HomepageModel;
 use App\Controllers\DashboardController;
+use App\Controllers\PagesController;
 use App\Models\DashboardModel;
 
 // Configuration de Twig
@@ -48,6 +49,7 @@ $offerController = new App\Controllers\OfferController($twig, $offerModel, $comp
 $homepageController = new App\Controllers\HomepageController($twig, $homepageModel);
 $dashboardController = new App\Controllers\DashboardController($twig, $dashboardModel);
 $authController = new App\Controllers\AuthController($twig, $pdo);
+$pagesController = new App\Controllers\PagesController($twig);
 
 // Routage simple
 $uri = $_GET['uri'] ?? '/';
@@ -57,6 +59,24 @@ switch ($uri) {
     // Pages Globales
     case '':
         $homepageController->home();
+
+    // Pages statiques
+    case 'cgu':
+        $pagesController->page('cgu');
+        break;
+    case 'contact':
+        $pagesController->page('contact');
+        break;
+    case 'legal':
+        $pagesController->page('legal');
+        break;
+    case 'privacy':
+        $pagesController->page('privacy');
+        break;
+    case 'terms':
+        $pagesController->page('terms');
+        break;
+
         break;
     case 'mentions-legales':
         $homepageController->legal();
