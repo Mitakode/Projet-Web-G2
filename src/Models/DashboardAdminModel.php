@@ -66,4 +66,34 @@ class DashboardAdminModel extends Model{
         $stmt->execute($params);
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
+
+    public function createStudent($userData, $studentData) {
+    try {
+        $this->pdo->beginTransaction();
+
+        $columns = implode(', ', array_keys($userData));
+        $placeholders = implode(', ', array_fill(0, count($userData), '?'));
+        $sqlUser = "INSERT INTO Utilisateur ($columns) VALUES ($placeholders)";
+        
+        $stmt = $this->pdo->prepare($sqlUser);
+        $stmt->execute(array_values($userData));
+        
+        $userId = $this->pdo->lastInsertId();
+        $studentData['ID_utilisateur'] = $userId;
+
+        $colStudent = implode(', ', array_keys($studentData));
+        $placeStudent = implode(', ', array_fill(0, count($studentData), '?'));
+        $sqlStudent = "INSERT INTO Etudiant ($colStudent) VALUES ($placeStudent)";
+
+        $stmt = $this->pdo->prepare($sqlStudent);
+        $stmt->execute(array_values($studentData));
+
+        $this->pdo->commit();
+        return $userId;
+
+    } catch (\Exception $e) {
+        $this->pdo->rollBack();
+        throw $e;
+    }
+}
 }

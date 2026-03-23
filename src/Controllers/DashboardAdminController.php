@@ -50,7 +50,46 @@ class DashboardAdminController{
     }
 
     public function createStudent(){
-        
+        if($_SERVER['REQUEST_METHOD']==='POST'){
+            $surname= isset($_POST['surname']) ? htmlspecialchars(trim($_POST['surname'])):'';
+            $name= isset($_POST['name']) ? htmlspecialchars(trim($_POST['name'])):'';
+            $promotion=isset($_POST['promotion']) ? htmlspecialchars(trim($_POST['promotion'])):'';
+            $email=isset($_POST['email']) ? htmlspecialchars(trim($_POST['email'])):'';
+            $password= isset($_POST['password']) ? htmlspecialchars(trim($_POST['password'])):'';
+            $id_pilot =null;
+
+            if ($_SESSION['user_role'] === 'admin') {
+            $id_pilote = isset($_POST['id_pilote']) ? intval($_POST['id_pilote']) : null;
+            } else {
+                $id_pilote = $_SESSION['user_id']; 
+            }
+
+            if (empty($surname) || empty($name) || empty($promotion) || empty($email) || empty($password) || empty($id_pilote)) {
+                echo "Veuillez remplir tous les champs, y compris le pilote référent.";
+            } else {
+                $userData = [
+                    'Nom' => $surname,
+                    'Prenom' => $name,
+                    'Email' => $email,
+                    'Mot_de_passe' => password_hash($password, PASSWORD_BCRYPT)
+                ];
+
+                $studentData = [
+                    'Promotion' => $promotion,
+                    'ID_pilote' => $id_pilote
+                ];
+
+                $this->model->createStudent($userData, $studentData);
+                
+                header('Location: /dashboard/admin');
+                exit;
+            }
+        }
+
+        echo $this->twig->render('StudentForm.html.twig', [
+        'is_edit'=> false,
+        'session' => $_SESSION
+        ]);
     }
 
     public function deleteStudent(){
