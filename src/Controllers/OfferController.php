@@ -166,4 +166,16 @@ class OfferController
         header('Location: /offers');
     }
 
+    
+    public function addWishlist()
+    {
+        $offerId = $_GET['id'] ?? null;
+        $studentId = $_SESSION['user_id'] ?? null;
+
+        if ($offerId && $studentId) {
+            $this->model->addWishlist($offerId, $studentId);
+        }
+        header('Location: /offers');
+    }
+
 }

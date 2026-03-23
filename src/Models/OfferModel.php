@@ -97,4 +97,13 @@ class OfferModel extends Model
         return $this->connection->deleteRecord($id);
     }
 
+    
+    public function addWishlist($offerId, $studentId)
+    {
+        $sql = "INSERT INTO Souhaite (ID_utilisateur, ID_offre) VALUES (:studentId, :offerId)";
+        $params = ['studentId' => $studentId, 'offerId' => $offerId];
+        $stmt = $this->connection->getConnection()->prepare($sql);
+        return $stmt->execute($params);
+    }
+
 }
