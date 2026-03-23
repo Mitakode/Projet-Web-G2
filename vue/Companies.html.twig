@@ -15,10 +15,9 @@
                 <button type="submit" class="search-btn">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
-                <a href="index.php?uri=companies/create" type="button" class="btn-add link" id="ouvrirPopup">+</a>
+                <a href="index.php?uri=companies/create" class="btn-add link" id="ouvrirPopup">+</a>
             </div>
         </form>
-    </section>
     </section>
         <div class="list-container">
             {% for entreprise in entreprises_page %}
@@ -74,6 +73,5 @@
                 {% endfor %}
             {% endif %}
         </div>
-    </section>
     
 {% endblock %}
