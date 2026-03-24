@@ -80,7 +80,7 @@ class AuthController
             $dashboardAdminController->list();
         } elseif ($role == 'etudiant') {
             // $studentController->list(); // À décommenter quand etudiant est fait
-            echo "ajouter étudiant dans AuthController->dashboard()";
+            echo "ajouter \$dashboardStudentController->list(); dans AuthController->dashboard()";
         } else {
             header('Location: /login');
         }
