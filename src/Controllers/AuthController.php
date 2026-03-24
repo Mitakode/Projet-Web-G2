@@ -34,7 +34,11 @@ class AuthController
             $stmt->execute([$email]);
             $user = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-            if ($user && $this->verifyPassword($user, $password)) {
+            if (!$user) {
+                $error = '1';
+            } elseif (!$this->verifyPassword($user, $password)) {
+                $error = '2';
+            } else {
                 $id = $user['ID_utilisateur'];
 
                 // détermine le rôle
@@ -50,8 +54,6 @@ class AuthController
                 header('Location: /dashboard');
                 exit;
             }
-
-            $error = 'Email ou mot de passe incorrect.';
         }
 
         echo $this->twig->render('Login.html.twig', ['error' => $error]);
@@ -92,6 +94,12 @@ class AuthController
         session_destroy();
         header('Location: /login');
         exit;
+    }
+
+    public function dashboard()
+    {
+        $this->requireAuthenticated();
+        $this->redirectToDashboardByRole($_SESSION['user_role'] ?? '');
     }
 
     private function requireAuthenticated(): void

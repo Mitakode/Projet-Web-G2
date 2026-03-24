@@ -4,18 +4,27 @@
 {% block main_class %}list-page{% endblock %}
 {% block content %}
 <section class="frame">
-    <h1><i class="fa-solid fa-circle-user"></i>Connectez-vous</h1>
+    <h1><i class="fa-solid fa-circle-user"></i> Connectez-vous</h1>
     <h2>Connectez-vous pour acceder a votre espace</h2>
 
     <form class="form-test" action="/login" method="POST">
-        <label for="email">Email</label>
+        <div class="label-row">
+            <label for="email">Email</label>
+            {% if error == '1' %}
+                <p class="infos infos-error" role="alert">Aucun compte n'est lie a cette adresse email</p>
+            {% endif %}
+        </div>
         <input class="form-input" type="text" id="email" name="email" required>
 
-        <label for="password">Mot de passe</label>
+        <div class="label-row">
+            <label for="password">Mot de passe</label>
+            {% if error == '2' %}
+                <p class="infos infos-error" role="alert">Mot de passe incorrect</p>
+            {% endif %}
+        </div>
         <input class="form-input" type="password" id="password" name="password" required>
 
         <button class="btn" type="submit">Connexion</button>
-
         <p class="infos">Mot de passe oublie ? <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=xvFZjo5PgG0">Reinitialiser le mot de passe</a></p>
     </form>
 </section>

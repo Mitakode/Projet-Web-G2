@@ -1,6 +1,8 @@
 <?php
+
 // Fonction pour valider et sécuriser une entrée utilisateur
-function validateInput($input) {
+function validateInput($input)
+{
     // Supprimer les espaces inutiles au début et à la fin
     // trim() enlève les espaces, tabulations ou retours à la ligne superflus
     $input = trim($input);
@@ -22,4 +24,3 @@ function validateInput($input) {
     // Retourner l'entrée validée et sécurisée
     return $input;
 }
-?>

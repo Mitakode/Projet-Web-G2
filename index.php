@@ -1,38 +1,28 @@
 <?php
+
 session_start();
 require "vendor/autoload.php";
-
-use App\Controllers\CompanyController;
-use App\Models\CompanyModel; // On importe le modèle
-use App\Controllers\AuthController;
-use App\Controllers\OfferController;
-use App\Models\OfferModel;
-use App\Controllers\HomepageController;
-use App\Models\HomepageModel;
-use App\Controllers\DashboardController;
-use App\Models\DashboardModel;
 
 // Configuration de Twig
 $loader = new \Twig\Loader\FilesystemLoader('vue');
 $twig = new \Twig\Environment($loader, ['debug' => true]);
-$twig->addGlobal('session', $_SESSION); // Permet d'accéder à la session dans tous les templates Twig
+$twig->addGlobal('session', $_SESSION);
 
-// Connexion à la base de données
+// Connexion a la base de donnees
 $dsn = 'mysql:host=localhost;dbname=thepiston;charset=utf8';
 $username = 'userthepiston';
 $password = 'Thepiston1%';
 
 try {
-    $pdo = new PDO($dsn, $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
+    $pdo = new \PDO($dsn, $username, $password);
+    $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+} catch (\PDOException $e) {
     die('Erreur de connexion : ' . $e->getMessage());
 }
 
 // Initialisation des composants
-// Adaptateur BDD des différentes tables
 $companyDbAdapter = new \App\Models\SqlDatabase($pdo, 'Entreprise', 'ID_entreprise');
-$offerDbAdapter = new \App\Models\SqlDatabase($pdo, 'Offre', 'ID_offre'); // AJOUT : Adaptateur pour les offres
+$offerDbAdapter = new \App\Models\SqlDatabase($pdo, 'Offre', 'ID_offre');
 $homepageDbAdapter = new \App\Models\SqlDatabase($pdo, 'Offre', 'ID_offre');
 $dashboardAdminDbAdapter = new \App\Models\SqlDatabase($pdo, 'Utilisateur', 'ID_utilisateur');
 
@@ -54,45 +44,65 @@ $uri = $_GET['uri'] ?? '/';
 $uri = trim($uri, '/');
 
 switch ($uri) {
-    // Pages Globales
+    // Pages globales
     case '':
         $homepageController->home();
         break;
-    case 'mentions-legales':
-        $homepageController->legal();
+
+    // Pages statiques
+    case 'cgu':
+        $pagesController->page('cgu');
+        break;
+    case 'contact':
+        $pagesController->page('contact');
+        break;
+    case 'legal':
+        $pagesController->page('legal');
+        break;
+    case 'privacy':
+        $pagesController->page('privacy');
+        break;
+    case 'terms':
+        $pagesController->page('terms');
         break;
 
     // Gestion des entreprises
-    case 'companies': // Rechercher et afficher
+    case 'companies':
         $companyController->list();
         break;
-    case 'companies/create': // Créer
+    case 'companies/create':
         $companyController->create();
         break;
-    case 'companies/update': //Modifier
+    case 'companies/update':
         $companyController->update();
         break;
-    case 'companies/delete': // Supprimer
+    case 'companies/delete':
         $companyController->delete();
         break;
 
-    // Gestion des Offres
+    // Gestion des offres
     case 'offers':
         $offerController->list();
         break;
-    case 'offers/detail': // MODIFICATION : 'details' devient 'detail' pour correspondre à la méthode
-        $offerController->detail(); 
+    case 'offers/detail':
+        $offerController->detail();
         break;
     case 'offers/create':
         $offerController->create();
         break;
-    case 'offers/update': // AJOUT : Route update
+    case 'offers/update':
         $offerController->update();
         break;
     case 'offers/delete':
         $offerController->delete();
         break;
 
+    case 'offers/addWishlist':
+        $offerController->addWishlist();
+        break;
+    case 'offers/deleteWishlist':
+        $offerController->deleteWishlist();
+        break;
     // Candidatures
     case 'apply':
         $offerController->apply($_GET['id_offre']);
@@ -126,15 +136,7 @@ switch ($uri) {
     case 'dashboard/admin/update-pilot':
         $dashboardAdminController->updatePilot();
         break;
-    /* Student
-    case 'dashboard/student':
-        $studentController->list();
-        break;
-    case 'dashboard/student/delete-wishlist':
-        $dashboardController->deleteWishlist();
-        break;
-*/
-    
+
     // Authentification
     case 'login':
         $authController->login();
@@ -144,7 +146,7 @@ switch ($uri) {
         break;
 
     default:
-        header("HTTP/1.0 404 Not Found");
+        header('HTTP/1.0 404 Not Found');
         echo '<h1>404 - Page introuvable</h1>';
         break;
 }

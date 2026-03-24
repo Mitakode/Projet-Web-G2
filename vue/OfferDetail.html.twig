@@ -13,7 +13,7 @@
         </div>
 
         <div class="form-grid">
-            <div class="form-column2">
+            <div class={% if session['user_role'] == 'etudiant' %}"form-column2"{% else %}"form-column100"{% endif %}>
                 <div class="frame2">
                     <div class="infos-offre">
                         {# Formatage de la date à la française #}
@@ -47,7 +47,7 @@
                     </div>
                 </div>
             </div>
-
+            {% if session['user_role'] == 'etudiant' %}
             <div class="form-column3">
                 <div class="frame2">
                     <div class="btn-container">
@@ -77,6 +77,7 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
         </div>
     </section>
 </main>

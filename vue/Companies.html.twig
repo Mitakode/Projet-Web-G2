@@ -15,10 +15,11 @@
                 <button type="submit" class="search-btn">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
-                <a href="index.php?uri=companies/create" type="button" class="btn-add link">+</a>
+                {% if (session['user_role'] == 'admin' or session['user_role'] == 'pilote') %}
+                <a href="index.php?uri=companies/create" class="btn-add add-link">+</a>
+                {% endif %}
             </div>
         </form>
-    </section>
     </section>
         <div class="list-container">
             {% for entreprise in entreprises_page %}
@@ -33,6 +34,7 @@
                                     Pas de note
                                 {% endif %}
                             </strong></td>
+                            {% if (session['user_role'] == 'admin' or session['user_role'] == 'pilote') %}
                             <td class="btn-table">
                                 <a href="index.php?uri=companies/update&id={{ entreprise.ID_entreprise }}" 
                                     class="btn-action crayon">
@@ -45,6 +47,7 @@
                                     <i class="fa-solid fa-trash"></i>
                                 </a>
                             </td>
+                            {% endif %}
                         </tr>
                         <tr>
                             <td colspan="2" class="company-info">
@@ -74,6 +77,5 @@
                 {% endfor %}
             {% endif %}
         </div>
-    </section>
     
 {% endblock %}

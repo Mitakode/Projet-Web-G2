@@ -1,7 +1,16 @@
 <?php
+
 namespace App\Models;
 
-interface Database {
+interface Database
+{
+    /**
+     * Returns the underlying PDO connection.
+     *
+     * @return \PDO
+     */
+    public function getConnection();
+
     /**
      * Retrieves all records from the database.
      *
@@ -33,4 +42,12 @@ interface Database {
      * @return bool True if the record was updated successfully, false otherwise.
      */
     public function updateRecord($id, $record);
+
+    /**
+     * Deletes a specific record from the database.
+     *
+     * @param int $id The ID of the record to delete.
+     * @return bool True if the record was deleted successfully, false otherwise.
+     */
+    public function deleteRecord($id);
 }

@@ -1,0 +1,13 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ pageType | capitalize }} - ThePiston{% endblock %}
+{% block main_class %}list-page{% endblock %}
+
+{% block content %}
+<section class="frame">
+    <h2>{{ content.title }}</h2>
+    <div class="page-content">
+        {{ content.body | raw }}
+    </div>
+</section>
+{% endblock %}

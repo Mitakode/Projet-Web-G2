@@ -1,22 +1,25 @@
 <?php
+
 namespace App\Controllers;
 
-class HomepageController{
+class HomepageController
+{
     private $twig;
     private $model;
 
-    public function __construct($twig, $model) {
+    public function __construct($twig, $model)
+    {
         $this->twig = $twig;
         $this->model = $model;
     }
 
-    public function home(){
+    public function home()
+    {
         $countStudent = $this->model->countStudent();
         $countOffer = $this->model->countOffer();
         $avgApply = $this->model->avgApply();
         $topOffers = $this->model->topOffers();
         $timeDistribution = $this->model->timeDistribution();
-        
         echo $this->twig->render('Homepage.html.twig', [
             'students' => $countStudent,
             'offers' => $countOffer,
