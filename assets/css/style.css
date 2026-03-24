@@ -295,23 +295,28 @@ footer a:hover {
 }
 
 .filter-item {
-    background-color: var(--gray-dark);
-    border: none;
+    background-color: var(--white);
+    border: 1px solid #e7e7e7;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
     width:30%;
     border-radius: 10px;
     padding: 8px 15px;
     font-size: 0.9rem;
+    color: var(--text-color);
+    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 /* Search bar */
 
 .search-bar-wrapper {
     display: flex;
-    background-color: var(--gray-dark);
+    background-color: var(--white);
     border-radius: 10px;
     width: 100%;
     overflow: hidden;    /* Pour que les bords de l'input ne dépassent pas de l'arrondi */
     margin-bottom: 15px;
+    border: 1px solid #e7e7e7;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
 }
 
 .search-bar-wrapper:focus-within {
@@ -329,7 +334,7 @@ footer a:hover {
 }
 
 .search-input:hover{
-    background-color: var(--content-gray);
+    background-color: #f6f8f4;
 }
 
 .search-input:focus{
@@ -339,7 +344,15 @@ footer a:hover {
 
 
 .filter-item:hover {
-    background-color: var(--content-gray);
+    background-color: #f6f8f4;
+    border-color: #dfe8d5;
+}
+
+.filter-item:focus,
+.filter-item:focus-visible {
+    outline: none;
+    border-color: var(--green-piston);
+    box-shadow: 0 0 0 2px rgba(161, 222, 100, 0.25);
 }
 
 /* ==================================== INFOS AREA (Accueil and boxes) ==================================== */
@@ -371,12 +384,26 @@ footer a:hover {
 }
 
 .info-box {
-    background-color: var(--content-gray);
+    background-color: var(--white);
     text-align: justify;
     border-radius: 25px;
     padding: 30px;
     margin-bottom: 20px;
     box-sizing: border-box;
+    border: 1px solid #ececec;
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.06);
+    position: relative;
+    overflow: hidden;
+}
+
+.info-box::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--green-piston) 0%, #8ccf4c 100%);
 }
 
 .ib2{
@@ -464,18 +491,39 @@ input:hover, select:hover, textarea:hover {
 .frame{
     background-color: var(--white);
     border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border: 1px solid #ececec;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.06);
     padding: 30px;
     margin: 40px auto 50px auto;
     width: 60%;
     box-sizing: border-box;
     display: flex;
     flex-direction: column; /* Espace entre les champs du formulaire */
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.25s ease;
+}
+
+.frame::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--green-piston) 0%, #8ccf4c 100%);
+}
+
+.frame:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.08);
 }
 
 .frame2 {
     background-color: var(--white);
     border-radius: 10px;
+    border: 1px solid #ececec;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.05);
     padding: 30px;
     width: 100% !important;
     box-sizing: border-box;
@@ -648,9 +696,23 @@ ul.skills li
 .dashboards-section {
     width: 100%;
     margin-bottom: 40px;
-    background-color: #E9E9E9;
+    background-color: var(--white);
     border-radius: 15px;
     padding: 20px;
+    border: 1px solid #ececec;
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+.dashboards-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--green-piston) 0%, #8ccf4c 100%);
 }
 
 .section-title {
@@ -688,9 +750,9 @@ ul.skills li
 
 .admin-item {
     width: 100%;
-    background-color: #EDEDED;
+    background-color: #f9fbf7;
     border-radius: 10px;
-    border: none;
+    border: 1px solid #ebebeb;
     border-collapse: collapse; /* Important pour garder l'arrondi */
     border-spacing: 0;
     overflow: hidden;
@@ -748,7 +810,7 @@ table thead {
 /* ==================================== CONTENT LISTS ==================================== */
 
 .table-container tbody tr:nth-child(even) {
-    background-color: #e0e0e0;
+    background-color: #f6f8f4;
 }
 
 /* 1. Mise en page du conteneur principal */
@@ -786,11 +848,12 @@ main.list-page {
     width: 100%;
     margin: 0 auto 20px auto; /* Centre le tableau et ajoute de l'espace en bas */
     border-collapse: collapse;
-    background-color: #f0f0f0; /* Gris clair */
+    background-color: var(--white);
     border-radius: 12px;
     overflow: hidden;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Optionnel: petite ombre pour le relief */
+    box-shadow: 0 12px 24px rgba(0,0,0,0.05);
+    border: 1px solid #ececec;
 }
 
 .company-table td, .company-table th {
@@ -898,6 +961,65 @@ main.list-page {
     font-weight: 500;
 }
 
+/* ==================================== FOOTER PAGES ==================================== */
+
+.legal-frame {
+    width: min(920px, 92%);
+    padding: 38px 42px;
+    border: 1px solid #ececec;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.06);
+    position: relative;
+    overflow: hidden;
+}
+
+.legal-frame::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--green-piston) 0%, #8ccf4c 100%);
+}
+
+.legal-frame h2 {
+    font-size: clamp(1.7rem, 2.5vw, 2.2rem);
+    margin-bottom: 28px;
+    letter-spacing: -0.02em;
+}
+
+.legal-content {
+    font-size: 1.08rem;
+    line-height: 1.72;
+    color: #2f2f2f;
+}
+
+.legal-content h3 {
+    margin: 24px 0 8px;
+    font-size: 1.75rem;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    color: #1f2937;
+}
+
+.legal-content p {
+    margin: 0 0 14px;
+    text-wrap: pretty;
+}
+
+.legal-content strong {
+    color: #111827;
+}
+
+.legal-content a {
+    color: #2f6f16;
+    text-underline-offset: 3px;
+}
+
+.legal-content a:hover {
+    color: #1f4f0e;
+}
+
 
 
 /* ==================================== Responsive Design ==================================== */
@@ -924,6 +1046,25 @@ main.list-page {
     .frame{
         width:90% !important;
     }
+
+    .legal-frame {
+        padding: 24px 20px;
+    }
+
+    .legal-frame h2 {
+        margin-bottom: 20px;
+    }
+
+    .legal-content {
+        font-size: 1rem;
+        line-height: 1.62;
+    }
+
+    .legal-content h3 {
+        font-size: 1.45rem;
+        margin: 20px 0 8px;
+    }
+
     .form-grid {
         flex-direction: column; /* Sur mobile, elles se remettent l'une sous l'autre */
         align-items: center;
@@ -1029,7 +1170,9 @@ main.list-page {
 }
 
 .wishlist-item {
-    background-color: var(--gray-bg);
+    background-color: var(--white);
+    border: 1px solid #e7e7e7;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
     padding: 15px 20px;
     border-radius: 10px;
     text-decoration: none;
@@ -1037,17 +1180,18 @@ main.list-page {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: transform 0.2s;
+    transition: transform 0.2s, background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .wishlist-item:hover {
     transform: translateX(5px);
-    background-color: #d8d8d8;
+    background-color: #f6f8f4;
+    border-color: #dfe8d5;
 }
 
 .wishlist-item .count {
     font-weight: bold;
-    border-left: 1px solid #bbb;
+    border-left: 1px solid #d7d7d7;
     padding-left: 15px;
 }
 
