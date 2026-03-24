@@ -108,6 +108,20 @@ class DashboardAdminController{
     public function deleteStudent(){
         $this->blockStudentAccess();
 
+        $id = intval($_GET['id'] ?? 0);
+        if ($id == 0) {
+            header('Location: /dashboard/admin');
+            exit;
+        }
+
+        try {
+            $this->model->deleteStudent($id);
+            header('Location: /dashboard/admin');
+            exit;
+        } catch (\Exception $e) {
+            echo "Erreur lors de la suppression de l'étudiant.";
+        }
+
     }
 
     public function updateStudent(){

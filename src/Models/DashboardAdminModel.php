@@ -134,4 +134,32 @@ class DashboardAdminModel extends Model{
             throw $e;
         }
     }
+
+    public function deleteStudent($id) {
+        try {
+            $this->pdo->beginTransaction();
+
+            // suppression des souhaits
+            $stmt = $this->pdo->prepare("DELETE FROM Souhaite WHERE ID_utilisateur = ?");
+            $stmt->execute([$id]);
+
+            // suppression des candidatures
+            $stmt = $this->pdo->prepare("DELETE FROM Postule WHERE ID_utilisateur = ?");
+            $stmt->execute([$id]);
+
+            // suppression de l'étudiant
+            $stmt = $this->pdo->prepare("DELETE FROM Etudiant WHERE ID_utilisateur = ?");
+            $stmt->execute([$id]);
+
+            // suppression de l'utilisateur
+            $stmt = $this->pdo->prepare("DELETE FROM Utilisateur WHERE ID_utilisateur = ?");
+            $stmt->execute([$id]);
+
+            $this->pdo->commit();
+            return true;
+        } catch (\Exception $e) {
+            $this->pdo->rollBack();
+            throw $e;
+        }
+    }
 }
