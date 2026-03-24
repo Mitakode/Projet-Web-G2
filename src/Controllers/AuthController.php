@@ -18,7 +18,8 @@ class AuthController
         $error = null;
 
         if (!empty($_SESSION)) {
-            $this->redirectToDashboardByRole($_SESSION['user_role']);
+            header('Location: /dashboard');
+            exit;
         }
 
         // on traite le résultat du form de connexion
@@ -46,7 +47,8 @@ class AuthController
                 $_SESSION['user_nom']  = $user['Nom'];
                 $_SESSION['user_prenom'] = $user['Prenom'];
 
-                $this->redirectToDashboardByRole($role);
+                header('Location: /dashboard');
+                exit;
             }
 
             $error = 'Email ou mot de passe incorrect.';
@@ -71,6 +73,19 @@ class AuthController
         return $result['role'];
     }
 
+    public function dashboard($dashboardAdminController)
+    {
+        $role = $_SESSION['user_role'];
+        if ($role == 'admin' || $role == 'pilote') {
+            $dashboardAdminController->list();
+        } elseif ($role == 'etudiant') {
+            // $studentController->list(); // À décommenter quand etudiant est fait
+            echo "ajouter \$dashboardStudentController->list(); dans AuthController->dashboard()";
+        } else {
+            header('Location: /login');
+        }
+    }
+
     public function logout()
     {
         $_SESSION = [];
@@ -85,26 +100,6 @@ class AuthController
             header('Location: /login');
             exit;
         }
-    }
-
-    private function redirectToDashboardByRole(string $role): void
-    {
-        switch ($role) {
-            case 'admin':
-                header('Location: /dashboard/admin');
-                break;
-            case 'pilote':
-                header('Location: /dashboard/admin');
-                break;
-            case 'etudiant':
-                header('Location: /dashboard/student');
-                break;
-            default:
-                header('Location: /login');
-                break;
-        }
-
-        exit;
     }
 
     private function verifyPassword(array $user, string $plainPassword): bool
