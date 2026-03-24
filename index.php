@@ -30,7 +30,7 @@ $dashboardDbAdapter = new \App\Models\SqlDatabase($pdo, 'Offre', 'ID_offre');
 $companyModel = new \App\Models\CompanyModel($companyDbAdapter);
 $offerModel = new \App\Models\OfferModel($offerDbAdapter);
 $homepageModel = new \App\Models\HomepageModel($homepageDbAdapter);
-$dashboardModel = new \App\Models\DashboardModel($dashboardDbAdapter);
+$dashboardModel = new \App\Models\DashboardModel($dashboardDbAdapter);  
 
 $companyController = new \App\Controllers\CompanyController($twig, $companyModel);
 $offerController = new \App\Controllers\OfferController($twig, $offerModel, $companyModel);
