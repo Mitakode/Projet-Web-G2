@@ -86,9 +86,12 @@ class DashboardAdminController{
             }
         }
 
+        $pilots = $this->model->getAllPilots();
+
         echo $this->twig->render('StudentForm.html.twig', [
-        'is_edit'=> false,
-        'session' => $_SESSION
+            'pilotes' => $pilots,
+            'is_edit'=> false,
+            'session' => $_SESSION
         ]);
     }
 
@@ -128,9 +131,11 @@ class DashboardAdminController{
         }
 
         $student = $this->model->getStudentById($id);
+        $pilots = $this->model->getAllPilots();
         
         echo $this->twig->render('StudentForm.html.twig', [
             'etudiant' => $student,
+            'pilotes' => $pilots,
             'is_edit'  => true,
             'session'  => $_SESSION
         ]);

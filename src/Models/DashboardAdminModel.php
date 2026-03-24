@@ -20,6 +20,15 @@ class DashboardAdminModel extends Model{
         return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 
+    public function getAllPilots() {
+        $sql = "SELECT * FROM Utilisateur  
+                JOIN Pilote ON Utilisateur.ID_utilisateur = Pilote.ID_utilisateur";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
     public function searchStudents($surname = "", $name = "", $promotion = "") {
         $sql = "SELECT Utilisateur.*, Etudiant.Promotion, Etudiant.ID_Pilote, COUNT(Postule.ID_utilisateur) as nb_candidature 
         FROM Utilisateur JOIN Etudiant ON Utilisateur.ID_utilisateur = Etudiant.ID_utilisateur LEFT JOIN Postule ON Etudiant.ID_utilisateur = Postule.ID_utilisateur 
