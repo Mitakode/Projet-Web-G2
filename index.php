@@ -38,6 +38,7 @@ $offerController = new App\Controllers\OfferController($twig, $offerModel, $comp
 $homepageController = new App\Controllers\HomepageController($twig, $homepageModel);
 $dashboardAdminController = new App\Controllers\DashboardAdminController($twig, $dashboardAdminModel);
 $authController = new App\Controllers\AuthController($twig, $pdo);
+$footerPagesController = new App\Controllers\FooterPageController($twig);
 
 // Routage simple
 $uri = $_GET['uri'] ?? '/';
@@ -51,19 +52,19 @@ switch ($uri) {
 
     // Pages statiques
     case 'cgu':
-        $FooterPagesController->page('cgu');
+        $footerPagesController->page('cgu');
         break;
     case 'contact':
-        $FooterPagesController->page('contact');
+        $footerPagesController->page('contact');
         break;
     case 'legal':
-        $FooterPagesController->page('legal');
+        $footerPagesController->page('legal');
         break;
     case 'privacy':
-        $FooterPagesController->page('privacy');
+        $footerPagesController->page('privacy');
         break;
     case 'terms':
-        $FooterPagesController->page('terms');
+        $footerPagesController->page('terms');
         break;
 
     // Gestion des entreprises
