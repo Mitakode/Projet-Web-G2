@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Models\Paginator;
+use App\Models\DashboardStudentModel;
+use App\Models\SqlDatabase;
 
 class OfferController
 {
@@ -164,6 +166,44 @@ class OfferController
             $this->model->deleteOffer($id);
         }
         header('Location: /offers');
+    }
+
+    
+    public function addWishlist()
+    {
+        $data = [
+            'recherche' => $_GET['recherche'] ?? '',
+            'company' => $_GET['company'] ?? '',
+            'type' => $_GET['type'] ?? '',
+            'duree' => $_GET['duree'] ?? '',
+            'page' => $_GET['page'] ?? 1
+        ];
+        $offerId = $_GET['id'] ?? null;
+        $studentId = $_SESSION['user_id'] ?? null;
+
+        if ($offerId && $studentId) {
+            $this->model->addWishlist($offerId, $studentId);
+        }
+        header('Location: /offers?' . http_build_query($data));
+    }
+
+    public function deleteWishlist()
+    {
+        $data = [
+            'recherche' => $_GET['recherche'] ?? '',
+            'company' => $_GET['company'] ?? '',
+            'type' => $_GET['type'] ?? '',
+            'duree' => $_GET['duree'] ?? '',
+            'page' => $_GET['page'] ?? 1
+        ];
+        $offerId = $_GET['id'] ?? null;
+        $studentId = $_SESSION['user_id'] ?? null;
+
+        if ($offerId && $studentId) {
+            $wishlistModel = new DashboardStudentModel($this->model->getConnection());   
+            $wishlistModel->removeFromWishlist($studentId, $offerId);
+        }
+        header('Location: /offers?' . http_build_query($data));
     }
 
 }

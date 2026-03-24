@@ -44,7 +44,7 @@ class DashboardStudentModel extends Model {
      * Supprime une offre de la wishlist de l'étudiant.
      */
     public function removeFromWishlist($idUtilisateur, $idOffre) {
-        $sql = "DELETE FROM Souhaite WHERE ID_utilisateur = :idUtilisateur AND ID_offre = :idOffre";
+        $sql = "DELETE FROM Souhaite WHERE Souhaite.ID_utilisateur = :idUtilisateur AND Souhaite.ID_offre = :idOffre";
         $pdo = $this->connection->getConnection();
         $stmt = $pdo->prepare($sql);
         return $stmt->execute([

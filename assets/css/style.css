@@ -259,7 +259,7 @@ footer a:hover {
 
 .etoile { background: none; font-size: 1.4rem; }
 .etoile i { color: var(--text-color-light); }
-.etoile.active i { color: #fbbf24; }
+.etoile.active i{ color: #fbbf24; }
 
 .btn-table{
     display: flex;
