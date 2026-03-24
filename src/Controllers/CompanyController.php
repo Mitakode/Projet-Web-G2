@@ -19,11 +19,11 @@ class CompanyController
     {
         // Récupérer les filtres depuis l'URL
         $search = $_GET['recherche'] ?? '';
-// Demander les données filtrées au modèle
+        // Demander les données filtrées au modèle
         $allCompanies = $this->model->searchCompanies($search);
-// Gérer la pagination
+        // Gérer la pagination
         $paginator = new Paginator($allCompanies, 10);
-// Envoyer le tout à la vue Twig
+        // Envoyer le tout à la vue Twig
         echo $this->twig->render('Companies.html.twig', [
             'entreprises_page' => $paginator->getCurrentPageItems(),
             'total_pages'      => $paginator->getTotalPages(),
@@ -34,65 +34,77 @@ class CompanyController
 
     public function create()
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $name = isset($_POST['nameCompany'])
-                ? htmlspecialchars(trim($_POST['nameCompany']))
-                : '';
-            $description = isset($_POST['descriptionCompany'])
-                ? htmlspecialchars(trim($_POST['descriptionCompany']))
-                : '';
-            $contact = isset($_POST['contactCompany'])
-                ? htmlspecialchars(trim($_POST['contactCompany']))
-                : '';
-            if (empty($name) || empty($description) || empty($contact)) {
-                echo "Veulliez remplir correctement tous les champs.";
-            } else {
-                $this->model->createCompany([
-                    'Nom_entreprise' => $name,
-                    'Description' => $description,
-                    'Contact' => $contact
-                ]);
-                header('Location: /companies');
-                exit;
+        if ($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'pilote'){
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $name = isset($_POST['nameCompany'])
+                    ? htmlspecialchars(trim($_POST['nameCompany']))
+                    : '';
+                $description = isset($_POST['descriptionCompany'])
+                    ? htmlspecialchars(trim($_POST['descriptionCompany']))
+                    : '';
+                $contact = isset($_POST['contactCompany'])
+                    ? htmlspecialchars(trim($_POST['contactCompany']))
+                    : '';
+                if (empty($name) || empty($description) || empty($contact)) {
+                    echo "Veulliez remplir correctement tous les champs.";
+                } else {
+                    $this->model->createCompany([
+                        'Nom_entreprise' => $name,
+                        'Description' => $description,
+                        'Contact' => $contact
+                    ]);
+                    header('Location: /companies');
+                    exit;
+                }
             }
-        }
 
-        echo $this->twig->render('CompaniesForm.html.twig', [
-        'is_edit' => false
-        ]);
+            echo $this->twig->render('CompaniesForm.html.twig', [
+            'is_edit' => false
+            ]);
+        } else {
+            header('Location: /companies');
+            exit;
+        }
     }
 
     public function update()
     {
-        $id = $_GET['id'] ?? null;
-        if (!$id) {
+        if ($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'pilote'){
+            $id = $_GET['id'] ?? null;
+            if (!$id) {
+                header('Location: /companies');
+                exit;
+            }
+
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $data = [
+                'Nom_entreprise' => htmlspecialchars(trim($_POST['nameCompany'])),
+                'Description'    => htmlspecialchars(trim($_POST['descriptionCompany'])),
+                'Contact'        => htmlspecialchars(trim($_POST['contactCompany']))
+                ];
+                $this->model->updateCompany($id, $data);
+                header('Location: /companies');
+                exit;
+            }
+
+            $company = $this->model->getCompanyById($id);
+            echo $this->twig->render('CompaniesForm.html.twig', [
+            'entreprise' => $company,
+            'is_edit'    => true
+            ]);
+        } else {
             header('Location: /companies');
             exit;
         }
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $data = [
-            'Nom_entreprise' => htmlspecialchars(trim($_POST['nameCompany'])),
-            'Description'    => htmlspecialchars(trim($_POST['descriptionCompany'])),
-            'Contact'        => htmlspecialchars(trim($_POST['contactCompany']))
-            ];
-            $this->model->updateCompany($id, $data);
-            header('Location: /companies');
-            exit;
-        }
-
-        $company = $this->model->getCompanyById($id);
-        echo $this->twig->render('CompaniesForm.html.twig', [
-        'entreprise' => $company,
-        'is_edit'    => true
-        ]);
     }
 
     public function delete()
     {
-        $id = $_GET['id'] ?? null;
-        if ($id) {
-            $this->model->deleteCompany($id);
+        if ($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'pilote'){
+            $id = $_GET['id'] ?? null;
+            if ($id) {
+                $this->model->deleteCompany($id);
+            }
         }
         header('Location: /companies');
     }

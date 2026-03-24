@@ -79,46 +79,51 @@ class OfferController
      */
     public function create()
     {
-        // Si le formulaire a été soumis
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-// Nettoyage des données
-            $titre = isset($_POST['Titre']) ? htmlspecialchars(trim($_POST['Titre'])) : '';
-            $description = isset($_POST['Description']) ? htmlspecialchars(trim($_POST['Description'])) : '';
-            $baseRemuneration = isset($_POST['Base_remuneration']) ? floatval($_POST['Base_remuneration']) : null;
-            $duree = isset($_POST['Duree']) ? intval($_POST['Duree']) : null;
-            $listeCompetences = isset($_POST['Liste_competences'])
-            ? htmlspecialchars(trim($_POST['Liste_competences']))
-            : '';
-            $idEntreprise = isset($_POST['ID_entreprise']) ? intval($_POST['ID_entreprise']) : null;
-            $datePublication = date('Y-m-d');
-// Date du jour automatique
+        if ($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'pilote'){
+            // Si le formulaire a été soumis
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Nettoyage des données
+                $titre = isset($_POST['Titre']) ? htmlspecialchars(trim($_POST['Titre'])) : '';
+                $description = isset($_POST['Description']) ? htmlspecialchars(trim($_POST['Description'])) : '';
+                $baseRemuneration = isset($_POST['Base_remuneration']) ? floatval($_POST['Base_remuneration']) : null;
+                $duree = isset($_POST['Duree']) ? intval($_POST['Duree']) : null;
+                $listeCompetences = isset($_POST['Liste_competences'])
+                ? htmlspecialchars(trim($_POST['Liste_competences']))
+                : '';
+                $idEntreprise = isset($_POST['ID_entreprise']) ? intval($_POST['ID_entreprise']) : null;
+                $datePublication = date('Y-m-d');
+    // Date du jour automatique
 
-            // Vérification basique
-            if (empty($titre) || empty($description) || empty($idEntreprise)) {
-                echo "Veuillez remplir correctement tous les champs obligatoires.";
-            } else {
-            // Insertion en BDD
-                $this->model->createOffer([
-                    'Titre'             => $titre,
-                    'Description'       => $description,
-                    'Base_remuneration' => $baseRemuneration,
-                    'Date_publication'  => $datePublication,
-                    'Duree'             => $duree,
-                    'Liste_competences' => $listeCompetences,
-                    'ID_entreprise'     => $idEntreprise
-                ]);
-                header('Location: /offers');
-                exit;
+                // Vérification basique
+                if (empty($titre) || empty($description) || empty($idEntreprise)) {
+                    echo "Veuillez remplir correctement tous les champs obligatoires.";
+                } else {
+                // Insertion en BDD
+                    $this->model->createOffer([
+                        'Titre'             => $titre,
+                        'Description'       => $description,
+                        'Base_remuneration' => $baseRemuneration,
+                        'Date_publication'  => $datePublication,
+                        'Duree'             => $duree,
+                        'Liste_competences' => $listeCompetences,
+                        'ID_entreprise'     => $idEntreprise
+                    ]);
+                    header('Location: /offers');
+                    exit;
+                }
             }
-        }
 
-        // Récupère la liste des entreprises pour le <select> du formulaire
-        $entreprises = $this->companyModel->searchCompanies();
-// Affiche le formulaire vierge
-        echo $this->twig->render('OffersForm.html.twig', [
-            'is_edit'     => false,
-            'entreprises' => $entreprises
-        ]);
+            // Récupère la liste des entreprises pour le <select> du formulaire
+            $entreprises = $this->companyModel->searchCompanies();
+    // Affiche le formulaire vierge
+            echo $this->twig->render('OffersForm.html.twig', [
+                'is_edit'     => false,
+                'entreprises' => $entreprises
+            ]);
+        } else {
+            header('Location: /offers');
+            exit;
+        }
     }
 
     /**
@@ -126,34 +131,39 @@ class OfferController
      */
     public function update()
     {
-        $id = $_GET['id'] ?? null;
-        if (!$id) {
+        if ($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'pilote'){
+            $id = $_GET['id'] ?? null;
+            if (!$id) {
+                header('Location: /offers');
+                exit;
+            }
+
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $data = [
+                    'Titre'             => htmlspecialchars(trim($_POST['Titre'])),
+                    'Description'       => htmlspecialchars(trim($_POST['Description'])),
+                    'Base_remuneration' => floatval($_POST['Base_remuneration']),
+                    'Duree'             => intval($_POST['Duree']),
+                    'Liste_competences' => htmlspecialchars(trim($_POST['Liste_competences'])),
+                    'ID_entreprise'     => intval($_POST['ID_entreprise'])
+                ];
+                $this->model->updateOffer($id, $data);
+                header('Location: /offers');
+                exit;
+            }
+
+            $offer = $this->model->getOfferById($id);
+            $entreprises = $this->companyModel->searchCompanies();
+    // Affiche le formulaire pré-rempli
+            echo $this->twig->render('OffersForm.html.twig', [
+                'offre'       => $offer,
+                'entreprises' => $entreprises,
+                'is_edit'     => true
+            ]);
+        } else {
             header('Location: /offers');
             exit;
         }
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $data = [
-                'Titre'             => htmlspecialchars(trim($_POST['Titre'])),
-                'Description'       => htmlspecialchars(trim($_POST['Description'])),
-                'Base_remuneration' => floatval($_POST['Base_remuneration']),
-                'Duree'             => intval($_POST['Duree']),
-                'Liste_competences' => htmlspecialchars(trim($_POST['Liste_competences'])),
-                'ID_entreprise'     => intval($_POST['ID_entreprise'])
-            ];
-            $this->model->updateOffer($id, $data);
-            header('Location: /offers');
-            exit;
-        }
-
-        $offer = $this->model->getOfferById($id);
-        $entreprises = $this->companyModel->searchCompanies();
-// Affiche le formulaire pré-rempli
-        echo $this->twig->render('OffersForm.html.twig', [
-            'offre'       => $offer,
-            'entreprises' => $entreprises,
-            'is_edit'     => true
-        ]);
     }
 
     /**
@@ -161,9 +171,11 @@ class OfferController
      */
     public function delete()
     {
-        $id = $_GET['id'] ?? null;
-        if ($id) {
-            $this->model->deleteOffer($id);
+        if ($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'pilote'){
+            $id = $_GET['id'] ?? null;
+            if ($id) {
+                $this->model->deleteOffer($id);
+            }
         }
         header('Location: /offers');
     }
@@ -171,37 +183,41 @@ class OfferController
     
     public function addWishlist()
     {
-        $data = [
-            'recherche' => $_GET['recherche'] ?? '',
-            'company' => $_GET['company'] ?? '',
-            'type' => $_GET['type'] ?? '',
-            'duree' => $_GET['duree'] ?? '',
-            'page' => $_GET['page'] ?? 1
-        ];
-        $offerId = $_GET['id'] ?? null;
-        $studentId = $_SESSION['user_id'] ?? null;
+        if ($_SESSION['user_role'] === 'etudiant') {
+            $data = [
+                'recherche' => $_GET['recherche'] ?? '',
+                'company' => $_GET['company'] ?? '',
+                'type' => $_GET['type'] ?? '',
+                'duree' => $_GET['duree'] ?? '',
+                'page' => $_GET['page'] ?? 1
+            ];
+            $offerId = $_GET['id'] ?? null;
+            $studentId = $_SESSION['user_id'] ?? null;
 
-        if ($offerId && $studentId) {
-            $this->model->addWishlist($offerId, $studentId);
+            if ($offerId && $studentId) {
+                $this->model->addWishlist($offerId, $studentId);
+            }
         }
         header('Location: /offers?' . http_build_query($data));
     }
 
     public function deleteWishlist()
     {
-        $data = [
-            'recherche' => $_GET['recherche'] ?? '',
-            'company' => $_GET['company'] ?? '',
-            'type' => $_GET['type'] ?? '',
-            'duree' => $_GET['duree'] ?? '',
-            'page' => $_GET['page'] ?? 1
-        ];
-        $offerId = $_GET['id'] ?? null;
-        $studentId = $_SESSION['user_id'] ?? null;
+        if ($_SESSION['user_role'] === 'etudiant') {
+            $data = [
+                'recherche' => $_GET['recherche'] ?? '',
+                'company' => $_GET['company'] ?? '',
+                'type' => $_GET['type'] ?? '',
+                'duree' => $_GET['duree'] ?? '',
+                'page' => $_GET['page'] ?? 1
+            ];
+            $offerId = $_GET['id'] ?? null;
+            $studentId = $_SESSION['user_id'] ?? null;
 
-        if ($offerId && $studentId) {
-            $wishlistModel = new DashboardStudentModel($this->model->getConnection());   
-            $wishlistModel->removeFromWishlist($studentId, $offerId);
+            if ($offerId && $studentId) {
+                $wishlistModel = new DashboardStudentModel($this->model->getDb());   
+                $wishlistModel->removeFromWishlist($studentId, $offerId);
+            }
         }
         header('Location: /offers?' . http_build_query($data));
     }
