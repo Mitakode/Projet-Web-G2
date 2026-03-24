@@ -51,19 +51,19 @@ switch ($uri) {
 
     // Pages statiques
     case 'cgu':
-        $footerPagesController->page('cgu');
+        $FooterPagesController->page('cgu');
         break;
     case 'contact':
-        $footerPagesController->page('contact');
+        $FooterPagesController->page('contact');
         break;
     case 'legal':
-        $footerPagesController->page('legal');
+        $FooterPagesController->page('legal');
         break;
     case 'privacy':
-        $footerPagesController->page('privacy');
+        $FooterPagesController->page('privacy');
         break;
     case 'terms':
-        $footerPagesController->page('terms');
+        $FooterPagesController->page('terms');
         break;
 
     // Gestion des entreprises
