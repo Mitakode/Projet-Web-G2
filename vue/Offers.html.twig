@@ -74,7 +74,11 @@
                             {% endif %}
                             {% if session['user_role'] == 'etudiant' %}
                                 <td class="btn-table">
+                                    {% if offre.is_in_wishlist %}
+                                    <a href="index.php?uri=offers/deleteWishlist&id={{ offre.ID_offre }}" class="btn-action etoile active"><i class="fa-solid fa-star"></i></a>
+                                    {% else %}
                                     <a href="index.php?uri=offers/addWishlist&id={{ offre.ID_offre }}" class="btn-action etoile"><i class="fa-solid fa-star"></i></a>
+                                    {% endif %}
                                 </td>
                             {% endif %}
                         </tr>

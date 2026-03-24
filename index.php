@@ -100,6 +100,9 @@ switch ($uri) {
     case 'offers/addWishlist':
         $offerController->addWishlist();
         break;
+    case 'offers/deleteWishlist':
+        $offerController->deleteWishlist();
+        break;
     // Candidatures
     case 'apply':
         $offerController->apply($_GET['id_offre']);

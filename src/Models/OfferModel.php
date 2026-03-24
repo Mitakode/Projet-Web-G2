@@ -32,10 +32,12 @@ class OfferModel extends Model
      */
     public function searchOffers($keyword = "", $company = "", $type = "", $duree = "")
     {
-        $sql = "SELECT Offre.*, Entreprise.Nom_entreprise 
-                FROM Offre 
-                JOIN Entreprise ON Offre.ID_entreprise = Entreprise.ID_entreprise 
-                WHERE 1=1";
+        $sql = "SELECT Offre.*, Entreprise.Nom_entreprise, IF(Souhaite.ID_utilisateur IS NOT NULL, 1, 0) AS is_in_wishlist
+            FROM Offre 
+            JOIN Entreprise ON Offre.ID_entreprise = Entreprise.ID_entreprise
+            LEFT JOIN Souhaite ON Offre.ID_offre = Souhaite.ID_offre 
+                AND Souhaite.ID_utilisateur = 16
+            WHERE 1=1";
 // "1=1" est une astuce pour pouvoir ajouter facilement des "AND" dynamiquement
         $params = [];
 // Si un mot-clé est tapé, on cherche dans le titre, la description et les compétences

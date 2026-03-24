@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Paginator;
+use App\Models\DashboardStudentModel;
 
 class OfferController
 {
@@ -174,6 +175,17 @@ class OfferController
 
         if ($offerId && $studentId) {
             $this->model->addWishlist($offerId, $studentId);
+        }
+        header('Location: /offers');
+    }
+
+    public function deleteWishlist()
+    {
+        $offerId = $_GET['id'] ?? null;
+        $studentId = $_SESSION['user_id'] ?? null;
+
+        if ($offerId && $studentId) {
+            DashboardStudentModel::deleteWishlist($offerId, $studentId);
         }
         header('Location: /offers');
     }
