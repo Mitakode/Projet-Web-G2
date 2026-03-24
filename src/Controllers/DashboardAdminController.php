@@ -174,6 +174,35 @@ class DashboardAdminController{
     public function createPilot(){
         $this->blockStudentAccess();
 
+        if($_SERVER['REQUEST_METHOD']==='POST'){
+            $surname= isset($_POST['surname']) ? htmlspecialchars(trim($_POST['surname'])):'';
+            $name= isset($_POST['name']) ? htmlspecialchars(trim($_POST['name'])):'';
+            $email=isset($_POST['email']) ? htmlspecialchars(trim($_POST['email'])):'';
+            $password= isset($_POST['password']) ? htmlspecialchars(trim($_POST['password'])):'';
+
+            if (empty($surname) || empty($name) || empty($email) || empty($password)) {
+                echo "Veuillez remplir tous les champs, y compris le pilote référent.";
+            } else {
+                $userData = [
+                    'Nom' => $surname,
+                    'Prenom' => $name,
+                    'Email' => $email,
+                    'Mot_de_passe' => password_hash($password, PASSWORD_BCRYPT)
+                ];
+
+                $this->model->createPilot($userData, $studentData);
+                
+                header('Location: /dashboard/admin');
+                exit;
+            }
+        }
+
+        $pilots = $this->model->getAllPilots();
+
+        echo $this->twig->render('PilotForm.html.twig', [
+            'is_edit'=> false,
+            'session' => $_SESSION
+        ]);
     }
     
     public function deletePilot(){
@@ -203,5 +232,34 @@ class DashboardAdminController{
     public function updatePilot(){
         $this->blockStudentAccess();
 
+        $id = $_GET['id'] ?? null;
+
+        if (!$id) {
+            header('Location: /dashboard/admin');
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $userData = [
+                'Nom' => htmlspecialchars(trim($_POST['surname'])),
+                'Prenom' => htmlspecialchars(trim($_POST['name'])),
+                'Email' => htmlspecialchars(trim($_POST['email']))
+            ];
+            if(!empty($_POST['password'])){
+               $userData['Mot_de_passe'] = password_hash($_POST['password'], PASSWORD_BCRYPT);
+            }
+
+            $this->model->updatePilot($id, $userData);
+            header('Location: /dashboard/admin');
+            exit;
+        }
+
+        $pilot = $this->model->getPilotById($id);
+        
+        echo $this->twig->render('PilotForm.html.twig', [
+            'pilote' => $pilot,
+            'is_edit'  => true,
+            'session'  => $_SESSION
+        ]);
     }
 }

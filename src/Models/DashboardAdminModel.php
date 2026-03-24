@@ -9,10 +9,23 @@ class DashboardAdminModel extends Model{
         $this->pdo = $this->connection->getConnection();
     }
 
+    // Getters Students
     public function getStudentById($id) {
         $sql = "SELECT Utilisateur.*, Etudiant.Promotion, Etudiant.ID_pilote 
                 FROM Utilisateur  
                 JOIN Etudiant ON Utilisateur.ID_utilisateur = Etudiant.ID_utilisateur 
+                WHERE Utilisateur.ID_utilisateur = ?";
+    
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$id]);
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    // Getters Pilots
+    public function getPilotById($id) {
+        $sql = "SELECT Utilisateur.*, Pilote.ID_utilisateur 
+                FROM Utilisateur  
+                JOIN Pilote ON Utilisateur.ID_utilisateur = Pilote.ID_utilisateur 
                 WHERE Utilisateur.ID_utilisateur = ?";
     
         $stmt = $this->pdo->prepare($sql);
@@ -29,6 +42,8 @@ class DashboardAdminModel extends Model{
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    // Method
+    // Students
     public function searchStudents($surname = "", $name = "", $promotion = "") {
         $sql = "SELECT Utilisateur.*, Etudiant.Promotion, Etudiant.ID_Pilote, COUNT(Postule.ID_utilisateur) as nb_candidature 
         FROM Utilisateur JOIN Etudiant ON Utilisateur.ID_utilisateur = Etudiant.ID_utilisateur LEFT JOIN Postule ON Etudiant.ID_utilisateur = Postule.ID_utilisateur 
@@ -62,52 +77,29 @@ class DashboardAdminModel extends Model{
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function searchPilots($surnameP = "", $nameP = "") {
-        $sql = "SELECT Utilisateur.*
-        FROM Utilisateur JOIN Pilote ON Utilisateur.ID_utilisateur = Pilote.ID_utilisateur 
-        WHERE 1=1 ";
-        $params = [];
-
-        if (!empty($surnameP)) {
-            $sql .= " AND Utilisateur.Nom LIKE :surnameP";
-            $params['surnameP'] = '%' . $surnameP . '%';
-        }
-
-        if (!empty($nameP)) {
-            $sql .= " AND Utilisateur.Prenom LIKE :nameP";
-            $params['nameP'] = '%' . $nameP . '%';
-        }
-        
-        $pdo = $this->connection->getConnection();
-
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute($params);
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
-    }
-
     public function createStudent($userData, $studentData) {
-    try {
-        $this->pdo->beginTransaction();
+        try {
+            $this->pdo->beginTransaction();
 
-        $columns = implode(', ', array_keys($userData));
-        $placeholders = implode(', ', array_fill(0, count($userData), '?'));
-        $sqlUser = "INSERT INTO Utilisateur ($columns) VALUES ($placeholders)";
-        
-        $stmt = $this->pdo->prepare($sqlUser);
-        $stmt->execute(array_values($userData));
-        
-        $userId = $this->pdo->lastInsertId();
-        $studentData['ID_utilisateur'] = $userId;
+            $columns = implode(', ', array_keys($userData));
+            $placeholders = implode(', ', array_fill(0, count($userData), '?'));
+            $sqlUser = "INSERT INTO Utilisateur ($columns) VALUES ($placeholders)";
+            
+            $stmt = $this->pdo->prepare($sqlUser);
+            $stmt->execute(array_values($userData));
+            
+            $userId = $this->pdo->lastInsertId();
+            $studentData['ID_utilisateur'] = $userId;
 
-        $colStudent = implode(', ', array_keys($studentData));
-        $placeStudent = implode(', ', array_fill(0, count($studentData), '?'));
-        $sqlStudent = "INSERT INTO Etudiant ($colStudent) VALUES ($placeStudent)";
+            $colStudent = implode(', ', array_keys($studentData));
+            $placeStudent = implode(', ', array_fill(0, count($studentData), '?'));
+            $sqlStudent = "INSERT INTO Etudiant ($colStudent) VALUES ($placeStudent)";
 
-        $stmt = $this->pdo->prepare($sqlStudent);
-        $stmt->execute(array_values($studentData));
+            $stmt = $this->pdo->prepare($sqlStudent);
+            $stmt->execute(array_values($studentData));
 
-        $this->pdo->commit();
-        return $userId;
+            $this->pdo->commit();
+            return $userId;
 
         } catch (\Exception $e) {
             $this->pdo->rollBack();
@@ -147,19 +139,15 @@ class DashboardAdminModel extends Model{
         try {
             $this->pdo->beginTransaction();
 
-            // suppression des souhaits
             $stmt = $this->pdo->prepare("DELETE FROM Souhaite WHERE ID_utilisateur = ?");
             $stmt->execute([$id]);
 
-            // suppression des candidatures
             $stmt = $this->pdo->prepare("DELETE FROM Postule WHERE ID_utilisateur = ?");
             $stmt->execute([$id]);
 
-            // suppression de l'étudiant
             $stmt = $this->pdo->prepare("DELETE FROM Etudiant WHERE ID_utilisateur = ?");
             $stmt->execute([$id]);
 
-            // suppression de l'utilisateur
             $stmt = $this->pdo->prepare("DELETE FROM Utilisateur WHERE ID_utilisateur = ?");
             $stmt->execute([$id]);
 
@@ -194,5 +182,59 @@ class DashboardAdminModel extends Model{
             $this->pdo->rollBack();
             throw $e;
         }
+    }
+
+    // Pilots
+    public function searchPilots($surnameP = "", $nameP = "") {
+        $sql = "SELECT Utilisateur.*
+        FROM Utilisateur JOIN Pilote ON Utilisateur.ID_utilisateur = Pilote.ID_utilisateur 
+        WHERE 1=1 ";
+        $params = [];
+
+        if (!empty($surnameP)) {
+            $sql .= " AND Utilisateur.Nom LIKE :surnameP";
+            $params['surnameP'] = '%' . $surnameP . '%';
+        }
+
+        if (!empty($nameP)) {
+            $sql .= " AND Utilisateur.Prenom LIKE :nameP";
+            $params['nameP'] = '%' . $nameP . '%';
+        }
+        
+        $pdo = $this->connection->getConnection();
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function createPilot($userData, $pilotData) {
+        try {
+            $this->pdo->beginTransaction();
+
+            $columns = implode(', ', array_keys($userData));
+            $placeholders = implode(', ', array_fill(0, count($userData), '?'));
+            $sqlUser = "INSERT INTO Utilisateur ($columns) VALUES ($placeholders)";
+            
+            $stmt = $this->pdo->prepare($sqlUser);
+            $stmt->execute(array_values($userData));
+            
+            $userId = $this->pdo->lastInsertId();
+            
+            $sqlPilot = "INSERT INTO Pilote (ID_utilisateur) VALUES (?)";
+
+            $stmt = $this->pdo->prepare($sqlPilot);
+            $stmt->execute([$userId]);
+
+            $this->pdo->commit();
+            return $userId;
+        } catch (\Exception $e) {
+            $this->pdo->rollBack();
+            throw $e;
+        }
+    }
+
+    public function updatePilot($id, $userData) {
+        return $this->connection->updateRecord($id, $userData);
     }
 }
