@@ -12,7 +12,18 @@ class DashboardAdminController{
         $this->model = $model;
     }
 
+    private function blockStudentAccess(): void {
+        if (($_SESSION['user_role'] ?? null) === 'etudiant') {
+            echo $this->twig->render('AccessDenied.html.twig', [
+                'session' => $_SESSION
+            ]);
+            exit;
+        }
+    }
+
     public function list(){
+        $this->blockStudentAccess();
+
         //Students
         $surname = $_GET['surname'] ?? '';
         $name = $_GET['name'] ?? '';
@@ -50,6 +61,8 @@ class DashboardAdminController{
     }
 
     public function createStudent(){
+        $this->blockStudentAccess();
+
         if($_SERVER['REQUEST_METHOD']==='POST'){
             $surname= isset($_POST['surname']) ? htmlspecialchars(trim($_POST['surname'])):'';
             $name= isset($_POST['name']) ? htmlspecialchars(trim($_POST['name'])):'';
@@ -93,10 +106,13 @@ class DashboardAdminController{
     }
 
     public function deleteStudent(){
+        $this->blockStudentAccess();
 
     }
 
     public function updateStudent(){
+        $this->blockStudentAccess();
+
         $id = $_GET['id'] ?? null;
 
         if (!$id) {
@@ -137,14 +153,17 @@ class DashboardAdminController{
     }
 
     public function createPilot(){
+        $this->blockStudentAccess();
 
     }
     
     public function deletePilot(){
+        $this->blockStudentAccess();
 
     }
 
     public function updatePilot(){
+        $this->blockStudentAccess();
 
     }
 }
