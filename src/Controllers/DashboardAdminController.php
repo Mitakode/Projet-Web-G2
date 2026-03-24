@@ -179,6 +179,25 @@ class DashboardAdminController{
     public function deletePilot(){
         $this->blockStudentAccess();
 
+        $id = intval($_GET['id'] ?? 0);
+        if ($id == 0) {
+            header('Location: /dashboard/admin');
+            exit;
+        }
+
+        try {
+            if ($this->model->pilotHasStudents($id)) {
+                echo "Impossible de supprimer ce pilote : des étudiants lui sont encore associés.";
+                return;
+            }
+
+            $this->model->deletePilot($id);
+            header('Location: /dashboard/admin');
+            exit;
+        } catch (\Exception $e) {
+            echo "Erreur lors de la suppression du pilote.";
+        }
+
     }
 
     public function updatePilot(){

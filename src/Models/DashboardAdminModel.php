@@ -170,4 +170,29 @@ class DashboardAdminModel extends Model{
             throw $e;
         }
     }
+
+    public function pilotHasStudents($pilotId) {
+        $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM Etudiant WHERE ID_Pilote = ?");
+        $stmt->execute([$pilotId]);
+
+        return ((int) $stmt->fetchColumn()) > 0;
+    }
+
+    public function deletePilot($id) {
+        try {
+            $this->pdo->beginTransaction();
+
+            $stmt = $this->pdo->prepare("DELETE FROM Pilote WHERE ID_utilisateur = ?");
+            $stmt->execute([$id]);
+
+            $stmt = $this->pdo->prepare("DELETE FROM Utilisateur WHERE ID_utilisateur = ?");
+            $stmt->execute([$id]);
+
+            $this->pdo->commit();
+            return true;
+        } catch (\Exception $e) {
+            $this->pdo->rollBack();
+            throw $e;
+        }
+    }
 }
