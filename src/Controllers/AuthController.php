@@ -71,6 +71,19 @@ class AuthController
         return $result['role'];
     }
 
+    public function dashboard($dashboardAdminController)
+    {
+        $role = $_SESSION['user_role'];
+        if ($role == 'admin' || $role == 'pilote') {
+            $dashboardAdminController->list();
+        } elseif ($role == 'etudiant') {
+            // $studentController->list(); // À décommenter quand etudiant est fait
+            echo "ajouter étudiant dans AuthController->dashboard()";
+        } else {
+            header('Location: /login');
+        }
+    }
+
     public function logout()
     {
         $_SESSION = [];
