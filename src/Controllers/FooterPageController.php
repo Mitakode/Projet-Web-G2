@@ -90,20 +90,20 @@ HTML;
         $legalBody = <<<'HTML'
 <h3>Éditeur de la plateforme</h3>
 <p>
-<strong>Nom :</strong> ThePiston SAS<br/>
-<strong>Forme :</strong> Société par Actions Simplifiée<br/>
-<strong>Siège social :</strong> 123 Rue de l'Emploi, 75000 Paris, France<br/>
+<strong>Nom :</strong> ThePistonCorp<br/>
+<strong>Forme :</strong> Corporation<br/>
+<strong>Siège social :</strong> 8 Rue des Frères Charles et Alcide d'Orbigny, 64000 Pau, France<br/>
 <strong>SIRET :</strong> 123 456 789 00012<br/>
 <strong>TVA intracommunautaire :</strong> FR12 345 678 900
 </p>
 
 <h3>Direction de publication</h3>
-<p><strong>Responsable :</strong> Jean Dupont, Directeur Général</p>
+<p><strong>Responsable :</strong> Sarah Durand, Directeur Général</p>
 
 <h3>Hébergement</h3>
 <p>
-<strong>Hébergeur :</strong> CloudServer France<br/>
-<strong>Adresse :</strong> 456 Avenue de la Technologie, 13000 Marseille, France
+<strong>Hébergeur :</strong> ThePistonCorp France<br/>
+<strong>Adresse :</strong> 6 rue Saint John Perse, 64000 Pau, France
 </p>
 
 <h3>Données personnelles</h3>
