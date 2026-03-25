@@ -1,6 +1,8 @@
 <?php
 namespace App\Controllers;
 
+use App\Models\Paginator;
+
 class DashboardStudentController {
     private $twig;
     private $model;
@@ -28,10 +30,17 @@ class DashboardStudentController {
         $candidatures = $this->model->getCandidatures($idEtudiant);
         $wishlist = $this->model->getWishlist($idEtudiant);
 
+        $paginatorCandidatures = new Paginator($candidatures, 5);
+        $paginatorWishlist = new Paginator($wishlist, 5);
+
         // Affichage de la vue Twig en y injectant les données
         echo $this->twig->render('DashboardStudent.html.twig', [
-            'candidatures' => $candidatures,
-            'wishlist'     => $wishlist
+            'candidatures' => $paginatorCandidatures->getCurrentPageItems(),
+            'wishlist'     => $paginatorWishlist->getCurrentPageItems(),
+            'total_pages' => $paginatorCandidatures->getTotalPages(),
+            'current_page' => $_GET['page'] ?? 1,
+            'total_pagesW' => $paginatorWishlist->getTotalPages(),
+            'current_pageW' => $_GET['page'] ?? 1
         ]);
     }
 
