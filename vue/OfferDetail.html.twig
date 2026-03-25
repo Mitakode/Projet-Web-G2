@@ -50,6 +50,12 @@
             {% if session['user_role'] == 'etudiant' %}
             <div class="form-column3">
                 <div class="frame2">
+                    {% if offre.has_applied %}
+                        <p class="already-applied">Vous avez déjà postulé à cette offre.</p>
+                        <div class="btn-container">
+                            <a href="/dashboard" class="btn add-link" type="button" id="postuler-btn">Accéder à mon espace</a>
+                        </div>
+                    {% else %}
                     <div class="btn-container">
                         <button class="btn" type="button" id="postuler-btn">Postuler</button>
                     </div>
@@ -75,6 +81,7 @@
                             <button class="btn" type="submit" id="valider">Valider</button>
                         </form>
                     </div>
+                    {% endif %}
                 </div>
             </div>
             {% endif %}

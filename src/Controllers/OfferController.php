@@ -77,48 +77,58 @@ class OfferController
 
     public function apply()
     {
-        $idOffre = $_POST['id_offre'] ?? null;
-        $studentId = $_SESSION['user_id'] ?? null;
+        if ($_SESSION['user_role'] === 'etudiant') {
+            
+            $idOffre = $_POST['id_offre'] ?? null;
+            $studentId = $_SESSION['user_id'] ?? null;
 
-        $cvPath = null;
-        $letterPath = null;
+            $cvPath = null;
+            $letterPath = null;
 
-        $alreadyApplied = $this->model->hasApplied($idOffre, $studentId);
+            $alreadyApplied = $this->model->hasApplied($idOffre, $studentId);
 
-        if ($alreadyApplied['count'] > 0) {
-            echo "Vous avez déjà postulé à cette offre.";
-            header('Location: /index.php?uri=offers');
-            exit;
-        }
-        else{
-       
+            if ($alreadyApplied['ID_offre']){
+                echo "Vous avez déjà postulé à cette offre.";
+                header('Location: /offers');
+                exit;
+            }
+            else{
 
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $cvPresent = isset($_FILES['cv']);
-                $lettrePresent = isset($_FILES['lettre']);
+                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                    $cvPresent = isset($_FILES['cv']);
+                    $lettrePresent = isset($_FILES['lettre']);
 
-                if (!$cvPresent || !$lettrePresent) {
-                    echo "Veuillez remplir correctement tous les champs.";
-                } else {
-                    $uploaderCV = new FileUploader($_FILES['cv']);
-                    $uploaderLettre = new FileUploader($_FILES['lettre']);
+                    if (!$cvPresent || !$lettrePresent) {
+                        echo "Veuillez remplir correctement tous les champs.";
+                    } else {
+                        $uploaderCV = new FileUploader($_FILES['cv']);
+                        $uploaderLettre = new FileUploader($_FILES['lettre']);
 
-                    if ($uploaderCV->validate()) {
-                        $cvPath = $uploaderCV->upload();
+                        if ($uploaderCV->validate()) {
+                            $cvPath = $uploaderCV->upload();
+                        }
+
+                        if ($uploaderLettre->validate()) {
+                            $letterPath = $uploaderLettre->upload();
+                        }
                     }
 
-                    if ($uploaderLettre->validate()) {
-                        $letterPath = $uploaderLettre->upload();
+                    if ($idOffre && $studentId && $cvPath && $letterPath) {
+                        $this->model->addPostule($idOffre, $studentId, $cvPath, $letterPath);
+                        $inWishlist = $this->model->isInWishlist($idOffre, $studentId);
+                        if ($inWishlist['ID_offre']) {
+                            $wishlistModel = new DashboardStudentModel($this->model->getDb());   
+                            $wishlistModel->removeFromWishlist($studentId, $idOffre);
+                        }
+                        header('Location: /index.php?uri=offers/detail&id='.$idOffre);
+                        exit;
                     }
-                }
-
-                if ($idOffre && $studentId && $cvPath && $letterPath) {
-                    $this->model->addPostule($idOffre, $studentId, $cvPath, $letterPath);
                 }
             }
+        } else {
+            header('Location: /offers');
+            exit;
         }
-
-        header('Location: /index.php?uri=offers/detail&id='.$idOffre);
 
 
     }
