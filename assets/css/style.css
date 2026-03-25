@@ -296,8 +296,8 @@ footer a:hover {
 .btn-action i { color: white; } /* Icônes en blanc */
 
 .etoile { background: none; font-size: 1.4rem; }
-.etoile i { color: var(--text-color-light); }
-.etoile.active i{ color: #fbbf24; }
+.etoile i { color: var(--text-color-light) !important; }
+.etoile.active i { color: #fbbf24 !important; }
 
 .user-rating {
     display: inline-block;
@@ -314,8 +314,8 @@ footer a:hover {
 }
 
 .coeur { background: none; font-size: 1.4rem; }
-.coeur i { color: var(--text-color-light); }
-.coeur.active i { color: #e11d48; }
+.coeur i { color: var(--text-color-light) !important; }
+.coeur.active i { color: #e11d48 !important; }
 
 .btn-table{
     text-align: right;
