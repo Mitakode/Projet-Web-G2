@@ -36,7 +36,7 @@ class OfferModel extends Model
             FROM Offre 
             JOIN Entreprise ON Offre.ID_entreprise = Entreprise.ID_entreprise
             LEFT JOIN Souhaite ON Offre.ID_offre = Souhaite.ID_offre 
-                AND Souhaite.ID_utilisateur = 16
+                AND Souhaite.ID_utilisateur = " .$_SESSION['user_id'] . "
             WHERE 1=1";
 // "1=1" est une astuce pour pouvoir ajouter facilement des "AND" dynamiquement
         $params = [];
