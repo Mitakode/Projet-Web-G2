@@ -35,6 +35,10 @@ $companyDbAdapter = new \App\Models\SqlDatabase($pdo, 'Entreprise', 'ID_entrepri
 $offerDbAdapter = new \App\Models\SqlDatabase($pdo, 'Offre', 'ID_offre');
 $homepageDbAdapter = new \App\Models\SqlDatabase($pdo, 'Offre', 'ID_offre');
 $dashboardAdminDbAdapter = new \App\Models\SqlDatabase($pdo, 'Utilisateur', 'ID_utilisateur');
+// Modèle et Contrôleur pour le Dashboard Étudiant
+// On réutilise un adaptateur existant (ex: $companyDbAdapter) car le modèle fait ses propres requêtes SQL
+$dashboardStudentModel = new \App\Models\DashboardStudentModel($companyDbAdapter); 
+$dashboardStudentController = new \App\Controllers\DashboardStudentController($twig, $dashboardStudentModel);
 
 // On crée le modèle avec la connexion PDO
 $companyModel = new App\Models\CompanyModel($companyDbAdapter);
