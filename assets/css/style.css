@@ -1281,6 +1281,10 @@ main.list-page {
 /* Style des points de contrôle */
 .carousel-dots .dot {
     border-radius: 50%;
+    width: 14px;
+    height: 14px;
+    border: 2px solid #9ca3af;
+    background-color: var(--white);
     /* Les points sont en forme de cercle */
     margin: 5px;
     /* Ajout d'un margin pour un meilleur contrôle */
@@ -1289,11 +1293,10 @@ main.list-page {
 }
 /* Styles pour les points de navigation du carrousel */
 .carousel-dots .active {
-    /* Border de 10px pour le point actif */
-    border: 10px solid var(--green-piston-dark) !important;
-    /* !important permet de surcharger les autres styles éventuels */
+    border-color: var(--green-piston-dark) !important;
+    background-color: var(--green-piston-dark);
 }
 .carousel-dots .inactive {
-    /* Border de 10px pour les points inactifs */
-    border: 10px solid var(--white) !important;
+    border-color: #9ca3af !important;
+    background-color: var(--white);
 }
