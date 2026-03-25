@@ -15,7 +15,7 @@ abstract class Model
     }
 
     
-    public function getConnection()
+    public function getDb()
     {
         return $this->connection;
     }

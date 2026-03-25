@@ -9,9 +9,19 @@ $twig = new \Twig\Environment($loader, ['debug' => true]);
 $twig->addGlobal('session', $_SESSION);
 
 // Connexion a la base de donnees
-$dsn = 'mysql:host=localhost;dbname=thepiston;charset=utf8';
-$username = 'userthepiston';
-$password = 'Thepiston1%';
+$dbConfigPath = __DIR__ . '/config/database.local.php';
+if (!file_exists($dbConfigPath)) {
+    die('Fichier de configuration base de donnees manquant : config/database.local.php');
+}
+
+$dbConfig = require $dbConfigPath;
+$dsn = $dbConfig['dsn'] ?? '';
+$username = $dbConfig['username'] ?? '';
+$password = $dbConfig['password'] ?? '';
+
+if ($dsn === '' || $username === '') {
+    die('Configuration base de donnees invalide dans config/database.local.php');
+}
 
 try {
     $pdo = new \PDO($dsn, $username, $password);

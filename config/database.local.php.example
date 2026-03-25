@@ -1,0 +1,7 @@
+<?php
+
+return [
+    'dsn' => 'mysql:host=localhost;dbname=thepiston;charset=utf8',
+    'username' => 'your_user',
+    'password' => 'your_password'
+];
