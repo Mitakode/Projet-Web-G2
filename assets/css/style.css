@@ -262,9 +262,17 @@ footer a:hover {
 .etoile.active i{ color: #fbbf24; }
 
 .btn-table{
-    display: flex;
-    justify-content: center;
-    gap: 8px;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.btn-table .btn-action {
+    display: inline-flex;
+    vertical-align: middle;
+}
+
+.btn-table .btn-action + .btn-action {
+    margin-left: 8px;
 }
 
 /* ==================================== MAIN SEARCH BAR ==================================== */
@@ -914,6 +922,22 @@ main.list-page {
     border: none; /* On retire les bordures internes */
 }
 
+.company-table.admin td {
+    vertical-align: middle;
+}
+
+.company-table.admin td.btn-table {
+    width: 120px;
+    min-width: 120px;
+    padding-right: 22px;
+}
+
+.company-table.admin td .btn-action {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+}
+
 .company-name {
     width:80%;
     font-size: 1.3rem;
@@ -1333,39 +1357,40 @@ main.list-page {
 /* Définition des points de contrôle */
 .carousel-dots {
     position: absolute;
-    /* Les points sont absolument positionnés */
     z-index: 5;
-    /* Ils sont placés au-dessus des autres éléments */
-    left: 50%;
-    /* La distance à gauche est de 50% */
-    right: 50%;
-    /* La distance à droite est de 50% */
-    bottom: 0%;
-    /*La distance du bas est de 10% */
+    left: 0;
+    right: 0;
+    bottom: 1.5%;
     display: flex;
-    /* Affiche les points en ligne */
     justify-content: center;
-    /* Centrage des points */
+    align-items: center;
+    gap: 8px;
 }
 /* Style des points de contrôle */
 .carousel-dots .dot {
     border-radius: 50%;
-    width: 14px;
-    height: 14px;
-    border: 2px solid #9ca3af;
-    background-color: var(--white);
-    /* Les points sont en forme de cercle */
-    margin: 5px;
-    /* Ajout d'un margin pour un meilleur contrôle */
+    width: 12px;
+    height: 12px;
+    border: 2px solid #94a3b8;
+    background-color: #f8fafc;
     cursor: pointer;
-    /* Curseur en forme de main pour un meilleur contrôle */
+    box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.15);
+    transition: all 0.22s ease;
 }
 /* Styles pour les points de navigation du carrousel */
 .carousel-dots .active {
+    width: 28px;
+    border-radius: 999px;
     border-color: var(--green-piston-dark) !important;
     background-color: var(--green-piston-dark);
+    box-shadow: 0 0 0 4px rgba(147, 202, 91, 0.25);
 }
 .carousel-dots .inactive {
-    border-color: #9ca3af !important;
-    background-color: var(--white);
+    border-color: #94a3b8 !important;
+    background-color: #f8fafc;
+}
+
+.carousel-dots .dot:hover {
+    border-color: #64748b;
+    box-shadow: 0 0 0 4px rgba(100, 116, 139, 0.2);
 }
