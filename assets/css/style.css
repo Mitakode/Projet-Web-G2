@@ -724,21 +724,73 @@ ul.skills li
 
 .search-bar-admin {
     display: flex;
-    background-color: var(--gray-dark);
-    border-radius: 5px;
-    overflow: hidden;
+    gap: 10px;
+    background-color: var(--white);
+    border-radius: 12px;
+    border: 1px solid #e7e7e7;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.05);
+    padding: 12px;
     margin-bottom: 20px;
     align-items: center;
 }
 
 .search-bar-admin input {
     flex: 1;
-    border: none;
-    border-right: 1px solid #ccc;
-    padding: 10px;
-    background: transparent;
+    min-width: 120px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 12px 14px;
+    background: #fbfcfa;
     font-family: inherit;
+    font-size: 1rem;
     outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.search-bar-admin input::placeholder {
+    color: #6b7280;
+}
+
+.search-bar-admin input:hover {
+    background: var(--white);
+    border-color: #d8dde4;
+}
+
+.search-bar-admin input:focus {
+    border-color: var(--green-piston);
+    box-shadow: 0 0 0 2px rgba(161, 222, 100, 0.25);
+    background: var(--white);
+}
+
+.search-bar-admin .search-btn {
+    width: 48px;
+    height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    border: 1px solid #dbe4d2;
+    background: #f7fbf2;
+    color: #334155;
+    transition: transform 0.18s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.search-bar-admin .search-btn:hover {
+    background: var(--green-piston);
+    color: var(--white);
+    transform: translateY(-1px);
+}
+
+.search-bar-admin .btn-add {
+    margin: 0;
+    width: 48px;
+    height: 48px;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border-radius: 12px;
+    font-size: 1.9rem;
+    line-height: 1;
 }
 
 .box-list {
@@ -1063,6 +1115,23 @@ main.list-page {
     .legal-content h3 {
         font-size: 1.45rem;
         margin: 20px 0 8px;
+    }
+
+    .search-bar-admin {
+        flex-wrap: wrap;
+        padding: 10px;
+        gap: 8px;
+    }
+
+    .search-bar-admin input {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .search-bar-admin .search-btn,
+    .search-bar-admin .btn-add {
+        width: calc(50% - 4px);
+        height: 46px;
     }
 
     .form-grid {
