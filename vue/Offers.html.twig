@@ -73,6 +73,7 @@
                             </td>
                             {% endif %}
                             {% if session['user_role'] == 'etudiant' %}
+                                {% if offre.has_applied == false %}
                                 <td class="btn-table">
                                     {% if offre.is_in_wishlist %}
                                     <a href="index.php?uri=offers/deleteWishlist&id={{ offre.ID_offre }}&recherche={{ search_term }}&company={{ selected_company }}&type={{ selected_type }}&duree={{ selected_duree }}&page={{ current_page }}" 
@@ -82,6 +83,11 @@
                                     class="btn-action etoile"><i class="fa-solid fa-star"></i></a>
                                     {% endif %}
                                 </td>
+                                {% else %}
+                                <td class="btn-table">
+                                    <p class="btn-action applied"><i class="fa-solid fa-file-circle-check"></i>
+                                </td>
+                                {% endif %}
                             {% endif %}
                         </tr>
                         <tr>

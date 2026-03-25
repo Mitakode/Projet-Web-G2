@@ -253,7 +253,8 @@ class OfferController
             $offerId = $_GET['id'] ?? null;
             $studentId = $_SESSION['user_id'] ?? null;
 
-            if ($offerId && $studentId) {
+
+            if ($offerId && $studentId && !$this->model->hasApplied($offerId, $studentId)['ID_offre']) {
                 $this->model->addWishlist($offerId, $studentId);
             }
         }
@@ -262,6 +263,7 @@ class OfferController
 
     public function deleteWishlist()
     {
+        
         if ($_SESSION['user_role'] === 'etudiant') {
             $data = [
                 'recherche' => $_GET['recherche'] ?? '',
