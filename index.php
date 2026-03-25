@@ -80,6 +80,9 @@ switch ($uri) {
     case 'companies/delete':
         $companyController->delete();
         break;
+    case 'companies/rate':
+        $companyController->rate();
+        break;
 
     // Gestion des offres
     case 'offers':

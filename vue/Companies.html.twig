@@ -34,8 +34,14 @@
                                     Pas de note
                                 {% endif %}
                             </strong></td>
-                            {% if (session['user_role'] == 'admin' or session['user_role'] == 'pilote') %}
                             <td class="btn-table">
+                                {% if session['user_role'] == 'etudiant' %}
+                                <button type="button" class="btn-action etoile" 
+                                        onclick="ouvrirPopupNote({{ entreprise.ID_entreprise }}, '{{ entreprise.Nom_entreprise }}')">
+                                    <i class="fa-solid fa-star"></i>
+                                </button>
+                                {% endif %}
+                                {% if (session['user_role'] == 'admin' or session['user_role'] == 'pilote') %}
                                 <a href="index.php?uri=companies/update&id={{ entreprise.ID_entreprise }}" 
                                     class="btn-action crayon">
                                     <i class="fa-solid fa-pen-to-square"></i>
@@ -46,8 +52,8 @@
                                 onclick="return confirm('Supprimer cette entreprise ?')">
                                     <i class="fa-solid fa-trash"></i>
                                 </a>
+                                {% endif %}
                             </td>
-                            {% endif %}
                         </tr>
                         <tr>
                             <td colspan="2" class="company-info">
@@ -77,5 +83,7 @@
                 {% endfor %}
             {% endif %}
         </div>
-    
+
+<script src="assets/js/rating.js"></script>
+
 {% endblock %}
