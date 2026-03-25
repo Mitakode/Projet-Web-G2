@@ -14,13 +14,25 @@ class CompanyModel extends Model
         return $this->connection->getRecord($id);
     }
 
-    public function searchCompanies($keyword = "")
+    public function searchCompanies($keyword = "", $currentUserId = null)
     {
-        $sql = "SELECT Entreprise.*, AVG(Evalue.Note_entreprise) as Moyenne_Note
+        $sql = "SELECT Entreprise.*, AVG(Evalue.Note_entreprise) as Moyenne_Note";
+        $params = [];
+
+        if ($currentUserId !== null) {
+            $sql .= ", MAX(CASE WHEN Evalue.ID_utilisateur = :current_user_id THEN 1 ELSE 0 END) as is_rated";
+            $sql .= ", MAX(CASE WHEN Evalue.ID_utilisateur = :current_user_id THEN Evalue.Note_entreprise ELSE NULL END) as my_rating";
+            $params['current_user_id'] = (int) $currentUserId;
+        } else {
+            $sql .= ", 0 as is_rated";
+            $sql .= ", NULL as my_rating";
+        }
+
+        $sql .= "
         FROM Entreprise 
         LEFT JOIN Evalue ON Entreprise.ID_entreprise = Evalue.ID_entreprise
         WHERE 1=1";
-        $params = [];
+
         if (!empty($keyword)) {
             $sql .= " AND (Entreprise.Nom_entreprise LIKE :key OR Entreprise.Description LIKE :key)";
             $params['key'] = '%' . $keyword . '%';

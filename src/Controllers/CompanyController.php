@@ -19,8 +19,11 @@ class CompanyController
     {
         // Récupérer les filtres depuis l'URL
         $search = $_GET['recherche'] ?? '';
+        $currentUserId = (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'etudiant' && isset($_SESSION['user_id']))
+            ? $_SESSION['user_id']
+            : null;
         // Demander les données filtrées au modèle
-        $allCompanies = $this->model->searchCompanies($search);
+        $allCompanies = $this->model->searchCompanies($search, $currentUserId);
         // Gérer la pagination
         $paginator = new Paginator($allCompanies, 10);
         // Envoyer le tout à la vue Twig
@@ -111,8 +114,12 @@ class CompanyController
 
     public function rate()
     {
-        // Vérifier que l'utilisateur est connecté
-        if ($_SESSION['user_id'] != 'etudiant') {
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: /login');
+            exit;
+        }
+
+        if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'etudiant') {
             header('Location: /companies');
             exit;
         }
