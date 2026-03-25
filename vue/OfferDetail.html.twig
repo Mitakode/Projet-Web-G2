@@ -54,7 +54,7 @@
                         <button class="btn" type="button" id="postuler-btn">Postuler</button>
                     </div>
                     <div id="zone-depot" hidden>
-                        <form class="form-test" action="/upload.php" method="POST" enctype="multipart/form-data">
+                        <form class="form-test" action="/apply" method="POST" enctype="multipart/form-data">
                             
                             {# J'ajoute un champ caché très important pour que ton script PHP sache à quelle offre l'étudiant postule #}
                             <input type="hidden" name="id_offre" value="{{ offre.ID_offre }}">

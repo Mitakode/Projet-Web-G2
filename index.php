@@ -119,7 +119,7 @@ switch ($uri) {
         break;
     // Candidatures
     case 'apply':
-        $offerController->apply($_GET['id_offre']);
+        $offerController->apply();
         break;
 
     // Gestion des Utilisateurs

@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\Paginator;
 use App\Models\DashboardStudentModel;
 use App\Models\SqlDatabase;
+use App\Controllers\FileUploader;
 
 class OfferController
 {
@@ -72,6 +73,30 @@ class OfferController
         echo $this->twig->render('OfferDetail.html.twig', [
             'offre' => $offer
         ]);
+    }
+
+    public function apply()
+    {
+        $id = $_POST['id_offre'] ?? null;
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $cvPresent = isset($_FILES['cv']);
+            $lettrePresent = isset($_FILES['lettre']);
+
+            if (!$cvPresent || !$lettrePresent) {
+                echo "Veuillez remplir correctement tous les champs.";
+            } else {
+                $uploaderCV = new FileUploader($_FILES['cv']);
+                $uploaderLettre = new FileUploader($_FILES['lettre']);
+
+                if ($uploaderCV->validate()) {
+                    $uploaderCV->upload();
+                }
+
+                if ($uploaderLettre->validate()) {
+                    $uploaderLettre->upload();
+                }
+            }
+        }
     }
 
     /**
