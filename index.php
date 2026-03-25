@@ -154,6 +154,13 @@ switch ($uri) {
     case 'dashboard/admin/update-pilot':
         $dashboardAdminController->updatePilot();
         break;
+    // Dashboard Étudiant
+    case 'dashboard/student':
+        $dashboardStudentController->index(); // Appelle la fonction principale d'affichage
+        break;
+    case 'dashboard/student/remove-wishlist':
+        $dashboardStudentController->removeWishlist(); // Appelle la suppression
+        break;
 
     // Authentification
     case 'login':
