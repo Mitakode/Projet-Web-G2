@@ -10,6 +10,7 @@ function ouvrirPopupNote(idEntreprise, nomEntreprise) {
             return;
         }
         
+        // Soumettre la note et afficher alerte de succès
         window.location.href = `index.php?uri=companies/rate&id=${idEntreprise}&rating=${note}`;
     }
 }
