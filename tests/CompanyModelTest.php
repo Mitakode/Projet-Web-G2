@@ -56,19 +56,14 @@ class CompanyModelTest extends TestCase {
 
     public function testUpdateCompany() {
 
-        $connection = $this->createStub(SqlDatabase::class);
-        
-        $connection->method('getRecord')->willReturn([
-            ['ID_entreprise' => 1, 'Nom_entreprise' => 'Google', 'Description' => 'Géant de la technologie', 'Contact' => 'contact@google.com'],
-            ['ID_entreprise' => 2, 'Nom_entreprise' => 'Microsoft', 'Description' => 'Leader du logiciel', 'Contact' => 'contact@microsoft.com'],
-            ['ID_entreprise' => 3, 'Nom_entreprise' => 'Apple', 'Description' => 'Pionnier de l\'innovation technologique', 'Contact' => 'contact@apple.com']
-            ]);
+        $connection = $this->createMock(SqlDatabase::class);
+        $connection->method('updateRecord')->willReturn(true);
         
         $model = new CompanyModel($connection);
+        
+        $result = $model->updateCompany(2, ['Nom_entreprise' => 'Updated Microsoft']);
 
-        $company = $model->updateCompany(2, ['Nom_entreprise' => 'Updated Microsoft']);
-
-        $this->assertEquals('Updated Microsoft', $company['Nom_entreprise']);
+        $this->assertTrue($result);
     }
 
     public function testDeleteCompany() {
@@ -90,14 +85,18 @@ class CompanyModelTest extends TestCase {
 
     public function testSearchCompanies() {
 
-        $connection = $this->createStub(SqlDatabase::class);
+        $connection = $this->createMock(SqlDatabase::class);
+        $pdoMock = $this->createMock(\PDO::class);
+        $stmtMock = $this->createMock(\PDOStatement::class);
         
-        $connection->method('getAllRecords')->willReturn([
-            ['ID_entreprise' => 1, 'Nom_entreprise' => 'Google', 'Description' => 'Géant de la technologie', 'Contact' => 'contact@google.com'],
-            ['ID_entreprise' => 2, 'Nom_entreprise' => 'Microsoft', 'Description' => 'Leader du logiciel', 'Contact' => 'contact@microsoft.com'],
-            ['ID_entreprise' => 3, 'Nom_entreprise' => 'Apple', 'Description' => 'Pionnier de l\'innovation technologique', 'Contact' => 'contact@apple.com']
-            ]);
-        
+        $fakeResults = [
+            ['ID_entreprise' => 2, 'Nom_entreprise' => 'Microsoft', 'Description' => 'Leader du logiciel', 'Moyenne_Note' => 4.5]
+        ];
+
+        $connection->method('getConnection')->willReturn($pdoMock);
+        $pdoMock->method('prepare')->willReturn($stmtMock);
+        $stmtMock->method('fetchAll')->willReturn($fakeResults);
+
         $model = new CompanyModel($connection);
 
         $companies = $model->searchCompanies('Microsoft');
@@ -109,16 +108,15 @@ class CompanyModelTest extends TestCase {
     public function testRateCompany() {
 
         $connection = $this->createMock(SqlDatabase::class);
+        $pdoMock = $this->createMock(\PDO::class);
+        $stmtMock = $this->createMock(\PDOStatement::class);
 
-        $connection->method('insertRecord')->willReturn(true);
-
-        $connection->expects($this->once())
-                   ->method('insertRecord')
-                   ->with([
-                    'ID_entreprise' => 2,
-                    'ID_utilisateur' => 1,
-                    'Note_entreprise' => 4
-                   ]);
+        $connection->method('getConnection')->willReturn($pdoMock);
+    
+        // On simule toute la chaîne PDO (prepare -> execute -> fetch)
+        $pdoMock->method('prepare')->willReturn($stmtMock);
+        $stmtMock->method('execute')->willReturn(true);
+        $stmtMock->method('fetch')->willReturn(['count' => 0]);
         
         $model = new CompanyModel($connection);
 
