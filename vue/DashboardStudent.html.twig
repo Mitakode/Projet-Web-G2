@@ -38,6 +38,17 @@
                 </tbody>
             </table>
         </div>
+
+        <div class="pagination">
+            {% if total_pages > 1 %}
+                {% for i in 1..total_pages %}
+                    <a href="/index.php?uri=dashboard/student&page={{ i }}" 
+                    class="{{ i == current_page ? 'active' : '' }}">
+                        {{ i }}
+                    </a>
+                {% endfor %}
+            {% endif %}
+        </div>
     </section>
 
     {# Section : Ma wishlist #}
@@ -75,6 +86,17 @@
                     {% endfor %}
                 </tbody>
             </table>
+        </div>
+
+        <div class="pagination">
+            {% if total_pagesW > 1 %}
+                {% for i in 1..total_pagesW %}
+                    <a href="/index.php?uri=dashboard/student&page={{ i }}" 
+                    class="{{ i == current_pageW ? 'active' : '' }}">
+                        {{ i }}
+                    </a>
+                {% endfor %}
+            {% endif %}
         </div>
     </section>
 </main>
