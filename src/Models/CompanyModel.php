@@ -46,4 +46,39 @@ class CompanyModel extends Model
     {
         return $this->connection->deleteRecord($id);
     }
+
+    public function rateCompany($idEntreprise, $idUtilisateur, $note)
+    {
+        $pdo = $this->connection->getConnection();
+        
+        // Vérifier si une note existe déjà pour cet utilisateur et cette entreprise
+        $checkSql = "SELECT COUNT(*) as count FROM Evalue WHERE ID_entreprise = :id_entreprise AND ID_utilisateur = :id_utilisateur";
+        $checkStmt = $pdo->prepare($checkSql);
+        $checkStmt->execute([
+            ':id_entreprise' => $idEntreprise,
+            ':id_utilisateur' => $idUtilisateur
+        ]);
+        $result = $checkStmt->fetch(\PDO::FETCH_ASSOC);
+        $existing = $result['count'] > 0;
+
+        if ($existing) {
+            // Mettre à jour la note existante
+            $updateSql = "UPDATE Evalue SET Note_entreprise = :note WHERE ID_entreprise = :id_entreprise AND ID_utilisateur = :id_utilisateur";
+            $updateStmt = $pdo->prepare($updateSql);
+            return $updateStmt->execute([
+                ':note' => $note,
+                ':id_entreprise' => $idEntreprise,
+                ':id_utilisateur' => $idUtilisateur
+            ]);
+        } else {
+            // Créer une nouvelle note
+            $insertSql = "INSERT INTO Evalue (ID_entreprise, ID_utilisateur, Note_entreprise) VALUES (:id_entreprise, :id_utilisateur, :note)";
+            $insertStmt = $pdo->prepare($insertSql);
+            return $insertStmt->execute([
+                ':id_entreprise' => $idEntreprise,
+                ':id_utilisateur' => $idUtilisateur,
+                ':note' => $note
+            ]);
+        }
+    }
 }
