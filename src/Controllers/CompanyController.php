@@ -108,4 +108,34 @@ class CompanyController
         }
         header('Location: /companies');
     }
+
+    public function rate()
+    {
+        // Vérifier que l'utilisateur est connecté
+        if ($_SESSION['user_id'] != 'etudiant') {
+            header('Location: /companies');
+            exit;
+        }
+
+        $idEntreprise = $_GET['id'] ?? null;
+        $note = $_GET['rating'] ?? null;
+
+        if (!$idEntreprise || !$note) {
+            header('Location: /companies');
+            exit;
+        }
+
+        // verifier que la note est entre 1 et 10
+        $note = intval($note);
+        if ($note < 1 || $note > 10) {
+            header('Location: /companies');
+            exit;
+        }
+
+        // save la note
+        $this->model->rateCompany($idEntreprise, $_SESSION['user_id'], $note);
+        
+        header('Location: /companies');
+        exit;
+    }
 }

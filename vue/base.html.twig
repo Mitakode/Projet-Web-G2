@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="/assets/images/icon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="/assets/css/style.css?v=20260323-1">
+    <link rel="stylesheet" href="/assets/css/style.css">
     <title>{% block title %}ThePiston{% endblock %}</title>
 </head>
 <body>
@@ -13,15 +13,19 @@
     <header>
         <div class="logo-group">
             <a href="/" class="logo-link">
-                <img src="/assets/images/icon.png" alt="Icon" class="logo">
-                <img src="/assets/images/text.png" alt="The Piston" class="logo">
+                <img src="/assets/images/icon.png" alt="Icon" class="logo logo-icon">
+                <img src="/assets/images/text.png" alt="The Piston" class="logo logo-text">
             </a>
         </div>
 
-        <nav>
+        <button class="burger-btn" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="main-nav">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <nav id="main-nav">
             <a href="/dashboard" class="nav-link">Mon espace</a>
-            <a href="/?uri=offers" class="nav-link">Les offres</a>
-            <a href="/?uri=companies" class="nav-link">Les entreprises</a>
+            <a href="/offers" class="nav-link">Les offres</a>
+            <a href="/companies" class="nav-link">Les entreprises</a>
 
             
             <div class="btn-container">{% if session.user_id %}
@@ -59,6 +63,8 @@
         </div>
     </footer>
     {% endblock %}
+
+    <script src="/assets/js/mobile-menu.js" defer></script>
 
     {% block scripts %}{% endblock %}
 </body>

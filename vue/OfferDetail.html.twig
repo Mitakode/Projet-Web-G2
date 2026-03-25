@@ -23,7 +23,7 @@
                     </div>
 
                     {# nl2br permet de respecter les retours à la ligne faits dans la description #}
-                    <p style="text-align: justify;">{{ offre.Description|nl2br }}</p>
+                    <p class="offer-description">{{ offre.Description|nl2br }}</p>
 
                     <div>
                         <h2 style="margin-top: 20px;">Compétences requises</h2>
@@ -41,9 +41,9 @@
                         </ul>
                     </div>
 
-                    <div>
+                    <div class="offer-remuneration">
                         <h2>Rémunération</h2>
-                        <p>{{ offre.Base_remuneration }} €/mois</p>
+                        <p class="offer-salary">{{ offre.Base_remuneration }} €/mois</p>
                     </div>
                 </div>
             </div>
