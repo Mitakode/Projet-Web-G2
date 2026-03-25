@@ -77,26 +77,50 @@ class OfferController
 
     public function apply()
     {
-        $id = $_POST['id_offre'] ?? null;
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $cvPresent = isset($_FILES['cv']);
-            $lettrePresent = isset($_FILES['lettre']);
+        $idOffre = $_POST['id_offre'] ?? null;
+        $studentId = $_SESSION['user_id'] ?? null;
 
-            if (!$cvPresent || !$lettrePresent) {
-                echo "Veuillez remplir correctement tous les champs.";
-            } else {
-                $uploaderCV = new FileUploader($_FILES['cv']);
-                $uploaderLettre = new FileUploader($_FILES['lettre']);
+        $cvPath = null;
+        $letterPath = null;
 
-                if ($uploaderCV->validate()) {
-                    $uploaderCV->upload();
+        $alreadyApplied = $this->model->hasApplied($idOffre, $studentId);
+
+        if ($alreadyApplied['count'] > 0) {
+            echo "Vous avez déjà postulé à cette offre.";
+            header('Location: /index.php?uri=offers');
+            exit;
+        }
+        else{
+       
+
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $cvPresent = isset($_FILES['cv']);
+                $lettrePresent = isset($_FILES['lettre']);
+
+                if (!$cvPresent || !$lettrePresent) {
+                    echo "Veuillez remplir correctement tous les champs.";
+                } else {
+                    $uploaderCV = new FileUploader($_FILES['cv']);
+                    $uploaderLettre = new FileUploader($_FILES['lettre']);
+
+                    if ($uploaderCV->validate()) {
+                        $cvPath = $uploaderCV->upload();
+                    }
+
+                    if ($uploaderLettre->validate()) {
+                        $letterPath = $uploaderLettre->upload();
+                    }
                 }
 
-                if ($uploaderLettre->validate()) {
-                    $uploaderLettre->upload();
+                if ($idOffre && $studentId && $cvPath && $letterPath) {
+                    $this->model->addPostule($idOffre, $studentId, $cvPath, $letterPath);
                 }
             }
         }
+
+        header('Location: /index.php?uri=offers/detail&id='.$idOffre);
+
+
     }
 
     /**

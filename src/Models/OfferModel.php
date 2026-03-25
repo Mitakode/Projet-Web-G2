@@ -108,4 +108,21 @@ class OfferModel extends Model
         return $stmt->execute($params);
     }
 
+    public function hasApplied($idOffre, $studentId)
+    {
+        $sql = "SELECT * FROM Postule WHERE ID_offre = :idOffre AND ID_utilisateur = :studentId";
+        $params = ['idOffre' => $idOffre, 'studentId' => $studentId];
+        $stmt = $this->connection->getConnection()->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function addPostule($offerId, $studentId, $cvPath, $letterPath)
+    {
+        $sql = "INSERT INTO Postule (ID_utilisateur, ID_offre, CV, Lettre_motivation, Date_candidature) VALUES (:studentId, :offerId, :cvPath, :letterPath, :dateCandidature)";
+        $params = ['studentId' => $studentId, 'offerId' => $offerId, 'cvPath' => $cvPath, 'letterPath' => $letterPath, 'dateCandidature' => date('Y-m-d')];
+        $stmt = $this->connection->getConnection()->prepare($sql);
+        return $stmt->execute($params);
+    }
+
 }

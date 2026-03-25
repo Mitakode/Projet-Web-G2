@@ -11,7 +11,7 @@ class FileUploader {
 
     public function validate(): bool {
         if ($this->file['error'] !== UPLOAD_ERR_OK) {
-            echo "Erreur validate lors de l'upload du fichier ".basename($this->file['name']).".";
+            echo "Erreur validate lors de l'upload du fichier ".basename($this->file['name']).". Code d'erreur : " . $this->file['error'] . "<br>";
 
             return false;
         }
@@ -24,14 +24,14 @@ class FileUploader {
         return true;
     }
 
-    public function upload(): bool {
+    public function upload(): ?string {
         $uploadPath = $this->uploadDir . basename($this->file['name']);
         if (move_uploaded_file($this->file['tmp_name'], $uploadPath)) {
             echo "Le fichier ".basename($this->file['name'])." a été envoyé avec succès !<br>";
-            return true;
+            return $uploadPath;
         } else {
             echo "Erreur upload lors de l'upload du fichier ".basename($this->file['name']).". <br>";
-            return false;
+            return null;
         }
     }
 }
