@@ -299,6 +299,24 @@ footer a:hover {
 .etoile i { color: var(--text-color-light); }
 .etoile.active i{ color: #fbbf24; }
 
+.user-rating {
+    display: inline-block;
+    min-width: 52px;
+    text-align: right;
+    margin-right: 6px;
+    font-weight: 600;
+    color: #f59e0b;
+    vertical-align: middle;
+}
+
+.user-rating-empty {
+    visibility: hidden;
+}
+
+.coeur { background: none; font-size: 1.4rem; }
+.coeur i { color: var(--text-color-light); }
+.coeur.active i { color: #e11d48; }
+
 .btn-table{
     text-align: right;
     white-space: nowrap;
@@ -1056,7 +1074,14 @@ main.list-page {
 .company-rating {
     text-align: right;
     color: var(--text-color-light);
-    width: 20%;
+    width: 180px;
+    min-width: 180px;
+}
+
+.company-table td.company-rating + td.btn-table {
+    width: 140px;
+    min-width: 140px;
+    padding-right: 22px;
 }
 
 .offer-company{

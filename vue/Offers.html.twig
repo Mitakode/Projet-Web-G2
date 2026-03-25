@@ -76,10 +76,10 @@
                                 <td class="btn-table">
                                     {% if offre.is_in_wishlist %}
                                     <a href="index.php?uri=offers/deleteWishlist&id={{ offre.ID_offre }}&recherche={{ search_term }}&company={{ selected_company }}&type={{ selected_type }}&duree={{ selected_duree }}&page={{ current_page }}" 
-                                    class="btn-action etoile active"><i class="fa-solid fa-star"></i></a>
+                                    class="btn-action coeur active"><i class="fa-solid fa-heart"></i></a>
                                     {% else %}
                                     <a href="index.php?uri=offers/addWishlist&id={{ offre.ID_offre }}&recherche={{ search_term }}&company={{ selected_company }}&type={{ selected_type }}&duree={{ selected_duree }}&page={{ current_page }}" 
-                                    class="btn-action etoile"><i class="fa-solid fa-star"></i></a>
+                                    class="btn-action coeur"><i class="fa-solid fa-heart"></i></a>
                                     {% endif %}
                                 </td>
                             {% endif %}
