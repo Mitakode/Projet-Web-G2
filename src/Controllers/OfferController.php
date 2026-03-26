@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\Paginator;
 use App\Models\DashboardStudentModel;
 use App\Models\SqlDatabase;
+use App\Controllers\FileUploader;
 
 class OfferController
 {
@@ -72,6 +73,62 @@ class OfferController
         echo $this->twig->render('OfferDetail.html.twig', [
             'offre' => $offer
         ]);
+    }
+
+    public function apply()
+    {
+        if ($_SESSION['user_role'] === 'etudiant') {
+            
+            $idOffre = $_POST['id_offre'] ?? null;
+            $studentId = $_SESSION['user_id'] ?? null;
+
+            $cvPath = null;
+            $letterPath = null;
+
+            if ($this->model->hasApplied($idOffre, $studentId)['ID_offre']){
+                echo "Vous avez déjà postulé à cette offre.";
+                header('Location: /offers');
+                exit;
+            }
+            else{
+
+                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                    $cvPresent = isset($_FILES['cv']);
+                    $lettrePresent = isset($_FILES['lettre']);
+
+                    if (!$cvPresent || !$lettrePresent) {
+                        echo "Veuillez remplir correctement tous les champs.";
+                    } else {
+                        $uploaderCV = new FileUploader($_FILES['cv']);
+                        $uploaderLettre = new FileUploader($_FILES['lettre']);
+
+                        if ($uploaderCV->validate()) {
+                            $cvPath = $uploaderCV->upload();
+                        }
+
+                        if ($uploaderLettre->validate()) {
+                            $letterPath = $uploaderLettre->upload();
+                        }
+                    }
+
+                    if ($idOffre && $studentId && $cvPath && $letterPath) {
+                        $this->model->addPostule($idOffre, $studentId, $cvPath, $letterPath);
+                        $inWishlist = $this->model->isInWishlist($idOffre, $studentId);
+                        if ($inWishlist['ID_offre']) {
+                            $wishlistModel = new DashboardStudentModel($this->model->getDb());   
+                            $wishlistModel->removeFromWishlist($studentId, $idOffre);
+                        }
+                        header('Location: /offers');
+                        exit;
+                    }
+                }
+            }
+        } else {
+            header('Location: /offers');
+            exit;
+        }
+
+
     }
 
     /**
@@ -194,7 +251,8 @@ class OfferController
             $offerId = $_GET['id'] ?? null;
             $studentId = $_SESSION['user_id'] ?? null;
 
-            if ($offerId && $studentId) {
+
+            if ($offerId && $studentId && !$this->model->hasApplied($offerId, $studentId)['ID_offre']) {
                 $this->model->addWishlist($offerId, $studentId);
             }
         }
@@ -203,6 +261,7 @@ class OfferController
 
     public function deleteWishlist()
     {
+        
         if ($_SESSION['user_role'] === 'etudiant') {
             $data = [
                 'recherche' => $_GET['recherche'] ?? '',

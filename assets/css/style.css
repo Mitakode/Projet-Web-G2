@@ -295,6 +295,8 @@ footer a:hover {
 .crayon { background-color: var(--green-piston); }
 .btn-action i { color: white; } /* Icônes en blanc */
 
+.applied { background: none; font-size: 1.4rem; }
+.applied i { color: var(--green-piston-dark); }
 .etoile { background: none; font-size: 1.4rem; }
 .etoile i { color: var(--text-color-light) !important; }
 .etoile.active i { color: #fbbf24 !important; }

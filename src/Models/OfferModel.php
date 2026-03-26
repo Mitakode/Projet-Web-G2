@@ -16,12 +16,16 @@ class OfferModel extends Model
      */
     public function getOfferById($id)
     {
-        $sql = "SELECT Offre.*, Entreprise.Nom_entreprise 
-                FROM Offre 
-                JOIN Entreprise ON Offre.ID_entreprise = Entreprise.ID_entreprise 
+        $sql = "SELECT Offre.*, Entreprise.Nom_entreprise, IF(Souhaite.ID_utilisateur IS NOT NULL, 1, 0) AS is_in_wishlist, IF(Postule.ID_utilisateur IS NOT NULL, 1, 0) AS has_applied 
+            FROM Offre 
+            JOIN Entreprise ON Offre.ID_entreprise = Entreprise.ID_entreprise 
+            LEFT JOIN Souhaite ON Offre.ID_offre = Souhaite.ID_offre 
+                AND Souhaite.ID_utilisateur = :userId 
+            LEFT JOIN Postule ON Offre.ID_offre = Postule.ID_offre 
+                AND Postule.ID_utilisateur = :userId
                 WHERE Offre.ID_offre = :id";
         $stmt = $this->connection->getConnection()->prepare($sql);
-        $stmt->execute(['id' => $id]);
+        $stmt->execute(['id' => $id, 'userId' => $_SESSION['user_id']]);
 // Retourne un seul enregistrement sous forme de tableau associatif
         return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
@@ -32,14 +36,16 @@ class OfferModel extends Model
      */
     public function searchOffers($keyword = "", $company = "", $type = "", $duree = "")
     {
-        $sql = "SELECT Offre.*, Entreprise.Nom_entreprise, IF(Souhaite.ID_utilisateur IS NOT NULL, 1, 0) AS is_in_wishlist
-            FROM Offre 
-            JOIN Entreprise ON Offre.ID_entreprise = Entreprise.ID_entreprise
-            LEFT JOIN Souhaite ON Offre.ID_offre = Souhaite.ID_offre 
-                AND Souhaite.ID_utilisateur = " .$_SESSION['user_id'] . "
+        $sql = "SELECT Offre.*, Entreprise.Nom_entreprise, IF(Souhaite.ID_utilisateur IS NOT NULL, 1, 0) AS is_in_wishlist, IF(Postule.ID_utilisateur IS NOT NULL, 1, 0) AS has_applied 
+        FROM Offre 
+        JOIN Entreprise ON Offre.ID_entreprise = Entreprise.ID_entreprise 
+        LEFT JOIN Souhaite ON Offre.ID_offre = Souhaite.ID_offre 
+            AND Souhaite.ID_utilisateur = :userId 
+        LEFT JOIN Postule ON Offre.ID_offre = Postule.ID_offre 
+            AND Postule.ID_utilisateur = :userId
             WHERE 1=1";
 // "1=1" est une astuce pour pouvoir ajouter facilement des "AND" dynamiquement
-        $params = [];
+        $params = ['userId' => $_SESSION['user_id']];
 // Si un mot-clé est tapé, on cherche dans le titre, la description et les compétences
         if (!empty($keyword)) {
             $sql .= " AND (Offre.Titre LIKE :key OR Offre.Description LIKE :key OR Offre.Liste_competences LIKE :key)";
@@ -104,6 +110,32 @@ class OfferModel extends Model
     {
         $sql = "INSERT INTO Souhaite (ID_utilisateur, ID_offre) VALUES (:studentId, :offerId)";
         $params = ['studentId' => $studentId, 'offerId' => $offerId];
+        $stmt = $this->connection->getConnection()->prepare($sql);
+        return $stmt->execute($params);
+    }
+
+    public function isInWishlist($idOffre, $studentId)
+    {
+        $sql = "SELECT * FROM Souhaite WHERE ID_offre = :idOffre AND ID_utilisateur = :studentId";
+        $params = ['idOffre' => $idOffre, 'studentId' => $studentId];
+        $stmt = $this->connection->getConnection()->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    public function hasApplied($idOffre, $studentId)
+    {
+        $sql = "SELECT * FROM Postule WHERE ID_offre = :idOffre AND ID_utilisateur = :studentId";
+        $params = ['idOffre' => $idOffre, 'studentId' => $studentId];
+        $stmt = $this->connection->getConnection()->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    public function addPostule($offerId, $studentId, $cvPath, $letterPath)
+    {
+        $sql = "INSERT INTO Postule (ID_utilisateur, ID_offre, CV, Lettre_motivation, Date_candidature) VALUES (:studentId, :offerId, :cvPath, :letterPath, :dateCandidature)";
+        $params = ['studentId' => $studentId, 'offerId' => $offerId, 'cvPath' => $cvPath, 'letterPath' => $letterPath, 'dateCandidature' => date('Y-m-d')];
         $stmt = $this->connection->getConnection()->prepare($sql);
         return $stmt->execute($params);
     }
