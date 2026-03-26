@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Paginator;
+use App\Controllers\BlockAccess;
 
 class CompanyController
 {
@@ -37,7 +38,11 @@ class CompanyController
 
     public function create()
     {
-        if ($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'pilote'){
+        $blockAccess = new BlockAccess($this->twig);
+        $blockAccess->blockStudentAccess();
+
+        if ($_SESSION['user_role'] === 'pilote' || $_SESSION['user_role'] === 'admin') {
+
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $name = isset($_POST['nameCompany'])
                     ? htmlspecialchars(trim($_POST['nameCompany']))
@@ -63,17 +68,22 @@ class CompanyController
 
             echo $this->twig->render('CompaniesForm.html.twig', [
             'is_edit' => false
-            ]);
-        } else {
-            header('Location: /companies');
-            exit;
+            ]);   
+        }
+        else {
+            header('Location: /');
+            exit; 
         }
     }
 
     public function update()
     {
-        if ($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'pilote'){
-            $id = $_GET['id'] ?? null;
+        $blockAccess = new BlockAccess($this->twig);
+        $blockAccess->blockStudentAccess();
+
+        if ($_SESSION['user_role'] === 'pilote' || $_SESSION['user_role'] === 'admin') {
+
+            $id = $_GET['id'] ?? null;  
             if (!$id) {
                 header('Location: /companies');
                 exit;
@@ -95,25 +105,32 @@ class CompanyController
             'entreprise' => $company,
             'is_edit'    => true
             ]);
-        } else {
-            header('Location: /companies');
+        }
+        else {
+            header('Location: /');
             exit;
         }
     }
 
     public function delete()
     {
-        if ($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'pilote'){
-            $id = $_GET['id'] ?? null;
-            if ($id) {
-                $this->model->deleteCompany($id);
-            }
+        $blockAccess = new BlockAccess($this->twig);
+        $blockAccess->blockStudentAccess();
+
+        $id = $_GET['id'] ?? null;
+        if ($id) {
+            $this->model->deleteCompany($id);
         }
         header('Location: /companies');
     }
 
     public function rate()
     {
+        $blockAccess = new BlockAccess($this->twig);
+        $blockAccess->blockPilotAccess();
+        $blockAccess->blockAdminAccess();
+
+
         if (!isset($_SESSION['user_id'])) {
             header('Location: /login');
             exit;
