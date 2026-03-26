@@ -61,10 +61,11 @@ class DashboardAdminController{
     }
 
     public function studentDetails(){
-        $this->blockStudentAccess();
+        $blockAccess = new BlockAccess($this->twig);
+        $blockAccess->blockStudentAccess();
 
         if ($_SESSION['user_role'] === 'pilote' || $_SESSION['user_role'] === 'admin') {
-            $this->blockStudentAccess();
+            $blockAccess->blockStudentAccess();
             
             $id = intval($_GET['id'] ?? 0);
             if ($id == 0) {
@@ -252,7 +253,7 @@ class DashboardAdminController{
                         'Mot_de_passe' => password_hash($password, PASSWORD_BCRYPT)
                     ];
 
-                    $this->model->createPilot($userData, $studentData);
+                    $this->model->createPilot($userData);
                     
                     header('Location: /dashboard/admin');
                     exit;
