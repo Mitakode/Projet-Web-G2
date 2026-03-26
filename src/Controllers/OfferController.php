@@ -85,7 +85,9 @@ class OfferController
             $cvPath = null;
             $letterPath = null;
 
-            if ($this->model->hasApplied($idOffre, $studentId)['ID_offre']){
+            $alreadyApplied = $this->model->hasApplied($idOffre, $studentId);
+
+            if ($alreadyApplied['ID_offre']){
                 echo "Vous avez déjà postulé à cette offre.";
                 header('Location: /offers');
                 exit;
@@ -251,8 +253,9 @@ class OfferController
             $offerId = $_GET['id'] ?? null;
             $studentId = $_SESSION['user_id'] ?? null;
 
+            $alreadyApplied = $this->model->hasApplied($idOffre, $studentId);
 
-            if ($offerId && $studentId && !$this->model->hasApplied($offerId, $studentId)['ID_offre']) {
+            if ($offerId && $studentId && !$alreadyApplied['ID_offre']) {
                 $this->model->addWishlist($offerId, $studentId);
             }
         }
