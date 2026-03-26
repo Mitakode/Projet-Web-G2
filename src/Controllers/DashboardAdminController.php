@@ -60,6 +60,41 @@ class DashboardAdminController{
         ]);
     }
 
+    public function studentDetails(){
+        $blockAccess = new BlockAccess($this->twig);
+        $blockAccess->blockStudentAccess();
+
+        if ($_SESSION['user_role'] === 'pilote' || $_SESSION['user_role'] === 'admin') {
+            $this->blockStudentAccess();
+            
+            $id = intval($_GET['id'] ?? 0);
+            if ($id == 0) {
+                header('Location: /dashboard/admin');
+                exit;
+            }
+
+            $student = $this->model->getStudentById($id);
+            $pilot = $this->model->getPilotById($student['ID_pilote']);
+            $applications = $this->model->getStudentApplications($id);
+
+            $paginator = new Paginator($applications, 5);
+
+            echo $this->twig->render('StudentDetails.html.twig', [
+                'etudiant' => $student,
+                'session' => $_SESSION,
+                'pilote' => $pilot,
+                
+                'candidatures' => $paginator->getCurrentPageItems(),
+                'total_pages'      => $paginator->getTotalPages(),
+                'current_page'     => $_GET['page'] ?? 1
+            ]);
+        }
+        else {
+            header('Location: /');
+            exit;
+        }
+    }
+
     public function createStudent(){
         $this->blockStudentAccess();
 
@@ -93,7 +128,8 @@ class DashboardAdminController{
                 ];
 
                 $this->model->createStudent($userData, $studentData);
-                echo "<script>alert('Étudiant créé avec succès !'); window.location.href='/dashboard/admin';</script>";
+                
+                header('Location: /dashboard/admin');
                 exit;
             }
         }
@@ -118,11 +154,10 @@ class DashboardAdminController{
 
         try {
             $this->model->deleteStudent($id);
-            echo "<script>alert('Étudiant supprimé avec succès !'); window.location.href='/dashboard/admin';</script>";
+            header('Location: /dashboard/admin');
             exit;
         } catch (\Exception $e) {
-            echo "<script>alert('Erreur lors de la suppression de l\'étudiant.'); window.history.back();</script>";
-            exit;
+            echo "Erreur lors de la suppression de l'étudiant.";
         }
 
     }
@@ -156,7 +191,7 @@ class DashboardAdminController{
             }
 
             $this->model->updateStudent($id, $userData, $studentData);
-            echo "<script>alert('Étudiant modifié avec succès !'); window.location.href='/dashboard/admin';</script>";
+            header('Location: /dashboard/admin');
             exit;
         }
 
@@ -190,8 +225,9 @@ class DashboardAdminController{
                     'Mot_de_passe' => password_hash($password, PASSWORD_BCRYPT)
                 ];
 
-                $this->model->createPilot($userData);
-                echo "<script>alert('Pilote créé avec succès !'); window.location.href='/dashboard/admin';</script>";
+                $this->model->createPilot($userData, $studentData);
+                
+                header('Location: /dashboard/admin');
                 exit;
             }
         }
@@ -215,16 +251,15 @@ class DashboardAdminController{
 
         try {
             if ($this->model->pilotHasStudents($id)) {
-                echo "<script>alert('Impossible de supprimer ce pilote : des étudiants lui sont encore associés.'); window.history.back();</script>";
-                exit;
+                echo "Impossible de supprimer ce pilote : des étudiants lui sont encore associés.";
+                return;
             }
 
             $this->model->deletePilot($id);
-            echo "<script>alert('Pilote supprimé avec succès !'); window.location.href='/dashboard/admin';</script>";
+            header('Location: /dashboard/admin');
             exit;
         } catch (\Exception $e) {
-            echo "<script>alert('Erreur lors de la suppression du pilote.'); window.history.back();</script>";
-            exit;
+            echo "Erreur lors de la suppression du pilote.";
         }
 
     }
@@ -250,7 +285,7 @@ class DashboardAdminController{
             }
 
             $this->model->updatePilot($id, $userData);
-            echo "<script>alert('Pilote modifié avec succès !'); window.location.href='/dashboard/admin';</script>";
+            header('Location: /dashboard/admin');
             exit;
         }
 
