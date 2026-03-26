@@ -544,14 +544,22 @@ input:hover, select:hover, textarea:hover {
 }
 
 .form-test{
+    background-color: var(--white);
+    padding: 10px;
+    margin: 20px auto;
+    width: 80%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* Espace entre les champs du formulaire */
+}
+
+.apply-form {
     background-color: var(--surface-soft-green);
     padding: 20px;
     margin: 14px 0 0 0;
     width: 100%;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    gap: 12px; /* Espace entre les champs du formulaire */
+    gap: 12px;
     border-radius: 10px;
     border: 1px solid #dfe8d5;
 }
