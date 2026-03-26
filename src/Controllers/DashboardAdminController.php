@@ -61,8 +61,7 @@ class DashboardAdminController{
     }
 
     public function studentDetails(){
-        $blockAccess = new BlockAccess($this->twig);
-        $blockAccess->blockStudentAccess();
+        $this->blockStudentAccess();
 
         if ($_SESSION['user_role'] === 'pilote' || $_SESSION['user_role'] === 'admin') {
             $this->blockStudentAccess();
