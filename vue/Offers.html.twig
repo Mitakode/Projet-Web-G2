@@ -76,16 +76,20 @@
                                 {% if offre.has_applied == false %}
                                 <td class="btn-table">
                                     {% if offre.is_in_wishlist %}
-                                    <a href="index.php?uri=offers/deleteWishlist&id={{ offre.ID_offre }}&recherche={{ search_term }}&company={{ selected_company }}&type={{ selected_type }}&duree={{ selected_duree }}&page={{ current_page }}" 
-                                    class="btn-action coeur active"><i class="fa-solid fa-heart"></i></a>
+                                    <a href="index.php?uri=offers/deleteWishlist&id={{ offre.ID_offre }}&recherche={{ search_term }}&company={{ selected_company }}&type={{ selected_type }}&duree={{ selected_duree }}&page={{ current_page }}"
+                                    class="btn-action coeur active"
+                                    title="Retirer des favoris"
+                                    aria-label="Retirer des favoris"><i class="fa-solid fa-heart"></i></a>
                                     {% else %}
-                                    <a href="index.php?uri=offers/addWishlist&id={{ offre.ID_offre }}&recherche={{ search_term }}&company={{ selected_company }}&type={{ selected_type }}&duree={{ selected_duree }}&page={{ current_page }}" 
-                                    class="btn-action coeur"><i class="fa-solid fa-heart"></i></a>
+                                    <a href="index.php?uri=offers/addWishlist&id={{ offre.ID_offre }}&recherche={{ search_term }}&company={{ selected_company }}&type={{ selected_type }}&duree={{ selected_duree }}&page={{ current_page }}"
+                                    class="btn-action coeur"
+                                    title="Ajouter aux favoris"
+                                    aria-label="Ajouter aux favoris"><i class="fa-solid fa-heart"></i></a>
                                     {% endif %}
                                 </td>
                                 {% else %}
                                 <td class="btn-table">
-                                    <p class="btn-action applied"><i class="fa-solid fa-file-circle-check"></i>
+                                    <span class="btn-action applied" title="Deja postule" aria-label="Deja postule"><i class="fa-solid fa-file-circle-check"></i></span>
                                 </td>
                                 {% endif %}
                             {% endif %}
