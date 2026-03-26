@@ -91,5 +91,21 @@
 {% endblock %}
 
 {% block scripts %}
+<script src="/assets/js/popups.js"></script>
 <script src="/assets/js/zone-depot.js"></script>
+{% if popup is defined and popup %}
+<script>
+    (function () {
+        var popupType = {{ popup|json_encode|raw }};
+
+        if (popupType === 'success') {
+            window.showSuccessPopup('Candidature envoyee avec succes.');
+        } else if (popupType === 'already_applied') {
+            window.showErrorPopup('Vous avez deja postule a cette offre.');
+        } else if (popupType === 'error') {
+            window.showErrorPopup('Echec de l\'envoi de la candidature. Verifiez vos fichiers puis recommencez.');
+        }
+    })();
+</script>
+{% endif %}
 {% endblock %}
