@@ -1159,12 +1159,17 @@ main.list-page {
 }
 
 .pagination a {
-    padding: 8px 12px;
+    width: 35px;
+    height: 35px;
     margin: 0 4px;
     text-decoration: none;
     border-radius: 4px;
     background: var(--white); 
     color: var(--deconnexion-color);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
     transition: all 0.3s; /* Petit bonus pour la fluidité */
 }
 
@@ -1185,9 +1190,14 @@ main.list-page {
 .pagination strong { 
     background: var(--green-piston); 
     color: var(--white); 
-    padding: 8px 12px;
+    width: 50px;
+    height: 50px;
     margin: 0 4px;
     border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
 }
 
 /*dozkdzk */
