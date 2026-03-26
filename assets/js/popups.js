@@ -5,10 +5,10 @@
     }
 
     window.showSuccessPopup = function (message, duration) {
-        showAlert('Valide', message || 'Operation effectuee avec succes.');
+        showAlert('✅ Valide', message || '✅ Operation effectuee avec succes.');
     };
 
     window.showErrorPopup = function (message, duration) {
-        showAlert('Erreur', message || 'Une erreur est survenue.');
+        showAlert('❌ Erreur', message || '❌ Une erreur est survenue.');
     };
 })();
