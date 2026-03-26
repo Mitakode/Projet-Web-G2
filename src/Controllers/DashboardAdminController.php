@@ -32,7 +32,7 @@ class DashboardAdminController{
         $students = $this->model->searchStudents($surname, $name, $promotion);
 
         // Gérer la pagination
-        $paginator = new Paginator($students, 5);
+        $paginator = new Paginator($students, 5, 'page');
 
         //Pilots
         $surnameP = $_GET['surnameP'] ?? '';
@@ -41,7 +41,7 @@ class DashboardAdminController{
         $pilots = $this->model->searchPilots($surnameP, $nameP);
 
         // Gérer la pagination
-        $paginatorP = new Paginator($pilots, 5);
+        $paginatorP = new Paginator($pilots, 5, 'pageP');
         
         // Envoyer le tout à la vue Twig
         echo $this->twig->render('DashboardAdmin.html.twig', [
@@ -54,7 +54,7 @@ class DashboardAdminController{
 
             'pilotes' => $paginatorP->getCurrentPageItems(),
             'total_pagesP'      => $paginatorP->getTotalPages(),
-            'current_pageP'     => $_GET['page'] ?? 1,
+            'current_pageP'     => $_GET['pageP'] ?? 1,
             'surnameP'      => $surnameP,
             'nameP'             => $nameP
         ]);

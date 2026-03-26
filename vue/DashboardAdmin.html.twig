@@ -105,7 +105,7 @@
         <div class="pagination">
             {% if total_pagesP > 1 %}
                 {% for i in 1..total_pagesP %}
-                    <a href="/index.php?uri=dashboard/admin&surnameP={{ surnameP }}&nameP={{ nameP }}&page={{ i }}" 
+                    <a href="/index.php?uri=dashboard/admin&surnameP={{ surnameP }}&nameP={{ nameP }}&pageP={{ i }}" 
                     class="{{ i == current_pageP ? 'active' : '' }}">
                         {{ i }}
                     </a>
