@@ -72,7 +72,11 @@
                     {# Boucle sur la wishlist récupérée depuis le contrôleur #}
                     {% for souhait in wishlist %}
                     <tr>
-                        <td>{{ souhait.Titre }}</td>
+                        <td>
+                            <a href="/index.php?uri=offers/detail&id={{ souhait.ID_offre }}" class="link">
+                                {{ souhait.Titre }}
+                            </a>
+                        </td>
                         <td>{{ souhait.Nom_entreprise }}</td>
                         <td class="btn-table">
                             {# Lien dynamique vers l'action de suppression dans le routeur #}
