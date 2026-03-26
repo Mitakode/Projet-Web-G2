@@ -258,7 +258,7 @@ class OfferController
             $offerId = $_GET['id'] ?? null;
             $studentId = $_SESSION['user_id'] ?? null;
 
-            $alreadyApplied = $this->model->hasApplied($idOffre, $studentId);
+            $alreadyApplied = $this->model->hasApplied($offerId, $studentId);
 
             if ($offerId && $studentId && !$alreadyApplied['ID_offre']) {
                 $this->model->addWishlist($offerId, $studentId);
