@@ -16,14 +16,17 @@ class OfferModel extends Model
      */
     public function getOfferById($id)
     {
-        $sql = "SELECT Offre.*, Entreprise.Nom_entreprise, IF(Souhaite.ID_utilisateur IS NOT NULL, 1, 0) AS is_in_wishlist, IF(Postule.ID_utilisateur IS NOT NULL, 1, 0) AS has_applied 
+        $sql = "SELECT Offre.*, Entreprise.Nom_entreprise, IF(Souhaite.ID_utilisateur IS NOT NULL, 1, 0) AS is_in_wishlist, IF(Postule.ID_utilisateur IS NOT NULL, 1, 0) AS has_applied, nb.nb_candidatures
             FROM Offre 
             JOIN Entreprise ON Offre.ID_entreprise = Entreprise.ID_entreprise 
             LEFT JOIN Souhaite ON Offre.ID_offre = Souhaite.ID_offre 
-                AND Souhaite.ID_utilisateur = :userId 
+                AND Souhaite.ID_utilisateur = :userId
             LEFT JOIN Postule ON Offre.ID_offre = Postule.ID_offre 
                 AND Postule.ID_utilisateur = :userId
-                WHERE Offre.ID_offre = :id";
+            LEFT JOIN (SELECT Postule.ID_offre, COUNT(*) AS nb_candidatures
+                        FROM Postule
+                        WHERE Postule.ID_offre = :id          
+                        GROUP BY Postule.ID_offre) nb ON nb.ID_offre=Postule.ID_offre";
         $stmt = $this->connection->getConnection()->prepare($sql);
         $stmt->execute(['id' => $id, 'userId' => $_SESSION['user_id']]);
 // Retourne un seul enregistrement sous forme de tableau associatif
