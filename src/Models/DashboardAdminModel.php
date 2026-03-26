@@ -21,6 +21,19 @@ class DashboardAdminModel extends Model{
         return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 
+    // Getters applications
+    public function getStudentApplications($studentId) {
+        $sql = "SELECT Postule.*, Offre.ID_offre, Offre.Titre As Titre_offre, Offre.ID_entreprise, Entreprise.Nom_entreprise AS entreprise
+                FROM Postule 
+                JOIN Offre ON Offre.ID_offre = Postule.ID_offre 
+                JOIN Entreprise ON Offre.ID_entreprise = Entreprise.ID_entreprise
+                WHERE Postule.ID_utilisateur = ?";
+    
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$studentId]);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
     // Getters Pilots
     public function getPilotById($id) {
         $sql = "SELECT Utilisateur.*, Pilote.ID_utilisateur 

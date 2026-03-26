@@ -56,6 +56,7 @@ class OfferController
     public function detail()
     {
         $id = $_GET['id'] ?? null;
+        $popup = $_GET['popup'] ?? null;
 // Si aucun ID n'est fourni, on redirige vers la liste des offres
         if (!$id) {
             header('Location: /offers');
@@ -72,7 +73,8 @@ class OfferController
 
         // On affiche le template de détail en lui passant la variable "offre"
         echo $this->twig->render('OfferDetail.html.twig', [
-            'offre' => $offer
+            'offre' => $offer,
+            'popup' => $popup
         ]);
     }
 
@@ -93,8 +95,7 @@ class OfferController
             $alreadyApplied = $this->model->hasApplied($idOffre, $studentId);
 
             if ($alreadyApplied['ID_offre']){
-                echo "Vous avez déjà postulé à cette offre.";
-                header('Location: /offers');
+                header('Location: /offers/detail?id=' . urlencode((string) $idOffre) . '&popup=already_applied');
                 exit;
             }
             else{
@@ -104,7 +105,8 @@ class OfferController
                     $lettrePresent = isset($_FILES['lettre']);
 
                     if (!$cvPresent || !$lettrePresent) {
-                        echo "Veuillez remplir correctement tous les champs.";
+                        header('Location: /offers/detail?id=' . urlencode((string) $idOffre) . '&popup=error');
+                        exit;
                     } else {
                         $uploaderCV = new FileUploader($_FILES['cv']);
                         $uploaderLettre = new FileUploader($_FILES['lettre']);
@@ -125,7 +127,10 @@ class OfferController
                             $wishlistModel = new DashboardStudentModel($this->model->getDb());   
                             $wishlistModel->removeFromWishlist($studentId, $idOffre);
                         }
-                        header('Location: /offers');
+                        header('Location: /offers/detail?id=' . urlencode((string) $idOffre) . '&popup=success');
+                        exit;
+                    } else {
+                        header('Location: /offers/detail?id=' . urlencode((string) $idOffre) . '&popup=error');
                         exit;
                     }
                 }
@@ -276,7 +281,7 @@ class OfferController
             $offerId = $_GET['id'] ?? null;
             $studentId = $_SESSION['user_id'] ?? null;
 
-            $alreadyApplied = $this->model->hasApplied($idOffre, $studentId);
+            $alreadyApplied = $this->model->hasApplied($offerId, $studentId);
 
             if ($offerId && $studentId && !$alreadyApplied['ID_offre']) {
                 $this->model->addWishlist($offerId, $studentId);

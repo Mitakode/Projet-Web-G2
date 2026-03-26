@@ -28,6 +28,7 @@
 
         <div class="box-list">
             {% for etudiant in etudiants %}
+            <a href="/index.php?uri=dashboard/admin/student-details&id={{ etudiant.ID_utilisateur }}" class="link">
             <table class="company-table admin">
                 <tr>
                     <td class="user-name">{{ etudiant.Nom }} {{ etudiant.Prenom }} </td>
@@ -47,6 +48,7 @@
                     </td>
                 </tr>
             </table>
+            </a>
             {% endfor %}
         </div>
 

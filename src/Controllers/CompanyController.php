@@ -158,8 +158,7 @@ class CompanyController
 
         // save la note
         $this->model->rateCompany($idEntreprise, $_SESSION['user_id'], $note);
-        
-        header('Location: /companies');
+        echo "<script>alert('Note enregistrée avec succès !'); window.location.href='/companies';</script>";
         exit;
     }
 }

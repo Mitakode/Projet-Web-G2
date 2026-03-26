@@ -24,7 +24,11 @@
                     {# Boucle sur les candidatures récupérées depuis le contrôleur #}
                     {% for candidature in candidatures %}
                     <tr>
-                        <td>{{ candidature.Titre }}</td>
+                        <td>
+                            <a href="/index.php?uri=offers/detail&id={{ candidature.ID_offre }}" class="link">
+                                {{ candidature.Titre }}
+                            </a>
+                        </td>
                         <td>{{ candidature.Nom_entreprise }}</td>
                         {# Le filtre |split('/')|last permet de n'afficher que le nom du fichier PDF, sans tout le chemin du serveur #}
                         <td>{{ candidature.CV|split('/')|last }}</td>

@@ -60,6 +60,41 @@ class DashboardAdminController{
         }
     }
 
+    public function studentDetails(){
+        $blockAccess = new BlockAccess($this->twig);
+        $blockAccess->blockStudentAccess();
+
+        if ($_SESSION['user_role'] === 'pilote' || $_SESSION['user_role'] === 'admin') {
+            $this->blockStudentAccess();
+            
+            $id = intval($_GET['id'] ?? 0);
+            if ($id == 0) {
+                header('Location: /dashboard/admin');
+                exit;
+            }
+
+            $student = $this->model->getStudentById($id);
+            $pilot = $this->model->getPilotById($student['ID_pilote']);
+            $applications = $this->model->getStudentApplications($id);
+
+            $paginator = new Paginator($applications, 5);
+
+            echo $this->twig->render('StudentDetails.html.twig', [
+                'etudiant' => $student,
+                'session' => $_SESSION,
+                'pilote' => $pilot,
+                
+                'candidatures' => $paginator->getCurrentPageItems(),
+                'total_pages'      => $paginator->getTotalPages(),
+                'current_page'     => $_GET['page'] ?? 1
+            ]);
+        }
+        else {
+            header('Location: /');
+            exit;
+        }
+    }
+
     public function createStudent(){
         $blockAccess = new BlockAccess($this->twig);
         $blockAccess->blockStudentAccess();
