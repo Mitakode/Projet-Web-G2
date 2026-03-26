@@ -85,9 +85,7 @@ class OfferController
             $cvPath = null;
             $letterPath = null;
 
-            $alreadyApplied = $this->model->hasApplied($idOffre, $studentId);
-
-            if ($alreadyApplied['ID_offre']){
+            if ($this->model->hasApplied($idOffre, $studentId)['ID_offre']){
                 echo "Vous avez déjà postulé à cette offre.";
                 header('Location: /offers');
                 exit;
@@ -120,7 +118,7 @@ class OfferController
                             $wishlistModel = new DashboardStudentModel($this->model->getDb());   
                             $wishlistModel->removeFromWishlist($studentId, $idOffre);
                         }
-                        header('Location: /index.php?uri=offers/detail&id='.$idOffre);
+                        header('Location: /offers');
                         exit;
                     }
                 }
