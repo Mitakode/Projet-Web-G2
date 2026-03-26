@@ -136,6 +136,9 @@ switch ($uri) {
     case 'dashboard/admin':
         $dashboardAdminController->list();
         break;
+    case 'dashboard/admin/student-details':
+        $dashboardAdminController->studentDetails();
+        break;
     case 'dashboard/admin/create-student':
         $dashboardAdminController->createStudent();
         break;

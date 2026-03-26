@@ -1,36 +1,46 @@
 {% extends "base.html.twig" %}
 
-{% block title %}ThePiston{% endblock %}
+{% block title %}{{etudiant.Nom|upper}} {{etudiant.Prenom}} - ThePiston{% endblock %}
 
 {% block content %}
-{% set candidatures = [
-    {'offre': 'Alternance - Developpeur Systemes Embarques', 'entreprise': 'RoboticsX'},
-    {'offre': 'Stage Developpeur Full Stack', 'entreprise': 'TechNova'},
-    {'offre': 'Alternance - Ingenieur Cybersecurite', 'entreprise': 'CyberShield'},
-    {'offre': 'Stage Data Analyst', 'entreprise': 'DataFlow'},
-    {'offre': 'Alternance - Developpeur IA embarquee', 'entreprise': 'AI Dynamics'}
-] %}
-
-<main>
-    <h1>Sarah Durand A2</h1>
-    <div class="info-box ib2">sarah.durand@viacesi.fr</div>
+    <h1>{{etudiant.Nom|upper}} {{etudiant.Prenom}}    {{etudiant.Promotion}}</h1>
+    <div class="info-grid">
+        <div class="info-column">
+            <div class="info-box ib2" style="text-align: center;">Email : <strong>{{etudiant.Email}}</strong></div>
+        </div>
+        <div class="info-column">
+            {% if session.user_role == 'admin' %}
+                    <div class="info-box ib2" style="text-align: center;">Pilote référent : <strong>{{pilote.Nom}} {{pilote.Prenom}}</strong></div>
+            {% endif %}
+        </div>
+    </div>
 
     <section class="dashboards-section">
         <h2 class="dashboard-title">Liste des candidatures</h2>
 
-        <div class="table-container">
-            <table>
+        <div class="box-list">
+            <table class="company-table admin">
                 <thead>
                     <tr>
                         <th>Titre de l'offre</th>
                         <th>Entreprise</th>
+                        <th>Date de candidature</th>
+                        <th>CV</th>
+                        <th>Lettre de motivation</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for candidature in candidatures %}
                     <tr>
-                        <td>{{ candidature.offre }}</td>
+                        <td>
+                            <a href="/index.php?uri=offers/detail&id={{ candidature.ID_offre }}" class="link">
+                                {{ candidature.Titre_offre }}
+                            </a>
+                        </td>
                         <td>{{ candidature.entreprise }}</td>
+                        <td>{{ candidature.Date_candidature|date("d-m-Y") }}</td>
+                        <td>{{ candidature.CV|split('/')|last }}</td>
+                        <td>{{ candidature.Lettre_motivation|split('/')|last }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -38,12 +48,14 @@
         </div>
 
         <div class="pagination">
-            <a href="#">Premiere page</a>
-            <a href="#">Precedent</a>
-            <strong>1</strong>
-            <a href="#">Suivant</a>
-            <a href="#">Derniere page</a>
+            {% if total_pages > 1 %}
+                {% for i in 1..total_pages %}
+                    <a href="/index.php?uri=dashboard/admin/student-details&page={{ i }}" 
+                    class="{{ i == current_page ? 'active' : '' }}">
+                        {{ i }}
+                    </a>
+                {% endfor %}
+            {% endif %}
         </div>
     </section>
-</main>
 {% endblock %}
