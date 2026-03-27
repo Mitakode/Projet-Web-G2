@@ -8,6 +8,17 @@ class DashboardAdminController{
     private $twig;
     private $model;
 
+    private function normalizeSurname(string $value): string
+    {
+        return mb_strtoupper(trim($value), 'UTF-8');
+    }
+
+    private function normalizeFirstname(string $value): string
+    {
+        $clean = mb_strtolower(trim($value), 'UTF-8');
+        return mb_convert_case($clean, MB_CASE_TITLE, 'UTF-8');
+    }
+
     public function __construct($twig, $model) {
         $this->twig = $twig;
         $this->model = $model;
@@ -103,8 +114,8 @@ class DashboardAdminController{
             $popupError = null;
 
             if($_SERVER['REQUEST_METHOD']==='POST'){
-                $surname= isset($_POST['surname']) ? htmlspecialchars(trim($_POST['surname'])):'';
-                $name= isset($_POST['name']) ? htmlspecialchars(trim($_POST['name'])):'';
+                $surname= isset($_POST['surname']) ? htmlspecialchars($this->normalizeSurname($_POST['surname'])):'';
+                $name= isset($_POST['name']) ? htmlspecialchars($this->normalizeFirstname($_POST['name'])):'';
                 $promotion=isset($_POST['promotion']) ? htmlspecialchars(trim($_POST['promotion'])):'';
                 $email=isset($_POST['email']) ? htmlspecialchars(trim($_POST['email'])):'';
                 $password= isset($_POST['password']) ? htmlspecialchars(trim($_POST['password'])):'';
@@ -199,8 +210,8 @@ class DashboardAdminController{
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $userData = [
-                    'Nom' => htmlspecialchars(trim($_POST['surname'])),
-                    'Prenom' => htmlspecialchars(trim($_POST['name'])),
+                    'Nom' => htmlspecialchars($this->normalizeSurname($_POST['surname'] ?? '')),
+                    'Prenom' => htmlspecialchars($this->normalizeFirstname($_POST['name'] ?? '')),
                     'Email' => htmlspecialchars(trim($_POST['email']))
                 ];
                 $password = trim($_POST['password'] ?? '');
@@ -255,8 +266,8 @@ class DashboardAdminController{
             $popupError = null;
 
             if($_SERVER['REQUEST_METHOD']==='POST'){
-                $surname= isset($_POST['surname']) ? htmlspecialchars(trim($_POST['surname'])):'';
-                $name= isset($_POST['name']) ? htmlspecialchars(trim($_POST['name'])):'';
+                $surname= isset($_POST['surname']) ? htmlspecialchars($this->normalizeSurname($_POST['surname'])):'';
+                $name= isset($_POST['name']) ? htmlspecialchars($this->normalizeFirstname($_POST['name'])):'';
                 $email=isset($_POST['email']) ? htmlspecialchars(trim($_POST['email'])):'';
                 $password= isset($_POST['password']) ? htmlspecialchars(trim($_POST['password'])):'';
                 $confirmPassword = isset($_POST['confirm_password']) ? htmlspecialchars(trim($_POST['confirm_password'])) : '';
@@ -344,8 +355,8 @@ class DashboardAdminController{
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $userData = [
-                    'Nom' => htmlspecialchars(trim($_POST['surname'])),
-                    'Prenom' => htmlspecialchars(trim($_POST['name'])),
+                    'Nom' => htmlspecialchars($this->normalizeSurname($_POST['surname'] ?? '')),
+                    'Prenom' => htmlspecialchars($this->normalizeFirstname($_POST['name'] ?? '')),
                     'Email' => htmlspecialchars(trim($_POST['email']))
                 ];
                 $password = trim($_POST['password'] ?? '');
