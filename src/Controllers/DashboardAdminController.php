@@ -24,6 +24,9 @@ class DashboardAdminController{
     public function list(){
         $this->blockStudentAccess();
 
+        $currentPage = max(1, (int)($_GET['page'] ?? 1));
+        $currentPageP = max(1, (int)($_GET['pageP'] ?? 1));
+
         //Students
         $surname = $_GET['surname'] ?? '';
         $name = $_GET['name'] ?? '';
@@ -47,14 +50,14 @@ class DashboardAdminController{
         echo $this->twig->render('DashboardAdmin.html.twig', [
             'etudiants' => $paginator->getCurrentPageItems(),
             'total_pages'      => $paginator->getTotalPages(),
-            'current_page'     => $_GET['page'] ?? 1,
+            'current_page'     => $currentPage,
             'surname'      => $surname,
             'name'             => $name,
             'promotion'        => $promotion,
 
             'pilotes' => $paginatorP->getCurrentPageItems(),
             'total_pagesP'      => $paginatorP->getTotalPages(),
-            'current_pageP'     => $_GET['pageP'] ?? 1,
+            'current_pageP'     => $currentPageP,
             'surnameP'      => $surnameP,
             'nameP'             => $nameP
         ]);
