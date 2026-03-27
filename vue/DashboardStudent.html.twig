@@ -1,9 +1,9 @@
 {% extends "base.html.twig" %}
 
 {% block title %}Mon espace étudiant - ThePiston{% endblock %}
-
+{% block main_class %}student-dashboard{% endblock %}
 {% block content %}
-<main>
+
     <h1 class="main-title">Bonjour {{ session['user_prenom'] }} !</h1>
 
     {# Section : Mes candidatures #}

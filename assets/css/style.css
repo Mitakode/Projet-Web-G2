@@ -637,7 +637,7 @@ input:hover, select:hover, textarea:hover {
 .form-column2{
     display: flex;
     flex-direction: column;
-    width: 64%;
+    width: 62%;
 }
 
 
@@ -904,6 +904,18 @@ ul.skills li
     width: 100%;
 }
 
+.search-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.search-items{
+    display: flex;
+    gap: 10px;
+}
+
 .search-bar-admin {
     display: flex;
     gap: 10px;
@@ -1029,6 +1041,49 @@ ul.skills li
 .table-container {
     width: 100%;
     overflow-x: auto;
+}
+
+.student-dashboard .box-list {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.student-dashboard .company-table {
+    margin-bottom: 0;
+}
+
+.student-dashboard .company-table th,
+.student-dashboard .company-table td {
+    vertical-align: middle;
+}
+
+.student-dashboard .company-table td .link {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.admin-dashboard .box-list {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.admin-dashboard .box-list > .link {
+    display: block;
+}
+
+.admin-dashboard .company-table {
+    margin-bottom: 0;
+}
+
+.admin-dashboard .company-table td {
+    vertical-align: middle;
+}
+
+.admin-dashboard .user-stats {
+    overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
 table {
@@ -1316,7 +1371,7 @@ main.list-page {
     }
 
     .logo-text {
-        height: 62%;
+        height: 90%;
         max-width: 130px;
         object-fit: contain;
     }
@@ -1410,26 +1465,45 @@ main.list-page {
     }
 
     .search-bar-admin {
+        flex-direction: row;
         flex-wrap: wrap;
         padding: 10px;
         gap: 8px;
     }
 
-    .search-bar-admin input {
+    .search-bar-admin input[type="text"] {
+        flex: 1 1 100%;
         min-width: 0;
         width: 100%;
     }
 
     .search-bar-admin .search-btn,
     .search-bar-admin .btn-add {
+        flex: 1 1 calc(50% - 4px);
         width: calc(50% - 4px);
         height: 46px;
+        justify-content: center;
+    }
+
+    .search-bar-admin input{
+            padding: 6px 7px;
+    }
+
+    .search-container{
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .search-items{
+        width: 100%;
+        justify-content: space-between;
+        padding: 0 10px;
     }
 
     .form-grid {
         flex-direction: column; /* Sur mobile, elles se remettent l'une sous l'autre */
         align-items: center;
-        gap: 0;
+        gap: 20px;
     }
     .form-column, 
     .form-column2, 
@@ -1450,6 +1524,129 @@ main.list-page {
         gap: 8px;
         padding: 14px;
     }
+
+    .student-dashboard {
+        align-items: stretch;
+    }
+
+    .student-dashboard .main-title {
+        margin-bottom: 22px;
+        font-size: 1.75rem;
+        text-align: center;
+    }
+
+    .student-dashboard .dashboards-section {
+        padding: 14px;
+        margin-bottom: 24px;
+    }
+
+    .student-dashboard .dashboard-title {
+        font-size: 1.9rem;
+        margin-bottom: 12px;
+    }
+
+    .student-dashboard .box-list {
+        border-radius: 10px;
+    }
+
+    .student-dashboard .company-table {
+        min-width: 660px;
+        border-radius: 10px;
+    }
+
+    .student-dashboard .company-table th,
+    .student-dashboard .company-table td {
+        padding: 10px 12px;
+        font-size: 0.98rem;
+    }
+
+    .student-dashboard .company-table.admin td.btn-table {
+        width: 84px;
+        min-width: 84px;
+        padding-right: 12px;
+        text-align: center;
+    }
+
+    .student-dashboard .company-table.admin td .btn-action {
+        width: 40px;
+        height: 40px;
+        border-radius: 11px;
+    }
+
+    .student-dashboard .pagination {
+        margin-top: 18px;
+    }
+
+    .admin-dashboard {
+        align-items: stretch;
+    }
+
+    .admin-dashboard .main-title {
+        margin-bottom: 22px;
+        font-size: 1.75rem;
+        text-align: center;
+    }
+
+    .admin-dashboard .dashboards-section {
+        padding: 14px;
+        margin-bottom: 24px;
+    }
+
+    .admin-dashboard .dashboard-title {
+        font-size: 1.9rem;
+        margin-bottom: 12px;
+    }
+
+    .admin-dashboard .box-list {
+        border-radius: 10px;
+        gap: 10px;
+    }
+
+    .admin-dashboard .company-table {
+        min-width: 740px;
+        border-radius: 10px;
+    }
+
+    .admin-dashboard .company-table td {
+        padding: 10px 12px;
+        font-size: 0.98rem;
+    }
+
+    .admin-dashboard .user-name {
+        min-width: 220px;
+    }
+
+    .admin-dashboard .user-promotion {
+        min-width: 120px;
+    }
+
+    .admin-dashboard .stats {
+        min-width: 220px;
+        text-align: left;
+        white-space: normal;
+    }
+
+    .admin-dashboard .user-stats {
+        min-width: 250px;
+    }
+
+    .admin-dashboard .company-table.admin td.btn-table {
+        width: 84px;
+        min-width: 84px;
+        padding-right: 12px;
+        text-align: center;
+    }
+
+    .admin-dashboard .company-table.admin td .btn-action {
+        width: 40px;
+        height: 40px;
+        border-radius: 11px;
+    }
+
+    .admin-dashboard .pagination {
+        margin-top: 18px;
+    }
+
 
 }
 
@@ -1851,6 +2048,41 @@ textarea:focus-visible,
     .company-table td,
     .company-table th {
         padding: 10px 12px;
+    }
+
+    .student-dashboard .main-title {
+        font-size: 1.6rem;
+    }
+
+    .student-dashboard .dashboard-title {
+        font-size: 1.8rem;
+    }
+
+    .student-dashboard .company-table {
+        min-width: 620px;
+    }
+
+    .student-dashboard .company-table th,
+    .student-dashboard .company-table td {
+        padding: 9px 10px;
+        font-size: 0.95rem;
+    }
+
+    .admin-dashboard .main-title {
+        font-size: 1.6rem;
+    }
+
+    .admin-dashboard .dashboard-title {
+        font-size: 1.8rem;
+    }
+
+    .admin-dashboard .company-table {
+        min-width: 680px;
+    }
+
+    .admin-dashboard .company-table td {
+        padding: 9px 10px;
+        font-size: 0.95rem;
     }
 }
 
