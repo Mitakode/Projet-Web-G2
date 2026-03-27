@@ -22,12 +22,13 @@
                 <button type="submit" class="search-btn" aria-label="Rechercher">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
-                <a href="index.php?uri=dashboard/admin/create-student" type="button" class="btn-add link">+</a>
+                <a href="index.php?uri=dashboard/admin/create-student" type="button" class="btn-add add-link">+</a>
             </form>
         </div>
 
         <div class="box-list">
             {% for etudiant in etudiants %}
+            <a href="/index.php?uri=dashboard/admin/student-details&id={{ etudiant.ID_utilisateur }}" class="link">
             <table class="company-table admin">
                 <tr>
                     <td class="user-name">{{ etudiant.Nom }} {{ etudiant.Prenom }} </td>
@@ -47,6 +48,7 @@
                     </td>
                 </tr>
             </table>
+            </a>
             {% endfor %}
         </div>
 

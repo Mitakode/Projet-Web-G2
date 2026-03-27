@@ -123,7 +123,7 @@ switch ($uri) {
         break;
     // Candidatures
     case 'apply':
-        $offerController->apply($_GET['id_offre']);
+        $offerController->apply();
         break;
 
     // Gestion des Utilisateurs
@@ -135,6 +135,9 @@ switch ($uri) {
     // Pilot et Administrateur
     case 'dashboard/admin':
         $dashboardAdminController->list();
+        break;
+    case 'dashboard/admin/student-details':
+        $dashboardAdminController->studentDetails();
         break;
     case 'dashboard/admin/create-student':
         $dashboardAdminController->createStudent();

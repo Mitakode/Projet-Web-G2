@@ -3,7 +3,6 @@
 {% block title %}Mon espace étudiant - ThePiston{% endblock %}
 
 {% block content %}
-<main>
     <h1 class="main-title">Mon espace étudiant</h1>
 
     {# Section : Mes candidatures #}
@@ -24,7 +23,11 @@
                     {# Boucle sur les candidatures récupérées depuis le contrôleur #}
                     {% for candidature in candidatures %}
                     <tr>
-                        <td>{{ candidature.Titre }}</td>
+                        <td>
+                            <a href="/index.php?uri=offers/detail&id={{ candidature.ID_offre }}" class="link">
+                                {{ candidature.Titre }}
+                            </a>
+                        </td>
                         <td>{{ candidature.Nom_entreprise }}</td>
                         {# Le filtre |split('/')|last permet de n'afficher que le nom du fichier PDF, sans tout le chemin du serveur #}
                         <td>{{ candidature.CV|split('/')|last }}</td>
@@ -68,7 +71,11 @@
                     {# Boucle sur la wishlist récupérée depuis le contrôleur #}
                     {% for souhait in wishlist %}
                     <tr>
-                        <td>{{ souhait.Titre }}</td>
+                        <td>
+                            <a href="/index.php?uri=offers/detail&id={{ souhait.ID_offre }}" class="link">
+                                {{ souhait.Titre }}
+                            </a>
+                        </td>
                         <td>{{ souhait.Nom_entreprise }}</td>
                         <td class="btn-table">
                             {# Lien dynamique vers l'action de suppression dans le routeur #}
@@ -99,5 +106,4 @@
             {% endif %}
         </div>
     </section>
-</main>
 {% endblock %}

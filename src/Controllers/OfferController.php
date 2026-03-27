@@ -5,6 +5,8 @@ namespace App\Controllers;
 use App\Models\Paginator;
 use App\Models\DashboardStudentModel;
 use App\Models\SqlDatabase;
+use App\Controllers\FileUploader;
+use App\Controllers\BlockAccess;
 
 class OfferController
 {
@@ -54,6 +56,7 @@ class OfferController
     public function detail()
     {
         $id = $_GET['id'] ?? null;
+        $popup = $_GET['popup'] ?? null;
 // Si aucun ID n'est fourni, on redirige vers la liste des offres
         if (!$id) {
             header('Location: /offers');
@@ -70,8 +73,74 @@ class OfferController
 
         // On affiche le template de détail en lui passant la variable "offre"
         echo $this->twig->render('OfferDetail.html.twig', [
-            'offre' => $offer
+            'offre' => $offer,
+            'popup' => $popup
         ]);
+    }
+
+    public function apply()
+    {
+        $blockAccess = new BlockAccess($this->twig);
+        $blockAccess->blockPilotAccess();
+        $blockAccess->blockAdminAccess();
+
+        if ($_SESSION['user_role'] === 'etudiant') {
+
+            $idOffre = $_POST['id_offre'] ?? null;
+            $studentId = $_SESSION['user_id'] ?? null;
+
+            $cvPath = null;
+            $letterPath = null;
+
+            $alreadyApplied = $this->model->hasApplied($idOffre, $studentId);
+
+            if ($alreadyApplied['ID_offre']){
+                header('Location: /offers/detail?id=' . urlencode((string) $idOffre) . '&popup=already_applied');
+                exit;
+            }
+            else{
+
+                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                    $cvPresent = isset($_FILES['cv']);
+                    $lettrePresent = isset($_FILES['lettre']);
+
+                    if (!$cvPresent || !$lettrePresent) {
+                        header('Location: /offers/detail?id=' . urlencode((string) $idOffre) . '&popup=error');
+                        exit;
+                    } else {
+                        $uploaderCV = new FileUploader($_FILES['cv']);
+                        $uploaderLettre = new FileUploader($_FILES['lettre']);
+
+                        if ($uploaderCV->validate()) {
+                            $cvPath = $uploaderCV->upload();
+                        }
+
+                        if ($uploaderLettre->validate()) {
+                            $letterPath = $uploaderLettre->upload();
+                        }
+                    }
+
+                    if ($idOffre && $studentId && $cvPath && $letterPath) {
+                        $this->model->addPostule($idOffre, $studentId, $cvPath, $letterPath);
+                        $inWishlist = $this->model->isInWishlist($idOffre, $studentId);
+                        if ($inWishlist['ID_offre']) {
+                            $wishlistModel = new DashboardStudentModel($this->model->getDb());   
+                            $wishlistModel->removeFromWishlist($studentId, $idOffre);
+                        }
+                        header('Location: /offers/detail?id=' . urlencode((string) $idOffre) . '&popup=success');
+                        exit;
+                    } else {
+                        header('Location: /offers/detail?id=' . urlencode((string) $idOffre) . '&popup=error');
+                        exit;
+                    }
+                }
+            }
+        }
+        else {
+            header('Location: /');
+            exit;
+        }
+
     }
 
     /**
@@ -79,10 +148,12 @@ class OfferController
      */
     public function create()
     {
-        if ($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'pilote'){
-            // Si le formulaire a été soumis
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Nettoyage des données
+        $blockAccess = new BlockAccess($this->twig);
+        $blockAccess->blockStudentAccess();
+
+        if ($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'pilote') {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Si le formulaire a été soumis
+                // Nettoyage des données
                 $titre = isset($_POST['Titre']) ? htmlspecialchars(trim($_POST['Titre'])) : '';
                 $description = isset($_POST['Description']) ? htmlspecialchars(trim($_POST['Description'])) : '';
                 $baseRemuneration = isset($_POST['Base_remuneration']) ? floatval($_POST['Base_remuneration']) : null;
@@ -91,8 +162,7 @@ class OfferController
                 ? htmlspecialchars(trim($_POST['Liste_competences']))
                 : '';
                 $idEntreprise = isset($_POST['ID_entreprise']) ? intval($_POST['ID_entreprise']) : null;
-                $datePublication = date('Y-m-d');
-    // Date du jour automatique
+                $datePublication = date('Y-m-d');// Date du jour automatique
 
                 // Vérification basique
                 if (empty($titre) || empty($description) || empty($idEntreprise)) {
@@ -115,15 +185,17 @@ class OfferController
 
             // Récupère la liste des entreprises pour le <select> du formulaire
             $entreprises = $this->companyModel->searchCompanies();
-    // Affiche le formulaire vierge
+            // Affiche le formulaire vierge
             echo $this->twig->render('OffersForm.html.twig', [
                 'is_edit'     => false,
                 'entreprises' => $entreprises
             ]);
-        } else {
-            header('Location: /offers');
+        }
+        else {
+            header('Location: /');
             exit;
         }
+
     }
 
     /**
@@ -131,7 +203,10 @@ class OfferController
      */
     public function update()
     {
-        if ($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'pilote'){
+        $blockAccess = new BlockAccess($this->twig);
+        $blockAccess->blockStudentAccess();
+
+        if ($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'pilote') {
             $id = $_GET['id'] ?? null;
             if (!$id) {
                 header('Location: /offers');
@@ -154,16 +229,18 @@ class OfferController
 
             $offer = $this->model->getOfferById($id);
             $entreprises = $this->companyModel->searchCompanies();
-    // Affiche le formulaire pré-rempli
+            // Affiche le formulaire pré-rempli
             echo $this->twig->render('OffersForm.html.twig', [
                 'offre'       => $offer,
                 'entreprises' => $entreprises,
                 'is_edit'     => true
             ]);
-        } else {
-            header('Location: /offers');
+        }
+        else {
+            header('Location: /');
             exit;
         }
+        
     }
 
     /**
@@ -171,18 +248,28 @@ class OfferController
      */
     public function delete()
     {
-        if ($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'pilote'){
+        $blockAccess = new BlockAccess($this->twig);
+        $blockAccess->blockStudentAccess();
+
+        if($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'pilote') {
             $id = $_GET['id'] ?? null;
             if ($id) {
                 $this->model->deleteOffer($id);
             }
+            header('Location: /offers');
         }
-        header('Location: /offers');
+        else {
+            header('Location: /');
+        }
     }
 
     
     public function addWishlist()
     {
+        $blockAccess = new BlockAccess($this->twig);
+        $blockAccess->blockPilotAccess();
+        $blockAccess->blockAdminAccess();
+
         if ($_SESSION['user_role'] === 'etudiant') {
             $data = [
                 'recherche' => $_GET['recherche'] ?? '',
@@ -194,15 +281,24 @@ class OfferController
             $offerId = $_GET['id'] ?? null;
             $studentId = $_SESSION['user_id'] ?? null;
 
-            if ($offerId && $studentId) {
+            $alreadyApplied = $this->model->hasApplied($offerId, $studentId);
+
+            if ($offerId && $studentId && !$alreadyApplied['ID_offre']) {
                 $this->model->addWishlist($offerId, $studentId);
             }
+            header('Location: /offers?' . http_build_query($data));
         }
-        header('Location: /offers?' . http_build_query($data));
+        else {
+            header('Location: /');
+        }
     }
 
     public function deleteWishlist()
     {
+        $blockAccess= new BlockAccess($this->twig);
+        $blockAccess->blockPilotAccess();
+        $blockAccess->blockAdminAccess();
+
         if ($_SESSION['user_role'] === 'etudiant') {
             $data = [
                 'recherche' => $_GET['recherche'] ?? '',
@@ -218,8 +314,12 @@ class OfferController
                 $wishlistModel = new DashboardStudentModel($this->model->getDb());   
                 $wishlistModel->removeFromWishlist($studentId, $offerId);
             }
+            header('Location: /offers?' . http_build_query($data));
         }
-        header('Location: /offers?' . http_build_query($data));
+        else {
+            header('Location: /');
+        }
+        
     }
 
 }
