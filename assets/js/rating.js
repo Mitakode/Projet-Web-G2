@@ -9,8 +9,23 @@ function ouvrirPopupNote(idEntreprise, nomEntreprise) {
             alert("Veuillez entrer un nombre entre 1 et 10");
             return;
         }
+
+        if (typeof window.saveScrollState === 'function') {
+            window.saveScrollState();
+        }
+
+        const currentUrl = new URL(window.location.href);
+        const params = new URLSearchParams();
+        params.set('uri', 'companies/rate');
+        params.set('id', idEntreprise);
+        params.set('rating', note);
+
+        const recherche = currentUrl.searchParams.get('recherche') || '';
+        const page = currentUrl.searchParams.get('page') || '1';
+
+        params.set('recherche', recherche);
+        params.set('page', page);
         
-        // Soumettre la note et afficher alerte de succès
-        window.location.href = `index.php?uri=companies/rate&id=${idEntreprise}&rating=${note}`;
+        window.location.href = `index.php?${params.toString()}`;
     }
 }

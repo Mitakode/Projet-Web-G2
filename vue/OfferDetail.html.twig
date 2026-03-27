@@ -4,7 +4,6 @@
 {% block title %}ThePiston - {{ offre.Titre }}{% endblock %}
 
 {% block content %}
-<main>
     <section class="offer-container">
         <div class="offer-header">
             {# Affichage dynamique du titre et de l'entreprise #}
@@ -19,7 +18,7 @@
                         {# Formatage de la date à la française #}
                         <p>Date de publication : {{ offre.Date_publication|date("d/m/Y") }}</p>
                         {# Variable fictive pour l'instant, à lier plus tard à une table de candidatures #}
-                        <p>Nombre de candidatures : {{ nb_candidatures ?? 'Non spécifié' }}</p>
+                        <p>Nombre de candidatures : {{ offre.nb_candidatures ?? 'Non spécifié' }}</p>
                     </div>
 
                     {# nl2br permet de respecter les retours à la ligne faits dans la description #}
@@ -85,7 +84,6 @@
             {% endif %}
         </div>
     </section>
-</main>
 {% endblock %}
 
 {% block scripts %}

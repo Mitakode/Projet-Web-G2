@@ -54,7 +54,7 @@
         <div class="pagination">
             {% if total_pages > 1 %}
                 {% for i in 1..total_pages %}
-                    <a href="/index.php?uri=dashboard/student&page={{ i }}" 
+                    <a href="/index.php?uri=dashboard/student&page={{ i }}&pageW={{ current_pageW }}" 
                     class="{{ i == current_page ? 'active' : '' }}">
                         {{ i }}
                     </a>
@@ -88,7 +88,7 @@
                         <td>{{ souhait.Nom_entreprise }}</td>
                         <td class="btn-table">
                             {# Lien dynamique vers l'action de suppression dans le routeur #}
-                            <a href="index.php?uri=dashboard/student/remove-wishlist&id={{ souhait.ID_offre }}" 
+                                     <a href="index.php?uri=dashboard/student/remove-wishlist&id={{ souhait.ID_offre }}&page={{ current_page }}&pageW={{ current_pageW }}" 
                                class="btn-action poubelle" 
                                onclick="return confirm('Retirer cette offre de la wishlist ?')">
                                 <i class="fa-solid fa-trash"></i>
@@ -107,7 +107,7 @@
         <div class="pagination">
             {% if total_pagesW > 1 %}
                 {% for i in 1..total_pagesW %}
-                    <a href="/index.php?uri=dashboard/student&page={{ i }}" 
+                    <a href="/index.php?uri=dashboard/student&page={{ current_page }}&pageW={{ i }}" 
                     class="{{ i == current_pageW ? 'active' : '' }}">
                         {{ i }}
                     </a>
@@ -115,5 +115,4 @@
             {% endif %}
         </div>
     </section>
-</main>
 {% endblock %}

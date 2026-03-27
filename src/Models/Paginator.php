@@ -7,13 +7,15 @@ class Paginator
     private $items;
     private $perPage;
     private $currentPage;
+    private $pageParam;
 
 
-    public function __construct(array $items, int $perPage = 5)
+    public function __construct(array $items, int $perPage = 5, string $pageParam = 'page')
     {
             $this->items = $items;
             $this->perPage = $perPage;
-            $this->currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+            $this->pageParam = $pageParam;
+            $this->currentPage = isset($_GET[$this->pageParam]) ? (int)$_GET[$this->pageParam] : 1;
     }
 
 
