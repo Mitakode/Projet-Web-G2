@@ -31,8 +31,16 @@
                         </td>
                         <td>{{ candidature.Nom_entreprise }}</td>
                         {# Le filtre |split('/')|last permet de n'afficher que le nom du fichier PDF, sans tout le chemin du serveur #}
-                        <td>{{ candidature.CV|split('/')|last }}</td>
-                        <td>{{ candidature.Lettre_motivation|split('/')|last }}</td>
+                        <td>
+                            <a href="{{ candidature.CV }}" target="_blank" class="link">
+                                {{ candidature.CV|split('/')|last }}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ candidature.Lettre_motivation }}" target="_blank" class="link">
+                                {{ candidature.Lettre_motivation|split('/')|last }}
+                            </a>
+                        </td>
                     </tr>
                     {% else %}
                     <tr>
