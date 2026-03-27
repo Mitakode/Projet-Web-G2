@@ -30,6 +30,9 @@ class DashboardStudentController {
         $candidatures = $this->model->getCandidatures($idEtudiant);
         $wishlist = $this->model->getWishlist($idEtudiant);
 
+        $currentPage = max(1, (int)($_GET['page'] ?? 1));
+        $currentPageW = max(1, (int)($_GET['pageW'] ?? 1));
+
         $paginatorCandidatures = new Paginator($candidatures, 5, 'page');
         $paginatorWishlist = new Paginator($wishlist, 5, 'pageW');
 
@@ -38,9 +41,9 @@ class DashboardStudentController {
             'candidatures' => $paginatorCandidatures->getCurrentPageItems(),
             'wishlist'     => $paginatorWishlist->getCurrentPageItems(),
             'total_pages' => $paginatorCandidatures->getTotalPages(),
-            'current_page' => $_GET['page'] ?? 1,
+            'current_page' => $currentPage,
             'total_pagesW' => $paginatorWishlist->getTotalPages(),
-            'current_pageW' => $_GET['pageW'] ?? 1
+            'current_pageW' => $currentPageW
         ]);
     }
 
@@ -50,13 +53,15 @@ class DashboardStudentController {
     public function removeWishlist() {
         $idEtudiant = $_SESSION['user_id'] ?? null;
         $idOffre = $_GET['id'] ?? null;
+        $page = max(1, (int)($_GET['page'] ?? 1));
+        $pageW = max(1, (int)($_GET['pageW'] ?? 1));
 
         if ($idEtudiant && $idOffre) {
             $this->model->removeFromWishlist($idEtudiant, $idOffre);
         }
 
         // Redirection vers le dashboard après suppression
-        header('Location: index.php?uri=dashboard/student');
+        header('Location: index.php?uri=dashboard/student&page=' . $page . '&pageW=' . $pageW);
         exit;
     }
 }
