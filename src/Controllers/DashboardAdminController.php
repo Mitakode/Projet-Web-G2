@@ -29,43 +29,44 @@ class DashboardAdminController{
         $blockAccess = new BlockAccess($this->twig);
         $blockAccess->blockStudentAccess();
 
-        $currentPage = max(1, (int)($_GET['page'] ?? 1));
-        $currentPageP = max(1, (int)($_GET['pageP'] ?? 1));
+        if ($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'pilote') {
+            $currentPage = max(1, (int)($_GET['page'] ?? 1));
+            $currentPageP = max(1, (int)($_GET['pageP'] ?? 1));
 
-        //Students
-            $surname = $_GET['surname'] ?? '';
-            $name = $_GET['name'] ?? '';
-            $promotion = $_GET['promotion'] ?? '';
+            //Students
+                $surname = $_GET['surname'] ?? '';
+                $name = $_GET['name'] ?? '';
+                $promotion = $_GET['promotion'] ?? '';
 
-            $students = $this->model->searchStudents($surname, $name, $promotion);
+                $students = $this->model->searchStudents($surname, $name, $promotion);
 
-            // Gérer la pagination
-            $paginator = new Paginator($students, 5);
+                // Gérer la pagination
+                $paginator = new Paginator($students, 5);
 
-            //Pilots
-            $surnameP = $_GET['surnameP'] ?? '';
-            $nameP = $_GET['nameP'] ?? '';
+                //Pilots
+                $surnameP = $_GET['surnameP'] ?? '';
+                $nameP = $_GET['nameP'] ?? '';
 
-            $pilots = $this->model->searchPilots($surnameP, $nameP);
+                $pilots = $this->model->searchPilots($surnameP, $nameP);
 
-            // Gérer la pagination
-            $paginatorP = new Paginator($pilots, 5);
-            
-            // Envoyer le tout à la vue Twig
-            echo $this->twig->render('DashboardAdmin.html.twig', [
-                'etudiants' => $paginator->getCurrentPageItems(),
-                'total_pages'      => $paginator->getTotalPages(),
-                'current_page'     => $_GET['page'] ?? 1,
-                'surname'      => $surname,
-                'name'             => $name,
-                'promotion'        => $promotion,
+                // Gérer la pagination
+                $paginatorP = new Paginator($pilots, 5);
+                
+                // Envoyer le tout à la vue Twig
+                echo $this->twig->render('DashboardAdmin.html.twig', [
+                    'etudiants' => $paginator->getCurrentPageItems(),
+                    'total_pages'      => $paginator->getTotalPages(),
+                    'current_page'     => $_GET['page'] ?? 1,
+                    'surname'      => $surname,
+                    'name'             => $name,
+                    'promotion'        => $promotion,
 
-                'pilotes' => $paginatorP->getCurrentPageItems(),
-                'total_pagesP'      => $paginatorP->getTotalPages(),
-                'current_pageP'     => $_GET['page'] ?? 1,
-                'surnameP'      => $surnameP,
-                'nameP'             => $nameP
-            ]);
+                    'pilotes' => $paginatorP->getCurrentPageItems(),
+                    'total_pagesP'      => $paginatorP->getTotalPages(),
+                    'current_pageP'     => $_GET['page'] ?? 1,
+                    'surnameP'      => $surnameP,
+                    'nameP'             => $nameP
+                ]);
         }
         else {
             header('Location: /');
@@ -77,33 +78,38 @@ class DashboardAdminController{
         $blockAccess = new BlockAccess($this->twig);
         $blockAccess->blockStudentAccess();
 
-        // Gérer la pagination
-        $paginator = new Paginator($students, 5, 'page');
+        if ($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'pilote') {
+            $id = intval($_GET['id'] ?? 0);
+            
+            if ($id == 0) {
+                header('Location: /dashboard/admin');
+                exit;
+            }
 
             $student = $this->model->getStudentById($id);
+            
+            if (!$student) {
+                header('Location: /dashboard/admin');
+                exit;
+            }
+
             $pilot = $this->model->getPilotById($student['ID_pilote']);
             $applications = $this->model->getStudentApplications($id);
 
             $paginator = new Paginator($applications, 5);
 
-        // Gérer la pagination
-        $paginatorP = new Paginator($pilots, 5, 'pageP');
-        
-        // Envoyer le tout à la vue Twig
-        echo $this->twig->render('DashboardAdmin.html.twig', [
-            'etudiants' => $paginator->getCurrentPageItems(),
-            'total_pages'      => $paginator->getTotalPages(),
-            'current_page'     => $currentPage,
-            'surname'      => $surname,
-            'name'             => $name,
-            'promotion'        => $promotion,
-
-            'pilotes' => $paginatorP->getCurrentPageItems(),
-            'total_pagesP'      => $paginatorP->getTotalPages(),
-            'current_pageP'     => $currentPageP,
-            'surnameP'      => $surnameP,
-            'nameP'             => $nameP
-        ]);
+            // Envoyer le tout à la vue Twig
+            echo $this->twig->render('StudentDetails.html.twig', [
+                'student' => $student,
+                'pilot' => $pilot,
+                'applications' => $paginator->getCurrentPageItems(),
+                'total_pages' => $paginator->getTotalPages(),
+                'current_page' => $_GET['page'] ?? 1
+            ]);
+        } else {
+            header('Location: /');
+            exit;
+        }
     }
 
     public function createStudent(){
