@@ -7,7 +7,7 @@
     
     <section class="search-section">
         {# Le formulaire doit envoyer vers index.php avec l'uri #}
-        <form action="index.php" method="GET" class="search-form">
+        <form action="/offers&page=1" method="GET" class="search-form">
             <input type="hidden" name="uri" value="offers">
 
             <div class="search-bar-wrapper">
@@ -19,7 +19,7 @@
                 </button>
                 {% if (session['user_role'] == 'admin' or session['user_role'] == 'pilote') %}
                 {# Bouton pour ajouter une nouvelle offre #}
-                <a href="index.php?uri=offers/create" class="btn-add add-link" id="ouvrirPopup">+</a>
+                <a href="/offers/create" class="btn-add add-link" id="ouvrirPopup">+</a>
                 {% endif %}
             </div>
             <div class="filters-container">
@@ -48,7 +48,7 @@
         {# Boucle Twig : Parcours chaque offre envoyée par le contrôleur dans 'offres_page' #}
         {% for offre in offres_page %}
             <div class="offres-liste">
-                <a href="index.php?uri=offers/detail&id={{ offre.ID_offre }}" class="link">
+                <a href="/offers/detail&id={{ offre.ID_offre }}" class="link">
                     <table class="company-table">
                         <tr>
                             <th class="offer-name">
@@ -59,12 +59,12 @@
                             {% if (session['user_role'] == 'admin' or session['user_role'] == 'pilote') %}
                             <td class="btn-table">
                                 {# Lien vers la page de modification avec l'ID de l'offre concernée #}
-                                <a href="index.php?uri=offers/update&id={{ offre.ID_offre }}" 
+                                <a href="/offers/update&id={{ offre.ID_offre }}" 
                                     class="btn-action crayon">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </a>
                                 {# Lien de suppression avec une popup de confirmation JavaScript #}
-                                <a href="index.php?uri=offers/delete&id={{ offre.ID_offre }}" 
+                                <a href="/offers/delete&id={{ offre.ID_offre }}" 
                                 class="btn-action poubelle" 
                                 onclick="return confirm('Supprimer cette offre ?')">
                                     <i class="fa-solid fa-trash"></i>
@@ -75,12 +75,12 @@
                                 {% if offre.has_applied == false %}
                                 <td class="btn-table">
                                     {% if offre.is_in_wishlist %}
-                                    <a href="index.php?uri=offers/deleteWishlist&id={{ offre.ID_offre }}&recherche={{ search_term }}&company={{ selected_company }}&type={{ selected_type }}&duree={{ selected_duree }}&page={{ current_page }}"
+                                    <a href="/offers/deleteWishlist&id={{ offre.ID_offre }}&recherche={{ search_term }}&company={{ selected_company }}&type={{ selected_type }}&duree={{ selected_duree }}&page={{ current_page }}"
                                     class="btn-action coeur active"
                                     title="Retirer des favoris"
                                     aria-label="Retirer des favoris"><i class="fa-solid fa-heart"></i></a>
                                     {% else %}
-                                    <a href="index.php?uri=offers/addWishlist&id={{ offre.ID_offre }}&recherche={{ search_term }}&company={{ selected_company }}&type={{ selected_type }}&duree={{ selected_duree }}&page={{ current_page }}"
+                                    <a href="/offers/addWishlist&id={{ offre.ID_offre }}&recherche={{ search_term }}&company={{ selected_company }}&type={{ selected_type }}&duree={{ selected_duree }}&page={{ current_page }}"
                                     class="btn-action coeur"
                                     title="Ajouter aux favoris"
                                     aria-label="Ajouter aux favoris"><i class="fa-solid fa-heart"></i></a>
@@ -119,7 +119,7 @@
             {# Boucle de 1 jusqu'au nombre total de pages #}
             {% for i in 1..total_pages %}
                 {# Ajout de la classe 'active' si 'i' correspond à la page actuelle #}
-                <a href="index.php?uri=offers&recherche={{ search_term }}&company={{ selected_company }}&type={{ selected_type }}&duree={{ selected_duree }}&page={{ i }}" 
+                <a href="/offers&recherche={{ search_term }}&company={{ selected_company }}&type={{ selected_type }}&duree={{ selected_duree }}&page={{ i }}" 
                    class="page-link {{ i == current_page ? 'active' : '' }}">
                     {{ i }}
                 </a>
