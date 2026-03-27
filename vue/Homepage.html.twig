@@ -91,16 +91,26 @@
                             <div class="slide slide-duration">
                                 <h3>Répartition des offres par rapport à leur durée</h3>
                                 <div class="chart-container">
+                                    
                                     <div class="chart-row">
                                         <label>1-3 mois</label>
-                                        <div class="bar-bg"><div class="bar dark" style="width: 60%;"></div></div> </div>
+                                        <div class="bar-bg">
+                                            <div class="bar dark" style="--val: {{ (timeDistribution[0].total_court / timeDistribution[0].total * 100) }}%;"></div>
+                                        </div>
+                                    </div>
+
                                     <div class="chart-row">
                                         <label>4-6 mois</label>
-                                        <div class="bar-bg"><div class="bar medium" style="width: 30%;"></div></div>
+                                        <div class="bar-bg">
+                                            <div class="bar medium" style="--val: {{ (timeDistribution[0].total_moyen / timeDistribution[0].total * 100) }}%;"></div>
+                                        </div>
                                     </div>
+
                                     <div class="chart-row">
                                         <label>6+ mois</label>
-                                        <div class="bar-bg"><div class="bar light" style="width: 85%;"></div></div>
+                                        <div class="bar-bg">
+                                            <div class="bar light" style="--val: {{ (timeDistribution[0].total_long / timeDistribution[0].total * 100) }}%;"></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

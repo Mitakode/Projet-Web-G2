@@ -1756,6 +1756,7 @@ main.list-page {
 }
 
 /* --- SLIDE 3: DURÉE (GRAPHIQUE) --- */
+/* --- MODE PC (Horizontal) --- */
 .chart-container {
     display: flex;
     flex-direction: column;
@@ -1777,13 +1778,14 @@ main.list-page {
 .bar-bg {
     flex-grow: 1;
     height: 60px;
-    background-color: transparent; /* Fond transparent pour laisser voir le gris de la box */
-    border-left: 1px solid #333; /* La ligne d'axe vertical */
+    border-left: 1px solid #333;
 }
 
 .bar {
     height: 100%;
-    border-radius: 0 5px 5px 0; /* Arrondi uniquement à droite */
+    width: var(--val); /* Utilise la variable pour la largeur */
+    border-radius: 0 5px 5px 0;
+    transition: width 0.5s ease; /* Petit effet sympa au chargement */
 }
 
 .bar.dark { background-color: #bdf290; }
@@ -1914,17 +1916,42 @@ main.list-page {
     }
 
     .chart-container {
-        gap: 14px;
-        padding-left: 0;
+        flex-direction: row; 
+        justify-content: space-around;
+        align-items: stretch; 
+        height: 400px; /* Plus de hauteur pour les barres verticales */
+        gap: 0;
+    }
+
+    .chart-row {
+        flex-direction: column-reverse;
+        align-items: center;
+        width: 30%;
+        height: 100%; /* La colonne prend toute la hauteur du container */
     }
 
     .chart-row label {
-        width: 70px;
-        font-size: 0.95rem;
+        width: auto;
+        margin-bottom: 8px;
+        white-space: nowrap;
     }
 
     .bar-bg {
-        height: 44px;
+        width: 40px; /* Largeur de la barre verticale */
+        height: 100%; /* Le fond gris prend toute la hauteur */
+        flex-grow: 0;
+        background-color: transparent;
+        border-left: none;
+        border-bottom: 2px solid #333;
+        display: flex;
+        flex-direction: column-reverse; /* Pour que la barre parte du bas */
+    }
+
+    .bar {
+        width: 100%; /* Prend toute la largeur de bar-bg */
+        height: var(--val); /* Utilise la variable pour la HAUTEUR désormais */
+        border-radius: 5px 5px 0 0;
+        transition: height 0.5s ease;
     }
 
     .carousel-controls {
@@ -1987,6 +2014,27 @@ main.list-page {
 
     .bar-bg {
         height: 38px;
+    }
+
+    .slide-duration .chart-container {
+        height: 350px;
+        align-items: end;
+        gap: 6px;
+    }
+
+    .slide-duration .chart-row {
+        height: 100%;
+    }
+
+    .slide-duration .chart-row label {
+        width: auto;
+        font-size: 0.95rem;
+        white-space: nowrap;
+    }
+
+    .slide-duration .bar-bg {
+        width: 48px;
+        height: 100%;
     }
 }
 
