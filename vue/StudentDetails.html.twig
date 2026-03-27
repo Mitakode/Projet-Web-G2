@@ -39,8 +39,16 @@
                         </td>
                         <td>{{ candidature.entreprise }}</td>
                         <td>{{ candidature.Date_candidature|date("d-m-Y") }}</td>
-                        <td>{{ candidature.CV|split('/')|last }}</td>
-                        <td>{{ candidature.Lettre_motivation|split('/')|last }}</td>
+                        <td>
+                            <a href="{{ candidature.CV }}" target="_blank" class="link">
+                                {{ candidature.CV|split('/')|last }}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ candidature.Lettre_motivation }}" target="_blank" class="link">
+                                {{ candidature.Lettre_motivation|split('/')|last }}
+                            </a>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
