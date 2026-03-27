@@ -11,7 +11,7 @@
         <label>Nom de l'entreprise</label>
         <input class="form-input" type="text" name="nameCompany" value="{{ entreprise.Nom_entreprise ?? '' }}" required>
 
-        <label>Contact (Email et telephone)</label>
+        <label>Contact (Téléphone - Email)</label>
         <input class="form-input" type="text" name="contactCompany" value="{{ entreprise.Contact ?? '' }}" required>
 
         <label>Description</label>
@@ -24,4 +24,8 @@
         </div>
     </form>
 </section>
+{% endblock %}
+
+{% block scripts %}
+    <script src="/assets/js/check.js"></script>
 {% endblock %}
