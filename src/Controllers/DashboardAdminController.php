@@ -18,7 +18,9 @@ class DashboardAdminController{
         $blockAccess = new BlockAccess($this->twig);
         $blockAccess->blockStudentAccess();
 
-        if ($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'pilote') {
+        $currentPage = max(1, (int)($_GET['page'] ?? 1));
+        $currentPageP = max(1, (int)($_GET['pageP'] ?? 1));
+
         //Students
             $surname = $_GET['surname'] ?? '';
             $name = $_GET['name'] ?? '';
@@ -64,14 +66,8 @@ class DashboardAdminController{
         $blockAccess = new BlockAccess($this->twig);
         $blockAccess->blockStudentAccess();
 
-        if ($_SESSION['user_role'] === 'pilote' || $_SESSION['user_role'] === 'admin') {
-            $blockAccess->blockStudentAccess();
-            
-            $id = intval($_GET['id'] ?? 0);
-            if ($id == 0) {
-                header('Location: /dashboard/admin');
-                exit;
-            }
+        // Gérer la pagination
+        $paginator = new Paginator($students, 5, 'page');
 
             $student = $this->model->getStudentById($id);
             $pilot = $this->model->getPilotById($student['ID_pilote']);
@@ -79,20 +75,24 @@ class DashboardAdminController{
 
             $paginator = new Paginator($applications, 5);
 
-            echo $this->twig->render('StudentDetails.html.twig', [
-                'etudiant' => $student,
-                'session' => $_SESSION,
-                'pilote' => $pilot,
-                
-                'candidatures' => $paginator->getCurrentPageItems(),
-                'total_pages'      => $paginator->getTotalPages(),
-                'current_page'     => $_GET['page'] ?? 1
-            ]);
-        }
-        else {
-            header('Location: /');
-            exit;
-        }
+        // Gérer la pagination
+        $paginatorP = new Paginator($pilots, 5, 'pageP');
+        
+        // Envoyer le tout à la vue Twig
+        echo $this->twig->render('DashboardAdmin.html.twig', [
+            'etudiants' => $paginator->getCurrentPageItems(),
+            'total_pages'      => $paginator->getTotalPages(),
+            'current_page'     => $currentPage,
+            'surname'      => $surname,
+            'name'             => $name,
+            'promotion'        => $promotion,
+
+            'pilotes' => $paginatorP->getCurrentPageItems(),
+            'total_pagesP'      => $paginatorP->getTotalPages(),
+            'current_pageP'     => $currentPageP,
+            'surnameP'      => $surnameP,
+            'nameP'             => $nameP
+        ]);
     }
 
     public function createStudent(){

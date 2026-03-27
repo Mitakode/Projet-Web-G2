@@ -53,31 +53,43 @@ class DashboardStudentController {
             header('Location: /');
             exit;
         }
+
+        // Récupération des données via le modèle
+        $candidatures = $this->model->getCandidatures($idEtudiant);
+        $wishlist = $this->model->getWishlist($idEtudiant);
+
+        $currentPage = max(1, (int)($_GET['page'] ?? 1));
+        $currentPageW = max(1, (int)($_GET['pageW'] ?? 1));
+
+        $paginatorCandidatures = new Paginator($candidatures, 5, 'page');
+        $paginatorWishlist = new Paginator($wishlist, 5, 'pageW');
+
+        // Affichage de la vue Twig en y injectant les données
+        echo $this->twig->render('DashboardStudent.html.twig', [
+            'candidatures' => $paginatorCandidatures->getCurrentPageItems(),
+            'wishlist'     => $paginatorWishlist->getCurrentPageItems(),
+            'total_pages' => $paginatorCandidatures->getTotalPages(),
+            'current_page' => $currentPage,
+            'total_pagesW' => $paginatorWishlist->getTotalPages(),
+            'current_pageW' => $currentPageW
+        ]);
     }
 
     /**
      * Gère l'action de suppression d'une offre de la wishlist.
      */
     public function removeWishlist() {
-        $blockAccess = new BlockAccess($this->twig);
-        $blockAccess->blockPilotAccess();
-        $blockAccess->blockAdminAccess();
+        $idEtudiant = $_SESSION['user_id'] ?? null;
+        $idOffre = $_GET['id'] ?? null;
+        $page = max(1, (int)($_GET['page'] ?? 1));
+        $pageW = max(1, (int)($_GET['pageW'] ?? 1));
 
         if ($_SESSION['user_role'] === 'etudiant') {
             $idEtudiant = $_SESSION['user_id'] ?? null;
             $idOffre = $_GET['id'] ?? null;
 
-            if ($idEtudiant && $idOffre) {
-                $this->model->removeFromWishlist($idEtudiant, $idOffre);
-            }
-
-            // Redirection vers le dashboard après suppression
-            header('Location: index.php?uri=dashboard/student');
-            exit;
-        }
-        else {
-            header('Location: /');
-            exit;
-        }
+        // Redirection vers le dashboard après suppression
+        header('Location: index.php?uri=dashboard/student&page=' . $page . '&pageW=' . $pageW);
+        exit;
     }
 }
