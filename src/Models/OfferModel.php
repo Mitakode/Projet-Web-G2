@@ -4,6 +4,18 @@ namespace App\Models;
 
 class OfferModel extends Model
 {
+    /**
+     * Retourne l'ID utilisateur courant si la session est valide, sinon null.
+     */
+    private function getCurrentUserId(): ?int
+    {
+        if (!isset($_SESSION['user_id']) || !is_numeric($_SESSION['user_id'])) {
+            return null;
+        }
+
+        return (int) $_SESSION['user_id'];
+    }
+
     // Le constructeur appelle celui du parent (Model) pour initialiser la connexion à la BDD
     public function __construct(Database $connection)
     {
@@ -16,6 +28,8 @@ class OfferModel extends Model
      */
     public function getOfferById($id)
     {
+        $userId = $this->getCurrentUserId();
+
         $sql = "SELECT Offre.*, Entreprise.Nom_entreprise, IF(Souhaite.ID_utilisateur IS NOT NULL, 1, 0) AS is_in_wishlist, IF(Postule.ID_utilisateur IS NOT NULL, 1, 0) AS has_applied 
             FROM Offre 
             JOIN Entreprise ON Offre.ID_entreprise = Entreprise.ID_entreprise 
@@ -25,7 +39,7 @@ class OfferModel extends Model
                 AND Postule.ID_utilisateur = :userId
                 WHERE Offre.ID_offre = :id";
         $stmt = $this->connection->getConnection()->prepare($sql);
-        $stmt->execute(['id' => $id, 'userId' => $_SESSION['user_id']]);
+        $stmt->execute(['id' => $id, 'userId' => $userId]);
 // Retourne un seul enregistrement sous forme de tableau associatif
         return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
@@ -36,6 +50,8 @@ class OfferModel extends Model
      */
     public function searchOffers($keyword = "", $company = "", $type = "", $duree = "")
     {
+        $userId = $this->getCurrentUserId();
+
         $sql = "SELECT Offre.*, Entreprise.Nom_entreprise, IF(Souhaite.ID_utilisateur IS NOT NULL, 1, 0) AS is_in_wishlist, IF(Postule.ID_utilisateur IS NOT NULL, 1, 0) AS has_applied 
         FROM Offre 
         JOIN Entreprise ON Offre.ID_entreprise = Entreprise.ID_entreprise 
@@ -45,7 +61,7 @@ class OfferModel extends Model
             AND Postule.ID_utilisateur = :userId
             WHERE 1=1";
 // "1=1" est une astuce pour pouvoir ajouter facilement des "AND" dynamiquement
-        $params = ['userId' => $_SESSION['user_id']];
+        $params = ['userId' => $userId];
 // Si un mot-clé est tapé, on cherche dans le titre, la description et les compétences
         if (!empty($keyword)) {
             $sql .= " AND (Offre.Titre LIKE :key OR Offre.Description LIKE :key OR Offre.Liste_competences LIKE :key)";
