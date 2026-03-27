@@ -1,4 +1,5 @@
 document.getElementById('apply').addEventListener('submit', function (event) {
+    console.log('Form submitted');
     // cv
     const inputCv = document.getElementById('cv');
     const cv = inputCv.files[0];
@@ -7,58 +8,44 @@ document.getElementById('apply').addEventListener('submit', function (event) {
     const inputLm = document.getElementById('lettre');
     const letter = inputLm.files[0];
 
-    let counter = 0;
+    let errorMessages = "";
 
+    // Vérifier la sélection des fichiers
     if (!cv && !letter) {
-        window.showErrorPopup("Veuillez sélectionner un CV et une lettre de motivation avant d'envoyer.");
-        event.preventDefault();
-        return;
+        errorMessages += "Veuillez sélectionner un CV et une lettre de motivation avant d'envoyer.\n";
     } else if (!cv) {
-        window.showErrorPopup("Veuillez sélectionner un CV avant d'envoyer.");
-        event.preventDefault();
-        return;
+        errorMessages += "Veuillez sélectionner un CV avant d'envoyer.\n";
+        console.log('CV manquant');
     } else if (!letter) {
-        window.showErrorPopup("Veuillez sélectionner une lettre de motivation avant d'envoyer.");
-        event.preventDefault();
-        return;
-    } else {
-        counter++;
+        errorMessages += "Veuillez sélectionner une lettre de motivation avant d'envoyer.\n";
+        console.log('Lettre manquante');
     }
 
-
-    if (!cv.type === 'application/pdf') {
-        window.showErrorPopup("Le CV doit être au format PDF.");
-        event.preventDefault();
-        return;
-    } else if (!letter.type === 'application/pdf') {
-        window.showErrorPopup("La lettre de motivation doit être au format PDF.");
-        event.preventDefault();
-        return;
-    } else if (!cv.type === 'application/pdf' && !letter.type === 'application/pdf') {
-        window.showErrorPopup("Les fichiers doivent être au format PDF.");
-        event.preventDefault();
-        return;
-    } else {
-        counter++;
+    // Vérifier le type PDF (uniquement si les fichiers sont sélectionnés)
+    if (cv && letter && cv.type !== 'application/pdf' && letter.type !== 'application/pdf') {
+        errorMessages += "Le CV et la lettre de motivation doivent être au format PDF.\n";
+    } else if (cv && cv.type !== 'application/pdf') {
+        errorMessages += "Le CV doit être au format PDF.\n";
+    } else if (letter && letter.type !== 'application/pdf') {
+        errorMessages += "La lettre de motivation doit être au format PDF.\n";
     }
 
-    const maxSize = 2 * 1024 * 1024; // 2 Mo
-    if (cv.size > maxSize) {
-        window.showErrorPopup("Le CV est trop lourd (maximum 2 Mo).");
-        event.preventDefault();
-    } else if (letter.size > maxSize) {
-        window.showErrorPopup("La lettre de motivation est trop lourde (maximum 2 Mo).");
-        event.preventDefault();
-        return;
-    } else if (cv.size > maxSize && letter.size > maxSize) {
-        window.showErrorPopup("Le CV et la lettre de motivation sont trop lourds (maximum 2 Mo chacun).");
-        event.preventDefault();
-        return;
-    } else {
-        counter++;
+    // Vérifier la taille (uniquement si les fichiers sont sélectionnés)
+    const maxSize = 4 * 1024 * 1024; // 4 Mo
+    if (cv && letter && cv.size > maxSize && letter.size > maxSize) {
+        errorMessages += "Le CV et la lettre de motivation sont trop lourds (maximum 4 Mo chacun).\n";
+    } else if (cv && cv.size > maxSize) {
+        errorMessages += "Le CV est trop lourd (maximum 4 Mo).\n";
+    } else if (letter && letter.size > maxSize) {
+        errorMessages += "La lettre de motivation est trop lourde (maximum 4 Mo).\n";
     }
 
-    if (counter === 3) {
+    // Afficher l'erreur ou soumettre
+    if (errorMessages) {
+        event.preventDefault();
+        console.log('Erreurs:', errorMessages);
+        window.showErrorPopup(errorMessages);
+    } else {
         window.showSuccessPopup("Candidature envoyée avec succès !");
     }
 });

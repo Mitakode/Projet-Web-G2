@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Paginator;
 use App\Models\DashboardStudentModel;
+use App\Models\DashboardAdminModel;
 use App\Models\SqlDatabase;
 use App\Controllers\FileUploader;
 use App\Controllers\BlockAccess;
@@ -94,7 +95,7 @@ class OfferController
 
             $alreadyApplied = $this->model->hasApplied($idOffre, $studentId);
 
-            if ($alreadyApplied['ID_offre']){
+            if ($alreadyApplied && isset($alreadyApplied['ID_offre']) && $alreadyApplied['ID_offre']){
                 header('Location: /offers/detail?id=' . urlencode((string) $idOffre) . '&popup=already_applied');
                 exit;
             }
@@ -108,22 +109,49 @@ class OfferController
                         header('Location: /offers/detail?id=' . urlencode((string) $idOffre) . '&popup=error');
                         exit;
                     } else {
+                        // Récupérer les infos de l'étudiant pour renommer les fichiers
+                        $dashboardModel = new DashboardAdminModel($this->model->getDb());
+                        $studentInfo = $dashboardModel->getStudentById($studentId);
+                        
+                        if ($studentInfo) {
+                            $nom = str_replace(' ', '_', $studentInfo['Nom']);
+                            $prenom = str_replace(' ', '_', $studentInfo['Prenom']);
+                            $dateTime = date('d-m-Y_H-i-s');
+                            
+                            $cvFileName = 'CV_' . $nom . '_' . $prenom . '_' . $dateTime . '.pdf';
+                            $letterFileName = 'LM_' . $nom . '_' . $prenom . '_' . $dateTime . '.pdf';
+                        } else {
+                            // Fallback si les infos ne peuvent pas être récupérées
+                            $dateTime = date('d-m-Y_H-i-s');
+                            $cvFileName = 'CV_' . $studentId . '_' . $dateTime . '.pdf';
+                            $letterFileName = 'LM_' . $studentId . '_' . $dateTime . '.pdf';
+                        }
+                        
                         $uploaderCV = new FileUploader($_FILES['cv']);
+                        $uploaderCV->setFileName($cvFileName);
+                        
                         $uploaderLettre = new FileUploader($_FILES['lettre']);
+                        $uploaderLettre->setFileName($letterFileName);
 
                         if ($uploaderCV->validate()) {
                             $cvPath = $uploaderCV->upload();
+                            if ($cvPath) {
+                                $cvPath = basename($cvPath);
+                            }
                         }
 
                         if ($uploaderLettre->validate()) {
                             $letterPath = $uploaderLettre->upload();
+                            if ($letterPath) {
+                                $letterPath = basename($letterPath);
+                            }
                         }
                     }
 
                     if ($idOffre && $studentId && $cvPath && $letterPath) {
                         $this->model->addPostule($idOffre, $studentId, $cvPath, $letterPath);
                         $inWishlist = $this->model->isInWishlist($idOffre, $studentId);
-                        if ($inWishlist['ID_offre']) {
+                        if ($inWishlist && isset($inWishlist['ID_offre']) && $inWishlist['ID_offre']) {
                             $wishlistModel = new DashboardStudentModel($this->model->getDb());   
                             $wishlistModel->removeFromWishlist($studentId, $idOffre);
                         }
