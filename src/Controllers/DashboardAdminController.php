@@ -100,6 +100,7 @@ class DashboardAdminController{
         $blockAccess->blockStudentAccess();
 
         if ($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'pilote') {
+            $popupError = null;
 
             if($_SERVER['REQUEST_METHOD']==='POST'){
                 $surname= isset($_POST['surname']) ? htmlspecialchars(trim($_POST['surname'])):'';
@@ -107,6 +108,7 @@ class DashboardAdminController{
                 $promotion=isset($_POST['promotion']) ? htmlspecialchars(trim($_POST['promotion'])):'';
                 $email=isset($_POST['email']) ? htmlspecialchars(trim($_POST['email'])):'';
                 $password= isset($_POST['password']) ? htmlspecialchars(trim($_POST['password'])):'';
+                $confirmPassword = isset($_POST['confirm_password']) ? htmlspecialchars(trim($_POST['confirm_password'])) : '';
                 $id_pilot =null;
 
                 if ($_SESSION['user_role'] === 'admin') {
@@ -115,8 +117,10 @@ class DashboardAdminController{
                     $id_pilote = $_SESSION['user_id']; 
                 }
 
-                if (empty($surname) || empty($name) || empty($promotion) || empty($email) || empty($password) || empty($id_pilote)) {
+                if (empty($surname) || empty($name) || empty($promotion) || empty($email) || empty($password) || empty($confirmPassword) || empty($id_pilote)) {
                     echo "Veuillez remplir tous les champs, y compris le pilote référent.";
+                } else if ($password !== $confirmPassword) {
+                    $popupError = "Les mots de passe ne correspondent pas.";
                 } else {
                     $userData = [
                         'Nom' => $surname,
@@ -142,7 +146,8 @@ class DashboardAdminController{
             echo $this->twig->render('StudentForm.html.twig', [
                 'pilotes' => $pilots,
                 'is_edit'=> false,
-                'session' => $_SESSION
+                'session' => $_SESSION,
+                'popup_error' => $popupError
             ]);
         }
         else {
@@ -183,6 +188,7 @@ class DashboardAdminController{
         $blockAccess->blockStudentAccess();
 
         if ($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'pilote') {
+            $popupError = null;
 
             $id = $_GET['id'] ?? null;
 
@@ -197,8 +203,15 @@ class DashboardAdminController{
                     'Prenom' => htmlspecialchars(trim($_POST['name'])),
                     'Email' => htmlspecialchars(trim($_POST['email']))
                 ];
-                if(!empty($_POST['password'])){
-                $userData['Mot_de_passe'] = password_hash($_POST['password'], PASSWORD_BCRYPT);
+                $password = trim($_POST['password'] ?? '');
+                $confirmPassword = trim($_POST['confirm_password'] ?? '');
+
+                if ($password !== '' || $confirmPassword !== '') {
+                    if ($password === '' || $confirmPassword === '' || $password !== $confirmPassword) {
+                        $popupError = "Les mots de passe ne correspondent pas.";
+                    } else {
+                        $userData['Mot_de_passe'] = password_hash($password, PASSWORD_BCRYPT);
+                    }
                 }
 
                 $studentData = [
@@ -209,9 +222,11 @@ class DashboardAdminController{
                     $studentData['ID_pilote'] = intval($_POST['id_pilote']);
                 }
 
-                $this->model->updateStudent($id, $userData, $studentData);
-                header('Location: /dashboard/admin');
-                exit;
+                if ($popupError === null) {
+                    $this->model->updateStudent($id, $userData, $studentData);
+                    header('Location: /dashboard/admin');
+                    exit;
+                }
             }
 
             $student = $this->model->getStudentById($id);
@@ -221,7 +236,8 @@ class DashboardAdminController{
                 'etudiant' => $student,
                 'pilotes' => $pilots,
                 'is_edit'  => true,
-                'session'  => $_SESSION
+                'session'  => $_SESSION,
+                'popup_error' => $popupError
             ]);
         }
         else {
@@ -236,15 +252,19 @@ class DashboardAdminController{
         $blockAccess->blockPilotAccess();
 
         if ($_SESSION['user_role'] === 'admin') {
+            $popupError = null;
 
             if($_SERVER['REQUEST_METHOD']==='POST'){
                 $surname= isset($_POST['surname']) ? htmlspecialchars(trim($_POST['surname'])):'';
                 $name= isset($_POST['name']) ? htmlspecialchars(trim($_POST['name'])):'';
                 $email=isset($_POST['email']) ? htmlspecialchars(trim($_POST['email'])):'';
                 $password= isset($_POST['password']) ? htmlspecialchars(trim($_POST['password'])):'';
+                $confirmPassword = isset($_POST['confirm_password']) ? htmlspecialchars(trim($_POST['confirm_password'])) : '';
 
-                if (empty($surname) || empty($name) || empty($email) || empty($password)) {
+                if (empty($surname) || empty($name) || empty($email) || empty($password) || empty($confirmPassword)) {
                     echo "Veuillez remplir tous les champs, y compris le pilote référent.";
+                } else if ($password !== $confirmPassword) {
+                    $popupError = "Les mots de passe ne correspondent pas.";
                 } else {
                     $userData = [
                         'Nom' => $surname,
@@ -264,7 +284,8 @@ class DashboardAdminController{
 
             echo $this->twig->render('PilotForm.html.twig', [
                 'is_edit'=> false,
-                'session' => $_SESSION
+                'session' => $_SESSION,
+                'popup_error' => $popupError
             ]);
         }
         else {
@@ -312,6 +333,7 @@ class DashboardAdminController{
         $blockAccess->blockPilotAccess();
 
         if($_SESSION['user_role'] === 'admin') {
+            $popupError = null;
 
             $id = $_GET['id'] ?? null;
 
@@ -326,13 +348,22 @@ class DashboardAdminController{
                     'Prenom' => htmlspecialchars(trim($_POST['name'])),
                     'Email' => htmlspecialchars(trim($_POST['email']))
                 ];
-                if(!empty($_POST['password'])){
-                $userData['Mot_de_passe'] = password_hash($_POST['password'], PASSWORD_BCRYPT);
+                $password = trim($_POST['password'] ?? '');
+                $confirmPassword = trim($_POST['confirm_password'] ?? '');
+
+                if ($password !== '' || $confirmPassword !== '') {
+                    if ($password === '' || $confirmPassword === '' || $password !== $confirmPassword) {
+                        $popupError = "Les mots de passe ne correspondent pas.";
+                    } else {
+                        $userData['Mot_de_passe'] = password_hash($password, PASSWORD_BCRYPT);
+                    }
                 }
 
-                $this->model->updatePilot($id, $userData);
-                header('Location: /dashboard/admin');
-                exit;
+                if ($popupError === null) {
+                    $this->model->updatePilot($id, $userData);
+                    header('Location: /dashboard/admin');
+                    exit;
+                }
             }
 
             $pilot = $this->model->getPilotById($id);
@@ -340,7 +371,8 @@ class DashboardAdminController{
             echo $this->twig->render('PilotForm.html.twig', [
                 'pilote' => $pilot,
                 'is_edit'  => true,
-                'session'  => $_SESSION
+                'session'  => $_SESSION,
+                'popup_error' => $popupError
             ]);
         }
         else {

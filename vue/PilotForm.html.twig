@@ -7,7 +7,7 @@
 <section class="frame">
     <h1 class="main-title">{{ is_edit ? 'Modifier' : 'Ajouter' }} un pilote</h1>
 
-    <form class="form-test" action="/{{ is_edit ? 'dashboard/admin/update-pilot&id=' ~ pilote.ID_utilisateur : 'dashboard/admin/create-pilot' }}" method="POST">
+    <form class="form-test" data-account-password-form="true" data-popup-error="{{ popup_error|default('')|e('html_attr') }}" action="/{{ is_edit ? 'dashboard/admin/update-pilot&id=' ~ pilote.ID_utilisateur : 'dashboard/admin/create-pilot' }}" method="POST">
                 
         <label>Nom</label>
         <input class="form-input" type="text" name="surname" value="{{ pilote.Nom ?? '' }}" required>
@@ -19,10 +19,17 @@
         <input class="form-input" type="email" name="email" value="{{ pilote.Email ?? '' }}" required>
 
         <label>Mot de passe</label>
-        <input class="form-input" type="password" name="password" {% if is_edit %} placeholder="Laissez vide pour ne pas modifier"{% endif %} {% if not is_edit %}required{% endif %}>
+        <input class="form-input" id="password" type="password" name="password" {% if is_edit %} placeholder="Laissez vide pour ne pas modifier"{% endif %} {% if not is_edit %}required{% endif %}>
+
+        <label>Confirmation du mot de passe</label>
+        <input class="form-input" id="confirm_password" type="password" name="confirm_password" {% if not is_edit %}required{% endif %}>
 
         <button class="btn" type="submit">Valider</button>
         <a href="/dashboard/admin" class="btn-annuler">Annuler</a>
     </form>
 </section>
+{% endblock %}
+
+{% block scripts %}
+<script src="/assets/js/password-confirmation.js" defer></script>
 {% endblock %}
