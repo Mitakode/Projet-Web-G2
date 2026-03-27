@@ -16,10 +16,10 @@
         <input class="form-input" type="text" name="name" value="{{ pilote.Prenom ?? '' }}" required>
 
         <label>E-mail</label>
-        <input class="form-input" type="text" name="email" value="{{ pilote.Email ?? '' }}" required>
+        <input class="form-input" type="email" name="email" value="{{ pilote.Email ?? '' }}" required>
 
         <label>Mot de passe</label>
-        <input class="form-input" type="text" name="password" {% if is_edit %} placeholder="Laissez vide pour ne pas modifier"{% endif %} {% if not is_edit %}required{% endif %}>
+        <input class="form-input" type="password" name="password" {% if is_edit %} placeholder="Laissez vide pour ne pas modifier"{% endif %} {% if not is_edit %}required{% endif %}>
 
         <button class="btn" type="submit">Valider</button>
         <a href="/dashboard/admin" class="btn-annuler">Annuler</a>
