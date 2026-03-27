@@ -92,10 +92,18 @@ HTML;
 <p>
 <strong>Nom :</strong> ThePistonCorp<br/>
 <strong>Forme :</strong> Corporation<br/>
+    <strong>Capital social :</strong> 500 000 €<br/>
 <strong>Siège social :</strong> 8 Rue des Frères Charles et Alcide d'Orbigny, 64000 Pau, France<br/>
 <strong>SIRET :</strong> 123 456 789 00012<br/>
+    <strong>RCS :</strong> Pau 123 456 789<br/>
 <strong>TVA intracommunautaire :</strong> FR12 345 678 900
 </p>
+
+    <h3>Contact</h3>
+    <p>
+    <strong>E-mail :</strong> legal@thepiston.fr<br/>
+    <strong>Téléphone :</strong> +33 5 59 00 00 00
+    </p>
 
 <h3>Direction de publication</h3>
 <p><strong>Responsable :</strong> Sarah Durand, Directeur Général</p>
