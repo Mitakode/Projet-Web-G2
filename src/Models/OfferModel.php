@@ -4,6 +4,18 @@ namespace App\Models;
 
 class OfferModel extends Model
 {
+    /**
+     * Retourne l'ID utilisateur courant si la session est valide, sinon null.
+     */
+    private function getCurrentUserId(): ?int
+    {
+        if (!isset($_SESSION['user_id']) || !is_numeric($_SESSION['user_id'])) {
+            return null;
+        }
+
+        return (int) $_SESSION['user_id'];
+    }
+
     // Le constructeur appelle celui du parent (Model) pour initialiser la connexion à la BDD
     public function __construct(Database $connection)
     {
