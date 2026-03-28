@@ -19,6 +19,58 @@ class DashboardAdminController{
         return mb_convert_case($clean, MB_CASE_TITLE, 'UTF-8');
     }
 
+    private function getFormData(string &$error, bool $requirePassword): array
+    {
+        $postData = [
+            'surname' => isset($_POST['surname']) ? htmlspecialchars($this->normalizeSurname($_POST['surname'])) : '',
+            'firstname' => isset($_POST['firstname']) ? htmlspecialchars($this->normalizeFirstname($_POST['firstname'])) : '',
+            'email' => isset($_POST['email']) ? htmlspecialchars(trim($_POST['email'])) : '',
+            'password' => isset($_POST['password']) ? htmlspecialchars(trim($_POST['password'])) : '',
+            'confirm_password' => isset($_POST['confirm_password']) ? htmlspecialchars(trim($_POST['confirm_password'])) : ''
+        ];
+
+        if (empty($postData['surname'])) {
+            $error .= 'surname&';
+        }
+
+        if (empty($postData['firstname'])) {
+            $error .= 'firstname&';
+        }
+
+        if (empty($postData['email'])) {
+            $error .= 'email&';
+        }
+
+        if ($requirePassword && empty($postData['password'])) {
+            $error .= 'password&';
+        } elseif ($postData['password'] !== '' || $postData['confirm_password'] !== '') {
+            if (
+                $postData['password'] === ''
+                || $postData['confirm_password'] === ''
+                || $postData['password'] !== $postData['confirm_password']
+            ) {
+                $error .= 'confirm&';
+            }
+        }
+
+        return $postData;
+    }
+
+    private function getUserData(array $postData, bool $includePassword): array
+    {
+        $userData = [
+            'Nom' => $postData['surname'],
+            'Prenom' => $postData['firstname'],
+            'Email' => $postData['email']
+        ];
+
+        if ($includePassword && $postData['password'] !== '') {
+            $userData['Mot_de_passe'] = password_hash($postData['password'], PASSWORD_BCRYPT);
+        }
+
+        return $userData;
+    }
+
     public function __construct($twig, $model) {
         $this->twig = $twig;
         $this->model = $model;
@@ -30,43 +82,42 @@ class DashboardAdminController{
         $blockAccess->blockStudentAccess();
 
         if ($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'pilote') {
-            $currentPage = max(1, (int)($_GET['page'] ?? 1));
-            $currentPageP = max(1, (int)($_GET['pageP'] ?? 1));
+            $popup = $_GET['popup'] ?? '';
+        //Students
+            $surname = $_GET['surname'] ?? '';
+            $name = $_GET['name'] ?? '';
+            $promotion = $_GET['promotion'] ?? '';
 
-            //Students
-                $surname = $_GET['surname'] ?? '';
-                $name = $_GET['name'] ?? '';
-                $promotion = $_GET['promotion'] ?? '';
+            $students = $this->model->searchStudents($surname, $name, $promotion);
 
-                $students = $this->model->searchStudents($surname, $name, $promotion);
+            // Gérer la pagination
+            $paginator = new Paginator($students, 5);
 
-                // Gérer la pagination
-                $paginator = new Paginator($students, 5);
+            //Pilots
+            $surnameP = $_GET['surnameP'] ?? '';
+            $nameP = $_GET['nameP'] ?? '';
 
-                //Pilots
-                $surnameP = $_GET['surnameP'] ?? '';
-                $nameP = $_GET['nameP'] ?? '';
+            $pilots = $this->model->searchPilots($surnameP, $nameP);
 
-                $pilots = $this->model->searchPilots($surnameP, $nameP);
+            // Gérer la pagination
+            $paginatorP = new Paginator($pilots, 5);
+            
+            // Envoyer le tout à la vue Twig
+            echo $this->twig->render('DashboardAdmin.html.twig', [
+                'etudiants' => $paginator->getCurrentPageItems(),
+                'total_pages'      => $paginator->getTotalPages(),
+                'current_page'     => $_GET['page'] ?? 1,
+                'surname'      => $surname,
+                'name'             => $name,
+                'promotion'        => $promotion,
 
-                // Gérer la pagination
-                $paginatorP = new Paginator($pilots, 5);
-                
-                // Envoyer le tout à la vue Twig
-                echo $this->twig->render('DashboardAdmin.html.twig', [
-                    'etudiants' => $paginator->getCurrentPageItems(),
-                    'total_pages'      => $paginator->getTotalPages(),
-                    'current_page'     => $_GET['page'] ?? 1,
-                    'surname'      => $surname,
-                    'name'             => $name,
-                    'promotion'        => $promotion,
-
-                    'pilotes' => $paginatorP->getCurrentPageItems(),
-                    'total_pagesP'      => $paginatorP->getTotalPages(),
-                    'current_pageP'     => $_GET['page'] ?? 1,
-                    'surnameP'      => $surnameP,
-                    'nameP'             => $nameP
-                ]);
+                'pilotes' => $paginatorP->getCurrentPageItems(),
+                'total_pagesP'      => $paginatorP->getTotalPages(),
+                'current_pageP'     => $_GET['page'] ?? 1,
+                'surnameP'      => $surnameP,
+                'nameP'             => $nameP,
+                'popup'             => $popup
+            ]);
         }
         else {
             header('Location: /');
@@ -78,35 +129,34 @@ class DashboardAdminController{
         $blockAccess = new BlockAccess($this->twig);
         $blockAccess->blockStudentAccess();
 
-        if ($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'pilote') {
+        if ($_SESSION['user_role'] === 'pilote' || $_SESSION['user_role'] === 'admin') {
             $id = intval($_GET['id'] ?? 0);
-            
             if ($id == 0) {
                 header('Location: /dashboard/admin');
                 exit;
             }
 
             $student = $this->model->getStudentById($id);
-            
             if (!$student) {
                 header('Location: /dashboard/admin');
                 exit;
             }
-
             $pilot = $this->model->getPilotById($student['ID_pilote']);
             $applications = $this->model->getStudentApplications($id);
 
             $paginator = new Paginator($applications, 5);
 
-            // Envoyer le tout à la vue Twig
             echo $this->twig->render('StudentDetails.html.twig', [
-                'student' => $student,
-                'pilot' => $pilot,
-                'applications' => $paginator->getCurrentPageItems(),
-                'total_pages' => $paginator->getTotalPages(),
-                'current_page' => $_GET['page'] ?? 1
+                'etudiant' => $student,
+                'session' => $_SESSION,
+                'pilote' => $pilot,
+                
+                'candidatures' => $paginator->getCurrentPageItems(),
+                'total_pages'      => $paginator->getTotalPages(),
+                'current_page'     => $_GET['page'] ?? 1
             ]);
-        } else {
+        }
+        else {
             header('Location: /');
             exit;
         }
@@ -117,34 +167,27 @@ class DashboardAdminController{
         $blockAccess->blockStudentAccess();
 
         if ($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'pilote') {
-            $popupError = null;
+            $error = "";
 
             if($_SERVER['REQUEST_METHOD']==='POST'){
-                $surname= isset($_POST['surname']) ? htmlspecialchars($this->normalizeSurname($_POST['surname'])):'';
-                $name= isset($_POST['name']) ? htmlspecialchars($this->normalizeFirstname($_POST['name'])):'';
+                $postData = $this->getFormData($error, true);
                 $promotion=isset($_POST['promotion']) ? htmlspecialchars(trim($_POST['promotion'])):'';
-                $email=isset($_POST['email']) ? htmlspecialchars(trim($_POST['email'])):'';
-                $password= isset($_POST['password']) ? htmlspecialchars(trim($_POST['password'])):'';
-                $confirmPassword = isset($_POST['confirm_password']) ? htmlspecialchars(trim($_POST['confirm_password'])) : '';
-                $id_pilot =null;
-
-                if ($_SESSION['user_role'] === 'admin') {
-                $id_pilote = isset($_POST['id_pilote']) ? intval($_POST['id_pilote']) : null;
+                if (($_SESSION['user_role'] ?? null) === 'admin') {
+                    $id_pilote = isset($_POST['id_pilote']) ? intval($_POST['id_pilote']) : null;
                 } else {
-                    $id_pilote = $_SESSION['user_id']; 
+                    $id_pilote = $_SESSION['user_id'] ?? null;
                 }
 
-                if (empty($surname) || empty($name) || empty($promotion) || empty($email) || empty($password) || empty($confirmPassword) || empty($id_pilote)) {
-                    echo "Veuillez remplir tous les champs, y compris le pilote référent.";
-                } else if ($password !== $confirmPassword) {
-                    $popupError = "Les mots de passe ne correspondent pas.";
-                } else {
-                    $userData = [
-                        'Nom' => $surname,
-                        'Prenom' => $name,
-                        'Email' => $email,
-                        'Mot_de_passe' => password_hash($password, PASSWORD_BCRYPT)
-                    ];
+                if (empty($promotion)) {
+                    $error .= 'promotion&';
+                }
+
+                if (empty($id_pilote)) {
+                    $error .= 'id_pilote&';
+                }
+
+                if (empty($error)) {
+                ;    $userData = $this->getUserData($postData, true);
 
                     $studentData = [
                         'Promotion' => $promotion,
@@ -153,7 +196,7 @@ class DashboardAdminController{
 
                     $this->model->createStudent($userData, $studentData);
                     
-                    header('Location: /dashboard/admin');
+                    header('Location: /dashboard/admin?popup=student_created');
                     exit;
                 }
             }
@@ -164,7 +207,7 @@ class DashboardAdminController{
                 'pilotes' => $pilots,
                 'is_edit'=> false,
                 'session' => $_SESSION,
-                'popup_error' => $popupError
+                'error' => $error
             ]);
         }
         else {
@@ -187,10 +230,16 @@ class DashboardAdminController{
 
             try {
                 $this->model->deleteStudent($id);
-                header('Location: /dashboard/admin');
+                header('Location: /dashboard/admin?popup=student_deleted');
                 exit;
-            } catch (\Exception $e) {
-                echo "Erreur lors de la suppression de l'étudiant.";
+            } catch (\Throwable $e) {
+                if ($e instanceof \PDOException && $e->getCode() === '23000') {
+                    header('Location: /dashboard/admin?popup=student_delete_blocked');
+                    exit;
+                }
+
+                header('Location: /dashboard/admin?popup=student_delete_error');
+                exit;
             }
         }
         else {
@@ -205,7 +254,7 @@ class DashboardAdminController{
         $blockAccess->blockStudentAccess();
 
         if ($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'pilote') {
-            $popupError = null;
+            $error = "";
 
             $id = $_GET['id'] ?? null;
 
@@ -215,33 +264,32 @@ class DashboardAdminController{
             }
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $userData = [
-                    'Nom' => htmlspecialchars($this->normalizeSurname($_POST['surname'] ?? '')),
-                    'Prenom' => htmlspecialchars($this->normalizeFirstname($_POST['name'] ?? '')),
-                    'Email' => htmlspecialchars(trim($_POST['email']))
-                ];
-                $password = trim($_POST['password'] ?? '');
-                $confirmPassword = trim($_POST['confirm_password'] ?? '');
-
-                if ($password !== '' || $confirmPassword !== '') {
-                    if ($password === '' || $confirmPassword === '' || $password !== $confirmPassword) {
-                        $popupError = "Les mots de passe ne correspondent pas.";
-                    } else {
-                        $userData['Mot_de_passe'] = password_hash($password, PASSWORD_BCRYPT);
-                    }
+                $postData = $this->getFormData($error, false);
+                $promotion = isset($_POST['promotion']) ? htmlspecialchars(trim($_POST['promotion'])) : '';
+                if (($_SESSION['user_role'] ?? null) === 'admin') {
+                    $id_pilote = isset($_POST['id_pilote']) ? intval($_POST['id_pilote']) : null;
+                } else {
+                    $id_pilote = $_SESSION['user_id'] ?? null;
                 }
+
+                if (empty($promotion)) {
+                    $error .= 'promotion&';
+                }
+
+                if (empty($id_pilote)) {
+                    $error .= 'id_pilote&';
+                }
+
+                $userData = $this->getUserData($postData, true);
 
                 $studentData = [
-                    'Promotion' => htmlspecialchars(trim($_POST['promotion'])),
+                    'Promotion' => $promotion,
+                    'ID_pilote' => $id_pilote
                 ];
 
-                if (isset($_POST['id_pilote'])) {
-                    $studentData['ID_pilote'] = intval($_POST['id_pilote']);
-                }
-
-                if ($popupError === null) {
+                if (empty($error)) {
                     $this->model->updateStudent($id, $userData, $studentData);
-                    header('Location: /dashboard/admin');
+                    header('Location: /dashboard/admin?popup=student_updated');
                     exit;
                 }
             }
@@ -254,7 +302,7 @@ class DashboardAdminController{
                 'pilotes' => $pilots,
                 'is_edit'  => true,
                 'session'  => $_SESSION,
-                'popup_error' => $popupError
+                'error' => $error
             ]);
         }
         else {
@@ -268,47 +316,28 @@ class DashboardAdminController{
         $blockAccess->blockStudentAccess();
         $blockAccess->blockPilotAccess();
 
-        if ($_SESSION['user_role'] === 'admin') {
-            $popupError = null;
+        $error = "";
 
-            if($_SERVER['REQUEST_METHOD']==='POST'){
-                $surname= isset($_POST['surname']) ? htmlspecialchars($this->normalizeSurname($_POST['surname'])):'';
-                $name= isset($_POST['name']) ? htmlspecialchars($this->normalizeFirstname($_POST['name'])):'';
-                $email=isset($_POST['email']) ? htmlspecialchars(trim($_POST['email'])):'';
-                $password= isset($_POST['password']) ? htmlspecialchars(trim($_POST['password'])):'';
-                $confirmPassword = isset($_POST['confirm_password']) ? htmlspecialchars(trim($_POST['confirm_password'])) : '';
+        if($_SERVER['REQUEST_METHOD']==='POST'){
+            $postData = $this->getFormData($error, true);
 
-                if (empty($surname) || empty($name) || empty($email) || empty($password) || empty($confirmPassword)) {
-                    echo "Veuillez remplir tous les champs, y compris le pilote référent.";
-                } else if ($password !== $confirmPassword) {
-                    $popupError = "Les mots de passe ne correspondent pas.";
-                } else {
-                    $userData = [
-                        'Nom' => $surname,
-                        'Prenom' => $name,
-                        'Email' => $email,
-                        'Mot_de_passe' => password_hash($password, PASSWORD_BCRYPT)
-                    ];
+            if (empty($error)) {
+                $userData = $this->getUserData($postData, true);
 
-                    $this->model->createPilot($userData);
-                    
-                    header('Location: /dashboard/admin');
-                    exit;
-                }
+                $this->model->createPilot($userData);
+                
+                header('Location: /dashboard/admin?popup=pilot_created');
+                exit;
             }
-
-            $pilots = $this->model->getAllPilots();
-
-            echo $this->twig->render('PilotForm.html.twig', [
-                'is_edit'=> false,
-                'session' => $_SESSION,
-                'popup_error' => $popupError
-            ]);
         }
-        else {
-            header('Location: /');
-            exit;
-        }
+
+        $pilots = $this->model->getAllPilots();
+
+        echo $this->twig->render('PilotForm.html.twig', [
+            'is_edit'=> false,
+            'session' => $_SESSION,
+            'error' => $error
+        ]);
     }
     
     public function deletePilot(){
@@ -316,31 +345,30 @@ class DashboardAdminController{
         $blockAccess->blockStudentAccess();
         $blockAccess->blockPilotAccess();
 
-        if ($_SESSION['user_role'] === 'admin') {
-
-             $id = intval($_GET['id'] ?? 0);
-             if ($id == 0) {
-                 header('Location: /dashboard/admin');
-                 exit;
-             }
-
-             try {
-                 if ($this->model->pilotHasStudents($id)) {
-                     echo "Impossible de supprimer ce pilote : des étudiants lui sont encore associés.";
-                     return;
-                 }
-
-                 $this->model->deletePilot($id);
-                 header('Location: /dashboard/admin');
-                 exit;
-             } catch (\Exception $e) {
-                 echo "Erreur lors de la suppression du pilote.";
-             }
-        }
-        else {
-            header('Location: /');
+         $id = intval($_GET['id'] ?? 0);
+         if ($id == 0) {
+             header('Location: /dashboard/admin');
             exit;
-        }
+         }
+
+         try {
+             if ($this->model->pilotHasStudents($id)) {
+                 header('Location: /dashboard/admin?popup=pilot_delete_blocked');
+                 exit;
+             }
+
+             $this->model->deletePilot($id);
+             header('Location: /dashboard/admin?popup=pilot_deleted');
+             exit;
+         } catch (\Throwable $e) {
+             if ($e instanceof \PDOException && $e->getCode() === '23000') {
+                 header('Location: /dashboard/admin?popup=pilot_delete_blocked');
+                 exit;
+             }
+
+             header('Location: /dashboard/admin?popup=pilot_delete_error');
+             exit;
+         }
     }
 
 
@@ -349,53 +377,35 @@ class DashboardAdminController{
         $blockAccess->blockStudentAccess();
         $blockAccess->blockPilotAccess();
 
-        if($_SESSION['user_role'] === 'admin') {
-            $popupError = null;
+        $error = "";
 
-            $id = $_GET['id'] ?? null;
+        $id = $_GET['id'] ?? null;
 
-            if (!$id) {
-                header('Location: /dashboard/admin');
-                exit;
-            }
-
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $userData = [
-                    'Nom' => htmlspecialchars($this->normalizeSurname($_POST['surname'] ?? '')),
-                    'Prenom' => htmlspecialchars($this->normalizeFirstname($_POST['name'] ?? '')),
-                    'Email' => htmlspecialchars(trim($_POST['email']))
-                ];
-                $password = trim($_POST['password'] ?? '');
-                $confirmPassword = trim($_POST['confirm_password'] ?? '');
-
-                if ($password !== '' || $confirmPassword !== '') {
-                    if ($password === '' || $confirmPassword === '' || $password !== $confirmPassword) {
-                        $popupError = "Les mots de passe ne correspondent pas.";
-                    } else {
-                        $userData['Mot_de_passe'] = password_hash($password, PASSWORD_BCRYPT);
-                    }
-                }
-
-                if ($popupError === null) {
-                    $this->model->updatePilot($id, $userData);
-                    header('Location: /dashboard/admin');
-                    exit;
-                }
-            }
-
-            $pilot = $this->model->getPilotById($id);
-            
-            echo $this->twig->render('PilotForm.html.twig', [
-                'pilote' => $pilot,
-                'is_edit'  => true,
-                'session'  => $_SESSION,
-                'popup_error' => $popupError
-            ]);
-        }
-        else {
-            header('Location: /');
+        if (!$id) {
+            header('Location: /dashboard/admin');
             exit;
         }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $postData = $this->getFormData($error, false);
+
+            if (empty($error)) {
+                $userData = $this->getUserData($postData, true);
+
+                $this->model->updatePilot($id, $userData);
+                header('Location: /dashboard/admin?popup=pilot_updated');
+                exit;
+            }
+        }
+
+        $pilot = $this->model->getPilotById($id);
+        
+        echo $this->twig->render('PilotForm.html.twig', [
+            'pilote' => $pilot,
+            'is_edit'  => true,
+            'session'  => $_SESSION,
+            'error' => $error
+        ]);
     }
 
 }

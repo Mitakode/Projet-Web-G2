@@ -56,7 +56,7 @@
         <div class="pagination">
             {% if total_pages > 1 %}
                 {% for i in 1..total_pages %}
-                    <a href="/index.php?uri=dashboard/admin&surname={{ surname }}&name={{ name }}&promotion={{ promotion }}&surnameP={{ surnameP }}&nameP={{ nameP }}&page={{ i }}&pageP={{ current_pageP }}" 
+                    <a href="/index.php?uri=dashboard/admin&surname={{ surname }}&name={{ name }}&promotion={{ promotion }}&page={{ i }}" 
                     class="{{ i == current_page ? 'active' : '' }}">
                         {{ i }}
                     </a>
@@ -77,7 +77,7 @@
                 <button type="submit" class="search-btn" aria-label="Rechercher">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
-                <a href="index.php?uri=dashboard/admin/create-pilot" type="button" class="btn-add link">+</a>
+                <a href="index.php?uri=dashboard/admin/create-pilot" type="button" class="btn-add add-link">+</a>
             </form>
         </div>
 
@@ -107,7 +107,7 @@
         <div class="pagination">
             {% if total_pagesP > 1 %}
                 {% for i in 1..total_pagesP %}
-                    <a href="/index.php?uri=dashboard/admin&surname={{ surname }}&name={{ name }}&promotion={{ promotion }}&surnameP={{ surnameP }}&nameP={{ nameP }}&page={{ current_page }}&pageP={{ i }}" 
+                    <a href="/index.php?uri=dashboard/admin&surnameP={{ surnameP }}&nameP={{ nameP }}&page={{ i }}" 
                     class="{{ i == current_pageP ? 'active' : '' }}">
                         {{ i }}
                     </a>

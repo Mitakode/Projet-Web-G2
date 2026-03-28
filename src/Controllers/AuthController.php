@@ -77,13 +77,17 @@ class AuthController
 
     public function dashboard($dashboardAdminController, $dashboardStudentController)
     {
-        $role = $_SESSION['user_role'];
+        $blockAccess = new BlockAccess($this->twig);
+        $blockAccess->requireAuthenticated();
+
+        $role = $_SESSION['user_role'] ?? null;
         if ($role == 'admin' || $role == 'pilote') {
             $dashboardAdminController->list();
         } elseif ($role == 'etudiant') {
             $dashboardStudentController->index();
         } else {
             header('Location: /login');
+            exit;
         }
     }
 
@@ -93,14 +97,6 @@ class AuthController
         session_destroy();
         header('Location: /login');
         exit;
-    }
-
-    private function requireAuthenticated(): void
-    {
-        if (empty($_SESSION['user_id']) || empty($_SESSION['user_role'])) {
-            header('Location: /login');
-            exit;
-        }
     }
 
     private function verifyPassword(array $user, string $plainPassword): bool

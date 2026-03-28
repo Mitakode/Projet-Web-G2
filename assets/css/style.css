@@ -897,6 +897,36 @@ ul.skills li
     background: linear-gradient(90deg, var(--green-piston) 0%, #8ccf4c 100%);
 }
 
+.access-page {
+    max-width: 680px;
+    margin: 30px auto 50px auto;
+    padding: 28px;
+    text-align: center;
+}
+
+.access-title {
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+
+.access-message {
+    font-size: 1.05rem;
+    line-height: 1.5;
+    margin-bottom: 10px;
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.access-redirect-text {
+    color: #4b5563;
+    margin-bottom: 20px;
+}
+
+.access-cta {
+    margin: 0 auto;
+}
+
 .section-title {
     font-size: 1.1rem;
     margin-bottom: 15px;

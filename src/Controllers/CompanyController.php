@@ -41,39 +41,32 @@ class CompanyController
         $blockAccess = new BlockAccess($this->twig);
         $blockAccess->blockStudentAccess();
 
-        if ($_SESSION['user_role'] === 'pilote' || $_SESSION['user_role'] === 'admin') {
-
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $name = isset($_POST['nameCompany'])
-                    ? htmlspecialchars(trim($_POST['nameCompany']))
-                    : '';
-                $description = isset($_POST['descriptionCompany'])
-                    ? htmlspecialchars(trim($_POST['descriptionCompany']))
-                    : '';
-                $contact = isset($_POST['contactCompany'])
-                    ? htmlspecialchars(trim($_POST['contactCompany']))
-                    : '';
-                if (empty($name) || empty($description) || empty($contact)) {
-                    echo "Veulliez remplir correctement tous les champs.";
-                } else {
-                    $this->model->createCompany([
-                        'Nom_entreprise' => $name,
-                        'Description' => $description,
-                        'Contact' => $contact
-                    ]);
-                    header('Location: /companies');
-                    exit;
-                }
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $name = isset($_POST['nameCompany'])
+                ? htmlspecialchars(trim($_POST['nameCompany']))
+                : '';
+            $description = isset($_POST['descriptionCompany'])
+                ? htmlspecialchars(trim($_POST['descriptionCompany']))
+                : '';
+            $contact = isset($_POST['contactCompany'])
+                ? htmlspecialchars(trim($_POST['contactCompany']))
+                : '';
+            if (empty($name) || empty($description) || empty($contact)) {
+                echo "Veulliez remplir correctement tous les champs.";
+            } else {
+                $this->model->createCompany([
+                    'Nom_entreprise' => $name,
+                    'Description' => $description,
+                    'Contact' => $contact
+                ]);
+                header('Location: /companies?popup=company_created');
+                exit;
             }
+        }
 
-            echo $this->twig->render('CompaniesForm.html.twig', [
+        echo $this->twig->render('CompaniesForm.html.twig', [
             'is_edit' => false
-            ]);   
-        }
-        else {
-            header('Location: /');
-            exit; 
-        }
+        ]);
     }
 
     public function update()
@@ -81,35 +74,28 @@ class CompanyController
         $blockAccess = new BlockAccess($this->twig);
         $blockAccess->blockStudentAccess();
 
-        if ($_SESSION['user_role'] === 'pilote' || $_SESSION['user_role'] === 'admin') {
-
-            $id = $_GET['id'] ?? null;  
-            if (!$id) {
-                header('Location: /companies');
-                exit;
-            }
-
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $data = [
-                'Nom_entreprise' => htmlspecialchars(trim($_POST['nameCompany'])),
-                'Description'    => htmlspecialchars(trim($_POST['descriptionCompany'])),
-                'Contact'        => htmlspecialchars(trim($_POST['contactCompany']))
-                ];
-                $this->model->updateCompany($id, $data);
-                header('Location: /companies');
-                exit;
-            }
-
-            $company = $this->model->getCompanyById($id);
-            echo $this->twig->render('CompaniesForm.html.twig', [
-            'entreprise' => $company,
-            'is_edit'    => true
-            ]);
-        }
-        else {
-            header('Location: /');
+        $id = $_GET['id'] ?? null;
+        if (!$id) {
+            header('Location: /companies');
             exit;
         }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $data = [
+            'Nom_entreprise' => htmlspecialchars(trim($_POST['nameCompany'])),
+            'Description'    => htmlspecialchars(trim($_POST['descriptionCompany'])),
+            'Contact'        => htmlspecialchars(trim($_POST['contactCompany']))
+            ];
+            $this->model->updateCompany($id, $data);
+            header('Location: /companies?popup=company_updated');
+            exit;
+        }
+
+        $company = $this->model->getCompanyById($id);
+        echo $this->twig->render('CompaniesForm.html.twig', [
+        'entreprise' => $company,
+        'is_edit'    => true
+        ]);
     }
 
     public function delete()
@@ -119,9 +105,22 @@ class CompanyController
 
         $id = $_GET['id'] ?? null;
         if ($id) {
-            $this->model->deleteCompany($id);
+            try {
+                $this->model->deleteCompany($id);
+                header('Location: /companies?popup=company_deleted');
+                exit;
+            } catch (\Throwable $e) {
+                if ($e instanceof \PDOException && $e->getCode() === '23000') {
+                    header('Location: /companies?popup=company_delete_blocked');
+                    exit;
+                }
+
+                header('Location: /companies?popup=company_delete_error');
+                exit;
+            }
         }
-        header('Location: /companies');
+        header('Location: /companies?popup=company_delete_error');
+        exit;
     }
 
     public function rate()
@@ -129,17 +128,6 @@ class CompanyController
         $blockAccess = new BlockAccess($this->twig);
         $blockAccess->blockPilotAccess();
         $blockAccess->blockAdminAccess();
-
-
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: /login');
-            exit;
-        }
-
-        if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'etudiant') {
-            header('Location: /companies');
-            exit;
-        }
 
         $idEntreprise = $_GET['id'] ?? null;
         $note = $_GET['rating'] ?? null;
@@ -163,7 +151,8 @@ class CompanyController
 
         $redirectParams = http_build_query([
             'recherche' => $search,
-            'page' => $page
+            'page' => $page,
+            'popup' => 'company_rated'
         ]);
 
         header('Location: /companies?' . $redirectParams);

@@ -1,12 +1,22 @@
 {% extends "base.html.twig" %}
 
-{% block title %}Acces refuse - ThePiston{% endblock %}
+{% set is_login_redirect = redirect_to == '/login' %}
+
+{% block title %}{{ is_login_redirect ? 'Connexion requise' : 'Accès refusé' }} - ThePiston{% endblock %}
 
 {% block content %}
-<section class="dashboards-section">
-    <h1 class="main-title">Acces refuse</h1>
-    <p>Vous n'avez pas les droits necessaires pour acceder a cette page.</p>
-    <br>
-    <a href="/" class="btn add-link">Retour à l'accueil</a>
+<section class="dashboards-section access-page" data-redirect-url="{{ redirect_to }}" data-redirect-delay="5000">
+    <h1 class="main-title access-title">{{ is_login_redirect ? 'Connexion requise' : 'Accès refusé' }}</h1>
+    <p class="access-message">{{ message }}</p>
+    <p class="access-redirect-text">
+        Redirection en cours dans <strong id="redirect-countdown">5</strong> secondes...
+    </p>
+    <a href="{{ redirect_to }}" class="btn add-link access-cta">
+        {{ is_login_redirect ? 'Aller à la connexion' : 'Aller au tableau de bord' }}
+    </a>
 </section>
+{% endblock %}
+
+{% block scripts %}
+    <script src="/assets/js/redirection.js" defer></script>
 {% endblock %}
