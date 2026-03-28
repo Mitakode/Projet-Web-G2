@@ -118,6 +118,8 @@ class CompanyController
 
         $idEntreprise = $_GET['id'] ?? null;
         $note = $_GET['rating'] ?? null;
+        $search = $_GET['recherche'] ?? '';
+        $page = $_GET['page'] ?? 1;
 
         if (!$idEntreprise || !$note) {
             header('Location: /companies');
@@ -133,7 +135,14 @@ class CompanyController
 
         // save la note
         $this->model->rateCompany($idEntreprise, $_SESSION['user_id'], $note);
-        echo "<script>alert('Note enregistrée avec succès !'); window.location.href='/companies';</script>";
+
+        $redirectParams = http_build_query([
+            'recherche' => $search,
+            'page' => $page,
+            'popup' => 'company_rated'
+        ]);
+
+        header('Location: /companies?' . $redirectParams);
         exit;
     }
 }

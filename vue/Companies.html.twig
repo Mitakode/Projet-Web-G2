@@ -46,7 +46,7 @@
                                     class="btn-action etoile {{ entreprise.is_rated ? 'active' : '' }}"
                                     title="{{ entreprise.my_rating is not null ? 'Modifier ma note' : 'Noter cette entreprise' }}"
                                     aria-label="{{ entreprise.my_rating is not null ? 'Modifier ma note' : 'Noter cette entreprise' }}"
-                                    onclick="ouvrirPopupNote({{ entreprise.ID_entreprise }}, '{{ entreprise.Nom_entreprise }}')">
+                                    onclick="ouvrirPopupNote({{ entreprise.ID_entreprise }}, '{{ entreprise.Nom_entreprise|e('js') }}')">
                                     <i class="fa-solid fa-star"></i>
                                 </button>
                                 {% endif %}
@@ -92,7 +92,5 @@
                 {% endfor %}
             {% endif %}
         </div>
-
-<script src="/assets/js/rating.js"></script>
 
 {% endblock %}

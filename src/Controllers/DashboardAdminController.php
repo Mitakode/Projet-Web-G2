@@ -82,6 +82,7 @@ class DashboardAdminController{
         $blockAccess->blockStudentAccess();
 
         if ($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'pilote') {
+            $popup = $_GET['popup'] ?? '';
         //Students
             $surname = $_GET['surname'] ?? '';
             $name = $_GET['name'] ?? '';
@@ -114,7 +115,8 @@ class DashboardAdminController{
                 'total_pagesP'      => $paginatorP->getTotalPages(),
                 'current_pageP'     => $_GET['page'] ?? 1,
                 'surnameP'      => $surnameP,
-                'nameP'             => $nameP
+                'nameP'             => $nameP,
+                'popup'             => $popup
             ]);
         }
         else {
@@ -194,7 +196,7 @@ class DashboardAdminController{
 
                     $this->model->createStudent($userData, $studentData);
                     
-                    header('Location: /dashboard/admin');
+                    header('Location: /dashboard/admin?popup=student_created');
                     exit;
                 }
             }
@@ -281,7 +283,7 @@ class DashboardAdminController{
 
                 if (empty($error)) {
                     $this->model->updateStudent($id, $userData, $studentData);
-                    header('Location: /dashboard/admin');
+                    header('Location: /dashboard/admin?popup=student_updated');
                     exit;
                 }
             }
@@ -318,7 +320,7 @@ class DashboardAdminController{
 
                 $this->model->createPilot($userData);
                 
-                header('Location: /dashboard/admin');
+                header('Location: /dashboard/admin?popup=pilot_created');
                 exit;
             }
         }
@@ -379,7 +381,7 @@ class DashboardAdminController{
                 $userData = $this->getUserData($postData, true);
 
                 $this->model->updatePilot($id, $userData);
-                header('Location: /dashboard/admin');
+                header('Location: /dashboard/admin?popup=pilot_updated');
                 exit;
             }
         }
