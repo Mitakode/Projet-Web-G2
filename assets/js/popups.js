@@ -2,12 +2,14 @@
     var initialized = false;
     var queryPopupShown = false;
 
-    function showAlert(title, message) {
+    function showAlert(title, message)
+    {
         const text = message || '';
         alert(title + '\n\n' + text);
     }
 
-    function initApplyForm() {
+    function initApplyForm()
+    {
         var applyForm = document.getElementById('apply');
         if (!applyForm) {
             return;
@@ -54,7 +56,8 @@
         });
     }
 
-    function initCompanyForm() {
+    function initCompanyForm()
+    {
         var contactInput = document.querySelector('input[name="contactCompany"]');
         if (!contactInput) {
             return;
@@ -75,7 +78,8 @@
         });
     }
 
-    function initCompanyRating() {
+    function initCompanyRating()
+    {
         window.ouvrirPopupNote = function (idEntreprise, nomEntreprise) {
             var message = 'Notez "' + nomEntreprise + '"\n\nChoisissez une note de 1 à 10 :\n1 = Mauvais\n5 = Moyen\n10 = Excellent';
             var promptValue = window.prompt(message, '');
@@ -111,7 +115,8 @@
         };
     }
 
-    function showPopupFromQuery() {
+    function showPopupFromQuery()
+    {
         if (queryPopupShown) {
             return;
         }
@@ -182,7 +187,8 @@
         showAlert('❌ Erreur', message || '❌ Une erreur est survenue.');
     };
 
-    function initPopups() {
+    function initPopups()
+    {
         if (initialized) {
             return;
         }

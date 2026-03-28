@@ -8,7 +8,7 @@
 /*  ==================================== COLOR VARIABLES ====================================    */
 
 :root {
-    --green1: #bdf290; 
+    --green1: #bdf290;
     --green2: #cbf6A6;
     --green3: #d8f9Bb;
     --gray-bg: #e0e0e0;    /* Fond des barres/items */
@@ -345,7 +345,7 @@ footer a:hover {
 .search-form {
     display: flex;
     flex-direction: column;
-    align-items: center; 
+    align-items: center;
     gap: 15px;
     max-width: 1000px; /* Ou la largeur de ta barre de recherche */
     margin: 0 auto;   /* Centre le bloc formulaire sur la n */
@@ -664,12 +664,12 @@ input:hover, select:hover, textarea:hover {
     padding: 10px;
     margin-bottom: 25px;
     margin-top: 10px;
-    max-height: 130px; 
+    max-height: 130px;
     overflow-y: auto;  /* Ajoute le scroll vertical si besoin */
     display: flex;
     flex-direction: column;
     gap: 2px;
-    text-align: left; 
+    text-align: left;
 }
 
 .skills-list label {
@@ -1202,7 +1202,7 @@ main.list-page {
     margin: 0 4px;
     text-decoration: none;
     border-radius: 4px;
-    background: var(--white); 
+    background: var(--white);
     color: var(--deconnexion-color);
     display: inline-flex;
     align-items: center;
@@ -1225,9 +1225,9 @@ main.list-page {
 }
 
 /* Garder le style pour le tag strong si tu l'utilises ailleurs */
-.pagination strong { 
-    background: var(--green-piston); 
-    color: var(--white); 
+.pagination strong {
+    background: var(--green-piston);
+    color: var(--white);
     width: 50px;
     height: 50px;
     margin: 0 4px;
@@ -1461,8 +1461,8 @@ main.list-page {
         align-items: center;
         gap: 0;
     }
-    .form-column, 
-    .form-column2, 
+    .form-column,
+    .form-column2,
     .form-column3 {
         width: 100%;
     }

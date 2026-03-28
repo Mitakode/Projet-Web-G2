@@ -2,7 +2,9 @@
     const burgerBtn = document.querySelector('.burger-btn');
     const nav = document.getElementById('main-nav');
 
-    if (!burgerBtn || !nav) return;
+    if (!burgerBtn || !nav) {
+        return;
+    }
 
     const closeMenu = function () {
         document.body.classList.remove('menu-open');

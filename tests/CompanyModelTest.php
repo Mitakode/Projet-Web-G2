@@ -1,34 +1,34 @@
 <?php
 
 namespace App\Tests;
-use PHPUnit\Framework\TestCase;
 
+use PHPUnit\Framework\TestCase;
 use App\Models\CompanyModel;
 use App\Models\SqlDatabase;
 
-class CompanyModelTest extends TestCase {
-
-    public function testGetCompanyById(){
+class CompanyModelTest extends TestCase
+{
+    public function testGetCompanyById()
+    {
 
         $connection = $this->createStub(SqlDatabase::class);
-        
+
         $connection->method('getRecord')->willReturn([
-            'ID_entreprise' => 2, 
-            'Nom_entreprise' => 'Microsoft', 
-            'Description' => 'Leader du logiciel', 
+            'ID_entreprise' => 2,
+            'Nom_entreprise' => 'Microsoft',
+            'Description' => 'Leader du logiciel',
             'Contact' => 'contact@microsoft.com'
             ]);
-        
+
         $model = new CompanyModel($connection);
 
         $company = $model->getCompanyById(2);
 
         $this->assertEquals('Microsoft', $company['Nom_entreprise']);
-
-        
     }
 
-    public function testCreateCompany() {
+    public function testCreateCompany()
+    {
 
         $connection = $this->createMock(SqlDatabase::class);
 
@@ -42,7 +42,7 @@ class CompanyModelTest extends TestCase {
                     'Description' => 'This is a test company',
                     'Contact' => 'contact@testcompany.com'
                    ]);
-        
+
         $model = new CompanyModel($connection);
 
         $result = $model->createCompany([
@@ -54,19 +54,21 @@ class CompanyModelTest extends TestCase {
         $this->assertTrue($result);
     }
 
-    public function testUpdateCompany() {
+    public function testUpdateCompany()
+    {
 
         $connection = $this->createMock(SqlDatabase::class);
         $connection->method('updateRecord')->willReturn(true);
-        
+
         $model = new CompanyModel($connection);
-        
+
         $result = $model->updateCompany(2, ['Nom_entreprise' => 'Updated Microsoft']);
 
         $this->assertTrue($result);
     }
 
-    public function testDeleteCompany() {
+    public function testDeleteCompany()
+    {
 
         $connection = $this->createMock(SqlDatabase::class);
 
@@ -75,7 +77,7 @@ class CompanyModelTest extends TestCase {
         $connection->expects($this->once())
                    ->method('deleteRecord')
                    ->with(2);
-        
+
         $model = new CompanyModel($connection);
 
         $result = $model->deleteCompany(2);
@@ -83,12 +85,13 @@ class CompanyModelTest extends TestCase {
         $this->assertTrue($result);
     }
 
-    public function testSearchCompanies() {
+    public function testSearchCompanies()
+    {
 
         $connection = $this->createMock(SqlDatabase::class);
         $pdoMock = $this->createMock(\PDO::class);
         $stmtMock = $this->createMock(\PDOStatement::class);
-        
+
         $fakeResults = [
             ['ID_entreprise' => 2, 'Nom_entreprise' => 'Microsoft', 'Description' => 'Leader du logiciel', 'Moyenne_Note' => 4.5]
         ];
@@ -105,19 +108,20 @@ class CompanyModelTest extends TestCase {
         $this->assertEquals('Microsoft', $companies[0]['Nom_entreprise']);
     }
 
-    public function testRateCompany() {
+    public function testRateCompany()
+    {
 
         $connection = $this->createMock(SqlDatabase::class);
         $pdoMock = $this->createMock(\PDO::class);
         $stmtMock = $this->createMock(\PDOStatement::class);
 
         $connection->method('getConnection')->willReturn($pdoMock);
-    
+
         // On simule toute la chaîne PDO (prepare -> execute -> fetch)
         $pdoMock->method('prepare')->willReturn($stmtMock);
         $stmtMock->method('execute')->willReturn(true);
         $stmtMock->method('fetch')->willReturn(['count' => 0]);
-        
+
         $model = new CompanyModel($connection);
 
         $result = $model->rateCompany(2, 1, 4);

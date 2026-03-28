@@ -29,9 +29,9 @@
             '.pagination a, a[href*="uri=offers/addWishlist"], a[href*="uri=offers/deleteWishlist"]'
         );
 
-        if (!actionLink) {
-            return;
-        }
+    if (!actionLink) {
+        return;
+    }
 
         const currentUrl = new URL(window.location.href);
         const targetUrl = new URL(actionLink.href, window.location.origin);
@@ -43,9 +43,9 @@
             currentView === getLogicalView(targetUrl) ||
             (currentView === 'offers' && (targetUri === 'offers/addWishlist' || targetUri === 'offers/deleteWishlist'));
 
-        if (!isSameView) {
-            return;
-        }
+    if (!isSameView) {
+        return;
+    }
 
         saveScrollState();
     });

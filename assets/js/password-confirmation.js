@@ -1,5 +1,6 @@
 (function () {
-    function initAccountForm(form) {
+    function initAccountForm(form)
+    {
         const passwordInput = form.querySelector('[name="password"]');
         const confirmInput = form.querySelector('[name="confirm_password"]');
 
