@@ -168,6 +168,7 @@ class DashboardAdminController{
 
         if ($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'pilote') {
             $error = "";
+            $formStudent = [];
 
             if($_SERVER['REQUEST_METHOD']==='POST'){
                 $postData = $this->getFormData($error, true);
@@ -185,6 +186,14 @@ class DashboardAdminController{
                 if (empty($id_pilote)) {
                     $error .= 'id_pilote&';
                 }
+
+                $formStudent = [
+                    'Nom' => $postData['surname'],
+                    'Prenom' => $postData['firstname'],
+                    'Email' => $postData['email'],
+                    'Promotion' => $promotion,
+                    'ID_pilote' => $id_pilote
+                ];
 
                 if (empty($error)) {
                 ;    $userData = $this->getUserData($postData, true);
@@ -207,6 +216,7 @@ class DashboardAdminController{
                 'pilotes' => $pilots,
                 'is_edit'=> false,
                 'session' => $_SESSION,
+                'etudiant' => $formStudent,
                 'error' => $error
             ]);
         }
@@ -317,9 +327,16 @@ class DashboardAdminController{
         $blockAccess->blockPilotAccess();
 
         $error = "";
+        $formPilot = [];
 
         if($_SERVER['REQUEST_METHOD']==='POST'){
             $postData = $this->getFormData($error, true);
+
+            $formPilot = [
+                'Nom' => $postData['surname'],
+                'Prenom' => $postData['firstname'],
+                'Email' => $postData['email']
+            ];
 
             if (empty($error)) {
                 $userData = $this->getUserData($postData, true);
@@ -336,6 +353,7 @@ class DashboardAdminController{
         echo $this->twig->render('PilotForm.html.twig', [
             'is_edit'=> false,
             'session' => $_SESSION,
+            'pilote' => $formPilot,
             'error' => $error
         ]);
     }

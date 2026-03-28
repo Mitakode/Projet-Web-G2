@@ -172,6 +172,9 @@ class OfferController
         $blockAccess = new BlockAccess($this->twig);
         $blockAccess->blockStudentAccess();
 
+        $error = '';
+        $offerFormData = [];
+
         if ($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'pilote') {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Si le formulaire a été soumis
                 // Nettoyage des données
@@ -186,9 +189,26 @@ class OfferController
                 $datePublication = date('Y-m-d');// Date du jour automatique
 
                 // Vérification basique
-                if (empty($titre) || empty($description) || empty($idEntreprise)) {
-                    echo "Veuillez remplir correctement tous les champs obligatoires.";
-                } else {
+                if (empty($titre)) {
+                    $error .= 'Titre&';
+                }
+                if (empty($description)) {
+                    $error .= 'Description&';
+                }
+                if (empty($idEntreprise)) {
+                    $error .= 'ID_entreprise&';
+                }
+
+                $offerFormData = [
+                    'Titre' => $titre,
+                    'Description' => $description,
+                    'Base_remuneration' => $baseRemuneration,
+                    'Duree' => $duree,
+                    'Liste_competences' => $listeCompetences,
+                    'ID_entreprise' => $idEntreprise
+                ];
+
+                if (empty($error)) {
                 // Insertion en BDD
                     $this->model->createOffer([
                         'Titre'             => $titre,
@@ -209,7 +229,9 @@ class OfferController
             // Affiche le formulaire vierge
             echo $this->twig->render('OffersForm.html.twig', [
                 'is_edit'     => false,
-                'entreprises' => $entreprises
+                'entreprises' => $entreprises,
+                'offre' => $offerFormData,
+                'error' => $error
             ]);
         }
         else {
