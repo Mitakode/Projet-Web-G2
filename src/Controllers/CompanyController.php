@@ -41,6 +41,9 @@ class CompanyController
         $blockAccess = new BlockAccess($this->twig);
         $blockAccess->blockStudentAccess();
 
+        $error = '';
+        $companyFormData = [];
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = isset($_POST['nameCompany'])
                 ? htmlspecialchars(trim($_POST['nameCompany']))
@@ -51,9 +54,24 @@ class CompanyController
             $contact = isset($_POST['contactCompany'])
                 ? htmlspecialchars(trim($_POST['contactCompany']))
                 : '';
-            if (empty($name) || empty($description) || empty($contact)) {
-                echo "Veulliez remplir correctement tous les champs.";
-            } else {
+
+            if (empty($name)) {
+                $error .= 'nameCompany&';
+            }
+            if (empty($contact)) {
+                $error .= 'contactCompany&';
+            }
+            if (empty($description)) {
+                $error .= 'descriptionCompany&';
+            }
+
+            $companyFormData = [
+                'Nom_entreprise' => $name,
+                'Description' => $description,
+                'Contact' => $contact
+            ];
+
+            if (empty($error)) {
                 $this->model->createCompany([
                     'Nom_entreprise' => $name,
                     'Description' => $description,
@@ -65,7 +83,9 @@ class CompanyController
         }
 
         echo $this->twig->render('CompaniesForm.html.twig', [
-            'is_edit' => false
+            'is_edit' => false,
+            'entreprise' => $companyFormData,
+            'error' => $error
         ]);
     }
 
