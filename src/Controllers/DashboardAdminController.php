@@ -19,6 +19,58 @@ class DashboardAdminController{
         return mb_convert_case($clean, MB_CASE_TITLE, 'UTF-8');
     }
 
+    private function getFormData(string &$error, bool $requirePassword): array
+    {
+        $postData = [
+            'surname' => isset($_POST['surname']) ? htmlspecialchars($this->normalizeSurname($_POST['surname'])) : '',
+            'firstname' => isset($_POST['firstname']) ? htmlspecialchars($this->normalizeFirstname($_POST['firstname'])) : '',
+            'email' => isset($_POST['email']) ? htmlspecialchars(trim($_POST['email'])) : '',
+            'password' => isset($_POST['password']) ? htmlspecialchars(trim($_POST['password'])) : '',
+            'confirm_password' => isset($_POST['confirm_password']) ? htmlspecialchars(trim($_POST['confirm_password'])) : ''
+        ];
+
+        if (empty($postData['surname'])) {
+            $error .= 'surname&';
+        }
+
+        if (empty($postData['firstname'])) {
+            $error .= 'firstname&';
+        }
+
+        if (empty($postData['email'])) {
+            $error .= 'email&';
+        }
+
+        if ($requirePassword && empty($postData['password'])) {
+            $error .= 'password&';
+        } elseif ($postData['password'] !== '' || $postData['confirm_password'] !== '') {
+            if (
+                $postData['password'] === ''
+                || $postData['confirm_password'] === ''
+                || $postData['password'] !== $postData['confirm_password']
+            ) {
+                $error .= 'confirm&';
+            }
+        }
+
+        return $postData;
+    }
+
+    private function getUserData(array $postData, bool $includePassword): array
+    {
+        $userData = [
+            'Nom' => $postData['surname'],
+            'Prenom' => $postData['firstname'],
+            'Email' => $postData['email']
+        ];
+
+        if ($includePassword && $postData['password'] !== '') {
+            $userData['Mot_de_passe'] = password_hash($postData['password'], PASSWORD_BCRYPT);
+        }
+
+        return $userData;
+    }
+
     public function __construct($twig, $model) {
         $this->twig = $twig;
         $this->model = $model;
@@ -116,35 +168,12 @@ class DashboardAdminController{
             $error = "";
 
             if($_SERVER['REQUEST_METHOD']==='POST'){
-                $surname= isset($_POST['surname']) ? htmlspecialchars($this->normalizeSurname($_POST['surname'])):'';
-                $firstname = isset($_POST['firstname']) ? htmlspecialchars($this->normalizeFirstname($_POST['firstname'])) : '';
+                $postData = $this->getFormData($error, true);
                 $promotion=isset($_POST['promotion']) ? htmlspecialchars(trim($_POST['promotion'])):'';
-                $email=isset($_POST['email']) ? htmlspecialchars(trim($_POST['email'])):'';
-                $password= isset($_POST['password']) ? htmlspecialchars(trim($_POST['password'])):'';
-                $confirmPassword = isset($_POST['confirm_password']) ? htmlspecialchars(trim($_POST['confirm_password'])) : '';
-
-                if ($_SESSION['user_role'] === 'admin') {
-                $id_pilote = isset($_POST['id_pilote']) ? intval($_POST['id_pilote']) : null;
+                if (($_SESSION['user_role'] ?? null) === 'admin') {
+                    $id_pilote = isset($_POST['id_pilote']) ? intval($_POST['id_pilote']) : null;
                 } else {
-                    $id_pilote = $_SESSION['user_id']; 
-                }
-
-                if (empty($surname)) {
-                    $error .= 'surname&';
-                }
-
-                if (empty($firstname)) {
-                    $error .= 'firstname&';
-                }
-
-                if (empty($email)) {
-                    $error .= 'email&';
-                }
-
-                if (empty($password)) {
-                    $error .= 'password&';
-                } else if ($password !== $confirmPassword) {
-                    $error .= 'confirm&';
+                    $id_pilote = $_SESSION['user_id'] ?? null;
                 }
 
                 if (empty($promotion)) {
@@ -156,12 +185,7 @@ class DashboardAdminController{
                 }
 
                 if (empty($error)) {
-                    $userData = [
-                        'Nom' => $surname,
-                        'Prenom' => $firstname,
-                        'Email' => $email,
-                        'Mot_de_passe' => password_hash($password, PASSWORD_BCRYPT)
-                    ];
+                ;    $userData = $this->getUserData($postData, true);
 
                     $studentData = [
                         'Promotion' => $promotion,
@@ -232,34 +256,12 @@ class DashboardAdminController{
             }
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $surname = isset($_POST['surname']) ? htmlspecialchars($this->normalizeSurname($_POST['surname'])) : '';
-                $firstname = isset($_POST['firstname']) ? htmlspecialchars($this->normalizeFirstname($_POST['firstname'])) : '';
-                $email = isset($_POST['email']) ? htmlspecialchars(trim($_POST['email'])) : '';
-                $password = isset($_POST['password']) ? htmlspecialchars(trim($_POST['password'])) : '';
-                $confirmPassword = isset($_POST['confirm_password']) ? htmlspecialchars(trim($_POST['confirm_password'])) : '';
+                $postData = $this->getFormData($error, false);
                 $promotion = isset($_POST['promotion']) ? htmlspecialchars(trim($_POST['promotion'])) : '';
-
-                if ($_SESSION['user_role'] === 'admin') {
+                if (($_SESSION['user_role'] ?? null) === 'admin') {
                     $id_pilote = isset($_POST['id_pilote']) ? intval($_POST['id_pilote']) : null;
                 } else {
-                    $id_pilote = $_SESSION['user_id'];
-                }
-
-                if (empty($surname)) {
-                    $error .= 'surname&';
-                }
-
-                if (empty($firstname)) {
-                    $error .= 'firstname&';
-                }
-
-                if (empty($email)) {
-                    $error .= 'email&';
-                }
-
-                if (empty($password)) {
-                } else if ($password !== $confirmPassword) {
-                    $error .= 'confirm&';
+                    $id_pilote = $_SESSION['user_id'] ?? null;
                 }
 
                 if (empty($promotion)) {
@@ -270,15 +272,7 @@ class DashboardAdminController{
                     $error .= 'id_pilote&';
                 }
 
-                $userData = [
-                    'Nom' => $surname,
-                    'Prenom' => $firstname,
-                    'Email' => $email
-                ];
-
-                if ($password !== '') {
-                    $userData['Mot_de_passe'] = password_hash($password, PASSWORD_BCRYPT);
-                }
+                $userData = $this->getUserData($postData, true);
 
                 $studentData = [
                     'Promotion' => $promotion,
@@ -317,37 +311,10 @@ class DashboardAdminController{
         $error = "";
 
         if($_SERVER['REQUEST_METHOD']==='POST'){
-            $surname= isset($_POST['surname']) ? htmlspecialchars($this->normalizeSurname($_POST['surname'])):'';
-            $firstname = isset($_POST['firstname']) ? htmlspecialchars($this->normalizeFirstname($_POST['firstname'])) : '';
-            $email=isset($_POST['email']) ? htmlspecialchars(trim($_POST['email'])):'';
-            $password= isset($_POST['password']) ? htmlspecialchars(trim($_POST['password'])):'';
-            $confirmPassword = isset($_POST['confirm_password']) ? htmlspecialchars(trim($_POST['confirm_password'])) : '';
-
-            if (empty($surname)) {
-                $error .= 'surname&';
-            }
-
-            if (empty($firstname)) {
-                $error .= 'firstname&';
-            }
-
-            if (empty($email)) {
-                $error .= 'email&';
-            }
-
-            if (empty($password)) {
-                $error .= 'password&';
-            } else if ($password !== $confirmPassword) {
-                $error .= 'confirm&';
-            }
+            $postData = $this->getFormData($error, true);
 
             if (empty($error)) {
-                $userData = [
-                    'Nom' => $surname,
-                    'Prenom' => $firstname,
-                    'Email' => $email,
-                    'Mot_de_passe' => password_hash($password, PASSWORD_BCRYPT)
-                ];
+                $userData = $this->getUserData($postData, true);
 
                 $this->model->createPilot($userData);
                 
@@ -406,39 +373,10 @@ class DashboardAdminController{
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $surname = isset($_POST['surname']) ? htmlspecialchars($this->normalizeSurname($_POST['surname'])) : '';
-            $firstname = isset($_POST['firstname']) ? htmlspecialchars($this->normalizeFirstname($_POST['firstname'])) : '';
-            $email = isset($_POST['email']) ? htmlspecialchars(trim($_POST['email'])) : '';
-            $password = isset($_POST['password']) ? htmlspecialchars(trim($_POST['password'])) : '';
-            $confirmPassword = isset($_POST['confirm_password']) ? htmlspecialchars(trim($_POST['confirm_password'])) : '';
-
-            if (empty($surname)) {
-                $error .= 'surname&';
-            }
-
-            if (empty($firstname)) {
-                $error .= 'firstname&';
-            }
-
-            if (empty($email)) {
-                $error .= 'email&';
-            }
-
-            if (empty($password)) {
-            } else if ($password !== $confirmPassword) {
-                $error .= 'confirm&';
-            }
+            $postData = $this->getFormData($error, false);
 
             if (empty($error)) {
-                $userData = [
-                    'Nom' => $surname,
-                    'Prenom' => $firstname,
-                    'Email' => $email
-                ];
-
-                if ($password !== '') {
-                    $userData['Mot_de_passe'] = password_hash($password, PASSWORD_BCRYPT);
-                }
+                $userData = $this->getUserData($postData, true);
 
                 $this->model->updatePilot($id, $userData);
                 header('Location: /dashboard/admin');
