@@ -71,8 +71,6 @@
             if (!regex.test(contactInput.value)) {
                 event.preventDefault();
                 window.showErrorPopup("Le format doit être : 0145632890 - contact@thepiston.fr");
-            } else {
-                window.showSuccessPopup("Entreprise ajoutée/modifiée avec succès !");
             }
         });
     }
@@ -128,15 +126,30 @@
         const successMessages = {
             student_created: "Étudiant créé avec succès !",
             student_updated: "Étudiant modifié avec succès !",
+            student_deleted: "Étudiant supprimé avec succès !",
             pilot_created: "Pilote créé avec succès !",
             pilot_updated: "Pilote modifié avec succès !",
+            pilot_deleted: "Pilote supprimé avec succès !",
+            company_created: "Entreprise créée avec succès !",
+            company_updated: "Entreprise modifiée avec succès !",
+            company_deleted: "Entreprise supprimée avec succès !",
+            offer_deleted: "Offre supprimée avec succès !",
+            offer_updated: "Offre modifiée avec succès !",
             company_rated: "Note enregistrée avec succès !",
             success: "Candidature envoyée avec succès !"
         };
 
         const errorMessages = {
             error: "Une erreur est survenue. Veuillez réessayer.",
-            already_applied: "Vous avez déjà candidaté à cette offre."
+            already_applied: "Vous avez déjà candidaté à cette offre.",
+            student_delete_blocked: "Impossible de supprimer cet étudiant car des données y sont liées.",
+            student_delete_error: "Erreur lors de la suppression de l'étudiant.",
+            pilot_delete_blocked: "Impossible de supprimer ce pilote car des étudiants lui sont associés.",
+            pilot_delete_error: "Erreur lors de la suppression du pilote.",
+            company_delete_blocked: "Impossible de supprimer cette entreprise car des évaluations ou offres y sont liées.",
+            company_delete_error: "Erreur lors de la suppression de l'entreprise.",
+            offer_delete_blocked: "Impossible de supprimer cette offre car des candidatures y sont liées.",
+            offer_delete_error: "Erreur lors de la suppression de l'offre."
         };
 
         if (successMessages[popup]) {

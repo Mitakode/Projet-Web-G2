@@ -230,10 +230,16 @@ class DashboardAdminController{
 
             try {
                 $this->model->deleteStudent($id);
-                header('Location: /dashboard/admin');
+                header('Location: /dashboard/admin?popup=student_deleted');
                 exit;
-            } catch (\Exception $e) {
-                echo "Erreur lors de la suppression de l'étudiant.";
+            } catch (\Throwable $e) {
+                if ($e instanceof \PDOException && $e->getCode() === '23000') {
+                    header('Location: /dashboard/admin?popup=student_delete_blocked');
+                    exit;
+                }
+
+                header('Location: /dashboard/admin?popup=student_delete_error');
+                exit;
             }
         }
         else {
@@ -347,15 +353,21 @@ class DashboardAdminController{
 
          try {
              if ($this->model->pilotHasStudents($id)) {
-                 echo "Impossible de supprimer ce pilote : des étudiants lui sont encore associés.";
-                 return;
+                 header('Location: /dashboard/admin?popup=pilot_delete_blocked');
+                 exit;
              }
 
              $this->model->deletePilot($id);
-             header('Location: /dashboard/admin');
+             header('Location: /dashboard/admin?popup=pilot_deleted');
              exit;
-         } catch (\Exception $e) {
-             echo "Erreur lors de la suppression du pilote.";
+         } catch (\Throwable $e) {
+             if ($e instanceof \PDOException && $e->getCode() === '23000') {
+                 header('Location: /dashboard/admin?popup=pilot_delete_blocked');
+                 exit;
+             }
+
+             header('Location: /dashboard/admin?popup=pilot_delete_error');
+             exit;
          }
     }
 

@@ -64,8 +64,11 @@ class DashboardStudentController {
             $this->model->removeFromWishlist($idEtudiant, $idOffre);
         }
 
+        $currentPage = $_GET['page'] ?? 1;
+        $currentPageW = $_GET['pageW'] ?? 1;
+
         // Redirection vers le dashboard après suppression
-        header('Location: index.php?uri=dashboard/student');
+        header('Location: index.php?uri=dashboard/student&page=' . urlencode((string) $currentPage) . '&pageW=' . urlencode((string) $currentPageW));
         exit;
     }
 }

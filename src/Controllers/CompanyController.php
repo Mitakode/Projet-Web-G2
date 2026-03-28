@@ -59,7 +59,7 @@ class CompanyController
                     'Description' => $description,
                     'Contact' => $contact
                 ]);
-                header('Location: /companies');
+                header('Location: /companies?popup=company_created');
                 exit;
             }
         }
@@ -87,7 +87,7 @@ class CompanyController
             'Contact'        => htmlspecialchars(trim($_POST['contactCompany']))
             ];
             $this->model->updateCompany($id, $data);
-            header('Location: /companies');
+            header('Location: /companies?popup=company_updated');
             exit;
         }
 
@@ -105,9 +105,22 @@ class CompanyController
 
         $id = $_GET['id'] ?? null;
         if ($id) {
-            $this->model->deleteCompany($id);
+            try {
+                $this->model->deleteCompany($id);
+                header('Location: /companies?popup=company_deleted');
+                exit;
+            } catch (\Throwable $e) {
+                if ($e instanceof \PDOException && $e->getCode() === '23000') {
+                    header('Location: /companies?popup=company_delete_blocked');
+                    exit;
+                }
+
+                header('Location: /companies?popup=company_delete_error');
+                exit;
+            }
         }
-        header('Location: /companies');
+        header('Location: /companies?popup=company_delete_error');
+        exit;
     }
 
     public function rate()

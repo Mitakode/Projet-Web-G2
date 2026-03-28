@@ -244,7 +244,7 @@ class OfferController
                     'ID_entreprise'     => intval($_POST['ID_entreprise'])
                 ];
                 $this->model->updateOffer($id, $data);
-                header('Location: /offers');
+                header('Location: /offers?popup=offer_updated');
                 exit;
             }
 
@@ -275,12 +275,26 @@ class OfferController
         if($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'pilote') {
             $id = $_GET['id'] ?? null;
             if ($id) {
-                $this->model->deleteOffer($id);
+                try {
+                    $this->model->deleteOffer($id);
+                    header('Location: /offers?popup=offer_deleted');
+                    exit;
+                } catch (\Throwable $e) {
+                    if ($e instanceof \PDOException && $e->getCode() === '23000') {
+                        header('Location: /offers?popup=offer_delete_blocked');
+                        exit;
+                    }
+
+                    header('Location: /offers?popup=offer_delete_error');
+                    exit;
+                }
             }
-            header('Location: /offers');
+            header('Location: /offers?popup=offer_delete_error');
+            exit;
         }
         else {
             header('Location: /');
+            exit;
         }
     }
 
@@ -330,6 +344,7 @@ class OfferController
             $wishlistModel->removeFromWishlist($studentId, $offerId);
         }
         header('Location: /offers?' . http_build_query($data));
+        exit;
         
     }
 
