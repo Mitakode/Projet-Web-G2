@@ -113,16 +113,15 @@ class DashboardAdminController{
         $blockAccess->blockStudentAccess();
 
         if ($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'pilote') {
-            $popupError = null;
+            $error = "";
 
             if($_SERVER['REQUEST_METHOD']==='POST'){
                 $surname= isset($_POST['surname']) ? htmlspecialchars($this->normalizeSurname($_POST['surname'])):'';
-                $name= isset($_POST['name']) ? htmlspecialchars($this->normalizeFirstname($_POST['name'])):'';
+                $firstname = isset($_POST['firstname']) ? htmlspecialchars($this->normalizeFirstname($_POST['firstname'])) : '';
                 $promotion=isset($_POST['promotion']) ? htmlspecialchars(trim($_POST['promotion'])):'';
                 $email=isset($_POST['email']) ? htmlspecialchars(trim($_POST['email'])):'';
                 $password= isset($_POST['password']) ? htmlspecialchars(trim($_POST['password'])):'';
                 $confirmPassword = isset($_POST['confirm_password']) ? htmlspecialchars(trim($_POST['confirm_password'])) : '';
-                $id_pilot =null;
 
                 if ($_SESSION['user_role'] === 'admin') {
                 $id_pilote = isset($_POST['id_pilote']) ? intval($_POST['id_pilote']) : null;
@@ -130,14 +129,36 @@ class DashboardAdminController{
                     $id_pilote = $_SESSION['user_id']; 
                 }
 
-                if (empty($surname) || empty($name) || empty($promotion) || empty($email) || empty($password) || empty($confirmPassword) || empty($id_pilote)) {
-                    echo "Veuillez remplir tous les champs, y compris le pilote référent.";
+                if (empty($surname)) {
+                    $error .= 'surname&';
+                }
+
+                if (empty($firstname)) {
+                    $error .= 'firstname&';
+                }
+
+                if (empty($email)) {
+                    $error .= 'email&';
+                }
+
+                if (empty($password)) {
+                    $error .= 'password&';
                 } else if ($password !== $confirmPassword) {
-                    $popupError = "Les mots de passe ne correspondent pas.";
-                } else {
+                    $error .= 'confirm&';
+                }
+
+                if (empty($promotion)) {
+                    $error .= 'promotion&';
+                }
+
+                if (empty($id_pilote)) {
+                    $error .= 'id_pilote&';
+                }
+
+                if (empty($error)) {
                     $userData = [
                         'Nom' => $surname,
-                        'Prenom' => $name,
+                        'Prenom' => $firstname,
                         'Email' => $email,
                         'Mot_de_passe' => password_hash($password, PASSWORD_BCRYPT)
                     ];
@@ -160,7 +181,7 @@ class DashboardAdminController{
                 'pilotes' => $pilots,
                 'is_edit'=> false,
                 'session' => $_SESSION,
-                'popup_error' => $popupError
+                'error' => $error
             ]);
         }
         else {
@@ -201,7 +222,7 @@ class DashboardAdminController{
         $blockAccess->blockStudentAccess();
 
         if ($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'pilote') {
-            $popupError = null;
+            $error = "";
 
             $id = $_GET['id'] ?? null;
 
@@ -211,31 +232,60 @@ class DashboardAdminController{
             }
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $userData = [
-                    'Nom' => htmlspecialchars($this->normalizeSurname($_POST['surname'] ?? '')),
-                    'Prenom' => htmlspecialchars($this->normalizeFirstname($_POST['name'] ?? '')),
-                    'Email' => htmlspecialchars(trim($_POST['email']))
-                ];
-                $password = trim($_POST['password'] ?? '');
-                $confirmPassword = trim($_POST['confirm_password'] ?? '');
+                $surname = isset($_POST['surname']) ? htmlspecialchars($this->normalizeSurname($_POST['surname'])) : '';
+                $firstname = isset($_POST['firstname']) ? htmlspecialchars($this->normalizeFirstname($_POST['firstname'])) : '';
+                $email = isset($_POST['email']) ? htmlspecialchars(trim($_POST['email'])) : '';
+                $password = isset($_POST['password']) ? htmlspecialchars(trim($_POST['password'])) : '';
+                $confirmPassword = isset($_POST['confirm_password']) ? htmlspecialchars(trim($_POST['confirm_password'])) : '';
+                $promotion = isset($_POST['promotion']) ? htmlspecialchars(trim($_POST['promotion'])) : '';
 
-                if ($password !== '' || $confirmPassword !== '') {
-                    if ($password === '' || $confirmPassword === '' || $password !== $confirmPassword) {
-                        $popupError = "Les mots de passe ne correspondent pas.";
-                    } else {
-                        $userData['Mot_de_passe'] = password_hash($password, PASSWORD_BCRYPT);
-                    }
+                if ($_SESSION['user_role'] === 'admin') {
+                    $id_pilote = isset($_POST['id_pilote']) ? intval($_POST['id_pilote']) : null;
+                } else {
+                    $id_pilote = $_SESSION['user_id'];
+                }
+
+                if (empty($surname)) {
+                    $error .= 'surname&';
+                }
+
+                if (empty($firstname)) {
+                    $error .= 'firstname&';
+                }
+
+                if (empty($email)) {
+                    $error .= 'email&';
+                }
+
+                if (empty($password)) {
+                } else if ($password !== $confirmPassword) {
+                    $error .= 'confirm&';
+                }
+
+                if (empty($promotion)) {
+                    $error .= 'promotion&';
+                }
+
+                if (empty($id_pilote)) {
+                    $error .= 'id_pilote&';
+                }
+
+                $userData = [
+                    'Nom' => $surname,
+                    'Prenom' => $firstname,
+                    'Email' => $email
+                ];
+
+                if ($password !== '') {
+                    $userData['Mot_de_passe'] = password_hash($password, PASSWORD_BCRYPT);
                 }
 
                 $studentData = [
-                    'Promotion' => htmlspecialchars(trim($_POST['promotion'])),
+                    'Promotion' => $promotion,
+                    'ID_pilote' => $id_pilote
                 ];
 
-                if (isset($_POST['id_pilote'])) {
-                    $studentData['ID_pilote'] = intval($_POST['id_pilote']);
-                }
-
-                if ($popupError === null) {
+                if (empty($error)) {
                     $this->model->updateStudent($id, $userData, $studentData);
                     header('Location: /dashboard/admin');
                     exit;
@@ -250,7 +300,7 @@ class DashboardAdminController{
                 'pilotes' => $pilots,
                 'is_edit'  => true,
                 'session'  => $_SESSION,
-                'popup_error' => $popupError
+                'error' => $error
             ]);
         }
         else {
@@ -264,23 +314,37 @@ class DashboardAdminController{
         $blockAccess->blockStudentAccess();
         $blockAccess->blockPilotAccess();
 
-        $popupError = null;
+        $error = "";
 
         if($_SERVER['REQUEST_METHOD']==='POST'){
             $surname= isset($_POST['surname']) ? htmlspecialchars($this->normalizeSurname($_POST['surname'])):'';
-            $name= isset($_POST['name']) ? htmlspecialchars($this->normalizeFirstname($_POST['name'])):'';
+            $firstname = isset($_POST['firstname']) ? htmlspecialchars($this->normalizeFirstname($_POST['firstname'])) : '';
             $email=isset($_POST['email']) ? htmlspecialchars(trim($_POST['email'])):'';
             $password= isset($_POST['password']) ? htmlspecialchars(trim($_POST['password'])):'';
             $confirmPassword = isset($_POST['confirm_password']) ? htmlspecialchars(trim($_POST['confirm_password'])) : '';
 
-            if (empty($surname) || empty($name) || empty($email) || empty($password) || empty($confirmPassword)) {
-                echo "Veuillez remplir tous les champs, y compris le pilote référent.";
+            if (empty($surname)) {
+                $error .= 'surname&';
+            }
+
+            if (empty($firstname)) {
+                $error .= 'firstname&';
+            }
+
+            if (empty($email)) {
+                $error .= 'email&';
+            }
+
+            if (empty($password)) {
+                $error .= 'password&';
             } else if ($password !== $confirmPassword) {
-                $popupError = "Les mots de passe ne correspondent pas.";
-            } else {
+                $error .= 'confirm&';
+            }
+
+            if (empty($error)) {
                 $userData = [
                     'Nom' => $surname,
-                    'Prenom' => $name,
+                    'Prenom' => $firstname,
                     'Email' => $email,
                     'Mot_de_passe' => password_hash($password, PASSWORD_BCRYPT)
                 ];
@@ -297,7 +361,7 @@ class DashboardAdminController{
         echo $this->twig->render('PilotForm.html.twig', [
             'is_edit'=> false,
             'session' => $_SESSION,
-            'popup_error' => $popupError
+            'error' => $error
         ]);
     }
     
@@ -332,7 +396,7 @@ class DashboardAdminController{
         $blockAccess->blockStudentAccess();
         $blockAccess->blockPilotAccess();
 
-        $popupError = null;
+        $error = "";
 
         $id = $_GET['id'] ?? null;
 
@@ -342,23 +406,40 @@ class DashboardAdminController{
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $userData = [
-                'Nom' => htmlspecialchars($this->normalizeSurname($_POST['surname'] ?? '')),
-                'Prenom' => htmlspecialchars($this->normalizeFirstname($_POST['name'] ?? '')),
-                'Email' => htmlspecialchars(trim($_POST['email']))
-            ];
-            $password = trim($_POST['password'] ?? '');
-            $confirmPassword = trim($_POST['confirm_password'] ?? '');
+            $surname = isset($_POST['surname']) ? htmlspecialchars($this->normalizeSurname($_POST['surname'])) : '';
+            $firstname = isset($_POST['firstname']) ? htmlspecialchars($this->normalizeFirstname($_POST['firstname'])) : '';
+            $email = isset($_POST['email']) ? htmlspecialchars(trim($_POST['email'])) : '';
+            $password = isset($_POST['password']) ? htmlspecialchars(trim($_POST['password'])) : '';
+            $confirmPassword = isset($_POST['confirm_password']) ? htmlspecialchars(trim($_POST['confirm_password'])) : '';
 
-            if ($password !== '' || $confirmPassword !== '') {
-                if ($password === '' || $confirmPassword === '' || $password !== $confirmPassword) {
-                    $popupError = "Les mots de passe ne correspondent pas.";
-                } else {
-                    $userData['Mot_de_passe'] = password_hash($password, PASSWORD_BCRYPT);
-                }
+            if (empty($surname)) {
+                $error .= 'surname&';
             }
 
-            if ($popupError === null) {
+            if (empty($firstname)) {
+                $error .= 'firstname&';
+            }
+
+            if (empty($email)) {
+                $error .= 'email&';
+            }
+
+            if (empty($password)) {
+            } else if ($password !== $confirmPassword) {
+                $error .= 'confirm&';
+            }
+
+            if (empty($error)) {
+                $userData = [
+                    'Nom' => $surname,
+                    'Prenom' => $firstname,
+                    'Email' => $email
+                ];
+
+                if ($password !== '') {
+                    $userData['Mot_de_passe'] = password_hash($password, PASSWORD_BCRYPT);
+                }
+
                 $this->model->updatePilot($id, $userData);
                 header('Location: /dashboard/admin');
                 exit;
@@ -371,7 +452,7 @@ class DashboardAdminController{
             'pilote' => $pilot,
             'is_edit'  => true,
             'session'  => $_SESSION,
-            'popup_error' => $popupError
+            'error' => $error
         ]);
     }
 
