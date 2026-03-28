@@ -2,14 +2,17 @@
 
 namespace App\Controllers;
 
-Class BlockAccess {
+class BlockAccess
+{
     private $twig;
 
-    public function __construct($twig) {
+    public function __construct($twig)
+    {
         $this->twig = $twig;
     }
 
-    private function renderLoginRequired(bool $mustLogin = true): void {
+    private function renderLoginRequired(bool $mustLogin = true): void
+    {
         $message = $mustLogin
             ? 'Vous devez vous connecter pour accéder à cette page.'
             : 'Accès refusé : vous n\'avez pas les droits nécessaires pour accéder à cette page.';
@@ -23,13 +26,15 @@ Class BlockAccess {
         exit;
     }
 
-    public function requireAuthenticated(): void {
+    public function requireAuthenticated(): void
+    {
         if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role'])) {
             $this->renderLoginRequired(true);
         }
     }
 
-    public function blockStudentAccess(): void {
+    public function blockStudentAccess(): void
+    {
         $this->requireAuthenticated();
 
         if (($_SESSION['user_role'] ?? null) === 'etudiant') {
@@ -37,7 +42,8 @@ Class BlockAccess {
         }
     }
 
-    public function blockPilotAccess(): void {
+    public function blockPilotAccess(): void
+    {
         $this->requireAuthenticated();
 
         if (($_SESSION['user_role'] ?? null) === 'pilote') {
@@ -45,13 +51,12 @@ Class BlockAccess {
         }
     }
 
-    public function blockAdminAccess(): void {
+    public function blockAdminAccess(): void
+    {
         $this->requireAuthenticated();
 
         if (($_SESSION['user_role'] ?? null) === 'admin') {
             $this->renderLoginRequired(false);
         }
     }
-
-
-};
+}

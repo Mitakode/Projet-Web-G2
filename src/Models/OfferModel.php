@@ -16,7 +16,9 @@ class OfferModel extends Model
      */
     public function getOfferById($id)
     {
-        $sql = "SELECT Offre.*, Entreprise.Nom_entreprise, IF(Souhaite.ID_utilisateur IS NOT NULL, 1, 0) AS is_in_wishlist, IF(Postule.ID_utilisateur IS NOT NULL, 1, 0) AS has_applied 
+        $sql = "SELECT Offre.*, Entreprise.Nom_entreprise,
+            IF(Souhaite.ID_utilisateur IS NOT NULL, 1, 0) AS is_in_wishlist,
+            IF(Postule.ID_utilisateur IS NOT NULL, 1, 0) AS has_applied
             FROM Offre 
             JOIN Entreprise ON Offre.ID_entreprise = Entreprise.ID_entreprise 
             LEFT JOIN Souhaite ON Offre.ID_offre = Souhaite.ID_offre 
@@ -36,7 +38,9 @@ class OfferModel extends Model
      */
     public function searchOffers($keyword = "", $company = "", $type = "", $duree = "")
     {
-        $sql = "SELECT Offre.*, Entreprise.Nom_entreprise, IF(Souhaite.ID_utilisateur IS NOT NULL, 1, 0) AS is_in_wishlist, IF(Postule.ID_utilisateur IS NOT NULL, 1, 0) AS has_applied 
+        $sql = "SELECT Offre.*, Entreprise.Nom_entreprise,
+        IF(Souhaite.ID_utilisateur IS NOT NULL, 1, 0) AS is_in_wishlist,
+        IF(Postule.ID_utilisateur IS NOT NULL, 1, 0) AS has_applied
         FROM Offre 
         JOIN Entreprise ON Offre.ID_entreprise = Entreprise.ID_entreprise 
         LEFT JOIN Souhaite ON Offre.ID_offre = Souhaite.ID_offre 
@@ -105,7 +109,7 @@ class OfferModel extends Model
         return $this->connection->deleteRecord($id);
     }
 
-    
+
     public function addWishlist($offerId, $studentId)
     {
         $sql = "INSERT INTO Souhaite (ID_utilisateur, ID_offre) VALUES (:studentId, :offerId)";
@@ -134,10 +138,16 @@ class OfferModel extends Model
 
     public function addPostule($offerId, $studentId, $cvPath, $letterPath)
     {
-        $sql = "INSERT INTO Postule (ID_utilisateur, ID_offre, CV, Lettre_motivation, Date_candidature) VALUES (:studentId, :offerId, :cvPath, :letterPath, :dateCandidature)";
-        $params = ['studentId' => $studentId, 'offerId' => $offerId, 'cvPath' => $cvPath, 'letterPath' => $letterPath, 'dateCandidature' => date('Y-m-d')];
+        $sql = "INSERT INTO Postule (ID_utilisateur, ID_offre, CV, Lettre_motivation, Date_candidature) "
+            . "VALUES (:studentId, :offerId, :cvPath, :letterPath, :dateCandidature)";
+        $params = [
+            'studentId' => $studentId,
+            'offerId' => $offerId,
+            'cvPath' => $cvPath,
+            'letterPath' => $letterPath,
+            'dateCandidature' => date('Y-m-d')
+        ];
         $stmt = $this->connection->getConnection()->prepare($sql);
         return $stmt->execute($params);
     }
-
 }

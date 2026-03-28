@@ -20,7 +20,11 @@ class CompanyController
     {
         // Récupérer les filtres depuis l'URL
         $search = $_GET['recherche'] ?? '';
-        $currentUserId = (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'etudiant' && isset($_SESSION['user_id']))
+        $currentUserId = (
+            isset($_SESSION['user_role'])
+            && $_SESSION['user_role'] === 'etudiant'
+            && isset($_SESSION['user_id'])
+        )
             ? $_SESSION['user_id']
             : null;
         // Demander les données filtrées au modèle
