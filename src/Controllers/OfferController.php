@@ -85,88 +85,81 @@ class OfferController
         $blockAccess->blockPilotAccess();
         $blockAccess->blockAdminAccess();
 
-        if ($_SESSION['user_role'] === 'etudiant') {
+        $idOffre = $_POST['id_offre'] ?? null;
+        $studentId = $_SESSION['user_id'] ?? null;
 
-            $idOffre = $_POST['id_offre'] ?? null;
-            $studentId = $_SESSION['user_id'] ?? null;
+        $cvPath = null;
+        $letterPath = null;
 
-            $cvPath = null;
-            $letterPath = null;
+        $alreadyApplied = $this->model->hasApplied($idOffre, $studentId);
 
-            $alreadyApplied = $this->model->hasApplied($idOffre, $studentId);
+        if ($alreadyApplied && isset($alreadyApplied['ID_offre']) && $alreadyApplied['ID_offre']){
+            header('Location: /offers/detail?id=' . urlencode((string) $idOffre) . '&popup=already_applied');
+            exit;
+        }
+        else{
 
-            if ($alreadyApplied && isset($alreadyApplied['ID_offre']) && $alreadyApplied['ID_offre']){
-                header('Location: /offers/detail?id=' . urlencode((string) $idOffre) . '&popup=already_applied');
-                exit;
-            }
-            else{
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $cvPresent = isset($_FILES['cv']);
+                $lettrePresent = isset($_FILES['lettre']);
 
-                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                    $cvPresent = isset($_FILES['cv']);
-                    $lettrePresent = isset($_FILES['lettre']);
-
-                    if (!$cvPresent || !$lettrePresent) {
-                        header('Location: /offers/detail?id=' . urlencode((string) $idOffre) . '&popup=error');
-                        exit;
+                if (!$cvPresent || !$lettrePresent) {
+                    header('Location: /offers/detail?id=' . urlencode((string) $idOffre) . '&popup=error');
+                    exit;
+                } else {
+                    // Récupérer les infos de l'étudiant pour renommer les fichiers
+                    $dashboardModel = new DashboardAdminModel($this->model->getDb());
+                    $studentInfo = $dashboardModel->getStudentById($studentId);
+                    
+                    if ($studentInfo) {
+                        $nom = str_replace(' ', '_', $studentInfo['Nom']);
+                        $prenom = str_replace(' ', '_', $studentInfo['Prenom']);
+                        $dateTime = date('d-m-Y_H-i-s');
+                        
+                        $cvFileName = 'CV_' . $nom . '_' . $prenom . '_' . $dateTime . '.pdf';
+                        $letterFileName = 'LM_' . $nom . '_' . $prenom . '_' . $dateTime . '.pdf';
                     } else {
-                        // Récupérer les infos de l'étudiant pour renommer les fichiers
-                        $dashboardModel = new DashboardAdminModel($this->model->getDb());
-                        $studentInfo = $dashboardModel->getStudentById($studentId);
-                        
-                        if ($studentInfo) {
-                            $nom = str_replace(' ', '_', $studentInfo['Nom']);
-                            $prenom = str_replace(' ', '_', $studentInfo['Prenom']);
-                            $dateTime = date('d-m-Y_H-i-s');
-                            
-                            $cvFileName = 'CV_' . $nom . '_' . $prenom . '_' . $dateTime . '.pdf';
-                            $letterFileName = 'LM_' . $nom . '_' . $prenom . '_' . $dateTime . '.pdf';
-                        } else {
-                            // Fallback si les infos ne peuvent pas être récupérées
-                            $dateTime = date('d-m-Y_H-i-s');
-                            $cvFileName = 'CV_' . $studentId . '_' . $dateTime . '.pdf';
-                            $letterFileName = 'LM_' . $studentId . '_' . $dateTime . '.pdf';
-                        }
-                        
-                        $uploaderCV = new FileUploader($_FILES['cv']);
-                        $uploaderCV->setFileName($cvFileName);
-                        
-                        $uploaderLettre = new FileUploader($_FILES['lettre']);
-                        $uploaderLettre->setFileName($letterFileName);
+                        // Fallback si les infos ne peuvent pas être récupérées
+                        $dateTime = date('d-m-Y_H-i-s');
+                        $cvFileName = 'CV_' . $studentId . '_' . $dateTime . '.pdf';
+                        $letterFileName = 'LM_' . $studentId . '_' . $dateTime . '.pdf';
+                    }
+                    
+                    $uploaderCV = new FileUploader($_FILES['cv']);
+                    $uploaderCV->setFileName($cvFileName);
+                    
+                    $uploaderLettre = new FileUploader($_FILES['lettre']);
+                    $uploaderLettre->setFileName($letterFileName);
 
-                        if ($uploaderCV->validate()) {
-                            $cvPath = $uploaderCV->upload();
-                            if ($cvPath) {
-                                $cvPath = basename($cvPath);
-                            }
-                        }
-
-                        if ($uploaderLettre->validate()) {
-                            $letterPath = $uploaderLettre->upload();
-                            if ($letterPath) {
-                                $letterPath = basename($letterPath);
-                            }
+                    if ($uploaderCV->validate()) {
+                        $cvPath = $uploaderCV->upload();
+                        if ($cvPath) {
+                            $cvPath = basename($cvPath);
                         }
                     }
 
-                    if ($idOffre && $studentId && $cvPath && $letterPath) {
-                        $this->model->addPostule($idOffre, $studentId, $cvPath, $letterPath);
-                        $inWishlist = $this->model->isInWishlist($idOffre, $studentId);
-                        if ($inWishlist && isset($inWishlist['ID_offre']) && $inWishlist['ID_offre']) {
-                            $wishlistModel = new DashboardStudentModel($this->model->getDb());   
-                            $wishlistModel->removeFromWishlist($studentId, $idOffre);
+                    if ($uploaderLettre->validate()) {
+                        $letterPath = $uploaderLettre->upload();
+                        if ($letterPath) {
+                            $letterPath = basename($letterPath);
                         }
-                        header('Location: /offers/detail?id=' . urlencode((string) $idOffre) . '&popup=success');
-                        exit;
-                    } else {
-                        header('Location: /offers/detail?id=' . urlencode((string) $idOffre) . '&popup=error');
-                        exit;
                     }
                 }
+
+                if ($idOffre && $studentId && $cvPath && $letterPath) {
+                    $this->model->addPostule($idOffre, $studentId, $cvPath, $letterPath);
+                    $inWishlist = $this->model->isInWishlist($idOffre, $studentId);
+                    if ($inWishlist && isset($inWishlist['ID_offre']) && $inWishlist['ID_offre']) {
+                        $wishlistModel = new DashboardStudentModel($this->model->getDb());   
+                        $wishlistModel->removeFromWishlist($studentId, $idOffre);
+                    }
+                    header('Location: /offers/detail?id=' . urlencode((string) $idOffre) . '&popup=success');
+                    exit;
+                } else {
+                    header('Location: /offers/detail?id=' . urlencode((string) $idOffre) . '&popup=error');
+                    exit;
+                }
             }
-        }
-        else {
-            header('Location: /');
-            exit;
         }
 
     }
@@ -298,27 +291,22 @@ class OfferController
         $blockAccess->blockPilotAccess();
         $blockAccess->blockAdminAccess();
 
-        if ($_SESSION['user_role'] === 'etudiant') {
-            $data = [
-                'recherche' => $_GET['recherche'] ?? '',
-                'company' => $_GET['company'] ?? '',
-                'type' => $_GET['type'] ?? '',
-                'duree' => $_GET['duree'] ?? '',
-                'page' => $_GET['page'] ?? 1
-            ];
-            $offerId = $_GET['id'] ?? null;
-            $studentId = $_SESSION['user_id'] ?? null;
+        $data = [
+            'recherche' => $_GET['recherche'] ?? '',
+            'company' => $_GET['company'] ?? '',
+            'type' => $_GET['type'] ?? '',
+            'duree' => $_GET['duree'] ?? '',
+            'page' => $_GET['page'] ?? 1
+        ];
+        $offerId = $_GET['id'] ?? null;
+        $studentId = $_SESSION['user_id'] ?? null;
 
-            $alreadyApplied = $this->model->hasApplied($offerId, $studentId);
+        $alreadyApplied = $this->model->hasApplied($offerId, $studentId);
 
-            if ($offerId && $studentId && !$alreadyApplied['ID_offre']) {
-                $this->model->addWishlist($offerId, $studentId);
-            }
-            header('Location: /offers?' . http_build_query($data));
+        if ($offerId && $studentId && !$alreadyApplied['ID_offre']) {
+            $this->model->addWishlist($offerId, $studentId);
         }
-        else {
-            header('Location: /');
-        }
+        header('Location: /offers?' . http_build_query($data));
     }
 
     public function deleteWishlist()
@@ -327,26 +315,21 @@ class OfferController
         $blockAccess->blockPilotAccess();
         $blockAccess->blockAdminAccess();
 
-        if ($_SESSION['user_role'] === 'etudiant') {
-            $data = [
-                'recherche' => $_GET['recherche'] ?? '',
-                'company' => $_GET['company'] ?? '',
-                'type' => $_GET['type'] ?? '',
-                'duree' => $_GET['duree'] ?? '',
-                'page' => $_GET['page'] ?? 1
-            ];
-            $offerId = $_GET['id'] ?? null;
-            $studentId = $_SESSION['user_id'] ?? null;
+        $data = [
+            'recherche' => $_GET['recherche'] ?? '',
+            'company' => $_GET['company'] ?? '',
+            'type' => $_GET['type'] ?? '',
+            'duree' => $_GET['duree'] ?? '',
+            'page' => $_GET['page'] ?? 1
+        ];
+        $offerId = $_GET['id'] ?? null;
+        $studentId = $_SESSION['user_id'] ?? null;
 
-            if ($offerId && $studentId) {
-                $wishlistModel = new DashboardStudentModel($this->model->getDb());   
-                $wishlistModel->removeFromWishlist($studentId, $offerId);
-            }
-            header('Location: /offers?' . http_build_query($data));
+        if ($offerId && $studentId) {
+            $wishlistModel = new DashboardStudentModel($this->model->getDb());   
+            $wishlistModel->removeFromWishlist($studentId, $offerId);
         }
-        else {
-            header('Location: /');
-        }
+        header('Location: /offers?' . http_build_query($data));
         
     }
 

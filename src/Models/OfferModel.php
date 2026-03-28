@@ -4,18 +4,6 @@ namespace App\Models;
 
 class OfferModel extends Model
 {
-    /**
-     * Retourne l'ID utilisateur courant si la session est valide, sinon null.
-     */
-    private function getCurrentUserId(): ?int
-    {
-        if (!isset($_SESSION['user_id']) || !is_numeric($_SESSION['user_id'])) {
-            return null;
-        }
-
-        return (int) $_SESSION['user_id'];
-    }
-
     // Le constructeur appelle celui du parent (Model) pour initialiser la connexion à la BDD
     public function __construct(Database $connection)
     {
@@ -28,31 +16,16 @@ class OfferModel extends Model
      */
     public function getOfferById($id)
     {
-        $sql = "SELECT Offre.*, Entreprise.Nom_entreprise, nb.nb_candidatures";
-        $params = ['id' => $id];
-
-        if ($_SESSION['user_role'] === 'etudiant') {
-            $sql .= ", IF(Postule.ID_utilisateur IS NOT NULL, 1, 0) AS has_applied";
-        }
-
-        $sql .= "
+        $sql = "SELECT Offre.*, Entreprise.Nom_entreprise, IF(Souhaite.ID_utilisateur IS NOT NULL, 1, 0) AS is_in_wishlist, IF(Postule.ID_utilisateur IS NOT NULL, 1, 0) AS has_applied 
             FROM Offre 
-            JOIN Entreprise ON Offre.ID_entreprise = Entreprise.ID_entreprise
-            LEFT JOIN (SELECT Postule.ID_offre, COUNT(*) AS nb_candidatures
-                       FROM Postule
-                       GROUP BY Postule.ID_offre) nb ON nb.ID_offre=Offre.ID_offre
-        ";
-
-        if ($_SESSION['user_role'] === 'etudiant') {
-            $sql .= "LEFT JOIN Postule ON Offre.ID_offre = Postule.ID_offre 
-                AND Postule.ID_utilisateur = :userId";
-            $params['userId'] = $_SESSION['user_id'];
-        }
-
-        $sql .= " WHERE Offre.ID_offre = :id";
-
+            JOIN Entreprise ON Offre.ID_entreprise = Entreprise.ID_entreprise 
+            LEFT JOIN Souhaite ON Offre.ID_offre = Souhaite.ID_offre 
+                AND Souhaite.ID_utilisateur = :userId 
+            LEFT JOIN Postule ON Offre.ID_offre = Postule.ID_offre 
+                AND Postule.ID_utilisateur = :userId
+                WHERE Offre.ID_offre = :id";
         $stmt = $this->connection->getConnection()->prepare($sql);
-        $stmt->execute($params);
+        $stmt->execute(['id' => $id, 'userId' => $_SESSION['user_id']]);
 // Retourne un seul enregistrement sous forme de tableau associatif
         return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
@@ -63,32 +36,21 @@ class OfferModel extends Model
      */
     public function searchOffers($keyword = "", $company = "", $type = "", $duree = "")
     {
-        $sql = "SELECT Offre.*, Entreprise.Nom_entreprise " ;
-        $params = [];
-        
-        if (($_SESSION['user_role'] === 'etudiant')) {
-            $sql .= ", IF(Souhaite.ID_utilisateur IS NOT NULL, 1, 0) AS is_in_wishlist, IF(Postule.ID_utilisateur IS NOT NULL, 1, 0) AS has_applied ";
-        }
-
-        $sql .= "
-            FROM Offre 
-            JOIN Entreprise ON Offre.ID_entreprise = Entreprise.ID_entreprise ";
-
-        if (($_SESSION['user_role'] === 'etudiant')) {
-            $sql .= " LEFT JOIN Souhaite ON Offre.ID_offre = Souhaite.ID_offre 
-                AND Souhaite.ID_utilisateur = :userId
-            LEFT JOIN Postule ON Offre.ID_offre = Postule.ID_offre 
-                AND Postule.ID_utilisateur = :userId";
-
-            $params = ['userId' => $_SESSION['user_id']];
-        }
-        $sql .= " WHERE 1=1";
-        // "1=1" est une astuce pour pouvoir ajouter facilement des "AND" dynamiquement
-
-        // Si un mot-clé est tapé, on cherche dans le titre, la description et les compétences
+        $sql = "SELECT Offre.*, Entreprise.Nom_entreprise, IF(Souhaite.ID_utilisateur IS NOT NULL, 1, 0) AS is_in_wishlist, IF(Postule.ID_utilisateur IS NOT NULL, 1, 0) AS has_applied 
+        FROM Offre 
+        JOIN Entreprise ON Offre.ID_entreprise = Entreprise.ID_entreprise 
+        LEFT JOIN Souhaite ON Offre.ID_offre = Souhaite.ID_offre 
+            AND Souhaite.ID_utilisateur = :userId 
+        LEFT JOIN Postule ON Offre.ID_offre = Postule.ID_offre 
+            AND Postule.ID_utilisateur = :userId
+            WHERE 1=1";
+// "1=1" est une astuce pour pouvoir ajouter facilement des "AND" dynamiquement
+        $params = ['userId' => $_SESSION['user_id']];
+// Si un mot-clé est tapé, on cherche dans le titre, la description et les compétences
         if (!empty($keyword)) {
             $sql .= " AND (Offre.Titre LIKE :key OR Offre.Description LIKE :key OR Offre.Liste_competences LIKE :key)";
-            $params['key'] = '%' . $keyword . '%'; // Les '%' permettent de chercher le mot n'importe où dans la chaîne
+            $params['key'] = '%' . $keyword . '%';
+// Les '%' permettent de chercher le mot n'importe où dans la chaîne
         }
 
         if (!empty($company)) {
