@@ -9,30 +9,47 @@ Class BlockAccess {
         $this->twig = $twig;
     }
 
+    private function renderLoginRequired(bool $mustLogin = true): void {
+        $message = $mustLogin
+            ? 'Vous devez vous connecter pour accéder à cette page.'
+            : 'Accès refusé : vous n\'avez pas les droits nécessaires pour accéder à cette page.';
+        $redirectTo = $mustLogin ? '/login' : '/dashboard';
+
+        echo $this->twig->render('AccessDenied.html.twig', [
+            'session' => $_SESSION,
+            'message' => $message,
+            'redirect_to' => $redirectTo
+        ]);
+        exit;
+    }
+
+    public function requireAuthenticated(): void {
+        if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role'])) {
+            $this->renderLoginRequired(true);
+        }
+    }
+
     public function blockStudentAccess(): void {
+        $this->requireAuthenticated();
+
         if (($_SESSION['user_role'] ?? null) === 'etudiant') {
-            echo $this->twig->render('AccessDenied.html.twig', [
-                'session' => $_SESSION
-            ]);
-            exit;
+            $this->renderLoginRequired(false);
         }
     }
 
     public function blockPilotAccess(): void {
+        $this->requireAuthenticated();
+
         if (($_SESSION['user_role'] ?? null) === 'pilote') {
-            echo $this->twig->render('AccessDenied.html.twig', [
-                'session' => $_SESSION
-            ]);
-            exit;
+            $this->renderLoginRequired(false);
         }
     }
 
     public function blockAdminAccess(): void {
+        $this->requireAuthenticated();
+
         if (($_SESSION['user_role'] ?? null) === 'admin') {
-            echo $this->twig->render('AccessDenied.html.twig', [
-                'session' => $_SESSION
-            ]);
-            exit;
+            $this->renderLoginRequired(false);
         }
     }
 
