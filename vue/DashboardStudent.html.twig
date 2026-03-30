@@ -6,8 +6,9 @@
     <meta name="robots" content="noindex, nofollow">
 {% endblock %}
 
+{% block main_class %}student-dashboard{% endblock %}
 {% block content %}
-<main>
+
     <h1 class="main-title">Bonjour {{ session['user_prenom'] }} !</h1>
 
     {# Section : Mes candidatures #}
@@ -20,6 +21,7 @@
                     <tr>
                         <th>Titre de l'offre</th>
                         <th>Entreprise</th>
+                        <th>Date de candidature</th>
                         <th>CV</th>
                         <th>Lettre de motivation</th>
                     </tr>
@@ -29,11 +31,13 @@
                     {% for candidature in candidatures %}
                     <tr>
                         <td>
-                            <a href="/offers/detail&id={{ candidature.ID_offre }}" class="link">
+                            <a href="/offers/detail?id={{ candidature.ID_offre }}" class="link">
                                 {{ candidature.Titre }}
                             </a>
                         </td>
                         <td>{{ candidature.Nom_entreprise }}</td>
+                        <td>{{ candidature.Date_candidature|date('d/m/Y') }}</td>
+                        
                         <td>
                             <a href="uploads/{{ candidature.CV }}" rel="nofollow" target="_blank" class="link">
                                 {{ candidature.CV}}
@@ -57,7 +61,7 @@
         <div class="pagination">
             {% if total_pages > 1 %}
                 {% for i in 1..total_pages %}
-                    <a href="/dashboard/student&page={{ i }}&pageW={{ current_pageW }}" 
+                    <a href="/dashboard/student?page={{ i }}&pageW={{ current_pageW }}" 
                     class="{{ i == current_page ? 'active' : '' }}">
                         {{ i }}
                     </a>
@@ -84,14 +88,14 @@
                     {% for souhait in wishlist %}
                     <tr>
                         <td>
-                            <a href="offers/detail&id={{ souhait.ID_offre }}" class="link">
+                            <a href="/offers/detail?id={{ souhait.ID_offre }}" class="link">
                                 {{ souhait.Titre }}
                             </a>
                         </td>
                         <td>{{ souhait.Nom_entreprise }}</td>
                         <td class="btn-table">
                             {# Lien dynamique vers l'action de suppression dans le routeur #}
-                                     <a href="/dashboard/student/remove-wishlist&id={{ souhait.ID_offre }}&page={{ current_page }}&pageW={{ current_pageW }}" 
+                                     <a href="/dashboard/student/remove-wishlist?id={{ souhait.ID_offre }}&page={{ current_page }}&pageW={{ current_pageW }}" 
                                class="btn-action poubelle" 
                                onclick="return confirm('Retirer cette offre de la wishlist ?')">
                                 <i class="fa-solid fa-trash"></i>
@@ -110,7 +114,7 @@
         <div class="pagination">
             {% if total_pagesW > 1 %}
                 {% for i in 1..total_pagesW %}
-                    <a href="/dashboard/student&page={{ current_page }}&pageW={{ i }}" 
+                    <a href="/dashboard/student?page={{ current_page }}&pageW={{ i }}" 
                     class="{{ i == current_pageW ? 'active' : '' }}">
                         {{ i }}
                     </a>

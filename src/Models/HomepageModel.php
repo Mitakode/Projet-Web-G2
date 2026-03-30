@@ -58,7 +58,9 @@ class HomepageModel extends Model
         JOIN 
             (SELECT COUNT(*) AS total_moyen FROM Offre o WHERE o.Duree <= 6 AND Duree > 3) o4
         JOIN 
-            (SELECT COUNT(*) AS total_long FROM Offre o WHERE o.Duree > 6) o6;";
+            (SELECT COUNT(*) AS total_long FROM Offre o WHERE o.Duree > 6) o6
+        JOIN 
+            (SELECT COUNT(*) AS total FROM Offre o) ot;";
         $pdo = $this->connection->getConnection();
         $stmt = $pdo->prepare($sql);
         $stmt->execute();

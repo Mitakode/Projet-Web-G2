@@ -11,7 +11,7 @@
 <section class="frame">
     <h1 class="main-title">{{ is_edit ? 'Modifier' : 'Créer' }} une entreprise</h1>
 
-    <form class="form-test" action="/{{ is_edit ? 'companies/update&id=' ~ entreprise.ID_entreprise : 'companies/create' }}" method="POST">
+    <form class="form-test" action="/{{ is_edit ? 'companies/update?id=' ~ entreprise.ID_entreprise : 'companies/create' }}" method="POST">
         {% if error is not empty %}
             <p class="infos infos-error" role="alert">Veuillez corriger les champs indiqués.</p>
         {% endif %}

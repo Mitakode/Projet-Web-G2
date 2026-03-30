@@ -10,7 +10,7 @@
     
     <section class="search-section">
         {# Le formulaire doit envoyer vers index.php avec l'uri #}
-        <form action="/companies&page=1" method="GET" class="search-form">
+        <form action="/companies" method="GET" class="search-form">
             <div class="search-bar-wrapper">
                 <input type="text" name="recherche" class="search-input" 
                        value="{{ search_term }}" placeholder="Rechercher une entreprise...">
@@ -23,26 +23,29 @@
             </div>
         </form>
     </section>
-        <div class="list-container">
-            {% for entreprise in entreprises_page %}
-                <div class="offres-liste">
-                    <table class="company-table">
-                        <tr>
-                            <th class="company-name">{{ entreprise.Nom_entreprise }}</th>
-                            <td class="company-rating">Note : <strong>
-                                {% if entreprise.Moyenne_Note %}
-                                    {{ entreprise.Moyenne_Note|round(1) }}/10
-                                {% else %}
-                                    Pas de note
-                                {% endif %}
-                            </strong></td>
-                            <td class="btn-table">
-                                {% if session['user_role'] == 'etudiant' %}
+
+    <section class="list-container">
+        {% for entreprise in entreprises_page %}
+            <div class="offres-liste">
+                <table class="company-table">
+                    <tr>
+                        <th class="company-name">{{ entreprise.Nom_entreprise }}</th>
+                        <td class="company-rating">Note : <strong>
+                            {% if entreprise.Moyenne_Note %}
+                                {{ entreprise.Moyenne_Note|round(1) }}/10
+                            {% else %}
+                                Pas de note
+                            {% endif %}
+                        </strong></td>
+                        <td class="btn-table">
+                            {% if session['user_role'] == 'etudiant' %}
+                            <div class="rating-table">
                                 {% if entreprise.my_rating is not null %}
                                 <span class="user-rating">{{ entreprise.my_rating }}/10</span>
                                 {% else %}
                                 <span class="user-rating user-rating-empty">0/10</span>
                                 {% endif %}
+                            </div>
                                 <button
                                     type="button"
                                     class="btn-action etoile {{ entreprise.is_rated ? 'active' : '' }}"
@@ -53,12 +56,12 @@
                                 </button>
                                 {% endif %}
                                 {% if (session['user_role'] == 'admin' or session['user_role'] == 'pilote') %}
-                                <a href="/companies/update&id={{ entreprise.ID_entreprise }}" 
+                                <a href="/companies/update?id={{ entreprise.ID_entreprise }}" 
                                     class="btn-action crayon">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </a>
                                 {# Lien de suppression avec l'ID dynamique #}
-                                <a href="/companies/delete&id={{ entreprise.ID_entreprise }}" 
+                                <a href="/companies/delete?id={{ entreprise.ID_entreprise }}" 
                                 class="btn-action poubelle" 
                                 onclick="return confirm('Supprimer cette entreprise ?')">
                                     <i class="fa-solid fa-trash"></i>
@@ -67,12 +70,12 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2" class="company-info">
+                            <td colspan="3" class="company-info">
                                 {{ entreprise.Contact }}
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2" class="company-description">
+                            <td colspan="3" class="company-description">
                                 {{ entreprise.Description }}
                             </td>
                         </tr>
@@ -87,7 +90,7 @@
         <div class="pagination">
             {% if total_pages > 1 %}
                 {% for i in 1..total_pages %}
-                    <a href="/companies&recherche={{ search_term }}&page={{ i }}" 
+                    <a href="/companies?recherche={{ search_term }}&page={{ i }}" 
                     class="{{ i == current_page ? 'active' : '' }}">
                         {{ i }}
                     </a>

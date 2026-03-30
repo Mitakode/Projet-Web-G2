@@ -6,6 +6,7 @@
     <meta name="robots" content="noindex, nofollow">
 {% endblock %}
 
+{% block main_class %}student-dashboard {% endblock %}
 {% block content %}
     <h1>{{etudiant.Nom|upper}} {{etudiant.Prenom}}    {{etudiant.Promotion}}</h1>
     <div class="info-grid">
@@ -37,7 +38,7 @@
                     {% for candidature in candidatures %}
                     <tr>
                         <td>
-                            <a href="/offers/detail&id={{ candidature.ID_offre }}" class="link">
+                            <a href="/offers/detail?id={{ candidature.ID_offre }}" class="link">
                                 {{ candidature.Titre_offre }}
                             </a>
                         </td>
@@ -62,7 +63,7 @@
         <div class="pagination">
             {% if total_pages > 1 %}
                 {% for i in 1..total_pages %}
-                    <a href="/dashboard/admin/student-details&id={{ etudiant.ID_utilisateur }}&page={{ i }}" 
+                    <a href="/dashboard/admin/student-details?id={{ etudiant.ID_utilisateur }}&page={{ i }}" 
                     class="{{ i == current_page ? 'active' : '' }}">
                         {{ i }}
                     </a>

@@ -11,7 +11,7 @@
 <section class="frame">
     <h1 class="main-title">{{ is_edit ? 'Modifier' : 'Ajouter' }} un étudiant</h1>
 
-    <form class="form-test" data-account-password-form="true" data-popup-error="{{ popup_error|default('')|e('html_attr') }}" action="/{{ is_edit ? 'dashboard/admin/update-student&id=' ~ etudiant.ID_utilisateur : 'dashboard/admin/create-student' }}" method="POST">
+    <form class="form-test" data-account-password-form="true" data-popup-error="{{ popup_error|default('')|e('html_attr') }}" action="/{{ is_edit ? 'dashboard/admin/update-student?id=' ~ etudiant.ID_utilisateur : 'dashboard/admin/create-student' }}" method="POST">
         {% if session.user_role == 'admin' %}
             <div class="label-row"> 
                 <label for="id_pilote">Sélectionner un pilote référent :</label>
