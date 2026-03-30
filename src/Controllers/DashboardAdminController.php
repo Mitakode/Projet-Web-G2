@@ -101,7 +101,7 @@ class DashboardAdminController
             $nameP = $_GET['nameP'] ?? '';
             $pilots = $this->model->searchPilots($surnameP, $nameP);
         // Gérer la pagination
-            $paginatorP = new Paginator($pilots, 5);
+            $paginatorP = new Paginator($pilots, 5, 'pageP');
         // Envoyer le tout à la vue Twig
             echo $this->twig->render('DashboardAdmin.html.twig', [
                 'etudiants' => $paginator->getCurrentPageItems(),
@@ -113,7 +113,7 @@ class DashboardAdminController
 
                 'pilotes' => $paginatorP->getCurrentPageItems(),
                 'total_pagesP'      => $paginatorP->getTotalPages(),
-                'current_pageP'     => $_GET['page'] ?? 1,
+                'current_pageP'     => $_GET['pageP'] ?? 1,
                 'surnameP'      => $surnameP,
                 'nameP'             => $nameP,
                 'popup'             => $popup
@@ -318,7 +318,8 @@ class DashboardAdminController
             ];
             if (empty($error)) {
                 $userData = $this->getUserData($postData, true);
-                $this->model->createPilot($userData);
+                $pilotData = [];
+                $this->model->createPilot($userData, $pilotData);
                 header('Location: /dashboard/admin?popup=pilot_created');
                 exit;
             }
