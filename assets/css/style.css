@@ -186,6 +186,10 @@ footer {
     gap: 10px;
 }
 
+.footer-grid{
+    display: flex; /* Espace entre les deux colonnes */
+}
+
 footer a {
     color: var(--white);
     text-decoration: none;
@@ -301,10 +305,16 @@ footer a:hover {
 .etoile i { color: var(--text-color-light) !important; }
 .etoile.active i { color: #fbbf24 !important; }
 
+.rating-table{
+    display: flex;
+    align-items: center !important;
+}
+
+
 .user-rating {
     display: inline-block;
     min-width: 52px;
-    text-align: right;
+    text-align: center;
     margin-right: 6px;
     font-weight: 600;
     color: #f59e0b;
@@ -320,6 +330,7 @@ footer a:hover {
 .coeur.active i { color: #e11d48 !important; }
 
 .btn-table{
+    display: flex;
     text-align: right;
     white-space: nowrap;
 }
@@ -327,10 +338,18 @@ footer a:hover {
 .btn-table .btn-action {
     display: inline-flex;
     vertical-align: middle;
+    margin : 5px;
+
 }
 
 .btn-table .btn-action + .btn-action {
     margin-left: 8px;
+}
+
+.btn-table a{
+    width:44px;
+    height: 44px;
+    border-radius: 10px;
 }
 
 /* ==================================== MAIN SEARCH BAR ==================================== */
@@ -637,7 +656,7 @@ input:hover, select:hover, textarea:hover {
 .form-column2{
     display: flex;
     flex-direction: column;
-    width: 64%;
+    width: 62%;
 }
 
 
@@ -797,7 +816,6 @@ ul.skills li
     color: #1f2937;
 }
 
-
 .input-file {
   display: none;
 }
@@ -934,8 +952,21 @@ ul.skills li
     width: 100%;
 }
 
+.search-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.search-items{
+    display: flex;
+    gap: 10px;
+}
+
 .search-bar-admin {
     display: flex;
+    flex:1;
     gap: 10px;
     background-color: var(--white);
     border-radius: 12px;
@@ -1061,6 +1092,54 @@ ul.skills li
     overflow-x: auto;
 }
 
+.student-dashboard .box-list {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.student-dashboard .company-table {
+    margin-bottom: 0;
+}
+
+.student-dashboard .company-table th,
+.student-dashboard .company-table td {
+    vertical-align: middle;
+}
+
+.student-dashboard .company-table td .link {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.admin-dashboard .box-list {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.admin-dashboard .box-list > .link {
+    display: block;
+}
+
+.admin-dashboard .company-table {
+    margin-bottom: 0;
+}
+
+.admin-dashboard .company-table td {
+    vertical-align: middle;
+}
+
+.admin-dashboard .user-stats {
+    word-break: break-word;
+    width: 35%;
+}
+
+.admin-dashboard .company-table.admin td.btn-table {
+    width: 144px;
+    min-width: 144px;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
@@ -1121,9 +1200,13 @@ main.list-page {
 }
 
 .company-table td, .company-table th {
-    padding: 12px 20px;
+    padding: 10px 20px;
     text-align: left;
     border: none; /* On retire les bordures internes */
+}
+
+.company-table.offer td, .company-table.offer th{
+    width: 100%;
 }
 
 .company-table.admin td {
@@ -1131,16 +1214,11 @@ main.list-page {
 }
 
 .company-table.admin td.btn-table {
-    width: 120px;
-    min-width: 120px;
-    padding-right: 22px;
+    width: 90px;
+    min-width: 90px;
+    padding: 10px 0;
 }
 
-.company-table.admin td .btn-action {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-}
 
 .company-name {
     width:80%;
@@ -1149,30 +1227,37 @@ main.list-page {
 }
 
 .offer-name{
-    width:70%;
-    font-size: 1.3rem;
+    font-weight: bold;
+    width:80%;
+    font-size: 1.4rem;
     color: var(--text-color-strong);
 }
 
 .company-rating {
     text-align: right;
     color: var(--text-color-light);
-    width: 180px;
+    width: 28%;
     min-width: 180px;
 }
 
+
 .company-table td.company-rating + td.btn-table {
-    width: 140px;
-    min-width: 140px;
-    padding-right: 22px;
+    width: 120px;
+    min-width: 120px;
+    padding: 12px 0;
 }
+
 
 .offer-company{
     text-align: left;
     color: var(--text-color-light);
-    width: 25%;
+    width: 28%;
+    min-width: 180px;
 }
 
+.infos-table {
+    display: flex;
+}
 
 .company-info {
     font-size: 0.9rem;
@@ -1346,7 +1431,7 @@ main.list-page {
     }
 
     .logo-text {
-        height: 62%;
+        height: 90%;
         max-width: 130px;
         object-fit: contain;
     }
@@ -1400,6 +1485,10 @@ main.list-page {
         justify-content: center;
     }
 
+    .footer-grid{
+        flex-direction: column; /* Espace entre les deux colonnes */
+        align-items: center !important; /* Centre les colonnes horizontalement */}
+
     .filters-container{
         flex-direction: column;
     }
@@ -1440,26 +1529,52 @@ main.list-page {
     }
 
     .search-bar-admin {
+        flex-direction: row;
         flex-wrap: wrap;
         padding: 10px;
         gap: 8px;
     }
 
-    .search-bar-admin input {
+    .search-bar-admin input[type="text"] {
+        flex: 1 1 100%;
         min-width: 0;
         width: 100%;
     }
 
+    .search-input{
+        flex: 1 1 100%;
+        min-width: 0;
+        width: 100%; 
+    }
+
+
     .search-bar-admin .search-btn,
     .search-bar-admin .btn-add {
+        flex: 1 1 calc(50% - 4px);
         width: calc(50% - 4px);
         height: 46px;
+        justify-content: center;
+    }
+
+    .search-bar-admin input{
+            padding: 6px 7px;
+    }
+
+    .search-container{
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .search-items{
+        width: 100%;
+        justify-content: space-between;
+        padding: 0 10px;
     }
 
     .form-grid {
         flex-direction: column; /* Sur mobile, elles se remettent l'une sous l'autre */
         align-items: center;
-        gap: 0;
+        gap: 20px;
     }
     .form-column,
     .form-column2,
@@ -1481,6 +1596,169 @@ main.list-page {
         padding: 14px;
     }
 
+    .student-dashboard {
+        align-items: stretch;
+    }
+
+    .student-dashboard .main-title {
+        margin-bottom: 22px;
+        font-size: 1.75rem;
+        text-align: center;
+    }
+
+    .student-dashboard .dashboards-section {
+        padding: 14px;
+        margin-bottom: 24px;
+    }
+
+    .student-dashboard .dashboard-title {
+        font-size: 1.9rem;
+        margin-bottom: 12px;
+    }
+
+    .student-dashboard .box-list {
+        border-radius: 10px;
+    }
+
+    .student-dashboard .company-table {
+        min-width: 660px;
+        border-radius: 10px;
+    }
+
+    .student-dashboard .company-table th,
+    .student-dashboard .company-table td {
+        padding: 10px 12px;
+        font-size: 0.98rem;
+    }
+
+    .student-dashboard .company-table.admin td.btn-table {
+        width: 74px;
+        min-width: 74px;
+        padding-right: 12px;
+        text-align: center;
+    }
+
+    .student-dashboard .pagination {
+        margin-top: 18px;
+    }
+
+    .admin-dashboard {
+        align-items: stretch;
+    }
+
+    .admin-dashboard .main-title {
+        margin-bottom: 22px;
+        font-size: 1.75rem;
+        text-align: center;
+    }
+
+    .admin-dashboard .dashboards-section {
+        padding: 14px;
+        margin-bottom: 24px;
+    }
+
+    .admin-dashboard .dashboard-title {
+        font-size: 1.9rem;
+        margin-bottom: 12px;
+    }
+
+    .admin-dashboard .box-list {
+        border-radius: 10px;
+        gap: 10px;
+    }
+
+    .admin-dashboard .company-table {
+        min-width: 740px;
+        border-radius: 10px;
+    }
+
+    .admin-dashboard .company-table td {
+        padding: 10px 12px;
+        font-size: 0.98rem;
+    }
+
+    .admin-dashboard .user-name {
+        min-width: 220px;
+    }
+
+    .admin-dashboard .user-promotion {
+        min-width: 120px;
+    }
+
+    .admin-dashboard .stats {
+        min-width: 220px;
+        text-align: left;
+        white-space: normal;
+    }
+
+    .admin-dashboard .user-stats {
+        min-width: 250px;
+    }
+
+    .admin-dashboard .pagination {
+        margin-top: 18px;
+    }
+
+    .company-table td.company-rating + td.btn-table{
+        width: 64px;
+        min-width: 64px;
+        padding-right: 5px;
+    }
+
+    .company-rating{
+        width: 80px;
+        min-width: 80px;
+    }
+
+    .company-name{
+        width: 70%;
+    }
+
+    .company-description{
+        width: 100%;
+    }
+
+    .offer-description{
+        width: 100%;
+    }
+
+    .offer-name{
+        width: 110%;
+    }
+
+    .offer-company{
+        width: 100%;
+        min-width: 120px;
+    }
+
+    .infos-table {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .btn-table {
+        flex-direction: column;
+        width: 64px;
+        min-width: 64px;
+    }
+
+    .btn-table .btn-action + .btn-action {
+        margin-left: 5px;
+    }
+
+    .btn-table a{
+        width : 38px;
+        height: 38px;
+    }
+
+    .admin-dashboard .company-table.admin td.btn-table {
+        flex-direction: row;
+        min-width: 114px;
+    }
+
+    .rating-table{
+        flex-direction: column;
+    }
 }
 
 .container {
@@ -1508,6 +1786,7 @@ main.list-page {
     flex: 0 0 100%;
     /* Largeur de chaque diapositive est de 100% */
     height: 100%;
+    width: 100%;
     /* Hauteur de chaque diapositive est de 100% */
     transition: .5s ease-in-out;
     /* Ajout d'une animation douce pour la transition entre les diapositives */
@@ -1589,6 +1868,7 @@ main.list-page {
 }
 
 /* --- SLIDE 3: DURÉE (GRAPHIQUE) --- */
+/* --- MODE PC (Horizontal) --- */
 .chart-container {
     display: flex;
     flex-direction: column;
@@ -1610,13 +1890,14 @@ main.list-page {
 .bar-bg {
     flex-grow: 1;
     height: 60px;
-    background-color: transparent; /* Fond transparent pour laisser voir le gris de la box */
-    border-left: 1px solid #333; /* La ligne d'axe vertical */
+    border-left: 1px solid #333;
 }
 
 .bar {
     height: 100%;
-    border-radius: 0 5px 5px 0; /* Arrondi uniquement à droite */
+    width: var(--val); /* Utilise la variable pour la largeur */
+    border-radius: 0 5px 5px 0;
+    transition: width 0.5s ease; /* Petit effet sympa au chargement */
 }
 
 .bar.dark { background-color: #bdf290; }
@@ -1747,17 +2028,42 @@ main.list-page {
     }
 
     .chart-container {
-        gap: 14px;
-        padding-left: 0;
+        flex-direction: row; 
+        justify-content: space-around;
+        align-items: stretch; 
+        height: 400px; /* Plus de hauteur pour les barres verticales */
+        gap: 0;
+    }
+
+    .chart-row {
+        flex-direction: column-reverse;
+        align-items: center;
+        width: 30%;
+        height: 100%; /* La colonne prend toute la hauteur du container */
     }
 
     .chart-row label {
-        width: 70px;
-        font-size: 0.95rem;
+        width: auto;
+        margin-bottom: 8px;
+        white-space: nowrap;
     }
 
     .bar-bg {
-        height: 44px;
+        width: 40px; /* Largeur de la barre verticale */
+        height: 100%; /* Le fond gris prend toute la hauteur */
+        flex-grow: 0;
+        background-color: transparent;
+        border-left: none;
+        border-bottom: 2px solid #333;
+        display: flex;
+        flex-direction: column-reverse; /* Pour que la barre parte du bas */
+    }
+
+    .bar {
+        width: 100%; /* Prend toute la largeur de bar-bg */
+        height: var(--val); /* Utilise la variable pour la HAUTEUR désormais */
+        border-radius: 5px 5px 0 0;
+        transition: height 0.5s ease;
     }
 
     .carousel-controls {
@@ -1821,6 +2127,27 @@ main.list-page {
     .bar-bg {
         height: 38px;
     }
+
+    .slide-duration .chart-container {
+        height: 350px;
+        align-items: end;
+        gap: 6px;
+    }
+
+    .slide-duration .chart-row {
+        height: 100%;
+    }
+
+    .slide-duration .chart-row label {
+        width: auto;
+        font-size: 0.95rem;
+        white-space: nowrap;
+    }
+
+    .slide-duration .bar-bg {
+        width: 48px;
+        height: 100%;
+    }
 }
 
 a:focus-visible,
@@ -1881,6 +2208,41 @@ textarea:focus-visible,
     .company-table td,
     .company-table th {
         padding: 10px 12px;
+    }
+
+    .student-dashboard .main-title {
+        font-size: 1.6rem;
+    }
+
+    .student-dashboard .dashboard-title {
+        font-size: 1.8rem;
+    }
+
+    .student-dashboard .company-table {
+        min-width: 620px;
+    }
+
+    .student-dashboard .company-table th,
+    .student-dashboard .company-table td {
+        padding: 9px 10px;
+        font-size: 0.95rem;
+    }
+
+    .admin-dashboard .main-title {
+        font-size: 1.6rem;
+    }
+
+    .admin-dashboard .dashboard-title {
+        font-size: 1.8rem;
+    }
+
+    .admin-dashboard .company-table {
+        min-width: 680px;
+    }
+
+    .admin-dashboard .company-table td {
+        padding: 9px 10px;
+        font-size: 0.95rem;
     }
 }
 

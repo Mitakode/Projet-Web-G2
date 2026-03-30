@@ -20,26 +20,29 @@
             </div>
         </form>
     </section>
-        <div class="list-container">
-            {% for entreprise in entreprises_page %}
-                <div class="offres-liste">
-                    <table class="company-table">
-                        <tr>
-                            <th class="company-name">{{ entreprise.Nom_entreprise }}</th>
-                            <td class="company-rating">Note : <strong>
-                                {% if entreprise.Moyenne_Note %}
-                                    {{ entreprise.Moyenne_Note|round(1) }}/10
-                                {% else %}
-                                    Pas de note
-                                {% endif %}
-                            </strong></td>
-                            <td class="btn-table">
-                                {% if session['user_role'] == 'etudiant' %}
+
+    <section class="list-container">
+        {% for entreprise in entreprises_page %}
+            <div class="offres-liste">
+                <table class="company-table">
+                    <tr>
+                        <th class="company-name">{{ entreprise.Nom_entreprise }}</th>
+                        <td class="company-rating">Note : <strong>
+                            {% if entreprise.Moyenne_Note %}
+                                {{ entreprise.Moyenne_Note|round(1) }}/10
+                            {% else %}
+                                Pas de note
+                            {% endif %}
+                        </strong></td>
+                        <td class="btn-table">
+                            {% if session['user_role'] == 'etudiant' %}
+                            <div class="rating-table">
                                 {% if entreprise.my_rating is not null %}
                                 <span class="user-rating">{{ entreprise.my_rating }}/10</span>
                                 {% else %}
                                 <span class="user-rating user-rating-empty">0/10</span>
                                 {% endif %}
+                            </div>
                                 <button
                                     type="button"
                                     class="btn-action etoile {{ entreprise.is_rated ? 'active' : '' }}"
@@ -64,12 +67,12 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2" class="company-info">
+                            <td colspan="3" class="company-info">
                                 {{ entreprise.Contact }}
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2" class="company-description">
+                            <td colspan="3" class="company-description">
                                 {{ entreprise.Description }}
                             </td>
                         </tr>
