@@ -1,7 +1,10 @@
 {% extends "base.html.twig" %}
 
 {# Le titre de l'onglet prend le nom de l'offre #}
-{% block title %}ThePiston - {{ offre.Titre }}{% endblock %}
+{% block title %}{{ offre.Titre }} - {{ offre.Nom_entreprise }}| ThePiston{% endblock %}
+
+{# description de l'offre tronquée à 150 caractères #}
+{% block description %}{{ offre.Description|slice(0, 150) }}... Découvrez cette opportunité chez {{ offre.Nom_entreprise }} sur ThePiston.{% endblock %}
 
 {% block content %}
 <main>

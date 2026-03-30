@@ -2,6 +2,10 @@
 
 {% block title %}Mon espace étudiant - ThePiston{% endblock %}
 
+{% block extra_head %}
+    <meta name="robots" content="noindex, nofollow">
+{% endblock %}
+
 {% block content %}
 <main>
     <h1 class="main-title">Bonjour {{ session['user_prenom'] }} !</h1>
@@ -30,14 +34,13 @@
                             </a>
                         </td>
                         <td>{{ candidature.Nom_entreprise }}</td>
-                        {# Le filtre |split('/')|last permet de n'afficher que le nom du fichier PDF, sans tout le chemin du serveur #}
                         <td>
-                            <a href="uploads/{{ candidature.CV }}" target="_blank" class="link">
+                            <a href="uploads/{{ candidature.CV }}" rel="nofollow" target="_blank" class="link">
                                 {{ candidature.CV}}
                             </a>
                         </td>
                         <td>
-                            <a href="uploads/{{ candidature.Lettre_motivation }}" target="_blank" class="link">
+                            <a href="uploads/{{ candidature.Lettre_motivation }}" rel="nofollow" target="_blank" class="link">
                                 {{ candidature.Lettre_motivation }}
                             </a>
                         </td>

@@ -1,6 +1,17 @@
 {% extends "base.html.twig" %}
 
 {% block title %}{{ pageType | capitalize }} - ThePiston{% endblock %}
+
+{% block description %}
+    {% if pageType == 'contact' %}
+        Contactez l'équipe de ThePiston pour toute question sur nos offres de stages ou pour un partenariat entreprise.
+    {% elif pageType == 'privacy' %}
+        Consultez la politique de confidentialité de ThePiston. Apprenez comment nous protégeons vos données personnelles et vos documents.
+    {% else %}
+        Consultez les {{ pageType }} de la plateforme ThePiston, le levier de carrière pour les étudiants du CESI.
+    {% endif %}
+{% endblock %}
+
 {% block main_class %}list-page{% endblock %}
 
 {% block content %}

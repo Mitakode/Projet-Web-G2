@@ -2,6 +2,10 @@
 
 {% block title %}{{ is_edit ? 'Modifier' : 'Ajouter' }} un pilote - ThePiston{% endblock %}
 
+{% block extra_head %}
+    <meta name="robots" content="noindex, nofollow">
+{% endblock %}
+
 {% block main_class %}list-page{% endblock %}
 {% block content %}
 <section class="frame">

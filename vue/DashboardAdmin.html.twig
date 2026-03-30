@@ -2,6 +2,10 @@
 
 {% block title %}Mon espace - ThePiston{% endblock %}
 
+{% block extra_head %}
+    <meta name="robots" content="noindex, nofollow">
+{% endblock %}
+
 
 {% block content %}
     {% if session['user_role'] == 'admin' %}
