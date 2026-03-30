@@ -1,7 +1,7 @@
 {% extends "base.html.twig" %}
 
 {% block title %}{{etudiant.Nom|upper}} {{etudiant.Prenom}} - ThePiston{% endblock %}
-
+{% block main_class %}student-dashboard {% endblock %}
 {% block content %}
     <h1>{{etudiant.Nom|upper}} {{etudiant.Prenom}}    {{etudiant.Promotion}}</h1>
     <div class="info-grid">

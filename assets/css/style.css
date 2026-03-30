@@ -186,6 +186,10 @@ footer {
     gap: 10px;
 }
 
+.footer-grid{
+    display: flex; /* Espace entre les deux colonnes */
+}
+
 footer a {
     color: var(--white);
     text-decoration: none;
@@ -303,7 +307,7 @@ footer a:hover {
 
 .rating-table{
     display: flex;
-    align-items: center;
+    align-items: center !important;
 }
 
 
@@ -335,10 +339,17 @@ footer a:hover {
     display: inline-flex;
     vertical-align: middle;
     margin : 5px;
+
 }
 
 .btn-table .btn-action + .btn-action {
     margin-left: 8px;
+}
+
+.btn-table a{
+    width:44px;
+    height: 44px;
+    border-radius: 10px;
 }
 
 /* ==================================== MAIN SEARCH BAR ==================================== */
@@ -925,6 +936,7 @@ ul.skills li
 
 .search-bar-admin {
     display: flex;
+    flex:1;
     gap: 10px;
     background-color: var(--white);
     border-radius: 12px;
@@ -1158,9 +1170,13 @@ main.list-page {
 }
 
 .company-table td, .company-table th {
-    padding: 12px 20px;
+    padding: 10px 20px;
     text-align: left;
     border: none; /* On retire les bordures internes */
+}
+
+.company-table.offer td, .company-table.offer th{
+    width: 100%;
 }
 
 .company-table.admin td {
@@ -1168,16 +1184,11 @@ main.list-page {
 }
 
 .company-table.admin td.btn-table {
-    width: 120px;
-    min-width: 120px;
-    padding-right: 22px;
+    width: 90px;
+    min-width: 90px;
+    padding: 10px 0;
 }
 
-.company-table.admin td .btn-action {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-}
 
 .company-name {
     width:80%;
@@ -1199,11 +1210,13 @@ main.list-page {
     min-width: 180px;
 }
 
+
 .company-table td.company-rating + td.btn-table {
     width: 120px;
     min-width: 120px;
-    padding-right: 12px;
+    padding: 12px 0;
 }
+
 
 .offer-company{
     text-align: left;
@@ -1442,6 +1455,10 @@ main.list-page {
         justify-content: center;
     }
 
+    .footer-grid{
+        flex-direction: column; /* Espace entre les deux colonnes */
+        align-items: center !important; /* Centre les colonnes horizontalement */}
+
     .filters-container{
         flex-direction: column;
     }
@@ -1591,12 +1608,6 @@ main.list-page {
         text-align: center;
     }
 
-    .student-dashboard .company-table.admin td .btn-action {
-        width: 40px;
-        height: 40px;
-        border-radius: 11px;
-    }
-
     .student-dashboard .pagination {
         margin-top: 18px;
     }
@@ -1654,12 +1665,6 @@ main.list-page {
         min-width: 250px;
     }
 
-    .admin-dashboard .company-table.admin td .btn-action {
-        width: 44px;
-        height: 44px;
-        border-radius: 11px;
-    }
-
     .admin-dashboard .pagination {
         margin-top: 18px;
     }
@@ -1711,9 +1716,14 @@ main.list-page {
         margin-left: 5px;
     }
 
+    .btn-table a{
+        width : 38px;
+        height: 38px;
+    }
+
     .admin-dashboard .company-table.admin td.btn-table {
         flex-direction: row;
-        min-width: 134px;
+        min-width: 114px;
     }
 
     .rating-table{
