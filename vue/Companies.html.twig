@@ -42,6 +42,7 @@
                                 {% else %}
                                 <span class="user-rating user-rating-empty">0/10</span>
                                 {% endif %}
+                            </div>
                                 <button
                                     type="button"
                                     class="btn-action etoile {{ entreprise.is_rated ? 'active' : '' }}"
@@ -66,12 +67,12 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2" class="company-info">
+                            <td colspan="3" class="company-info">
                                 {{ entreprise.Contact }}
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2" class="company-description">
+                            <td colspan="3" class="company-description">
                                 {{ entreprise.Description }}
                             </td>
                         </tr>
