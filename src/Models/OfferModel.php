@@ -4,18 +4,6 @@ namespace App\Models;
 
 class OfferModel extends Model
 {
-    /**
-     * Retourne l'ID utilisateur courant si la session est valide, sinon null.
-     */
-    private function getCurrentUserId(): ?int
-    {
-        if (!isset($_SESSION['user_id']) || !is_numeric($_SESSION['user_id'])) {
-            return null;
-        }
-
-        return (int) $_SESSION['user_id'];
-    }
-
     // Le constructeur appelle celui du parent (Model) pour initialiser la connexion à la BDD
     public function __construct(Database $connection)
     {
@@ -36,7 +24,7 @@ class OfferModel extends Model
         }
 
         $sql .= "
-            FROM Offre 
+            FROM Offre
             JOIN Entreprise ON Offre.ID_entreprise = Entreprise.ID_entreprise
             LEFT JOIN (SELECT Postule.ID_offre, COUNT(*) AS nb_candidatures
                        FROM Postule
@@ -53,7 +41,7 @@ class OfferModel extends Model
 
         $stmt = $this->connection->getConnection()->prepare($sql);
         $stmt->execute($params);
-// Retourne un seul enregistrement sous forme de tableau associatif
+        // Retourne un seul enregistrement sous forme de tableau associatif
         return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 
@@ -83,12 +71,13 @@ class OfferModel extends Model
             $params = ['userId' => $_SESSION['user_id']];
         }
         $sql .= " WHERE 1=1";
-        // "1=1" est une astuce pour pouvoir ajouter facilement des "AND" dynamiquement
+// "1=1" est une astuce pour pouvoir ajouter facilement des "AND" dynamiquement
 
-        // Si un mot-clé est tapé, on cherche dans le titre, la description et les compétences
+
+// Si un mot-clé est tapé, on cherche dans le titre, la description et les compétences
         if (!empty($keyword)) {
             $sql .= " AND (Offre.Titre LIKE :key OR Offre.Description LIKE :key OR Offre.Liste_competences LIKE :key)";
-            $params['key'] = '%' . $keyword . '%'; // Les '%' permettent de chercher le mot n'importe où dans la chaîne
+            $params['key'] = '%' . $keyword . '%';
         }
 
         if (!empty($company)) {
@@ -143,7 +132,7 @@ class OfferModel extends Model
         return $this->connection->deleteRecord($id);
     }
 
-    
+
     public function addWishlist($offerId, $studentId)
     {
         $sql = "INSERT INTO Souhaite (ID_utilisateur, ID_offre) VALUES (:studentId, :offerId)";
@@ -172,10 +161,16 @@ class OfferModel extends Model
 
     public function addPostule($offerId, $studentId, $cvPath, $letterPath)
     {
-        $sql = "INSERT INTO Postule (ID_utilisateur, ID_offre, CV, Lettre_motivation, Date_candidature) VALUES (:studentId, :offerId, :cvPath, :letterPath, :dateCandidature)";
-        $params = ['studentId' => $studentId, 'offerId' => $offerId, 'cvPath' => $cvPath, 'letterPath' => $letterPath, 'dateCandidature' => date('Y-m-d')];
+        $sql = "INSERT INTO Postule (ID_utilisateur, ID_offre, CV, Lettre_motivation, Date_candidature) "
+            . "VALUES (:studentId, :offerId, :cvPath, :letterPath, :dateCandidature)";
+        $params = [
+            'studentId' => $studentId,
+            'offerId' => $offerId,
+            'cvPath' => $cvPath,
+            'letterPath' => $letterPath,
+            'dateCandidature' => date('Y-m-d')
+        ];
         $stmt = $this->connection->getConnection()->prepare($sql);
         return $stmt->execute($params);
     }
-
 }

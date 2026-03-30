@@ -1,14 +1,17 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Models\Paginator;
 use App\Controllers\BlockAccess;
 
-class DashboardStudentController {
+class DashboardStudentController
+{
     private $twig;
     private $model;
 
-    public function __construct($twig, $model) {
+    public function __construct($twig, $model)
+    {
         $this->twig = $twig;
         $this->model = $model;
     }
@@ -16,71 +19,58 @@ class DashboardStudentController {
     /**
      * Prépare et affiche les données du dashboard de l'étudiant connecté.
      */
-    public function index() {
+    public function index()
+    {
         // Sécurité : On s'assure que l'utilisateur est bien connecté
         $blockAccess = new BlockAccess($this->twig);
         $blockAccess->blockPilotAccess();
         $blockAccess->blockAdminAccess();
-
-        if ($_SESSION['user_role'] === 'etudiant') {
-            // Remplacer 'user_id' par la clé exacte utilisée dans ton système de session
-            $idEtudiant = $_SESSION['user_id'] ?? null;
-
-            if (!$idEtudiant) {
-                // Si non connecté, redirection vers l'accueil ou page de connexion
-                header('Location: /');
-                exit;
-            }
-
-            // Récupération des données via le modèle
-            $candidatures = $this->model->getCandidatures($idEtudiant);
-            $wishlist = $this->model->getWishlist($idEtudiant);
-
-            $currentPage = max(1, (int)($_GET['page'] ?? 1));
-            $currentPageW = max(1, (int)($_GET['pageW'] ?? 1));
-
-            $paginatorCandidatures = new Paginator($candidatures, 5);
-            $paginatorWishlist = new Paginator($wishlist, 5);
-
-            // Affichage de la vue Twig en y injectant les données
-            echo $this->twig->render('DashboardStudent.html.twig', [
-                'candidatures' => $paginatorCandidatures->getCurrentPageItems(),
-                'wishlist'     => $paginatorWishlist->getCurrentPageItems(),
-                'total_pages' => $paginatorCandidatures->getTotalPages(),
-                'current_page' => $currentPage,
-                'total_pagesW' => $paginatorWishlist->getTotalPages(),
-                'current_pageW' => $currentPageW
-            ]);
-        } else {
+// Remplacer 'user_id' par la clé exacte utilisée dans ton système de session
+        $idEtudiant = $_SESSION['user_id'] ?? null;
+        if (!$idEtudiant) {
+        // Si non connecté, redirection vers l'accueil ou page de connexion
             header('Location: /');
             exit;
         }
+
+        // Récupération des données via le modèle
+        $candidatures = $this->model->getCandidatures($idEtudiant);
+        $wishlist = $this->model->getWishlist($idEtudiant);
+        $paginatorCandidatures = new Paginator($candidatures, 5);
+        $paginatorWishlist = new Paginator($wishlist, 5, 'pageW');
+// Affichage de la vue Twig en y injectant les données
+        echo $this->twig->render('DashboardStudent.html.twig', [
+            'candidatures' => $paginatorCandidatures->getCurrentPageItems(),
+            'wishlist'     => $paginatorWishlist->getCurrentPageItems(),
+            'total_pages' => $paginatorCandidatures->getTotalPages(),
+            'current_page' => $_GET['page'] ?? 1,
+            'total_pagesW' => $paginatorWishlist->getTotalPages(),
+            'current_pageW' => $_GET['pageW'] ?? 1
+        ]);
     }
 
     /**
      * Gère l'action de suppression d'une offre de la wishlist.
      */
-    public function removeWishlist() {
+    public function removeWishlist()
+    {
         $blockAccess = new BlockAccess($this->twig);
         $blockAccess->blockPilotAccess();
         $blockAccess->blockAdminAccess();
-
-        if ($_SESSION['user_role'] === 'etudiant') {
-            $idEtudiant = $_SESSION['user_id'] ?? null;
-            $idOffre = $_GET['id'] ?? null;
-            $page = max(1, (int)($_GET['page'] ?? 1));
-            $pageW = max(1, (int)($_GET['pageW'] ?? 1));
-
-            if ($idEtudiant && $idOffre) {
-                $this->model->removeFromWishlist($idEtudiant, $idOffre);
-            }
-
-            // Redirection vers le dashboard après suppression
-            header('Location: index.php?uri=dashboard/student&page=' . $page . '&pageW=' . $pageW);
-            exit;
-        } else {
-            header('Location: /');
-            exit;
+        $idEtudiant = $_SESSION['user_id'] ?? null;
+        $idOffre = $_GET['id'] ?? null;
+        if ($idEtudiant && $idOffre) {
+            $this->model->removeFromWishlist($idEtudiant, $idOffre);
         }
+
+        $currentPage = $_GET['page'] ?? 1;
+        $currentPageW = $_GET['pageW'] ?? 1;
+// Redirection vers le dashboard après suppression
+        $redirectUrl = '/dashboard/student?page='
+            . urlencode((string) $currentPage)
+            . '&pageW='
+            . urlencode((string) $currentPageW);
+        header('Location: ' . $redirectUrl);
+        exit;
     }
 }

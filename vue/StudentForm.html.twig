@@ -7,10 +7,15 @@
 <section class="frame">
     <h1 class="main-title">{{ is_edit ? 'Modifier' : 'Ajouter' }} un étudiant</h1>
 
-    <form class="form-test" data-account-password-form="true" data-popup-error="{{ popup_error|default('')|e('html_attr') }}" action="/{{ is_edit ? 'dashboard/admin/update-student&id=' ~ etudiant.ID_utilisateur : 'dashboard/admin/create-student' }}" method="POST">
+    <form class="form-test" data-account-password-form="true" data-popup-error="{{ popup_error|default('')|e('html_attr') }}" action="/{{ is_edit ? 'dashboard/admin/update-student?id=' ~ etudiant.ID_utilisateur : 'dashboard/admin/create-student' }}" method="POST">
         {% if session.user_role == 'admin' %}
-            <label for="id_pilote">Sélectionner un pilote référent :</label>
-            <select class="form-input" name="id_pilote" id="id_pilote" required>
+            <div class="label-row"> 
+                <label for="id_pilote">Sélectionner un pilote référent :</label>
+                {% if 'id_pilote' in error %}
+                    <p class="infos infos-error" role="alert">Veuillez renseigner le pilote référent</p>
+                {% endif %}
+            </div>
+            <select class="form-input" name="id_pilote" id="id_pilote">
                 <option value="">-- Choisir un pilote --</option>
                 {% for p in pilotes %}
                     <option value="{{ p.ID_utilisateur }}" 
@@ -21,23 +26,54 @@
             </select>
         {% endif %}
         
-        <label>Nom</label>
-        <input class="form-input" type="text" name="surname" value="{{ etudiant.Nom ?? '' }}" required>
+        <div class="label-row">
+            <label>Nom</label>
+            {% if 'surname' in error %}
+                    <p class="infos infos-error" role="alert">Veuillez renseigner le nom</p>
+            {% endif %}
+        </div>
+        <input class="form-input" type="text" name="surname" value="{{ etudiant.Nom ?? '' }}">
+        
+        <div class="label-row">
+            <label>Prénom</label>
+            {% if 'firstname' in error %}
+                    <p class="infos infos-error" role="alert">Veuillez renseigner le prénom</p>
+            {% endif %}
+        </div>
+        <input class="form-input" type="text" name="firstname" value="{{ etudiant.Prenom ?? '' }}">
 
-        <label>Prénom</label>
-        <input class="form-input" type="text" name="name" value="{{ etudiant.Prenom ?? '' }}" required>
+        <div class="label-row">
+            <label>Promotion</label>
+            {% if 'promotion' in error %}
+                    <p class="infos infos-error" role="alert">Veuillez renseigner la promotion</p>
+            {% endif %}
+        </div>
+        <input class="form-input" type="text" name="promotion" value="{{ etudiant.Promotion ?? '' }}">
 
-        <label>Promotion</label>
-        <input class="form-input" type="text" name="promotion" value="{{ etudiant.Promotion ?? '' }}" required>
+        
+        <div class="label-row">
+            <label>E-mail</label>
+            {% if 'email' in error %}
+                    <p class="infos infos-error" role="alert">Veuillez renseigner l'e-mail</p>
+            {% endif %}
+        </div>
+        <input class="form-input" type="email" name="email" value="{{ etudiant.Email ?? '' }}">
 
-        <label>E-mail</label>
-        <input class="form-input" type="email" name="email" value="{{ etudiant.Email ?? '' }}" required>
+        <div class="label-row">
+            <label>Mot de passe</label>
+            {% if 'password' in error %}
+                    <p class="infos infos-error" role="alert">Veuillez renseigner le mot de passe</p>
+            {% endif %}
+        </div>
+        <input class="form-input" id="password" type="password" name="password" {% if is_edit %} placeholder="Laissez vide pour ne pas modifier"{% endif %}>
 
-        <label>Mot de passe</label>
-        <input class="form-input" id="password" type="password" name="password" {% if is_edit %} placeholder="Laissez vide pour ne pas modifier"{% endif %} {% if not is_edit %}required{% endif %}>
-
-        <label>Confirmation du mot de passe</label>
-        <input class="form-input" id="confirm_password" type="password" name="confirm_password" {% if not is_edit %}required{% endif %}>
+        <div class="label-row">
+            <label>Confirmation du mot de passe</label>
+            {% if 'confirm' in error %}
+                    <p class="infos infos-error" role="alert">Les mots de passe ne correspondent pas</p>
+            {% endif %}
+        </div>
+        <input class="form-input" id="confirm_password" type="password" name="confirm_password">
 
         <button class="btn" type="submit">Valider</button>
         <a href="/dashboard/admin" class="btn-annuler">Annuler</a>

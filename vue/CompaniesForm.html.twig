@@ -7,14 +7,27 @@
 <section class="frame">
     <h1 class="main-title">{{ is_edit ? 'Modifier' : 'Créer' }} une entreprise</h1>
 
-    <form class="form-test" action="/{{ is_edit ? 'companies/update&id=' ~ entreprise.ID_entreprise : 'companies/create' }}" method="POST">
+    <form class="form-test" action="/{{ is_edit ? 'companies/update?id=' ~ entreprise.ID_entreprise : 'companies/create' }}" method="POST">
+        {% if error is not empty %}
+            <p class="infos infos-error" role="alert">Veuillez corriger les champs indiqués.</p>
+        {% endif %}
+
         <label>Nom de l'entreprise</label>
+        {% if 'nameCompany' in error %}
+            <p class="infos infos-error" role="alert">Veuillez renseigner le nom de l'entreprise</p>
+        {% endif %}
         <input class="form-input" type="text" name="nameCompany" value="{{ entreprise.Nom_entreprise ?? '' }}" required>
 
         <label>Contact (Téléphone - Email)</label>
+        {% if 'contactCompany' in error %}
+            <p class="infos infos-error" role="alert">Veuillez renseigner le contact</p>
+        {% endif %}
         <input class="form-input" type="text" name="contactCompany" value="{{ entreprise.Contact ?? '' }}" required>
 
         <label>Description</label>
+        {% if 'descriptionCompany' in error %}
+            <p class="infos infos-error" role="alert">Veuillez renseigner la description</p>
+        {% endif %}
         <textarea class="form-input" rows="10"name="descriptionCompany" required>{{ entreprise.Description ?? '' }}</textarea>
 
         <div class="btn-container" style="margin-top: 20px;">
@@ -26,6 +39,3 @@
 </section>
 {% endblock %}
 
-{% block scripts %}
-    <script src="/assets/js/check.js"></script>
-{% endblock %}

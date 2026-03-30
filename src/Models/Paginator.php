@@ -31,24 +31,31 @@ class Paginator
         return ceil(count($this->items) / $this->perPage);
     }
 
+    private function buildPageUrl(int $page): string
+    {
+        $query = $_GET;
+        $query[$this->pageParam] = $page;
+        return '?' . http_build_query($query);
+    }
+
 
     public function renderLinks(): void
     {
         $totalPages = $this->getTotalPages();
         echo '<div class="pagination">';
-        echo '<a href="?page=1">Première page</a>';
-        echo '<a href="?page=' . max(1, $this->currentPage - 1) . '">Précédent</a>';
+        echo '<a href="' . $this->buildPageUrl(1) . '">Première page</a>';
+        echo '<a href="' . $this->buildPageUrl(max(1, $this->currentPage - 1)) . '">Précédent</a>';
 
         for ($i = 1; $i <= $totalPages; $i++) {
             if ($i === $this->currentPage) {
                 echo "<strong>$i</strong> ";
             } else {
-                echo '<a href="?page=' . $i . '">' . $i . '</a> ';
+                echo '<a href="' . $this->buildPageUrl($i) . '">' . $i . '</a> ';
             }
         }
 
-        echo '<a href="?page=' . min($totalPages, $this->currentPage + 1) . '">Suivant</a>';
-        echo '<a href="?page=' . $totalPages . '">Dernière page</a>';
+        echo '<a href="' . $this->buildPageUrl(min($totalPages, $this->currentPage + 1)) . '">Suivant</a>';
+        echo '<a href="' . $this->buildPageUrl($totalPages) . '">Dernière page</a>';
         echo '</div>';
     }
 }
