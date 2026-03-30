@@ -40,13 +40,13 @@
                         <td>{{ candidature.entreprise }}</td>
                         <td>{{ candidature.Date_candidature|date("d-m-Y") }}</td>
                         <td>
-                            <a href="{{ candidature.CV }}" target="_blank" class="link">
-                                {{ candidature.CV|split('/')|last }}
+                            <a href="uploads/{{ candidature.CV }}" target="_blank" class="link">
+                                {{ candidature.CV}}
                             </a>
                         </td>
                         <td>
-                            <a href="{{ candidature.Lettre_motivation }}" target="_blank" class="link">
-                                {{ candidature.Lettre_motivation|split('/')|last }}
+                            <a href="uploads/{{ candidature.Lettre_motivation }}" target="_blank" class="link">
+                                {{ candidature.Lettre_motivation}}
                             </a>
                         </td>
                     </tr>
