@@ -1,78 +1,37 @@
 (() => {
-    const storageKey = 'uiScrollState';
+    const storageKey = 'dashboardScrollY';
 
-    const getLogicalView = (url) => {
-        const uriParam = url.searchParams.get('uri');
-        if (uriParam) {
-            return uriParam;
-        }
-
-        const pathname = url.pathname.replace(/^\/+|\/+$/g, '');
-        return pathname || '/';
+    const isDashboardView = () => {
+        const url = new URL(window.location.href);
+        const route = (url.searchParams.get('uri') || url.pathname)
+            .replace(/^\/+|\/+$/g, '') || '/';
+        return route === 'dashboard/admin' || route === 'dashboard/student';
     };
 
-    const saveScrollState = () => {
-        const currentUrl = new URL(window.location.href);
+    if (!isDashboardView()) {
+        return;
+    }
 
-        const scrollState = {
-            view: getLogicalView(currentUrl),
-            scrollY: window.scrollY
-        };
-
-        sessionStorage.setItem(storageKey, JSON.stringify(scrollState));
+    const saveScrollPosition = () => {
+        sessionStorage.setItem(storageKey, String(window.scrollY));
     };
-
-    window.saveScrollState = saveScrollState;
 
     document.addEventListener('click', (event) => {
-        const actionLink = event.target.closest(
-            '.pagination a, a[href*="uri=offers/addWishlist"], a[href*="uri=offers/deleteWishlist"]'
-        );
-
-    if (!actionLink) {
-        return;
-    }
-
-        const currentUrl = new URL(window.location.href);
-        const targetUrl = new URL(actionLink.href, window.location.origin);
-
-        const currentView = getLogicalView(currentUrl);
-        const targetUri = targetUrl.searchParams.get('uri') || '';
-
-        const isSameView =
-            currentView === getLogicalView(targetUrl) ||
-            (currentView === 'offers' && (targetUri === 'offers/addWishlist' || targetUri === 'offers/deleteWishlist'));
-
-    if (!isSameView) {
-        return;
-    }
-
-        saveScrollState();
+        const paginationLink = event.target.closest('.pagination a');
+        if (!paginationLink) {
+            return;
+        }
+        saveScrollPosition();
     });
 
     window.addEventListener('load', () => {
-        const rawState = sessionStorage.getItem(storageKey);
-        if (!rawState) {
+        const savedScroll = sessionStorage.getItem(storageKey);
+        if (!savedScroll) {
             return;
         }
 
         sessionStorage.removeItem(storageKey);
-
-        let parsedState;
-        try {
-            parsedState = JSON.parse(rawState);
-        } catch (error) {
-            return;
-        }
-
-        const currentUrl = new URL(window.location.href);
-        const isSameView = (parsedState.view || '') === getLogicalView(currentUrl);
-
-        if (!isSameView) {
-            return;
-        }
-
-        const scrollY = Number(parsedState.scrollY);
+        const scrollY = parseInt(savedScroll, 10);
         if (Number.isNaN(scrollY) || scrollY < 0) {
             return;
         }
