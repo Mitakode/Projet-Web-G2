@@ -51,11 +51,13 @@
                 <a href="index.php?uri=offers/detail&id={{ offre.ID_offre }}" class="link">
                     <table class="company-table">
                         <tr>
-                            <th class="offer-name">
-                                {{ offre.Titre }}
-                            </th>
-                            {# L'affichage du nom de l'entreprise est possible grâce au JOIN dans le Modèle #}
-                            <td class="offer-company">Entreprise : <strong>{{ offre.Nom_entreprise }}</strong></td>
+                            <td>
+                                <div class ="infos-table">
+                                    <span class="offer-name">{{ offre.Titre }}</span>
+                                    {# L'affichage du nom de l'entreprise est possible grâce au JOIN dans le Modèle #}
+                                    <span class="offer-company">Entreprise : <strong>{{ offre.Nom_entreprise }}</strong></span>
+                                </div>
+                            <td>
                             {% if (session['user_role'] == 'admin' or session['user_role'] == 'pilote') %}
                             <td class="btn-table">
                                 {# Lien vers la page de modification avec l'ID de l'offre concernée #}
@@ -94,13 +96,13 @@
                             {% endif %}
                         </tr>
                         <tr>
-                            <td colspan="2" class="company-info">
+                            <td colspan="3" class="company-info">
                                 {# Affichage des données de base de l'offre avec formatage de la date #}
                                 Durée : {{ offre.Duree }} mois | Publié le : {{ offre.Date_publication|date("d/m/Y") }}
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2" class="company-description">
+                            <td colspan="3" class="company-description">
                                 {{ offre.Description|slice(0, 90) ~ '...' }}
                             </td>
                         </tr>

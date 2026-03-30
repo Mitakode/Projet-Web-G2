@@ -21,77 +21,80 @@
             </div>
         </form>
     </section>
-        <div class="list-container">
-            {% for entreprise in entreprises_page %}
-                <div class="offres-liste">
-                    <table class="company-table">
-                        <tr>
-                            <th class="company-name">{{ entreprise.Nom_entreprise }}</th>
-                            <td class="company-rating">Note : <strong>
-                                {% if entreprise.Moyenne_Note %}
-                                    {{ entreprise.Moyenne_Note|round(1) }}/10
-                                {% else %}
-                                    Pas de note
-                                {% endif %}
-                            </strong></td>
-                            <td class="btn-table">
-                                {% if session['user_role'] == 'etudiant' %}
+
+    <section class="list-container">
+        {% for entreprise in entreprises_page %}
+            <div class="offres-liste">
+                <table class="company-table">
+                    <tr>
+                        <th class="company-name">{{ entreprise.Nom_entreprise }}</th>
+                        <td class="company-rating">Note : <strong>
+                            {% if entreprise.Moyenne_Note %}
+                                {{ entreprise.Moyenne_Note|round(1) }}/10
+                            {% else %}
+                                Pas de note
+                            {% endif %}
+                        </strong></td>
+                        <td class="btn-table">
+                            {% if session['user_role'] == 'etudiant' %}
+                            <div class="rating-table">
                                 {% if entreprise.my_rating is not null %}
                                 <span class="user-rating">{{ entreprise.my_rating }}/10</span>
                                 {% else %}
                                 <span class="user-rating user-rating-empty">0/10</span>
                                 {% endif %}
-                                <button
-                                    type="button"
-                                    class="btn-action etoile {{ entreprise.is_rated ? 'active' : '' }}"
-                                    title="{{ entreprise.my_rating is not null ? 'Modifier ma note' : 'Noter cette entreprise' }}"
-                                    aria-label="{{ entreprise.my_rating is not null ? 'Modifier ma note' : 'Noter cette entreprise' }}"
-                                    onclick="ouvrirPopupNote({{ entreprise.ID_entreprise }}, '{{ entreprise.Nom_entreprise }}')">
-                                    <i class="fa-solid fa-star"></i>
-                                </button>
-                                {% endif %}
-                                {% if (session['user_role'] == 'admin' or session['user_role'] == 'pilote') %}
-                                <a href="index.php?uri=companies/update&id={{ entreprise.ID_entreprise }}" 
-                                    class="btn-action crayon">
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                </a>
-                                {# Lien de suppression avec l'ID dynamique #}
-                                <a href="index.php?uri=companies/delete&id={{ entreprise.ID_entreprise }}" 
-                                class="btn-action poubelle" 
-                                onclick="return confirm('Supprimer cette entreprise ?')">
-                                    <i class="fa-solid fa-trash"></i>
-                                </a>
-                                {% endif %}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" class="company-info">
-                                {{ entreprise.Contact }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" class="company-description">
-                                {{ entreprise.Description }}
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            {% else %}
-                <p>Aucune entreprise trouvée.</p>
-            {% endfor %}
-        </div>
+                            </div>
+                            <button
+                                type="button"
+                                class="btn-action etoile {{ entreprise.is_rated ? 'active' : '' }}"
+                                title="{{ entreprise.my_rating is not null ? 'Modifier ma note' : 'Noter cette entreprise' }}"
+                                aria-label="{{ entreprise.my_rating is not null ? 'Modifier ma note' : 'Noter cette entreprise' }}"
+                                onclick="ouvrirPopupNote({{ entreprise.ID_entreprise }}, '{{ entreprise.Nom_entreprise }}')">
+                                <i class="fa-solid fa-star"></i>
+                            </button>
+                            {% endif %}
+                            {% if (session['user_role'] == 'admin' or session['user_role'] == 'pilote') %}
+                            <a href="index.php?uri=companies/update&id={{ entreprise.ID_entreprise }}" 
+                                class="btn-action crayon">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </a>
+                            {# Lien de suppression avec l'ID dynamique #}
+                            <a href="index.php?uri=companies/delete&id={{ entreprise.ID_entreprise }}" 
+                            class="btn-action poubelle" 
+                            onclick="return confirm('Supprimer cette entreprise ?')">
+                                <i class="fa-solid fa-trash"></i>
+                            </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="company-info">
+                            {{ entreprise.Contact }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="company-description">
+                            {{ entreprise.Description }}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        {% else %}
+            <p>Aucune entreprise trouvée.</p>
+        {% endfor %}
+    </section>
 
-        {# Système de pagination avec tes classes CSS #}
-        <div class="pagination">
-            {% if total_pages > 1 %}
-                {% for i in 1..total_pages %}
-                    <a href="index.php?uri=companies&recherche={{ search_term }}&page={{ i }}" 
-                    class="{{ i == current_page ? 'active' : '' }}">
-                        {{ i }}
-                    </a>
-                {% endfor %}
-            {% endif %}
-        </div>
+    {# Système de pagination avec tes classes CSS #}
+    <div class="pagination">
+        {% if total_pages > 1 %}
+            {% for i in 1..total_pages %}
+                <a href="index.php?uri=companies&recherche={{ search_term }}&page={{ i }}" 
+                class="{{ i == current_page ? 'active' : '' }}">
+                    {{ i }}
+                </a>
+            {% endfor %}
+        {% endif %}
+    </div>
 
 <script src="/assets/js/rating.js"></script>
 
