@@ -1,0 +1,17 @@
+User-agent: * # S'adresse à tous les robots (Google, Bing...)
+
+# Autorisation d'accès aux différents dossiers
+Disallow: /config/
+Disallow: /src/
+Disallow: /vendor/
+Disallow: /tests/
+Disallow: /uploads/
+Disallow: /composer.json
+Disallow: /composer.lock
+Disallow: /README.md
+
+Allow: /assets/css/
+Allow: /assets/js/
+Allow: /assets/pictures/
+
+Sitemap: https://thepiston.fr/sitemap.xml
