@@ -7,10 +7,8 @@
     <h1 class="main-title">Les offres disponibles</h1>
     <section class="search-section">
         {# Le formulaire doit envoyer vers index.php avec l'uri #}
-        <form action="index.php" method="GET" class="search-form">
-            <input type="hidden" name="uri" value="offers">
-
-            <div class="search-bar-wrapper">
+        <form action="/offers" method="GET" class="search-form">
+                <div class="search-bar-wrapper">
                 <input type="text" name="recherche" class="search-input" 
                        value="{{ search_term }}" placeholder="Rechercher une offre...">
 
@@ -80,7 +78,7 @@
                                 <h3>Top des offres ajoutées en wishlist</h3>
                                 <div class="wishlist-container">
                                     {% for offer in topOffers|slice(0, 3) %}
-                                    <a href="index.php?uri=offers/{{offer.ID_offre}}" class="wishlist-item">
+                                    <a href="/offers/detail&id={{offer.ID_offre}}" class="wishlist-item">
                                         <span>{{offer.Titre}}</span>
                                         <span class="count">{{offer.Nb_wishlist}}</span>
                                     </a>
