@@ -25,7 +25,7 @@
                     {% for candidature in candidatures %}
                     <tr>
                         <td>
-                            <a href="/offers/detail&id={{ candidature.ID_offre }}" class="link">
+                            <a href="/offers/detail?id={{ candidature.ID_offre }}" class="link">
                                 {{ candidature.Titre }}
                             </a>
                         </td>
@@ -81,7 +81,7 @@
                     {% for souhait in wishlist %}
                     <tr>
                         <td>
-                            <a href="offers/detail&id={{ souhait.ID_offre }}" class="link">
+                            <a href="/offers/detail?id={{ souhait.ID_offre }}" class="link">
                                 {{ souhait.Titre }}
                             </a>
                         </td>

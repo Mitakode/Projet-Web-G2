@@ -15,7 +15,11 @@
 
         <div class="search-container">
             <div class="search-bar-admin">
-                <form action="/dashboard&page=1" method="GET" >
+                <form action="/dashboard/admin" method="GET" >
+                    <input type="hidden" name="surnameP" value="{{ surnameP }}">
+                    <input type="hidden" name="nameP" value="{{ nameP }}">
+                    <input type="hidden" name="pageP" value="{{ current_pageP }}">
+                    <input type="hidden" name="page" value="1">
                     <input type="text" name="surname" value="{{surname}}" placeholder="Nom">
                     <input type="text" name="name" value="{{name}}" placeholder="Prenom">
                     <input type="text" name="promotion" value="{{promotion}}" placeholder="Promotion">
@@ -29,19 +33,19 @@
 
         <div class="box-list">
             {% for etudiant in etudiants %}
-            <a href="/dashboard/admin/student-details&id={{ etudiant.ID_utilisateur }}" class="link">
+            <a href="/dashboard/admin/student-details?id={{ etudiant.ID_utilisateur }}" class="link">
             <table class="company-table admin">
                 <tr>
                     <td class="user-name">{{ etudiant.Nom }} {{ etudiant.Prenom }} </td>
                     <td class="user-promotion">{{ etudiant.Promotion }}</td>
                     <td class="stats"><strong>Nombre de candidatures : {{ etudiant.nb_candidature }}</strong></td>
                     <td class="btn-table">
-                        <a href="/dashboard/admin/update-student&id={{ etudiant.ID_utilisateur }}" 
+                        <a href="/dashboard/admin/update-student?id={{ etudiant.ID_utilisateur }}" 
                             class="btn-action crayon">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </a>
                         {# Lien de suppression avec l'ID dynamique #}
-                        <a href="/dashboard/admin/delete-student&id={{ etudiant.ID_utilisateur }}" 
+                        <a href="/dashboard/admin/delete-student?id={{ etudiant.ID_utilisateur }}" 
                             class="btn-action poubelle" 
                             onclick="return confirm('Supprimer cet étudiant ?')">
                             <i class="fa-solid fa-trash"></i>
@@ -71,8 +75,12 @@
         <h2 class="dashboard-title">Les comptes pilotes</h2>
 
         <div class="search-container">
-            <form action="/dashboard&page=1" method="GET" class="search-bar-admin">
-                <input type="hidden" name="uri" value="dashboard/admin">
+            <form action="/dashboard/admin" method="GET" class="search-bar-admin">
+                <input type="hidden" name="surname" value="{{ surname }}">
+                <input type="hidden" name="name" value="{{ name }}">
+                <input type="hidden" name="promotion" value="{{ promotion }}">
+                <input type="hidden" name="page" value="{{ current_page }}">
+                <input type="hidden" name="pageP" value="1">
                 <input type="text" name="surnameP" value="{{ surnameP }}" placeholder="Nom">
                 <input type="text" name="nameP" value="{{ nameP }}" placeholder="Prenom">
                 <button type="submit" class="search-btn" aria-label="Rechercher">
@@ -89,12 +97,12 @@
                     <td class="user-name">{{ pilote.Nom }} {{ pilote.Prenom }}</td>
                     <td class="user-stats">{{ pilote.Email }}</td>
                     <td class="btn-table">
-                        <a href="/dashboard/admin/update-pilot&id={{ pilote.ID_utilisateur }}" 
+                        <a href="/dashboard/admin/update-pilot?id={{ pilote.ID_utilisateur }}" 
                             class="btn-action crayon">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </a>
                         {# Lien de suppression avec l'ID dynamique #}
-                        <a href="/dashboard/admin/delete-pilot&id={{ pilote.ID_utilisateur }}" 
+                        <a href="/dashboard/admin/delete-pilot?id={{ pilote.ID_utilisateur }}" 
                             class="btn-action poubelle" 
                             onclick="return confirm('Supprimer ce pilote ?')">
                             <i class="fa-solid fa-trash"></i>
