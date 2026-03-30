@@ -15,21 +15,20 @@
         <h2 class="dashboard-title">Les comptes élèves</h2>
 
         <div class="search-container">
-            <div class="search-bar-admin">
-                <form action="/dashboard/admin" method="GET" >
-                    <input type="hidden" name="surnameP" value="{{ surnameP }}">
-                    <input type="hidden" name="nameP" value="{{ nameP }}">
-                    <input type="hidden" name="pageP" value="{{ current_pageP }}">
-                    <input type="hidden" name="page" value="1">
-                    <input class="search-item" type="text" name="surname" value="{{surname}}" placeholder="Nom">
-                    <input class="search-item" type="text" name="name" value="{{name}}" placeholder="Prenom">
-                    <input class="search-item" type="text" name="promotion" value="{{promotion}}" placeholder="Promotion">
-                    <button type="submit" class="search-btn" aria-label="Rechercher">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                    </button>
-                </form>
-                <a href="/dashboard/admin/create-student" type="button" class="search-item btn-add add-link">+</a>
-            </div>                
+            <form action="/dashboard/admin" method="GET" class="search-bar-admin">
+                <input type="hidden" name="surnameP" value="{{ surnameP }}">
+                <input type="hidden" name="nameP" value="{{ nameP }}">
+                <input type="hidden" name="pageP" value="{{ current_pageP }}">
+                <input type="hidden" name="page" value="1">
+                <input class="search-item" type="text" name="surname" value="{{surname}}" placeholder="Nom">
+                <input class="search-item" type="text" name="name" value="{{name}}" placeholder="Prenom">
+                <input class="search-item" type="text" name="promotion" value="{{promotion}}" placeholder="Promotion">
+                <button type="submit" class="search-btn" aria-label="Rechercher">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+                <a href="/dashboard/admin/create-student" type="button" class="search-item btn-add add-link">+</a>    
+            </form>
+                      
         </div>
 
         <div class="box-list">
