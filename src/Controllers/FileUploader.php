@@ -8,6 +8,7 @@ class FileUploader
     private $uploadDir = 'uploads/';
     private $allowedType = 'application/pdf';
     private $message = "";
+    private $maxSize = 4194304; // 4 Mo en octets
     private $newFileName = null;
 
     public function __construct(array $file)
@@ -23,20 +24,21 @@ class FileUploader
     public function validate(): bool
     {
         if ($this->file['error'] !== UPLOAD_ERR_OK) {
-            $this->message = "Erreur validate lors de l'upload du fichier "
+            $this->message = "Erreur lors de l'upload du fichier "
                 . basename($this->file['name'])
                 . ". Code d'erreur : "
                 . $this->file['error']
                 . "<br>";
-
             return false;
         }
-
         if ($this->file['type'] !== $this->allowedType) {
             $this->message = "Le fichier " . basename($this->file['name']) . " doit être au format PDF.";
             return false;
         }
-        //$safeName = validateInput($originalName); à utiliser pour vérif le nom ??
+        if ($this->file['size'] > $this->maxSize) {
+            $this->message = "Le fichier " . basename($this->file['name']) . " est trop lourd (maximum 4 Mo).";
+            return false;
+        }
         return true;
     }
 

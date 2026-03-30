@@ -125,22 +125,28 @@ class OfferController
 
                     $uploaderCV = new FileUploader($_FILES['cv']);
                     $uploaderCV->setFileName($cvFileName);
-
                     $uploaderLettre = new FileUploader($_FILES['lettre']);
                     $uploaderLettre->setFileName($letterFileName);
 
-                    if ($uploaderCV->validate()) {
+                    $cvValid = $uploaderCV->validate();
+                    $lettreValid = $uploaderLettre->validate();
+
+                    if ($cvValid && $lettreValid) {
                         $cvPath = $uploaderCV->upload();
                         if ($cvPath) {
                             $cvPath = basename($cvPath);
                         }
-                    }
-
-                    if ($uploaderLettre->validate()) {
                         $letterPath = $uploaderLettre->upload();
                         if ($letterPath) {
                             $letterPath = basename($letterPath);
                         }
+                    } else {
+                        // On stocke le message d'erreur pour affichage éventuel
+                        $errorMsg = !$cvValid ? $uploaderCV->getMessage() : '';
+                        $errorMsg .= !$lettreValid ? $uploaderLettre->getMessage() : '';
+                        // Redirection avec message d'erreur (à adapter selon gestion front)
+                        header('Location: /offers/detail?id=' . urlencode((string) $idOffre) . '&popup=error&msg=' . urlencode($errorMsg));
+                        exit;
                     }
                 }
 
