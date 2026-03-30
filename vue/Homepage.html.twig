@@ -78,7 +78,7 @@
                                 <h3>Top des offres ajoutées en wishlist</h3>
                                 <div class="wishlist-container">
                                     {% for offer in topOffers|slice(0, 3) %}
-                                    <a href="/offers/detail&id={{offer.ID_offre}}" class="wishlist-item">
+                                    <a href="/offers/detail?id={{offer.ID_offre}}" class="wishlist-item">
                                         <span>{{offer.Titre}}</span>
                                         <span class="count">{{offer.Nb_wishlist}}</span>
                                     </a>

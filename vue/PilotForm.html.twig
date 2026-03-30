@@ -7,7 +7,7 @@
 <section class="frame">
     <h1 class="main-title">{{ is_edit ? 'Modifier' : 'Ajouter' }} un pilote</h1>
 
-    <form class="form-test" data-account-password-form="true" data-popup-error="{{ popup_error|default('')|e('html_attr') }}" action="/{{ is_edit ? 'dashboard/admin/update-pilot&id=' ~ pilote.ID_utilisateur : 'dashboard/admin/create-pilot' }}" method="POST">
+    <form class="form-test" data-account-password-form="true" data-popup-error="{{ popup_error|default('')|e('html_attr') }}" action="/{{ is_edit ? 'dashboard/admin/update-pilot?id=' ~ pilote.ID_utilisateur : 'dashboard/admin/create-pilot' }}" method="POST">
 
         <div class="label-row">   
             <label>Nom</label>

@@ -16,7 +16,7 @@
        - Si is_edit est vrai, on envoie vers la route d'update avec l'ID
        - Sinon, on envoie vers la route de création
     #}
-    <form class="form-test" action="/{{ is_edit ? 'offers/update&id=' ~ offre.ID_offre : 'offers/create' }}" method="POST">
+    <form class="form-test" action="/{{ is_edit ? 'offers/update?id=' ~ offre.ID_offre : 'offers/create' }}" method="POST">
         {% if error is not empty %}
             <p class="infos infos-error" role="alert">Veuillez corriger les champs indiqués.</p>
         {% endif %}
