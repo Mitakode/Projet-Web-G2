@@ -3,18 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="/assets/images/icon.png">
+    <link rel="icon" type="image/png" href="/assets/pictures/icon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="/assets/css/style.css">
-    <title>{% block title %}ThePiston{% endblock %}</title>
+
+    {# Titre dynamique #}
+    <title>{% block title %}ThePiston - Trouvez votre futur stage ou alternance{% endblock %}</title>
+
+    {# Meta Description dynamique #}
+    <meta name="description" content="{% block description %}ThePiston est la plateforme de référence pour connecter étudiants du CESI et entreprises.{% endblock %}">
+
+    {% block extra_head %}{% endblock %}
+
 </head>
 <body>
     {% block body %}
     <header>
         <div class="logo-group">
             <a href="/" class="logo-link">
-                <img src="/assets/images/icon.png" alt="Icon" class="logo logo-icon">
-                <img src="/assets/images/text.png" alt="The Piston" class="logo logo-text">
+                <img src="/assets/pictures/icon.png" alt="The piston Icon" class="logo logo-icon">
+                <img src="/assets/pictures/text.png" alt="The Piston, levier de carrière." class="logo logo-text">
             </a>
         </div>
 

@@ -4,6 +4,10 @@
 
 {% block title %}{{ is_login_redirect ? 'Connexion requise' : 'Accès refusé' }} - ThePiston{% endblock %}
 
+{% block extra_head %}
+    <meta name="robots" content="noindex, nofollow">
+{% endblock %}
+
 {% block content %}
 <section class="dashboards-section access-page" data-redirect-url="{{ redirect_to }}" data-redirect-delay="5000">
     <h1 class="main-title access-title">{{ is_login_redirect ? 'Connexion requise' : 'Accès refusé' }}</h1>

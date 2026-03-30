@@ -1,6 +1,11 @@
 {% extends "base.html.twig" %}
 
 {% block title %}{{etudiant.Nom|upper}} {{etudiant.Prenom}} - ThePiston{% endblock %}
+
+{% block extra_head %}
+    <meta name="robots" content="noindex, nofollow">
+{% endblock %}
+
 {% block main_class %}student-dashboard {% endblock %}
 {% block content %}
     <h1>{{etudiant.Nom|upper}} {{etudiant.Prenom}}    {{etudiant.Promotion}}</h1>
@@ -40,13 +45,13 @@
                         <td>{{ candidature.entreprise }}</td>
                         <td>{{ candidature.Date_candidature|date("d-m-Y") }}</td>
                         <td>
-                            <a href="{{ candidature.CV }}" target="_blank" class="link">
-                                {{ candidature.CV|split('/')|last }}
+                            <a href="uploads/{{ candidature.CV }}" rel="nofollow" target="_blank" class="link">
+                                {{ candidature.CV}}
                             </a>
                         </td>
                         <td>
-                            <a href="{{ candidature.Lettre_motivation }}" target="_blank" class="link">
-                                {{ candidature.Lettre_motivation|split('/')|last }}
+                            <a href="uploads/{{ candidature.Lettre_motivation }}" rel="nofollow" target="_blank" class="link">
+                                {{ candidature.Lettre_motivation}}
                             </a>
                         </td>
                     </tr>

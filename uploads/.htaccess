@@ -1,0 +1,13 @@
+# Empêche de voir la liste des fichiers si on tape l'URL du dossier
+Options -Indexes
+
+# Empêche l'exécution de scripts PHP
+# Si on réussit à uploader un fichier "attaque.php", on ne pourra pas le lancer.
+<Files "*.php">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+<FilesMatch "\.(pdf)$">
+    Header set Content-Disposition attachment
+</FilesMatch>

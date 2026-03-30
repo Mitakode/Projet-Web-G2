@@ -3,6 +3,10 @@
 {# titre de l'onglet qui s'adapte automatiquement (Création ou Modification) #}
 {% block title %}{{ is_edit ? 'Modifier' : 'Créer' }} une offre - ThePiston{% endblock %}
 
+{% block extra_head %}
+    <meta name="robots" content="noindex, nofollow">
+{% endblock %}
+
 {% block main_class %}list-page{% endblock %}
 
 {# contenu principal de la page #}
