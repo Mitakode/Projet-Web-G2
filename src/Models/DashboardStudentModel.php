@@ -10,8 +10,8 @@ class DashboardStudentModel extends Model
     }
 
     /**
-     * Récupère les candidatures d'un étudiant avec les détails de l'offre et de l'entreprise.
-     * Utilisation de JOIN pour croiser les tables Postule, Offre et Entreprise.
+     * Récupère les candidatures d'un étudiant avec les détails de l'offre et de l'entreprise
+     * Utilise des jointures entre Postule, Offre et Entreprise
      */
     public function getCandidatures($idUtilisateur)
     {
@@ -27,7 +27,7 @@ class DashboardStudentModel extends Model
     }
 
     /**
-     * Récupère la wishlist (offres sauvegardées) d'un étudiant.
+     * Récupère les offres sauvegardées dans la wishlist d'un étudiant
      */
     public function getWishlist($idUtilisateur)
     {
@@ -43,7 +43,7 @@ class DashboardStudentModel extends Model
     }
 
     /**
-     * Supprime une offre de la wishlist de l'étudiant.
+     * Supprime une offre de la wishlist de l'étudiant
      */
     public function removeFromWishlist($idUtilisateur, $idOffre)
     {

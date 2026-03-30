@@ -12,7 +12,9 @@ class DashboardAdminModel extends Model
         $this->pdo = $this->connection->getConnection();
     }
 
-    // Getters Students
+    /**
+     * Récupère un étudiant avec ses informations de promotion et de pilote
+     */
     public function getStudentById($id)
     {
         $sql = "SELECT Utilisateur.*, Etudiant.Promotion, Etudiant.ID_pilote 
@@ -24,7 +26,9 @@ class DashboardAdminModel extends Model
         return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 
-    // Getters applications
+    /**
+     * Récupère les candidatures d'un étudiant avec les informations des offres
+     */
     public function getStudentApplications($studentId)
     {
         $sql = "SELECT Postule.*, Offre.ID_offre, Offre.Titre As Titre_offre,
@@ -38,7 +42,9 @@ class DashboardAdminModel extends Model
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    // Getters Pilots
+    /**
+     * Récupère un pilote par son identifiant
+     */
     public function getPilotById($id)
     {
         $sql = "SELECT Utilisateur.*, Pilote.ID_utilisateur 
@@ -50,6 +56,9 @@ class DashboardAdminModel extends Model
         return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Récupère la liste de tous les pilotes
+     */
     public function getAllPilots()
     {
         $sql = "SELECT * FROM Utilisateur  
@@ -59,8 +68,9 @@ class DashboardAdminModel extends Model
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    // Method
-    // Students
+    /**
+     * Recherche les étudiants selon les filtres transmis
+     */
     public function searchStudents($surname = "", $name = "", $promotion = "")
     {
         $sql = "SELECT Utilisateur.*, Etudiant.Promotion, Etudiant.ID_Pilote,
@@ -95,6 +105,9 @@ class DashboardAdminModel extends Model
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Crée un compte étudiant dans Utilisateur puis Etudiant
+     */
     public function createStudent($userData, $studentData)
     {
         try {
@@ -119,6 +132,9 @@ class DashboardAdminModel extends Model
         }
     }
 
+    /**
+     * Met à jour les informations d'un étudiant
+     */
     public function updateStudent($id, $userData, $studentData)
     {
         try {
@@ -142,6 +158,9 @@ class DashboardAdminModel extends Model
         }
     }
 
+    /**
+     * Supprime un étudiant et ses données liées
+     */
     public function deleteStudent($id)
     {
         try {
@@ -162,6 +181,9 @@ class DashboardAdminModel extends Model
         }
     }
 
+    /**
+     * Vérifie si un pilote a encore des étudiants rattachés
+     */
     public function pilotHasStudents($pilotId)
     {
         $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM Etudiant WHERE ID_Pilote = ?");
@@ -169,6 +191,9 @@ class DashboardAdminModel extends Model
         return ((int) $stmt->fetchColumn()) > 0;
     }
 
+    /**
+     * Supprime un pilote de la base
+     */
     public function deletePilot($id)
     {
         try {
@@ -185,7 +210,9 @@ class DashboardAdminModel extends Model
         }
     }
 
-    // Pilots
+    /**
+     * Recherche les pilotes selon les filtres transmis
+     */
     public function searchPilots($surnameP = "", $nameP = "")
     {
         $sql = "SELECT Utilisateur.*
@@ -208,6 +235,9 @@ class DashboardAdminModel extends Model
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Crée un compte pilote dans Utilisateur puis Pilote
+     */
     public function createPilot($userData, $pilotData)
     {
         try {
@@ -229,6 +259,9 @@ class DashboardAdminModel extends Model
         }
     }
 
+    /**
+     * Met à jour les informations d'un pilote
+     */
     public function updatePilot($id, $userData)
     {
         return $this->connection->updateRecord($id, $userData);

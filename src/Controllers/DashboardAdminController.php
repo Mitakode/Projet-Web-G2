@@ -9,17 +9,27 @@ class DashboardAdminController
 {
     private $twig;
     private $model;
+
+    /**
+     * Normalise le nom en majuscules
+     */
     private function normalizeSurname(string $value): string
     {
         return mb_strtoupper(trim($value), 'UTF-8');
     }
 
+    /**
+     * Normalise le prénom avec une case adaptée
+     */
     private function normalizeFirstname(string $value): string
     {
         $clean = mb_strtolower(trim($value), 'UTF-8');
         return mb_convert_case($clean, MB_CASE_TITLE, 'UTF-8');
     }
 
+    /**
+     * Lit et valide les champs du formulaire utilisateur
+     */
     private function getFormData(string &$error, bool $requirePassword): array
     {
         $postData = [
@@ -62,6 +72,9 @@ class DashboardAdminController
         return $postData;
     }
 
+    /**
+     * Prépare les données utilisateur pour la persistance
+     */
     private function getUserData(array $postData, bool $includePassword): array
     {
         $userData = [
@@ -82,27 +95,34 @@ class DashboardAdminController
         $this->model = $model;
     }
 
-
+    /**
+     * Affiche le dashboard admin avec la liste paginée des étudiants et des pilotes
+     */
     public function list()
     {
         $blockAccess = new BlockAccess($this->twig);
         $blockAccess->blockStudentAccess();
         if ($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'pilote') {
             $popup = $_GET['popup'] ?? '';
-        //Students
+
+            // Charge les filtres et la liste des étudiants
             $surname = $_GET['surname'] ?? '';
             $name = $_GET['name'] ?? '';
             $promotion = $_GET['promotion'] ?? '';
             $students = $this->model->searchStudents($surname, $name, $promotion);
-        // Gérer la pagination
+
+            // Prépare la pagination des étudiants
             $paginator = new Paginator($students, 5);
-        //Pilots
+
+            // Charge les filtres et la liste des pilotes
             $surnameP = $_GET['surnameP'] ?? '';
             $nameP = $_GET['nameP'] ?? '';
             $pilots = $this->model->searchPilots($surnameP, $nameP);
-        // Gérer la pagination
+
+            // Prépare la pagination des pilotes
             $paginatorP = new Paginator($pilots, 5, 'pageP');
-        // Envoyer le tout à la vue Twig
+
+            // Rend la vue avec les deux tableaux paginés
             echo $this->twig->render('DashboardAdmin.html.twig', [
                 'etudiants' => $paginator->getCurrentPageItems(),
                 'total_pages'      => $paginator->getTotalPages(),
@@ -124,6 +144,9 @@ class DashboardAdminController
         }
     }
 
+    /**
+     * Affiche la fiche détaillée d'un étudiant
+     */
     public function studentDetails()
     {
         $blockAccess = new BlockAccess($this->twig);
@@ -158,6 +181,9 @@ class DashboardAdminController
         }
     }
 
+    /**
+     * Gère la création d'un étudiant
+     */
     public function createStudent()
     {
         $blockAccess = new BlockAccess($this->twig);
@@ -216,6 +242,9 @@ class DashboardAdminController
         }
     }
 
+    /**
+     * Supprime un étudiant et redirige avec le bon message
+     */
     public function deleteStudent()
     {
         $blockAccess = new BlockAccess($this->twig);
@@ -246,6 +275,9 @@ class DashboardAdminController
         }
     }
 
+    /**
+     * Gère la modification d'un étudiant
+     */
     public function updateStudent()
     {
         $blockAccess = new BlockAccess($this->twig);
@@ -302,6 +334,9 @@ class DashboardAdminController
         }
     }
 
+    /**
+     * Gère la création d'un pilote
+     */
     public function createPilot()
     {
         $blockAccess = new BlockAccess($this->twig);
@@ -334,6 +369,9 @@ class DashboardAdminController
         ]);
     }
 
+    /**
+     * Supprime un pilote si aucun étudiant ne lui est rattaché
+     */
     public function deletePilot()
     {
         $blockAccess = new BlockAccess($this->twig);
@@ -365,7 +403,9 @@ class DashboardAdminController
         }
     }
 
-
+    /**
+     * Gère la modification d'un pilote
+     */
     public function updatePilot()
     {
         $blockAccess = new BlockAccess($this->twig);
