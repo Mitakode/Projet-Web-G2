@@ -66,7 +66,7 @@ class DashboardStudentController
         $currentPage = $_GET['page'] ?? 1;
         $currentPageW = $_GET['pageW'] ?? 1;
 // Redirection vers le dashboard après suppression
-        $redirectUrl = 'index.php?uri=dashboard/student&page='
+        $redirectUrl = '/dashboard/student?page='
             . urlencode((string) $currentPage)
             . '&pageW='
             . urlencode((string) $currentPageW);

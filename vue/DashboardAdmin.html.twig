@@ -57,7 +57,7 @@
         <div class="pagination">
             {% if total_pages > 1 %}
                 {% for i in 1..total_pages %}
-                    <a href="/dashboard/admin&surname={{ surname }}&name={{ name }}&promotion={{ promotion }}&surnameP={{ surnameP }}&nameP={{ nameP }}&page={{ i }}&pageP={{ current_pageP }}" 
+                    <a href="/dashboard/admin?surname={{ surname }}&name={{ name }}&promotion={{ promotion }}&surnameP={{ surnameP }}&nameP={{ nameP }}&page={{ i }}&pageP={{ current_pageP }}" 
                     class="{{ i == current_page ? 'active' : '' }}">
                         {{ i }}
                     </a>
@@ -108,7 +108,7 @@
         <div class="pagination">
             {% if total_pagesP > 1 %}
                 {% for i in 1..total_pagesP %}
-                    <a href="/dashboard/admin&surname={{ surname }}&name={{ name }}&promotion={{ promotion }}&surnameP={{ surnameP }}&nameP={{ nameP }}&page={{ current_page }}&pageP={{ i }}" 
+                    <a href="/dashboard/admin?surname={{ surname }}&name={{ name }}&promotion={{ promotion }}&surnameP={{ surnameP }}&nameP={{ nameP }}&page={{ current_page }}&pageP={{ i }}" 
                     class="{{ i == current_pageP ? 'active' : '' }}">
                         {{ i }}
                     </a>
