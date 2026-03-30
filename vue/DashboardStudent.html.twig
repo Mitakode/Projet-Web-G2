@@ -16,6 +16,7 @@
                     <tr>
                         <th>Titre de l'offre</th>
                         <th>Entreprise</th>
+                        <th>Date de candidature</th>
                         <th>CV</th>
                         <th>Lettre de motivation</th>
                     </tr>
@@ -30,6 +31,7 @@
                             </a>
                         </td>
                         <td>{{ candidature.Nom_entreprise }}</td>
+                        <td>{{ candidature.Date_candidature|date('d/m/Y') }}</td>
                         {# Le filtre |split('/')|last permet de n'afficher que le nom du fichier PDF, sans tout le chemin du serveur #}
                         <td>
                             <a href="{{ candidature.CV }}" target="_blank" class="link">
