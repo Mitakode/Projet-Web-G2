@@ -17,8 +17,14 @@
        - Sinon, on envoie vers la route de création
     #}
     <form class="form-test" action="/{{ is_edit ? 'offers/update&id=' ~ offre.ID_offre : 'offers/create' }}" method="POST">
+        {% if error is not empty %}
+            <p class="infos infos-error" role="alert">Veuillez corriger les champs indiqués.</p>
+        {% endif %}
         
         <label>Titre de l'offre</label>
+        {% if 'Titre' in error %}
+            <p class="infos infos-error" role="alert">Veuillez renseigner le titre</p>
+        {% endif %}
         {# Les attributs 'name' doivent correspondre exactement à ce que le contrôleur attend en $_POST #}
         <input class="form-input" type="text" name="Titre" value="{{ offre.Titre ?? '' }}" required>
 
@@ -26,6 +32,9 @@
         <div class="form-grid">
             <div class="form-column2">
                 <label>Entreprise</label>
+                {% if 'ID_entreprise' in error %}
+                    <p class="infos infos-error" role="alert">Veuillez sélectionner une entreprise</p>
+                {% endif %}
                 {# Liste déroulante générée dynamiquement depuis la base de données via le contrôleur #}
                 <select class="form-input" name="ID_entreprise" required>
                     <option value="">Sélectionnez une entreprise</option>
@@ -60,6 +69,9 @@
         </div>
 
         <label>Description</label>
+        {% if 'Description' in error %}
+            <p class="infos infos-error" role="alert">Veuillez renseigner la description</p>
+        {% endif %}
         <textarea class="form-input" rows="10" name="Description" required>{{ offre.Description ?? '' }}</textarea>
 
         <div class="btn-container" style="margin-top: 20px;">

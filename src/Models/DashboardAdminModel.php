@@ -1,55 +1,59 @@
 <?php
+
 namespace App\Models;
 
-class DashboardAdminModel extends Model{
+class DashboardAdminModel extends Model
+{
     private $pdo;
 
-    public function __construct(Database $connection) {
+    public function __construct(Database $connection)
+    {
         parent::__construct($connection);
         $this->pdo = $this->connection->getConnection();
     }
 
     // Getters Students
-    public function getStudentById($id) {
+    public function getStudentById($id)
+    {
         $sql = "SELECT Utilisateur.*, Etudiant.Promotion, Etudiant.ID_pilote 
                 FROM Utilisateur  
                 JOIN Etudiant ON Utilisateur.ID_utilisateur = Etudiant.ID_utilisateur 
                 WHERE Utilisateur.ID_utilisateur = ?";
-    
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$id]);
         return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 
     // Getters applications
-    public function getStudentApplications($studentId) {
-        $sql = "SELECT Postule.*, Offre.ID_offre, Offre.Titre As Titre_offre, Offre.ID_entreprise, Entreprise.Nom_entreprise AS entreprise
+    public function getStudentApplications($studentId)
+    {
+        $sql = "SELECT Postule.*, Offre.ID_offre, Offre.Titre As Titre_offre,
+            Offre.ID_entreprise, Entreprise.Nom_entreprise AS entreprise
                 FROM Postule 
                 JOIN Offre ON Offre.ID_offre = Postule.ID_offre 
                 JOIN Entreprise ON Offre.ID_entreprise = Entreprise.ID_entreprise
                 WHERE Postule.ID_utilisateur = ?";
-    
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$studentId]);
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     // Getters Pilots
-    public function getPilotById($id) {
+    public function getPilotById($id)
+    {
         $sql = "SELECT Utilisateur.*, Pilote.ID_utilisateur 
                 FROM Utilisateur  
                 JOIN Pilote ON Utilisateur.ID_utilisateur = Pilote.ID_utilisateur 
                 WHERE Utilisateur.ID_utilisateur = ?";
-    
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$id]);
         return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 
-    public function getAllPilots() {
+    public function getAllPilots()
+    {
         $sql = "SELECT * FROM Utilisateur  
                 JOIN Pilote ON Utilisateur.ID_utilisateur = Pilote.ID_utilisateur";
-
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -57,14 +61,17 @@ class DashboardAdminModel extends Model{
 
     // Method
     // Students
-    public function searchStudents($surname = "", $name = "", $promotion = "") {
-        $sql = "SELECT Utilisateur.*, Etudiant.Promotion, Etudiant.ID_Pilote, COUNT(Postule.ID_utilisateur) as nb_candidature 
-        FROM Utilisateur JOIN Etudiant ON Utilisateur.ID_utilisateur = Etudiant.ID_utilisateur LEFT JOIN Postule ON Etudiant.ID_utilisateur = Postule.ID_utilisateur 
+    public function searchStudents($surname = "", $name = "", $promotion = "")
+    {
+        $sql = "SELECT Utilisateur.*, Etudiant.Promotion, Etudiant.ID_Pilote,
+        COUNT(Postule.ID_utilisateur) as nb_candidature 
+        FROM Utilisateur
+        JOIN Etudiant ON Utilisateur.ID_utilisateur = Etudiant.ID_utilisateur
+        LEFT JOIN Postule ON Etudiant.ID_utilisateur = Postule.ID_utilisateur 
         WHERE 1=1 ";
         $params = [];
-
-        if($_SESSION['user_role'] === 'pilote') {
-            $sql .= " AND Etudiant.ID_Pilote=". $_SESSION['user_id'];
+        if ($_SESSION['user_role'] === 'pilote') {
+            $sql .= " AND Etudiant.ID_Pilote=" . $_SESSION['user_id'];
         }
 
         if (!empty($surname)) {
@@ -82,88 +89,71 @@ class DashboardAdminModel extends Model{
             $params['promotion'] = '%' . $promotion . '%';
         }
         $sql .= " GROUP BY Etudiant.ID_utilisateur";
-
         $pdo = $this->connection->getConnection();
-
         $stmt = $pdo->prepare($sql);
         $stmt->execute($params);
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function createStudent($userData, $studentData) {
+    public function createStudent($userData, $studentData)
+    {
         try {
             $this->pdo->beginTransaction();
-
             $columns = implode(', ', array_keys($userData));
             $placeholders = implode(', ', array_fill(0, count($userData), '?'));
             $sqlUser = "INSERT INTO Utilisateur ($columns) VALUES ($placeholders)";
-            
             $stmt = $this->pdo->prepare($sqlUser);
             $stmt->execute(array_values($userData));
-            
             $userId = $this->pdo->lastInsertId();
             $studentData['ID_utilisateur'] = $userId;
-
             $colStudent = implode(', ', array_keys($studentData));
             $placeStudent = implode(', ', array_fill(0, count($studentData), '?'));
             $sqlStudent = "INSERT INTO Etudiant ($colStudent) VALUES ($placeStudent)";
-
             $stmt = $this->pdo->prepare($sqlStudent);
             $stmt->execute(array_values($studentData));
-
             $this->pdo->commit();
             return $userId;
-
         } catch (\Exception $e) {
             $this->pdo->rollBack();
             throw $e;
         }
     }
 
-    public function updateStudent($id, $userData, $studentData){
+    public function updateStudent($id, $userData, $studentData)
+    {
         try {
             $this->pdo->beginTransaction();
-
             $userSets = implode(' = ?, ', array_keys($userData)) . ' = ?';
             $sqlUser = "UPDATE Utilisateur SET $userSets WHERE ID_utilisateur = ?";
             $userParams = array_values($userData);
             $userParams[] = $id;
-
             $stmt = $this->pdo->prepare($sqlUser);
             $stmt->execute(array_values($userParams));
-            
             $studentSets = implode(' = ?, ', array_keys($studentData)) . ' = ?';
             $sqlStudent = "UPDATE Etudiant SET $studentSets WHERE ID_utilisateur = ?";
             $studentParams = array_values($studentData);
             $studentParams[] = $id;
-
             $stmt = $this->pdo->prepare($sqlStudent);
             $stmt->execute(array_values($studentParams));
-
             $this->pdo->commit();
-
         } catch (\Exception $e) {
             $this->pdo->rollBack();
             throw $e;
         }
     }
 
-    public function deleteStudent($id) {
+    public function deleteStudent($id)
+    {
         try {
             $this->pdo->beginTransaction();
-
             $stmt = $this->pdo->prepare("DELETE FROM Souhaite WHERE ID_utilisateur = ?");
             $stmt->execute([$id]);
-
             $stmt = $this->pdo->prepare("DELETE FROM Postule WHERE ID_utilisateur = ?");
             $stmt->execute([$id]);
-
             $stmt = $this->pdo->prepare("DELETE FROM Etudiant WHERE ID_utilisateur = ?");
             $stmt->execute([$id]);
-
             $stmt = $this->pdo->prepare("DELETE FROM Utilisateur WHERE ID_utilisateur = ?");
             $stmt->execute([$id]);
-
             $this->pdo->commit();
             return true;
         } catch (\Exception $e) {
@@ -172,23 +162,21 @@ class DashboardAdminModel extends Model{
         }
     }
 
-    public function pilotHasStudents($pilotId) {
+    public function pilotHasStudents($pilotId)
+    {
         $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM Etudiant WHERE ID_Pilote = ?");
         $stmt->execute([$pilotId]);
-
         return ((int) $stmt->fetchColumn()) > 0;
     }
 
-    public function deletePilot($id) {
+    public function deletePilot($id)
+    {
         try {
             $this->pdo->beginTransaction();
-
             $stmt = $this->pdo->prepare("DELETE FROM Pilote WHERE ID_utilisateur = ?");
             $stmt->execute([$id]);
-
             $stmt = $this->pdo->prepare("DELETE FROM Utilisateur WHERE ID_utilisateur = ?");
             $stmt->execute([$id]);
-
             $this->pdo->commit();
             return true;
         } catch (\Exception $e) {
@@ -198,12 +186,12 @@ class DashboardAdminModel extends Model{
     }
 
     // Pilots
-    public function searchPilots($surnameP = "", $nameP = "") {
+    public function searchPilots($surnameP = "", $nameP = "")
+    {
         $sql = "SELECT Utilisateur.*
         FROM Utilisateur JOIN Pilote ON Utilisateur.ID_utilisateur = Pilote.ID_utilisateur 
         WHERE 1=1 ";
         $params = [];
-
         if (!empty($surnameP)) {
             $sql .= " AND Utilisateur.Nom LIKE :surnameP";
             $params['surnameP'] = '%' . $surnameP . '%';
@@ -213,32 +201,26 @@ class DashboardAdminModel extends Model{
             $sql .= " AND Utilisateur.Prenom LIKE :nameP";
             $params['nameP'] = '%' . $nameP . '%';
         }
-        
-        $pdo = $this->connection->getConnection();
 
+        $pdo = $this->connection->getConnection();
         $stmt = $pdo->prepare($sql);
         $stmt->execute($params);
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function createPilot($userData, $pilotData) {
+    public function createPilot($userData, $pilotData)
+    {
         try {
             $this->pdo->beginTransaction();
-
             $columns = implode(', ', array_keys($userData));
             $placeholders = implode(', ', array_fill(0, count($userData), '?'));
             $sqlUser = "INSERT INTO Utilisateur ($columns) VALUES ($placeholders)";
-            
             $stmt = $this->pdo->prepare($sqlUser);
             $stmt->execute(array_values($userData));
-            
             $userId = $this->pdo->lastInsertId();
-            
             $sqlPilot = "INSERT INTO Pilote (ID_utilisateur) VALUES (?)";
-
             $stmt = $this->pdo->prepare($sqlPilot);
             $stmt->execute([$userId]);
-
             $this->pdo->commit();
             return $userId;
         } catch (\Exception $e) {
@@ -247,7 +229,8 @@ class DashboardAdminModel extends Model{
         }
     }
 
-    public function updatePilot($id, $userData) {
+    public function updatePilot($id, $userData)
+    {
         return $this->connection->updateRecord($id, $userData);
     }
 }

@@ -20,8 +20,10 @@ class CompanyModel extends Model
         $params = [];
 
         if ($currentUserId !== null) {
-            $sql .= ", MAX(CASE WHEN Evalue.ID_utilisateur = :current_user_id THEN 1 ELSE 0 END) as is_rated";
-            $sql .= ", MAX(CASE WHEN Evalue.ID_utilisateur = :current_user_id THEN Evalue.Note_entreprise ELSE NULL END) as my_rating";
+            $sql .= ", MAX(CASE WHEN Evalue.ID_utilisateur = :current_user_id"
+                . " THEN 1 ELSE 0 END) as is_rated";
+            $sql .= ", MAX(CASE WHEN Evalue.ID_utilisateur = :current_user_id"
+                . " THEN Evalue.Note_entreprise ELSE NULL END) as my_rating";
             $params['current_user_id'] = (int) $currentUserId;
         } else {
             $sql .= ", 0 as is_rated";
@@ -62,9 +64,11 @@ class CompanyModel extends Model
     public function rateCompany($idEntreprise, $idUtilisateur, $note)
     {
         $pdo = $this->connection->getConnection();
-        
+
         // Vérifier si une note existe déjà pour cet utilisateur et cette entreprise
-        $checkSql = "SELECT COUNT(*) as count FROM Evalue WHERE ID_entreprise = :id_entreprise AND ID_utilisateur = :id_utilisateur";
+        $checkSql = "SELECT COUNT(*) as count FROM Evalue "
+            . "WHERE ID_entreprise = :id_entreprise "
+            . "AND ID_utilisateur = :id_utilisateur";
         $checkStmt = $pdo->prepare($checkSql);
         $checkStmt->execute([
             ':id_entreprise' => $idEntreprise,
@@ -75,7 +79,9 @@ class CompanyModel extends Model
 
         if ($existing) {
             // Mettre à jour la note existante
-            $updateSql = "UPDATE Evalue SET Note_entreprise = :note WHERE ID_entreprise = :id_entreprise AND ID_utilisateur = :id_utilisateur";
+            $updateSql = "UPDATE Evalue SET Note_entreprise = :note "
+                . "WHERE ID_entreprise = :id_entreprise "
+                . "AND ID_utilisateur = :id_utilisateur";
             $updateStmt = $pdo->prepare($updateSql);
             return $updateStmt->execute([
                 ':note' => $note,
@@ -84,7 +90,8 @@ class CompanyModel extends Model
             ]);
         } else {
             // Créer une nouvelle note
-            $insertSql = "INSERT INTO Evalue (ID_entreprise, ID_utilisateur, Note_entreprise) VALUES (:id_entreprise, :id_utilisateur, :note)";
+            $insertSql = "INSERT INTO Evalue (ID_entreprise, ID_utilisateur, Note_entreprise) "
+                . "VALUES (:id_entreprise, :id_utilisateur, :note)";
             $insertStmt = $pdo->prepare($insertSql);
             return $insertStmt->execute([
                 ':id_entreprise' => $idEntreprise,

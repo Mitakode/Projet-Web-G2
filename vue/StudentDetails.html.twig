@@ -39,8 +39,16 @@
                         </td>
                         <td>{{ candidature.entreprise }}</td>
                         <td>{{ candidature.Date_candidature|date("d-m-Y") }}</td>
-                        <td>{{ candidature.CV|split('/')|last }}</td>
-                        <td>{{ candidature.Lettre_motivation|split('/')|last }}</td>
+                        <td>
+                            <a href="{{ candidature.CV }}" target="_blank" class="link">
+                                {{ candidature.CV|split('/')|last }}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ candidature.Lettre_motivation }}" target="_blank" class="link">
+                                {{ candidature.Lettre_motivation|split('/')|last }}
+                            </a>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -50,7 +58,7 @@
         <div class="pagination">
             {% if total_pages > 1 %}
                 {% for i in 1..total_pages %}
-                    <a href="/dashboard/admin/student-details&page={{ i }}" 
+                    <a href="/dashboard/admin/student-details&id={{ etudiant.ID_utilisateur }}&page={{ i }}" 
                     class="{{ i == current_page ? 'active' : '' }}">
                         {{ i }}
                     </a>

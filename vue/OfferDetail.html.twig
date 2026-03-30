@@ -4,6 +4,7 @@
 {% block title %}ThePiston - {{ offre.Titre }}{% endblock %}
 
 {% block content %}
+<main>
     <section class="offer-container">
         <div class="offer-header">
             {# Affichage dynamique du titre et de l'entreprise #}
@@ -59,19 +60,19 @@
                         <button class="btn" type="button" id="postuler-btn">Postuler</button>
                     </div>
                     <div id="zone-depot" hidden>
-                        <form class="form-test apply-form" action="/apply" method="POST" enctype="multipart/form-data">
+                        <form id='apply' class="form-test apply-form" action="/apply" method="POST" enctype="multipart/form-data">
                             <input type="hidden" name="id_offre" value="{{ offre.ID_offre }}">
                             <p class="small-text">✓ Déposez votre CV et votre lettre de motivation (PDF) pour envoyer votre candidature.</p>
                             
                             <div class="file-input-group">
                                 <label for="cv" class="file-label">📄 Votre CV (PDF)</label>
-                                <input id="cv" name="cv" class="input-file" type="file" accept=".pdf" required>
+                                <input id="cv" name="cv" class="input-file" type="file" accept=".pdf">
                                 <span class="file-name">Aucun fichier choisi</span>
                             </div>
                             
                             <div class="file-input-group">
                                 <label for="lettre" class="file-label">📝 Votre lettre de motivation (PDF)</label>
-                                <input type="file" id="lettre" class="input-file" name="lettre" accept=".pdf" required>
+                                <input type="file" id="lettre" class="input-file" name="lettre" accept=".pdf">
                                 <span class="file-name2">Aucun fichier choisi</span>
                             </div>
                             
@@ -84,24 +85,9 @@
             {% endif %}
         </div>
     </section>
+</main>
 {% endblock %}
 
 {% block scripts %}
-<script src="/assets/js/popups.js"></script>
 <script src="/assets/js/zone-depot.js"></script>
-{% if popup is defined and popup %}
-<script>
-    (function () {
-        var popupType = {{ popup|json_encode|raw }};
-
-        if (popupType === 'success') {
-            window.showSuccessPopup('Candidature envoyee avec succes.');
-        } else if (popupType === 'already_applied') {
-            window.showErrorPopup('Vous avez deja postule a cette offre.');
-        } else if (popupType === 'error') {
-            window.showErrorPopup('Echec de l\'envoi de la candidature. Verifiez vos fichiers puis recommencez.');
-        }
-    })();
-</script>
-{% endif %}
 {% endblock %}
