@@ -16,6 +16,7 @@
         }
 
         applyForm.addEventListener('submit', function (event) {
+            event.preventDefault();
             var inputCv = document.getElementById('cv');
             var cv = inputCv && inputCv.files ? inputCv.files[0] : null;
 
@@ -50,8 +51,10 @@
             }
 
             if (errorMessages) {
-                event.preventDefault();
                 window.showErrorPopup(errorMessages);
+                return;
+            } else {
+                applyForm.submit();
             }
         });
     }
@@ -141,7 +144,7 @@
             offer_deleted: "Offre supprimée avec succès !",
             offer_updated: "Offre modifiée avec succès !",
             company_rated: "Note enregistrée avec succès !",
-            success: "Candidature envoyée avec succès !"
+            application_sent: "Candidature envoyée avec succès !"
         };
 
         const errorMessages = {
@@ -154,7 +157,8 @@
             company_delete_blocked: "Impossible de supprimer cette entreprise car des évaluations ou offres y sont liées.",
             company_delete_error: "Erreur lors de la suppression de l'entreprise.",
             offer_delete_blocked: "Impossible de supprimer cette offre car des candidatures y sont liées.",
-            offer_delete_error: "Erreur lors de la suppression de l'offre."
+            offer_delete_error: "Erreur lors de la suppression de l'offre.",
+            application_send_error: "Erreur lors de l'envoi de la candidature. Veuillez réessayer."
         };
 
         if (successMessages[popup]) {

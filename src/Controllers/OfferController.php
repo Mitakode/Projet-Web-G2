@@ -102,7 +102,7 @@ class OfferController
                 $lettrePresent = isset($_FILES['lettre']);
 
                 if (!$cvPresent || !$lettrePresent) {
-                    header('Location: /offers/detail?id=' . urlencode((string) $idOffre) . '&popup=error');
+                    header('Location: /offers/detail?id=' . urlencode((string) $idOffre) . '&popup=application_send_error');
                     exit;
                 } else {
                     // Récupérer les infos de l'étudiant pour renommer les fichiers
@@ -157,7 +157,7 @@ class OfferController
                         $wishlistModel = new DashboardStudentModel($this->model->getDb());
                         $wishlistModel->removeFromWishlist($studentId, $idOffre);
                     }
-                    header('Location: /offers/detail?id=' . urlencode((string) $idOffre) . '&popup=success');
+                    header('Location: /offers/detail?id=' . urlencode((string) $idOffre) . '&popup=application_sent');
                     exit;
                 } else {
                     header('Location: /offers/detail?id=' . urlencode((string) $idOffre) . '&popup=error');
