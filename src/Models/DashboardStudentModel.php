@@ -15,7 +15,7 @@ class DashboardStudentModel extends Model
      */
     public function getCandidatures($idUtilisateur)
     {
-        $sql = "SELECT Offre.ID_offre, Offre.Titre, Entreprise.Nom_entreprise, Postule.CV, Postule.Lettre_motivation 
+        $sql = "SELECT Offre.ID_offre, Offre.Titre, Entreprise.Nom_entreprise, Postule.CV, Postule.Lettre_motivation, Postule.Date_candidature
                 FROM Postule 
                 JOIN Offre ON Postule.ID_offre = Offre.ID_offre 
                 JOIN Entreprise ON Offre.ID_entreprise = Entreprise.ID_entreprise 
