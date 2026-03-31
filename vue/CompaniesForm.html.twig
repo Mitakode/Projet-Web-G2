@@ -32,7 +32,7 @@
         {% if 'descriptionCompany' in error %}
             <p class="infos infos-error" role="alert">Veuillez renseigner la description</p>
         {% endif %}
-        <textarea class="form-input" rows="10"name="descriptionCompany" required>{{ entreprise.Description ?? '' }}</textarea>
+        <textarea class="form-textarea" rows="10" name="descriptionCompany" required>{{ entreprise.Description ?? '' }}</textarea>
 
         <div class="btn-container" style="margin-top: 20px;">
             {# Le texte du bouton s'adapte à l'action en cours #}
