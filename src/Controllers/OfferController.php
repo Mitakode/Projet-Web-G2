@@ -33,21 +33,21 @@ class OfferController
         $search = $_GET['recherche'] ?? '';
         $company = $_GET['company'] ?? '';
         $type = $_GET['type'] ?? '';
-        $duree = $_GET['duree'] ?? '';
+        $duration = $_GET['duree'] ?? '';
 
 // Demande au modèle de trouver les offres correspondantes
-        $allOffers = $this->model->searchOffers($search, $company, $type, $duree);
+        $allOffers = $this->model->searchOffers($search, $company, $type, $duration);
 // Divise les résultats pour n'en afficher que 10 par page
         $paginator = new Paginator($allOffers, 10);
 // Envoie les variables à la vue Twig pour générer le HTML
         echo $this->twig->render('Offers.html.twig', [
-            'offres_page'  => $paginator->getCurrentPageItems(),
+            'offers_page'  => $paginator->getCurrentPageItems(),
             'total_pages'  => $paginator->getTotalPages(),
             'current_page' => $_GET['page'] ?? 1,
             'search_term'  => $search,
             'selected_company' => $company,
             'selected_type' => $type,
-            'selected_duree' => $duree
+            'selected_duration' => $duration
         ]);
     }
 
@@ -74,7 +74,7 @@ class OfferController
 
         // On affiche le template de détail en lui passant la variable "offre"
         echo $this->twig->render('OfferDetail.html.twig', [
-            'offre' => $offer,
+            'offer' => $offer,
             'popup' => $popup
         ]);
     }
@@ -85,24 +85,24 @@ class OfferController
         $blockAccess->blockPilotAccess();
         $blockAccess->blockAdminAccess();
 
-        $idOffre = $_POST['id_offre'] ?? null;
+        $offerId = $_POST['id_offre'] ?? null;
         $studentId = $_SESSION['user_id'] ?? null;
 
         $cvPath = null;
         $letterPath = null;
 
-        $alreadyApplied = $this->model->hasApplied($idOffre, $studentId);
+        $alreadyApplied = $this->model->hasApplied($offerId, $studentId);
 
         if ($alreadyApplied && isset($alreadyApplied['ID_offre']) && $alreadyApplied['ID_offre']) {
-            header('Location: /offers/detail?id=' . urlencode((string) $idOffre) . '&popup=already_applied');
+            header('Location: /offers/detail?id=' . urlencode((string) $offerId) . '&popup=already_applied');
             exit;
         } else {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $cvPresent = isset($_FILES['cv']);
-                $lettrePresent = isset($_FILES['lettre']);
+                $coverLetterPresent = isset($_FILES['lettre']);
 
-                if (!$cvPresent || !$lettrePresent) {
-                    header('Location: /offers/detail?id=' . urlencode((string) $idOffre) . '&popup=application_send_error');
+                if (!$cvPresent || !$coverLetterPresent) {
+                    header('Location: /offers/detail?id=' . urlencode((string) $offerId) . '&popup=application_send_error');
                     exit;
                 } else {
                     // Récupérer les infos de l'étudiant pour renommer les fichiers
@@ -110,12 +110,12 @@ class OfferController
                     $studentInfo = $dashboardModel->getStudentById($studentId);
 
                     if ($studentInfo) {
-                        $nom = str_replace(' ', '_', $studentInfo['Nom']);
-                        $prenom = str_replace(' ', '_', $studentInfo['Prenom']);
+                        $lastName = str_replace(' ', '_', $studentInfo['Nom']);
+                        $firstName = str_replace(' ', '_', $studentInfo['Prenom']);
                         $dateTime = date('d-m-Y_H-i-s');
 
-                        $cvFileName = 'CV_' . $nom . '_' . $prenom . '_' . $dateTime . '.pdf';
-                        $letterFileName = 'LM_' . $nom . '_' . $prenom . '_' . $dateTime . '.pdf';
+                        $cvFileName = 'CV_' . $lastName . '_' . $firstName . '_' . $dateTime . '.pdf';
+                        $letterFileName = 'LM_' . $lastName . '_' . $firstName . '_' . $dateTime . '.pdf';
                     } else {
                         // Fallback si les infos ne peuvent pas être récupérées
                         $dateTime = date('d-m-Y_H-i-s');
@@ -129,9 +129,9 @@ class OfferController
                     $uploaderLettre->setFileName($letterFileName);
 
                     $cvValid = $uploaderCV->validate();
-                    $lettreValid = $uploaderLettre->validate();
+                    $coverLetterValid = $uploaderLettre->validate();
 
-                    if ($cvValid && $lettreValid) {
+                    if ($cvValid && $coverLetterValid) {
                         $cvPath = $uploaderCV->upload();
                         if ($cvPath) {
                             $cvPath = basename($cvPath);
@@ -143,24 +143,24 @@ class OfferController
                     } else {
                         // On stocke le message d'erreur pour affichage éventuel
                         $errorMsg = !$cvValid ? $uploaderCV->getMessage() : '';
-                        $errorMsg .= !$lettreValid ? $uploaderLettre->getMessage() : '';
+                        $errorMsg .= !$coverLetterValid ? $uploaderLettre->getMessage() : '';
                         // Redirection avec message d'erreur (à adapter selon gestion front)
-                        header('Location: /offers/detail?id=' . urlencode((string) $idOffre) . '&popup=error&msg=' . urlencode($errorMsg));
+                        header('Location: /offers/detail?id=' . urlencode((string) $offerId) . '&popup=error&msg=' . urlencode($errorMsg));
                         exit;
                     }
                 }
 
-                if ($idOffre && $studentId && $cvPath && $letterPath) {
-                    $this->model->addPostule($idOffre, $studentId, $cvPath, $letterPath);
-                    $inWishlist = $this->model->isInWishlist($idOffre, $studentId);
+                if ($offerId && $studentId && $cvPath && $letterPath) {
+                    $this->model->addPostule($offerId, $studentId, $cvPath, $letterPath);
+                    $inWishlist = $this->model->isInWishlist($offerId, $studentId);
                     if ($inWishlist && isset($inWishlist['ID_offre']) && $inWishlist['ID_offre']) {
-                        $wishlistModel = new DashboardStudentModel($this->model->getDb());
-                        $wishlistModel->removeFromWishlist($studentId, $idOffre);
+                        $studentDashboardModel = new DashboardStudentModel($this->model->getDb());
+                        $studentDashboardModel->removeFromWishlist($studentId, $offerId);
                     }
-                    header('Location: /offers/detail?id=' . urlencode((string) $idOffre) . '&popup=application_sent');
+                    header('Location: /offers/detail?id=' . urlencode((string) $offerId) . '&popup=application_sent');
                     exit;
                 } else {
-                    header('Location: /offers/detail?id=' . urlencode((string) $idOffre) . '&popup=error');
+                    header('Location: /offers/detail?id=' . urlencode((string) $offerId) . '&popup=error');
                     exit;
                 }
             }
@@ -183,13 +183,13 @@ class OfferController
                 // Nettoyage des données
                 $titre = isset($_POST['Titre']) ? htmlspecialchars(trim($_POST['Titre'])) : '';
                 $description = isset($_POST['Description']) ? htmlspecialchars(trim($_POST['Description'])) : '';
-                $baseRemuneration = isset($_POST['Base_remuneration']) ? floatval($_POST['Base_remuneration']) : null;
-                $duree = isset($_POST['Duree']) ? intval($_POST['Duree']) : null;
-                $listeCompetences = isset($_POST['Liste_competences'])
+                $baseSalary = isset($_POST['Base_remuneration']) ? floatval($_POST['Base_remuneration']) : null;
+                $duration = isset($_POST['Duree']) ? intval($_POST['Duree']) : null;
+                $skillsList = isset($_POST['Liste_competences'])
                 ? htmlspecialchars(trim($_POST['Liste_competences']))
                 : '';
-                $idEntreprise = isset($_POST['ID_entreprise']) ? intval($_POST['ID_entreprise']) : null;
-                $datePublication = date('Y-m-d');// Date du jour automatique
+                $companyId = isset($_POST['ID_entreprise']) ? intval($_POST['ID_entreprise']) : null;
+                $publicationDate = date('Y-m-d');// Date du jour automatique
 
                 // Vérification basique
                 if (empty($titre)) {
@@ -198,17 +198,17 @@ class OfferController
                 if (empty($description)) {
                     $error .= 'Description&';
                 }
-                if (empty($idEntreprise)) {
+                if (empty($companyId)) {
                     $error .= 'ID_entreprise&';
                 }
 
                 $offerFormData = [
                     'Titre' => $titre,
                     'Description' => $description,
-                    'Base_remuneration' => $baseRemuneration,
-                    'Duree' => $duree,
-                    'Liste_competences' => $listeCompetences,
-                    'ID_entreprise' => $idEntreprise
+                    'Base_remuneration' => $baseSalary,
+                    'Duree' => $duration,
+                    'Liste_competences' => $skillsList,
+                    'ID_entreprise' => $companyId
                 ];
 
                 if (empty($error)) {
@@ -216,11 +216,11 @@ class OfferController
                     $this->model->createOffer([
                         'Titre'             => $titre,
                         'Description'       => $description,
-                        'Base_remuneration' => $baseRemuneration,
-                        'Date_publication'  => $datePublication,
-                        'Duree'             => $duree,
-                        'Liste_competences' => $listeCompetences,
-                        'ID_entreprise'     => $idEntreprise
+                        'Base_remuneration' => $baseSalary,
+                        'Date_publication'  => $publicationDate,
+                        'Duree'             => $duration,
+                        'Liste_competences' => $skillsList,
+                        'ID_entreprise'     => $companyId
                     ]);
                     header('Location: /offers');
                     exit;
@@ -228,12 +228,12 @@ class OfferController
             }
 
             // Récupère la liste des entreprises pour le <select> du formulaire
-            $entreprises = $this->companyModel->searchCompanies();
+            $companies = $this->companyModel->searchCompanies();
             // Affiche le formulaire vierge
             echo $this->twig->render('OffersForm.html.twig', [
                 'is_edit'     => false,
-                'entreprises' => $entreprises,
-                'offre' => $offerFormData,
+                'companies' => $companies,
+                'offer' => $offerFormData,
                 'error' => $error
             ]);
         } else {
@@ -272,11 +272,11 @@ class OfferController
             }
 
             $offer = $this->model->getOfferById($id);
-            $entreprises = $this->companyModel->searchCompanies();
+            $companies = $this->companyModel->searchCompanies();
             // Affiche le formulaire pré-rempli
             echo $this->twig->render('OffersForm.html.twig', [
-                'offre'       => $offer,
-                'entreprises' => $entreprises,
+                'offer'       => $offer,
+                'companies' => $companies,
                 'is_edit'     => true
             ]);
         } else {
@@ -360,8 +360,8 @@ class OfferController
         $studentId = $_SESSION['user_id'] ?? null;
 
         if ($offerId && $studentId) {
-            $wishlistModel = new DashboardStudentModel($this->model->getDb());
-            $wishlistModel->removeFromWishlist($studentId, $offerId);
+            $studentDashboardModel = new DashboardStudentModel($this->model->getDb());
+            $studentDashboardModel->removeFromWishlist($studentId, $offerId);
         }
         header('Location: /offers?' . http_build_query($data));
         exit;

@@ -61,7 +61,7 @@ class CompanyModel extends Model
         return $this->connection->deleteRecord($id);
     }
 
-    public function rateCompany($idEntreprise, $idUtilisateur, $note)
+    public function rateCompany($companyId, $idUtilisateur, $rating)
     {
         $pdo = $this->connection->getConnection();
 
@@ -71,7 +71,7 @@ class CompanyModel extends Model
             . "AND ID_utilisateur = :id_utilisateur";
         $checkStmt = $pdo->prepare($checkSql);
         $checkStmt->execute([
-            ':id_entreprise' => $idEntreprise,
+            ':id_entreprise' => $companyId,
             ':id_utilisateur' => $idUtilisateur
         ]);
         $result = $checkStmt->fetch(\PDO::FETCH_ASSOC);
@@ -84,8 +84,8 @@ class CompanyModel extends Model
                 . "AND ID_utilisateur = :id_utilisateur";
             $updateStmt = $pdo->prepare($updateSql);
             return $updateStmt->execute([
-                ':note' => $note,
-                ':id_entreprise' => $idEntreprise,
+                ':note' => $rating,
+                ':id_entreprise' => $companyId,
                 ':id_utilisateur' => $idUtilisateur
             ]);
         } else {
@@ -94,9 +94,9 @@ class CompanyModel extends Model
                 . "VALUES (:id_entreprise, :id_utilisateur, :note)";
             $insertStmt = $pdo->prepare($insertSql);
             return $insertStmt->execute([
-                ':id_entreprise' => $idEntreprise,
+                ':id_entreprise' => $companyId,
                 ':id_utilisateur' => $idUtilisateur,
-                ':note' => $note
+                ':note' => $rating
             ]);
         }
     }

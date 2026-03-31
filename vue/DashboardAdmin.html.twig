@@ -36,20 +36,20 @@
         </div>
 
         <div class="box-list">
-            {% for etudiant in etudiants %}
-            <a href="/dashboard/admin/student-details?id={{ etudiant.ID_utilisateur }}" class="link">
+            {% for student in students %}
+            <a href="/dashboard/admin/student-details?id={{ student.ID_utilisateur }}" class="link">
             <table class="company-table admin">
                 <tr>
-                    <td class="user-name">{{ etudiant.Nom }} {{ etudiant.Prenom }} </td>
-                    <td class="user-promotion">{{ etudiant.Promotion }}</td>
-                    <td class="stats"><strong>Nombre de candidatures : {{ etudiant.nb_candidature }}</strong></td>
+                    <td class="user-name">{{ student.Nom }} {{ student.Prenom }} </td>
+                    <td class="user-promotion">{{ student.Promotion }}</td>
+                    <td class="stats"><strong>Nombre de candidatures : {{ student.nb_candidature }}</strong></td>
                     <td class="btn-table">
-                        <a href="/dashboard/admin/update-student?id={{ etudiant.ID_utilisateur }}" 
+                        <a href="/dashboard/admin/update-student?id={{ student.ID_utilisateur }}" 
                             class="btn-action crayon">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </a>
                         {# Lien de suppression avec l'ID dynamique #}
-                        <a href="/dashboard/admin/delete-student?id={{ etudiant.ID_utilisateur }}" 
+                        <a href="/dashboard/admin/delete-student?id={{ student.ID_utilisateur }}" 
                             class="btn-action poubelle" 
                             onclick="return confirm('Supprimer cet étudiant ?')">
                             <i class="fa-solid fa-trash"></i>
@@ -95,18 +95,18 @@
         </div>
 
         <div class="box-list">
-            {% for pilote in pilotes %}
+            {% for pilot in pilots %}
             <table class="company-table admin">
                 <tr>
-                    <td class="user-name">{{ pilote.Nom }} {{ pilote.Prenom }}</td>
-                    <td class="user-stats">{{ pilote.Email }}</td>
+                    <td class="user-name">{{ pilot.Nom }} {{ pilot.Prenom }}</td>
+                    <td class="user-stats">{{ pilot.Email }}</td>
                     <td class="btn-table">
-                        <a href="/dashboard/admin/update-pilot?id={{ pilote.ID_utilisateur }}" 
+                        <a href="/dashboard/admin/update-pilot?id={{ pilot.ID_utilisateur }}" 
                             class="btn-action crayon">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </a>
                         {# Lien de suppression avec l'ID dynamique #}
-                        <a href="/dashboard/admin/delete-pilot?id={{ pilote.ID_utilisateur }}" 
+                        <a href="/dashboard/admin/delete-pilot?id={{ pilot.ID_utilisateur }}" 
                             class="btn-action poubelle" 
                             onclick="return confirm('Supprimer ce pilote ?')">
                             <i class="fa-solid fa-trash"></i>

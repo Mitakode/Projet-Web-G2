@@ -1,18 +1,18 @@
 {% extends "base.html.twig" %}
 
 {# Le titre de l'onglet prend le nom de l'offre #}
-{% block title %}{{ offre.Titre }} - {{ offre.Nom_entreprise }}| ThePiston{% endblock %}
+{% block title %}{{ offer.Titre }} - {{ offer.Nom_entreprise }}| ThePiston{% endblock %}
 
 {# description de l'offre tronquée à 150 caractères #}
-{% block description %}{{ offre.Description|slice(0, 150) }}... Découvrez cette opportunité chez {{ offre.Nom_entreprise }} sur ThePiston.{% endblock %}
+{% block description %}{{ offer.Description|slice(0, 150) }}... Découvrez cette opportunité chez {{ offer.Nom_entreprise }} sur ThePiston.{% endblock %}
 
 {% block content %}
 <main>
     <section class="offer-container">
         <div class="offer-header">
             {# Affichage dynamique du titre et de l'entreprise #}
-            <h1 class="offer">{{ offre.Titre }}</h1>
-            <h2 class="offer">{{ offre.Nom_entreprise }}</h2>
+            <h1 class="offer">{{ offer.Titre }}</h1>
+            <h2 class="offer">{{ offer.Nom_entreprise }}</h2>
         </div>
 
         <div class="form-grid">
@@ -20,23 +20,23 @@
                 <div class="frame2">
                     <div class="infos-offre">
                         {# Formatage de la date à la française #}
-                        <p>Date de publication : {{ offre.Date_publication|date("d/m/Y") }}</p>
+                        <p>Date de publication : {{ offer.Date_publication|date("d/m/Y") }}</p>
                         {# Variable fictive pour l'instant, à lier plus tard à une table de candidatures #}
-                        <p>Nombre de candidatures : {{ offre.nb_candidatures ?? 'Non spécifié' }}</p>
+                        <p>Nombre de candidatures : {{ offer.nb_candidatures ?? 'Non spécifié' }}</p>
                     </div>
 
                     {# nl2br permet de respecter les retours à la ligne faits dans la description #}
-                    <p class="offer-description">{{ offre.Description|nl2br }}</p>
+                    <p class="offer-description">{{ offer.Description|nl2br }}</p>
 
                     <div>
                         <h2 style="margin-top: 20px;">Compétences requises</h2>
                         <ul class="skills">
                             {# On découpe la chaîne de texte à chaque virgule pour créer un tableau #}
-                            {% if offre.Liste_competences %}
-                                {% set competences = offre.Liste_competences|split(',') %}
-                                {% for competence in competences %}
+                            {% if offer.Liste_competences %}
+                                {% set skills = offer.Liste_competences|split(',') %}
+                                {% for skill in skills %}
                                     {# trim enlève les espaces en trop avant ou après le mot #}
-                                    <li>{{ competence|trim }}</li>
+                                    <li>{{ skill|trim }}</li>
                                 {% endfor %}
                             {% else %}
                                 <li>Aucune compétence spécifique renseignée.</li>
@@ -46,14 +46,14 @@
 
                     <div class="offer-remuneration">
                         <h2>Rémunération</h2>
-                        <p class="offer-salary">{{ offre.Base_remuneration }} €/mois</p>
+                        <p class="offer-salary">{{ offer.Base_remuneration }} €/mois</p>
                     </div>
                 </div>
             </div>
             {% if session['user_role'] == 'etudiant' %}
             <div class="form-column3">
                 <div class="frame2">
-                    {% if offre.has_applied %}
+                    {% if offer.has_applied %}
                         <p>Vous avez déjà postulé à cette offre.</p>
                         <div class="btn-container">
                             <a href="/dashboard" class="btn add-link" type="button" id="postuler-btn">Accéder à mon espace</a>
@@ -64,7 +64,7 @@
                     </div>
                     <div id="zone-depot" hidden>
                         <form id='apply' class="form-test apply-form" action="/apply" method="POST" enctype="multipart/form-data">
-                            <input type="hidden" name="id_offre" value="{{ offre.ID_offre }}">
+                            <input type="hidden" name="id_offre" value="{{ offer.ID_offre }}">
                             <p class="small-text">✓ Déposez votre CV et votre lettre de motivation (PDF) pour envoyer votre candidature.</p>
                             
                             <div class="file-input-group">

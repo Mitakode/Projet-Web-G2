@@ -45,14 +45,14 @@ class DashboardStudentModel extends Model
     /**
      * Supprime une offre de la wishlist de l'étudiant
      */
-    public function removeFromWishlist($idUtilisateur, $idOffre)
+    public function removeFromWishlist($idUtilisateur, $offerId)
     {
         $sql = "DELETE FROM Souhaite WHERE Souhaite.ID_utilisateur = :idUtilisateur AND Souhaite.ID_offre = :idOffre";
         $pdo = $this->connection->getConnection();
         $stmt = $pdo->prepare($sql);
         return $stmt->execute([
             'idUtilisateur' => $idUtilisateur,
-            'idOffre' => $idOffre
+            'idOffre' => $offerId
         ]);
     }
 }

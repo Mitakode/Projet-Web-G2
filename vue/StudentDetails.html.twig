@@ -1,6 +1,6 @@
 {% extends "base.html.twig" %}
 
-{% block title %}{{etudiant.Nom|upper}} {{etudiant.Prenom}} - ThePiston{% endblock %}
+{% block title %}{{student.Nom|upper}} {{student.Prenom}} - ThePiston{% endblock %}
 
 {% block extra_head %}
     <meta name="robots" content="noindex, nofollow">
@@ -8,14 +8,14 @@
 
 {% block main_class %}student-dashboard {% endblock %}
 {% block content %}
-    <h1>{{etudiant.Nom|upper}} {{etudiant.Prenom}}    {{etudiant.Promotion}}</h1>
+    <h1>{{student.Nom|upper}} {{student.Prenom}}    {{student.Promotion}}</h1>
     <div class="info-grid">
         <div class="info-column">
-            <div class="info-box ib2" style="text-align: center;">Email : <strong>{{etudiant.Email}}</strong></div>
+            <div class="info-box ib2" style="text-align: center;">Email : <strong>{{student.Email}}</strong></div>
         </div>
         <div class="info-column">
             {% if session.user_role == 'admin' %}
-                    <div class="info-box ib2" style="text-align: center;">Pilote référent : <strong>{{pilote.Nom}} {{pilote.Prenom}}</strong></div>
+                    <div class="info-box ib2" style="text-align: center;">Pilote référent : <strong>{{pilot.Nom}} {{pilot.Prenom}}</strong></div>
             {% endif %}
         </div>
     </div>
@@ -35,23 +35,23 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for candidature in candidatures %}
+                    {% for application in applications %}
                     <tr>
                         <td>
-                            <a href="/offers/detail?id={{ candidature.ID_offre }}" class="link">
-                                {{ candidature.Titre_offre }}
+                            <a href="/offers/detail?id={{ application.ID_offre }}" class="link">
+                                {{ application.Titre_offre }}
                             </a>
                         </td>
-                        <td>{{ candidature.entreprise }}</td>
-                        <td>{{ candidature.Date_candidature|date("d-m-Y") }}</td>
+                        <td>{{ application.entreprise }}</td>
+                        <td>{{ application.Date_candidature|date("d-m-Y") }}</td>
                         <td>
-                            <a href="uploads/{{ candidature.CV }}" rel="nofollow" target="_blank" class="link">
-                                {{ candidature.CV}}
+                            <a href="uploads/{{ application.CV }}" rel="nofollow" target="_blank" class="link">
+                                {{ application.CV}}
                             </a>
                         </td>
                         <td>
-                            <a href="uploads/{{ candidature.Lettre_motivation }}" rel="nofollow" target="_blank" class="link">
-                                {{ candidature.Lettre_motivation}}
+                            <a href="uploads/{{ application.Lettre_motivation }}" rel="nofollow" target="_blank" class="link">
+                                {{ application.Lettre_motivation}}
                             </a>
                         </td>
                     </tr>
@@ -63,7 +63,7 @@
         <div class="pagination">
             {% if total_pages > 1 %}
                 {% for i in 1..total_pages %}
-                    <a href="/dashboard/admin/student-details?id={{ etudiant.ID_utilisateur }}&page={{ i }}" 
+                    <a href="/dashboard/admin/student-details?id={{ student.ID_utilisateur }}&page={{ i }}" 
                     class="{{ i == current_page ? 'active' : '' }}">
                         {{ i }}
                     </a>

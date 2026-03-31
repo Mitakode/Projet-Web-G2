@@ -33,7 +33,7 @@ class CompanyController
         $paginator = new Paginator($allCompanies, 10);
         // Envoyer le tout à la vue Twig
         echo $this->twig->render('Companies.html.twig', [
-            'entreprises_page' => $paginator->getCurrentPageItems(),
+            'companies_page' => $paginator->getCurrentPageItems(),
             'total_pages'      => $paginator->getTotalPages(),
             'current_page'     => $_GET['page'] ?? 1,
             'search_term'      => $search
@@ -88,7 +88,7 @@ class CompanyController
 
         echo $this->twig->render('CompaniesForm.html.twig', [
             'is_edit' => false,
-            'entreprise' => $companyFormData,
+            'company' => $companyFormData,
             'error' => $error
         ]);
     }
@@ -117,7 +117,7 @@ class CompanyController
 
         $company = $this->model->getCompanyById($id);
         echo $this->twig->render('CompaniesForm.html.twig', [
-        'entreprise' => $company,
+        'company' => $company,
         'is_edit'    => true
         ]);
     }
@@ -153,25 +153,25 @@ class CompanyController
         $blockAccess->blockPilotAccess();
         $blockAccess->blockAdminAccess();
 
-        $idEntreprise = $_GET['id'] ?? null;
-        $note = $_GET['rating'] ?? null;
+        $companyId = $_GET['id'] ?? null;
+        $rating = $_GET['rating'] ?? null;
         $search = $_GET['recherche'] ?? '';
         $page = $_GET['page'] ?? 1;
 
-        if (!$idEntreprise || !$note) {
+        if (!$companyId || !$rating) {
             header('Location: /companies');
             exit;
         }
 
         // verifier que la note est entre 1 et 10
-        $note = intval($note);
-        if ($note < 1 || $note > 10) {
+        $rating = intval($rating);
+        if ($rating < 1 || $rating > 10) {
             header('Location: /companies');
             exit;
         }
 
         // save la note
-        $this->model->rateCompany($idEntreprise, $_SESSION['user_id'], $note);
+        $this->model->rateCompany($companyId, $_SESSION['user_id'], $rating);
 
         $redirectParams = http_build_query([
             'recherche' => $search,

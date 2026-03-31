@@ -49,7 +49,7 @@ class OfferModel extends Model
      * Recherche des offres en fonction d'un mot-clé.
      * La jointure permet d'afficher le nom de l'entreprise dans la liste des résultats.
      */
-    public function searchOffers($keyword = "", $company = "", $type = "", $duree = "")
+    public function searchOffers($keyword = "", $company = "", $type = "", $duration = "")
     {
         $sql = "SELECT Offre.*, Entreprise.Nom_entreprise " ;
         $params = [];
@@ -90,8 +90,8 @@ class OfferModel extends Model
             $params['type'] = '%' . $type . '%';
         }
 
-        if (!empty($duree)) {
-            $bornes = explode(',', $duree);
+        if (!empty($duration)) {
+            $bornes = explode(',', $duration);
             if (count($bornes) == 1) {
                 $sql .= " AND Offre.Duree = :duree";
                 $params['duree'] = $bornes[0];
@@ -141,19 +141,19 @@ class OfferModel extends Model
         return $stmt->execute($params);
     }
 
-    public function isInWishlist($idOffre, $studentId)
+    public function isInWishlist($offerId, $studentId)
     {
         $sql = "SELECT * FROM Souhaite WHERE ID_offre = :idOffre AND ID_utilisateur = :studentId";
-        $params = ['idOffre' => $idOffre, 'studentId' => $studentId];
+        $params = ['idOffre' => $offerId, 'studentId' => $studentId];
         $stmt = $this->connection->getConnection()->prepare($sql);
         $stmt->execute($params);
         return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 
-    public function hasApplied($idOffre, $studentId)
+    public function hasApplied($offerId, $studentId)
     {
         $sql = "SELECT * FROM Postule WHERE ID_offre = :idOffre AND ID_utilisateur = :studentId";
-        $params = ['idOffre' => $idOffre, 'studentId' => $studentId];
+        $params = ['idOffre' => $offerId, 'studentId' => $studentId];
         $stmt = $this->connection->getConnection()->prepare($sql);
         $stmt->execute($params);
         return $stmt->fetch(\PDO::FETCH_ASSOC);
