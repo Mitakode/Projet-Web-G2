@@ -11,7 +11,7 @@ class DashboardAdminController
     private $model;
 
     /**
-     * Normalise le nom en majuscules
+     * Normalizes a surname in uppercase
      */
     private function normalizeSurname(string $value): string
     {
@@ -19,7 +19,7 @@ class DashboardAdminController
     }
 
     /**
-     * Normalise le prénom avec une case adaptée
+     * Normalizes a first name with title case
      */
     private function normalizeFirstname(string $value): string
     {
@@ -28,7 +28,7 @@ class DashboardAdminController
     }
 
     /**
-     * Lit et valide les champs du formulaire utilisateur
+     * Reads and validates shared user form fields
      */
     private function getFormData(string &$error, bool $requirePassword): array
     {
@@ -73,7 +73,7 @@ class DashboardAdminController
     }
 
     /**
-     * Prépare les données utilisateur pour la persistance
+     * Builds user persistence payload from normalized form values
      */
     private function getUserData(array $postData, bool $includePassword): array
     {
@@ -89,6 +89,9 @@ class DashboardAdminController
         return $userData;
     }
 
+    /**
+     * Builds the admin dashboard controller
+     */
     public function __construct($twig, $model)
     {
         $this->twig = $twig;
@@ -96,7 +99,7 @@ class DashboardAdminController
     }
 
     /**
-     * Affiche le dashboard admin avec la liste paginée des étudiants et des pilotes
+     * Displays the admin dashboard with paginated students and pilots
      */
     public function list()
     {
@@ -105,24 +108,24 @@ class DashboardAdminController
         if ($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'pilote') {
             $popup = $_GET['popup'] ?? '';
 
-            // Charge les filtres et la liste des étudiants
+            // Load filters and student records
             $surname = $_GET['surname'] ?? '';
             $name = $_GET['name'] ?? '';
             $promotion = $_GET['promotion'] ?? '';
             $students = $this->model->searchStudents($surname, $name, $promotion);
 
-            // Prépare la pagination des étudiants
+            // Build student pagination
             $paginator = new Paginator($students, 5);
 
-            // Charge les filtres et la liste des pilotes
+            // Load filters and pilot records
             $surnameP = $_GET['surnameP'] ?? '';
             $nameP = $_GET['nameP'] ?? '';
             $pilots = $this->model->searchPilots($surnameP, $nameP);
 
-            // Prépare la pagination des pilotes
+            // Build pilot pagination
             $paginatorP = new Paginator($pilots, 5, 'pageP');
 
-            // Rend la vue avec les deux tableaux paginés
+            // Render the view with both paginated lists
             echo $this->twig->render('DashboardAdmin.html.twig', [
                 'students' => $paginator->getCurrentPageItems(),
                 'total_pages'      => $paginator->getTotalPages(),
@@ -145,7 +148,7 @@ class DashboardAdminController
     }
 
     /**
-     * Affiche la fiche détaillée d'un étudiant
+     * Displays a detailed page for one student
      */
     public function studentDetails()
     {
@@ -182,7 +185,7 @@ class DashboardAdminController
     }
 
     /**
-     * Gère la création d'un étudiant
+     * Handles student account creation
      */
     public function createStudent()
     {
@@ -243,7 +246,7 @@ class DashboardAdminController
     }
 
     /**
-     * Supprime un étudiant et redirige avec le bon message
+     * Deletes a student and redirects with contextual feedback
      */
     public function deleteStudent()
     {
@@ -276,7 +279,7 @@ class DashboardAdminController
     }
 
     /**
-     * Gère la modification d'un étudiant
+     * Handles student account updates
      */
     public function updateStudent()
     {
@@ -335,7 +338,7 @@ class DashboardAdminController
     }
 
     /**
-     * Gère la création d'un pilote
+     * Handles pilot account creation
      */
     public function createPilot()
     {
@@ -370,7 +373,7 @@ class DashboardAdminController
     }
 
     /**
-     * Supprime un pilote si aucun étudiant ne lui est rattaché
+     * Deletes a pilot only when no students are attached
      */
     public function deletePilot()
     {
@@ -404,7 +407,7 @@ class DashboardAdminController
     }
 
     /**
-     * Gère la modification d'un pilote
+     * Handles pilot account updates
      */
     public function updatePilot()
     {

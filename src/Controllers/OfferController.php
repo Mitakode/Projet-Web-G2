@@ -13,10 +13,12 @@ class OfferController
 {
     private $twig;
     private $model;
-// Gère les données des Offres
-    private $companyModel;   // Gère les données des Entreprises (nécessaire pour les formulaires)
+    // Handles company records needed by offer forms
+    private $companyModel;
 
-    // Injection des dépendances
+    /**
+     * Builds the offer controller with Twig and model dependencies
+     */
     public function __construct($twig, $model, $companyModel)
     {
         $this->twig = $twig;
@@ -25,21 +27,21 @@ class OfferController
     }
 
     /**
-     * Gère l'affichage de la liste des offres avec recherche et pagination.
+     * Displays the offer list with filters and pagination
      */
     public function list()
     {
-        // Récupère le mot-clé tapé dans la barre de recherche (ou vide par défaut)
+        // Read search filters from the query string
         $search = $_GET['recherche'] ?? '';
         $company = $_GET['company'] ?? '';
         $type = $_GET['type'] ?? '';
         $duration = $_GET['duree'] ?? '';
 
-// Demande au modèle de trouver les offres correspondantes
+        // Load matching offers from the model
         $allOffers = $this->model->searchOffers($search, $company, $type, $duration);
-// Divise les résultats pour n'en afficher que 10 par page
+        // Show 10 offers per page
         $paginator = new Paginator($allOffers, 10);
-// Envoie les variables à la vue Twig pour générer le HTML
+        // Render the page with current filters
         echo $this->twig->render('Offers.html.twig', [
             'offers_page'  => $paginator->getCurrentPageItems(),
             'total_pages'  => $paginator->getTotalPages(),
@@ -52,33 +54,36 @@ class OfferController
     }
 
     /**
-     * Affiche la page de détails d'une offre spécifique (NOUVEAU)
+     * Displays the detail page for one offer
      */
     public function detail()
     {
         $id = $_GET['id'] ?? null;
         $popup = $_GET['popup'] ?? null;
-// Si aucun ID n'est fourni, on redirige vers la liste des offres
+        // Redirect to the offer list when no id is provided
         if (!$id) {
             header('Location: /offers');
             exit;
         }
 
-        // On récupère les informations de l'offre depuis la base de données
+        // Load the requested offer from the database
         $offer = $this->model->getOfferById($id);
-// Sécurité supplémentaire : si l'ID tapé n'existe pas en BDD
+        // Redirect when the requested offer does not exist
         if (!$offer) {
             header('Location: /offers');
             exit;
         }
 
-        // On affiche le template de détail en lui passant la variable "offre"
+        // Render the detail template
         echo $this->twig->render('OfferDetail.html.twig', [
             'offer' => $offer,
             'popup' => $popup
         ]);
     }
 
+    /**
+     * Handles offer applications with file validation and upload
+     */
     public function apply()
     {
         $blockAccess = new BlockAccess($this->twig);
@@ -105,7 +110,7 @@ class OfferController
                     header('Location: /offers/detail?id=' . urlencode((string) $offerId) . '&popup=application_send_error');
                     exit;
                 } else {
-                    // Récupérer les infos de l'étudiant pour renommer les fichiers
+                    // Read student names to generate readable file names
                     $dashboardModel = new DashboardAdminModel($this->model->getDb());
                     $studentInfo = $dashboardModel->getStudentById($studentId);
 
@@ -117,7 +122,7 @@ class OfferController
                         $cvFileName = 'CV_' . $lastName . '_' . $firstName . '_' . $dateTime . '.pdf';
                         $letterFileName = 'LM_' . $lastName . '_' . $firstName . '_' . $dateTime . '.pdf';
                     } else {
-                        // Fallback si les infos ne peuvent pas être récupérées
+                        // Fall back to id based names when student names are unavailable
                         $dateTime = date('d-m-Y_H-i-s');
                         $cvFileName = 'CV_' . $studentId . '_' . $dateTime . '.pdf';
                         $letterFileName = 'LM_' . $studentId . '_' . $dateTime . '.pdf';
@@ -141,10 +146,10 @@ class OfferController
                             $letterPath = basename($letterPath);
                         }
                     } else {
-                        // On stocke le message d'erreur pour affichage éventuel
+                        // Build an upload error message for user feedback
                         $errorMsg = !$cvValid ? $uploaderCV->getMessage() : '';
                         $errorMsg .= !$coverLetterValid ? $uploaderLettre->getMessage() : '';
-                        // Redirection avec message d'erreur (à adapter selon gestion front)
+                        // Redirect with a detailed upload error
                         header('Location: /offers/detail?id=' . urlencode((string) $offerId) . '&popup=error&msg=' . urlencode($errorMsg));
                         exit;
                     }
@@ -168,7 +173,7 @@ class OfferController
     }
 
     /**
-     * Gère l'ajout d'une nouvelle offre (Affichage du formulaire + Traitement).
+     * Handles offer creation and form validation
      */
     public function create()
     {
@@ -179,8 +184,8 @@ class OfferController
         $offerFormData = [];
 
         if ($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'pilote') {
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Si le formulaire a été soumis
-                // Nettoyage des données
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Process form submission
+                // Sanitize form values
                 $titre = isset($_POST['Titre']) ? htmlspecialchars(trim($_POST['Titre'])) : '';
                 $description = isset($_POST['Description']) ? htmlspecialchars(trim($_POST['Description'])) : '';
                 $baseSalary = isset($_POST['Base_remuneration']) ? floatval($_POST['Base_remuneration']) : null;
@@ -189,9 +194,9 @@ class OfferController
                 ? htmlspecialchars(trim($_POST['Liste_competences']))
                 : '';
                 $companyId = isset($_POST['ID_entreprise']) ? intval($_POST['ID_entreprise']) : null;
-                $publicationDate = date('Y-m-d');// Date du jour automatique
+                $publicationDate = date('Y-m-d'); // Use current day as publication date
 
-                // Vérification basique
+                // Apply required field checks
                 if (empty($titre)) {
                     $error .= 'Titre&';
                 }
@@ -212,7 +217,7 @@ class OfferController
                 ];
 
                 if (empty($error)) {
-                // Insertion en BDD
+                    // Persist the new offer in the database
                     $this->model->createOffer([
                         'Titre'             => $titre,
                         'Description'       => $description,
@@ -227,9 +232,9 @@ class OfferController
                 }
             }
 
-            // Récupère la liste des entreprises pour le <select> du formulaire
+            // Load companies for the form select input
             $companies = $this->companyModel->searchCompanies();
-            // Affiche le formulaire vierge
+            // Render the creation form
             echo $this->twig->render('OffersForm.html.twig', [
                 'is_edit'     => false,
                 'companies' => $companies,
@@ -243,7 +248,7 @@ class OfferController
     }
 
     /**
-     * Gère la modification d'une offre existante.
+     * Handles updates for an existing offer
      */
     public function update()
     {
@@ -273,7 +278,7 @@ class OfferController
 
             $offer = $this->model->getOfferById($id);
             $companies = $this->companyModel->searchCompanies();
-            // Affiche le formulaire pré-rempli
+            // Render the form with existing values
             echo $this->twig->render('OffersForm.html.twig', [
                 'offer'       => $offer,
                 'companies' => $companies,
@@ -286,7 +291,7 @@ class OfferController
     }
 
     /**
-     * Gère la suppression d'une offre.
+     * Deletes an offer and redirects with contextual popup feedback
      */
     public function delete()
     {
@@ -319,6 +324,9 @@ class OfferController
     }
 
 
+    /**
+     * Adds an offer to the connected student wishlist
+     */
     public function addWishlist()
     {
         $blockAccess = new BlockAccess($this->twig);
@@ -343,6 +351,9 @@ class OfferController
         header('Location: /offers?' . http_build_query($data));
     }
 
+    /**
+     * Removes an offer from the connected student wishlist
+     */
     public function deleteWishlist()
     {
         $blockAccess = new BlockAccess($this->twig);

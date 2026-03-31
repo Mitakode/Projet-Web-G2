@@ -4,14 +4,17 @@ namespace App\Models;
 
 class DashboardStudentModel extends Model
 {
+    /**
+     * Builds the student dashboard model with the shared database adapter
+     */
     public function __construct(Database $connection)
     {
         parent::__construct($connection);
     }
 
     /**
-     * Récupère les candidatures d'un étudiant avec les détails de l'offre et de l'entreprise
-     * Utilise des jointures entre Postule, Offre et Entreprise
+     * Returns student applications with offer and company details
+     * Uses joins across Postule Offre and Entreprise
      */
     public function getCandidatures($idUtilisateur)
     {
@@ -27,7 +30,7 @@ class DashboardStudentModel extends Model
     }
 
     /**
-     * Récupère les offres sauvegardées dans la wishlist d'un étudiant
+     * Returns offers saved in a student wishlist
      */
     public function getWishlist($idUtilisateur)
     {
@@ -43,7 +46,7 @@ class DashboardStudentModel extends Model
     }
 
     /**
-     * Supprime une offre de la wishlist de l'étudiant
+     * Removes one offer from a student wishlist
      */
     public function removeFromWishlist($idUtilisateur, $offerId)
     {

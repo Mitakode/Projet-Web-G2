@@ -1,4 +1,5 @@
 (function () {
+    // Sets password confirmation behavior for one account form
     function initAccountForm(form)
     {
         const passwordInput = form.querySelector('[name="password"]');
@@ -8,6 +9,7 @@
             return;
         }
 
+        // Enables confirmation field only when password is filled
         const syncConfirmState = function () {
             const hasPassword = passwordInput.value.trim() !== '';
             confirmInput.disabled = !hasPassword;
@@ -26,5 +28,6 @@
         }
     }
 
+    // Initializes every account form that supports password confirmation
     document.querySelectorAll('form[data-account-password-form="true"]').forEach(initAccountForm);
 })();

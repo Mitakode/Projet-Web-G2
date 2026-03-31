@@ -1,4 +1,5 @@
 (function () {
+    // Targets access denied container that carries redirect metadata
     var container = document.querySelector('.access-page');
     if (!container) {
         return;
@@ -12,6 +13,7 @@
     if (countdownElement) {
         countdownElement.textContent = String(secondsLeft);
 
+        // Updates visible countdown every second
         var countdownTimer = setInterval(function () {
             secondsLeft -= 1;
             if (secondsLeft >= 0) {
@@ -24,6 +26,7 @@
         }, 1000);
     }
 
+    // Redirects to target route after configured delay
     setTimeout(function () {
         window.location.href = redirectUrl;
     }, redirectDelay);

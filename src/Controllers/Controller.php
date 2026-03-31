@@ -1,14 +1,14 @@
 <?php
 
-// Déclaration du namespace du fichier
+// Declares the namespace for controller classes
 namespace App\Controllers;
 
-// Déclaration d'une classe abstraite nommée "Controller"
+// Defines the shared base controller class
 abstract class Controller
 {
-    // Déclaration d'une propriété protégée nommée $model
+    // Stores the model dependency for child controllers
     protected $model = null;
 
-    // Déclaration d'une propriété protégée nommée $templateEngine
+    // Stores the template engine dependency for child controllers
     protected $templateEngine = null;
 }

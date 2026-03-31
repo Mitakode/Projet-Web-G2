@@ -3,12 +3,12 @@
 session_start();
 require "vendor/autoload.php";
 
-// Configuration de Twig
+// Configure Twig environment
 $loader = new \Twig\Loader\FilesystemLoader('vue');
 $twig = new \Twig\Environment($loader, ['debug' => true]);
 $twig->addGlobal('session', $_SESSION);
 
-// Connexion a la base de donnees
+// Connect to the database
 $dbConfigPath = __DIR__ . '/config/database.local.php';
 if (!file_exists($dbConfigPath)) {
     die('Fichier de configuration base de donnees manquant : config/database.local.php');
@@ -30,45 +30,45 @@ try {
     die('Erreur de connexion : ' . $e->getMessage());
 }
 
-// Initialisation des composants
+// Initialize database adapters and models
 $companyDbAdapter = new \App\Models\SqlDatabase($pdo, 'Entreprise', 'ID_entreprise');
 $offerDbAdapter = new \App\Models\SqlDatabase($pdo, 'Offre', 'ID_offre');
 $homepageDbAdapter = new \App\Models\SqlDatabase($pdo, 'Offre', 'ID_offre');
 $dashboardAdminDbAdapter = new \App\Models\SqlDatabase($pdo, 'Utilisateur', 'ID_utilisateur');
-// Modèle et Contrôleur pour le Dashboard Étudiant
-// On réutilise un adaptateur existant (ex: $companyDbAdapter) car le modèle fait ses propres requêtes SQL
+// Initialize student dashboard model and controller
+// Reuse an existing adapter because this model runs its own SQL queries
 $dashboardStudentModel = new \App\Models\DashboardStudentModel($companyDbAdapter);
 $dashboardStudentController = new \App\Controllers\DashboardStudentController($twig, $dashboardStudentModel);
 
-// On crée le modèle avec la connexion PDO
+// Build models using their adapters
 $companyModel = new App\Models\CompanyModel($companyDbAdapter);
-$offerModel = new App\Models\OfferModel($offerDbAdapter); // MODIFICATION : Modèle décommenté avec le bon adaptateur
+$offerModel = new App\Models\OfferModel($offerDbAdapter); // Use the dedicated offer adapter
 $homepageModel = new App\Models\HomepageModel($homepageDbAdapter);
 $dashboardAdminModel = new App\Models\DashboardAdminModel($dashboardAdminDbAdapter);
 
-// Contrôleurs
+// Build controllers
 $companyController = new App\Controllers\CompanyController($twig, $companyModel);
 $offerController = new App\Controllers\OfferController(
     $twig,
     $offerModel,
     $companyModel
-); // MODIFICATION : Contrôleur décommenté avec les bons arguments
+); // Inject offer and company models
 $homepageController = new App\Controllers\HomepageController($twig, $homepageModel);
 $dashboardAdminController = new App\Controllers\DashboardAdminController($twig, $dashboardAdminModel);
 $authController = new App\Controllers\AuthController($twig, $pdo);
 $footerPagesController = new App\Controllers\FooterPageController($twig);
 
-// Routage simple
+// Resolve route from query parameter
 $uri = $_GET['uri'] ?? '/';
 $uri = trim($uri, '/');
 
 switch ($uri) {
-    // Pages globales
+    // Public home page
     case '':
         $homepageController->home();
         break;
 
-    // Pages statiques
+    // Static footer pages
     case 'cgu':
         $footerPagesController->page('cgu');
         break;
@@ -85,7 +85,7 @@ switch ($uri) {
         $footerPagesController->page('terms');
         break;
 
-    // Gestion des entreprises
+    // Company routes
     case 'companies':
         $companyController->list();
         break;
@@ -102,7 +102,7 @@ switch ($uri) {
         $companyController->rate();
         break;
 
-    // Gestion des offres
+    // Offer routes
     case 'offers':
         $offerController->list();
         break;
@@ -125,18 +125,18 @@ switch ($uri) {
     case 'offers/deleteWishlist':
         $offerController->deleteWishlist();
         break;
-    // Candidatures
+    // Application route
     case 'apply':
         $offerController->apply();
         break;
 
-    // Gestion des Utilisateurs
-    // Redirection automatique dashboard vers admin ou étudiant
+    // User dashboard route
+    // Redirects to admin or student dashboard based on role
     case 'dashboard':
         $authController->dashboard($dashboardAdminController, $dashboardStudentController);
         break;
 
-    // Pilot et Administrateur
+    // Pilot and admin dashboard routes
     case 'dashboard/admin':
         $dashboardAdminController->list();
         break;
@@ -161,15 +161,15 @@ switch ($uri) {
     case 'dashboard/admin/update-pilot':
         $dashboardAdminController->updatePilot();
         break;
-    // Dashboard Étudiant
+    // Student dashboard routes
     case 'dashboard/student':
-        $dashboardStudentController->index(); // Appelle la fonction principale d'affichage
+        $dashboardStudentController->index(); // Render student dashboard
         break;
     case 'dashboard/student/remove-wishlist':
-        $dashboardStudentController->removeWishlist(); // Appelle la suppression
+        $dashboardStudentController->removeWishlist(); // Remove one wishlist item
         break;
 
-    // Authentification
+    // Authentication routes
     case 'login':
         $authController->login();
         break;
