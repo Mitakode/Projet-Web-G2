@@ -36,11 +36,11 @@
 
                 <select class="filter-item" name="duree">
                     <option value="">Durée</option>
-                    <option value="1,3" {{ selected_duree == '1,3' ? 'selected' : '' }}>1-3 mois</option>
-                    <option value="4,6" {{ selected_duree == '4,6' ? 'selected' : '' }}>4-6 mois</option>
-                    <option value="12"  {{ selected_duree == '12'  ? 'selected' : '' }}>1 an</option>
-                    <option value="24"  {{ selected_duree == '24'  ? 'selected' : '' }}>2 ans</option>
-                    <option value="36"  {{ selected_duree == '36'  ? 'selected' : '' }}>3 ans</option>
+                    <option value="1,3" {{ selected_duration == '1,3' ? 'selected' : '' }}>1-3 mois</option>
+                    <option value="4,6" {{ selected_duration == '4,6' ? 'selected' : '' }}>4-6 mois</option>
+                    <option value="12"  {{ selected_duration == '12'  ? 'selected' : '' }}>1 an</option>
+                    <option value="24"  {{ selected_duration == '24'  ? 'selected' : '' }}>2 ans</option>
+                    <option value="36"  {{ selected_duration == '36'  ? 'selected' : '' }}>3 ans</option>
                 </select>
                 
                 <input type="text" name="company" class="filter-item" 
@@ -50,28 +50,28 @@
     </section>
 
     <div class="list-container"> 
-        {# Boucle Twig : Parcours chaque offre envoyée par le contrôleur dans 'offres_page' #}
-        {% for offre in offres_page %}
+        {# Boucle Twig : Parcours chaque offre envoyée par le contrôleur dans 'offers_page' #}
+        {% for offer in offers_page %}
             <div class="offres-liste">
-                <a href="/offers/detail?id={{ offre.ID_offre }}" class="link">
+                <a href="/offers/detail?id={{ offer.ID_offre }}" class="link">
                     <table class="company-table offer">
                         <tr>
                             <td>
                                 <div class ="infos-table">
-                                    <span class="offer-name">{{ offre.Titre }}</span>
+                                    <span class="offer-name">{{ offer.Titre }}</span>
                                     {# L'affichage du nom de l'entreprise est possible grâce au JOIN dans le Modèle #}
-                                    <span class="offer-company">Entreprise : <strong>{{ offre.Nom_entreprise }}</strong></span>
+                                    <span class="offer-company">Entreprise : <strong>{{ offer.Nom_entreprise }}</strong></span>
                                 </div>
                             <td>
                             {% if (session['user_role'] == 'admin' or session['user_role'] == 'pilote') %}
                             <td class="btn-table">
                                 {# Lien vers la page de modification avec l'ID de l'offre concernée #}
-                                <a href="/offers/update?id={{ offre.ID_offre }}" 
+                                <a href="/offers/update?id={{ offer.ID_offre }}" 
                                     class="btn-action crayon">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </a>
                                 {# Lien de suppression avec une popup de confirmation JavaScript #}
-                                <a href="/offers/delete?id={{ offre.ID_offre }}" 
+                                <a href="/offers/delete?id={{ offer.ID_offre }}" 
                                 class="btn-action poubelle" 
                                 onclick="return confirm('Supprimer cette offre ?')">
                                     <i class="fa-solid fa-trash"></i>
@@ -79,15 +79,15 @@
                             </td>
                             {% endif %}
                             {% if session['user_role'] == 'etudiant' %}
-                                {% if offre.has_applied == false %}
+                                {% if offer.has_applied == false %}
                                 <td class="btn-table">
-                                    {% if offre.is_in_wishlist %}
-                                    <a href="/offers/deleteWishlist?id={{ offre.ID_offre }}&recherche={{ search_term }}&company={{ selected_company }}&type={{ selected_type }}&duree={{ selected_duree }}&page={{ current_page }}"
+                                    {% if offer.is_in_wishlist %}
+                                    <a href="/offers/deleteWishlist?id={{ offer.ID_offre }}&recherche={{ search_term }}&company={{ selected_company }}&type={{ selected_type }}&duree={{ selected_duration }}&page={{ current_page }}"
                                     class="btn-action coeur active"
                                     title="Retirer des favoris"
                                     aria-label="Retirer des favoris"><i class="fa-solid fa-heart"></i></a>
                                     {% else %}
-                                    <a href="/offers/addWishlist?id={{ offre.ID_offre }}&recherche={{ search_term }}&company={{ selected_company }}&type={{ selected_type }}&duree={{ selected_duree }}&page={{ current_page }}"
+                                    <a href="/offers/addWishlist?id={{ offer.ID_offre }}&recherche={{ search_term }}&company={{ selected_company }}&type={{ selected_type }}&duree={{ selected_duration }}&page={{ current_page }}"
                                     class="btn-action coeur"
                                     title="Ajouter aux favoris"
                                     aria-label="Ajouter aux favoris"><i class="fa-solid fa-heart"></i></a>
@@ -103,18 +103,18 @@
                         <tr>
                             <td colspan="3" class="company-info">
                                 {# Affichage des données de base de l'offre avec formatage de la date #}
-                                Durée : {{ offre.Duree }} mois | Publié le : {{ offre.Date_publication|date("d/m/Y") }}
+                                Durée : {{ offer.Duree }} mois | Publié le : {{ offer.Date_publication|date("d/m/Y") }}
                             </td>
                         </tr>
                         <tr>
                             <td colspan="3" class="company-description">
-                                {{ offre.Description|slice(0, 90) ~ '...' }}
+                                {{ offer.Description|slice(0, 90) ~ '...' }}
                             </td>
                         </tr>
                     </table>
                 </a>
             </div>
-        {# S'exécute si le tableau 'offres_page' est vide (aucune offre ne correspond à la recherche) #}
+        {# S'exécute si le tableau 'offers_page' est vide (aucune offre ne correspond à la recherche) #}
         {% else %}
             <p>Aucune offre trouvée.</p>
         {% endfor %}
@@ -126,7 +126,7 @@
             {# Boucle de 1 jusqu'au nombre total de pages #}
             {% for i in 1..total_pages %}
                 {# Ajout de la classe 'active' si 'i' correspond à la page actuelle #}
-                     <a href="/offers?recherche={{ search_term }}&company={{ selected_company }}&type={{ selected_type }}&duree={{ selected_duree }}&page={{ i }}" 
+                                         <a href="/offers?recherche={{ search_term }}&company={{ selected_company }}&type={{ selected_type }}&duree={{ selected_duration }}&page={{ i }}" 
                    class="page-link {{ i == current_page ? 'active' : '' }}">
                     {{ i }}
                 </a>

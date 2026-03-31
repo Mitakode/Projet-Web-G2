@@ -124,14 +124,14 @@ class DashboardAdminController
 
             // Rend la vue avec les deux tableaux paginés
             echo $this->twig->render('DashboardAdmin.html.twig', [
-                'etudiants' => $paginator->getCurrentPageItems(),
+                'students' => $paginator->getCurrentPageItems(),
                 'total_pages'      => $paginator->getTotalPages(),
                 'current_page'     => $_GET['page'] ?? 1,
                 'surname'      => $surname,
                 'name'             => $name,
                 'promotion'        => $promotion,
 
-                'pilotes' => $paginatorP->getCurrentPageItems(),
+                'pilots' => $paginatorP->getCurrentPageItems(),
                 'total_pagesP'      => $paginatorP->getTotalPages(),
                 'current_pageP'     => $_GET['pageP'] ?? 1,
                 'surnameP'      => $surnameP,
@@ -167,11 +167,11 @@ class DashboardAdminController
             $applications = $this->model->getStudentApplications($id);
             $paginator = new Paginator($applications, 5);
             echo $this->twig->render('StudentDetails.html.twig', [
-                'etudiant' => $student,
+                'student' => $student,
                 'session' => $_SESSION,
-                'pilote' => $pilot,
+                'pilot' => $pilot,
 
-                'candidatures' => $paginator->getCurrentPageItems(),
+                'applications' => $paginator->getCurrentPageItems(),
                 'total_pages'      => $paginator->getTotalPages(),
                 'current_page'     => $_GET['page'] ?? 1
             ]);
@@ -195,16 +195,16 @@ class DashboardAdminController
                 $postData = $this->getFormData($error, true);
                 $promotion = isset($_POST['promotion']) ? htmlspecialchars(trim($_POST['promotion'])) : '';
                 if (($_SESSION['user_role'] ?? null) === 'admin') {
-                    $id_pilote = isset($_POST['id_pilote']) ? intval($_POST['id_pilote']) : null;
+                    $pilotId = isset($_POST['id_pilote']) ? intval($_POST['id_pilote']) : null;
                 } else {
-                    $id_pilote = $_SESSION['user_id'] ?? null;
+                    $pilotId = $_SESSION['user_id'] ?? null;
                 }
 
                 if (empty($promotion)) {
                     $error .= 'promotion&';
                 }
 
-                if (empty($id_pilote)) {
+                if (empty($pilotId)) {
                     $error .= 'id_pilote&';
                 }
 
@@ -213,14 +213,14 @@ class DashboardAdminController
                     'Prenom' => $postData['firstname'],
                     'Email' => $postData['email'],
                     'Promotion' => $promotion,
-                    'ID_pilote' => $id_pilote
+                    'ID_pilote' => $pilotId
                 ];
                 if (empty($error)) {
                     ;
                         $userData = $this->getUserData($postData, true);
                     $studentData = [
                         'Promotion' => $promotion,
-                        'ID_pilote' => $id_pilote
+                        'ID_pilote' => $pilotId
                     ];
                     $this->model->createStudent($userData, $studentData);
                     header('Location: /dashboard/admin?popup=student_created');
@@ -230,10 +230,10 @@ class DashboardAdminController
 
             $pilots = $this->model->getAllPilots();
             echo $this->twig->render('StudentForm.html.twig', [
-                'pilotes' => $pilots,
+                'pilots' => $pilots,
                 'is_edit' => false,
                 'session' => $_SESSION,
-                'etudiant' => $formStudent,
+                'student' => $formStudent,
                 'error' => $error
             ]);
         } else {
@@ -294,23 +294,23 @@ class DashboardAdminController
                 $postData = $this->getFormData($error, false);
                 $promotion = isset($_POST['promotion']) ? htmlspecialchars(trim($_POST['promotion'])) : '';
                 if (($_SESSION['user_role'] ?? null) === 'admin') {
-                    $id_pilote = isset($_POST['id_pilote']) ? intval($_POST['id_pilote']) : null;
+                    $pilotId = isset($_POST['id_pilote']) ? intval($_POST['id_pilote']) : null;
                 } else {
-                    $id_pilote = $_SESSION['user_id'] ?? null;
+                    $pilotId = $_SESSION['user_id'] ?? null;
                 }
 
                 if (empty($promotion)) {
                     $error .= 'promotion&';
                 }
 
-                if (empty($id_pilote)) {
+                if (empty($pilotId)) {
                     $error .= 'id_pilote&';
                 }
 
                 $userData = $this->getUserData($postData, true);
                 $studentData = [
                     'Promotion' => $promotion,
-                    'ID_pilote' => $id_pilote
+                    'ID_pilote' => $pilotId
                 ];
                 if (empty($error)) {
                     $this->model->updateStudent($id, $userData, $studentData);
@@ -322,8 +322,8 @@ class DashboardAdminController
             $student = $this->model->getStudentById($id);
             $pilots = $this->model->getAllPilots();
             echo $this->twig->render('StudentForm.html.twig', [
-                'etudiant' => $student,
-                'pilotes' => $pilots,
+                'student' => $student,
+                'pilots' => $pilots,
                 'is_edit'  => true,
                 'session'  => $_SESSION,
                 'error' => $error
@@ -364,7 +364,7 @@ class DashboardAdminController
         echo $this->twig->render('PilotForm.html.twig', [
             'is_edit' => false,
             'session' => $_SESSION,
-            'pilote' => $formPilot,
+            'pilot' => $formPilot,
             'error' => $error
         ]);
     }
@@ -430,7 +430,7 @@ class DashboardAdminController
 
         $pilot = $this->model->getPilotById($id);
         echo $this->twig->render('PilotForm.html.twig', [
-            'pilote' => $pilot,
+            'pilot' => $pilot,
             'is_edit'  => true,
             'session'  => $_SESSION,
             'error' => $error

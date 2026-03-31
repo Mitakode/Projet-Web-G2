@@ -11,7 +11,7 @@
 <section class="frame">
     <h1 class="main-title">{{ is_edit ? 'Modifier' : 'Ajouter' }} un étudiant</h1>
 
-    <form class="form-test" data-account-password-form="true" data-popup-error="{{ popup_error|default('')|e('html_attr') }}" action="/{{ is_edit ? 'dashboard/admin/update-student?id=' ~ etudiant.ID_utilisateur : 'dashboard/admin/create-student' }}" method="POST">
+    <form class="form-test" data-account-password-form="true" data-popup-error="{{ popup_error|default('')|e('html_attr') }}" action="/{{ is_edit ? 'dashboard/admin/update-student?id=' ~ student.ID_utilisateur : 'dashboard/admin/create-student' }}" method="POST">
         {% if session.user_role == 'admin' %}
             <div class="label-row"> 
                 <label for="id_pilote">Sélectionner un pilote référent :</label>
@@ -21,9 +21,9 @@
             </div>
             <select class="form-input" name="id_pilote" id="id_pilote">
                 <option value="">-- Choisir un pilote --</option>
-                {% for p in pilotes %}
+                {% for p in pilots %}
                     <option value="{{ p.ID_utilisateur }}" 
-                        {% if etudiant is defined and etudiant.ID_pilote == p.ID_utilisateur %}selected{% endif %}>
+                        {% if student is defined and student.ID_pilote == p.ID_utilisateur %}selected{% endif %}>
                         {{ p.Nom|upper }} {{ p.Prenom }}
                     </option>
                 {% endfor %}
@@ -36,7 +36,7 @@
                     <p class="infos infos-error" role="alert">Veuillez renseigner le nom</p>
             {% endif %}
         </div>
-        <input class="form-input" type="text" name="surname" value="{{ etudiant.Nom ?? '' }}">
+        <input class="form-input" type="text" name="surname" value="{{ student.Nom ?? '' }}">
         
         <div class="label-row">
             <label>Prénom</label>
@@ -44,7 +44,7 @@
                     <p class="infos infos-error" role="alert">Veuillez renseigner le prénom</p>
             {% endif %}
         </div>
-        <input class="form-input" type="text" name="firstname" value="{{ etudiant.Prenom ?? '' }}">
+        <input class="form-input" type="text" name="firstname" value="{{ student.Prenom ?? '' }}">
 
         <div class="label-row">
             <label>Promotion</label>
@@ -52,7 +52,7 @@
                     <p class="infos infos-error" role="alert">Veuillez renseigner la promotion</p>
             {% endif %}
         </div>
-        <input class="form-input" type="text" name="promotion" value="{{ etudiant.Promotion ?? '' }}">
+        <input class="form-input" type="text" name="promotion" value="{{ student.Promotion ?? '' }}">
 
         
         <div class="label-row">
@@ -61,7 +61,7 @@
                     <p class="infos infos-error" role="alert">Veuillez renseigner l'e-mail</p>
             {% endif %}
         </div>
-        <input class="form-input" type="email" name="email" value="{{ etudiant.Email ?? '' }}">
+        <input class="form-input" type="email" name="email" value="{{ student.Email ?? '' }}">
 
         <div class="label-row">
             <label>Mot de passe</label>

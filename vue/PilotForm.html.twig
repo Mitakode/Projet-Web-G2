@@ -11,7 +11,7 @@
 <section class="frame">
     <h1 class="main-title">{{ is_edit ? 'Modifier' : 'Ajouter' }} un pilote</h1>
 
-    <form class="form-test" data-account-password-form="true" data-popup-error="{{ popup_error|default('')|e('html_attr') }}" action="/{{ is_edit ? 'dashboard/admin/update-pilot?id=' ~ pilote.ID_utilisateur : 'dashboard/admin/create-pilot' }}" method="POST">
+    <form class="form-test" data-account-password-form="true" data-popup-error="{{ popup_error|default('')|e('html_attr') }}" action="/{{ is_edit ? 'dashboard/admin/update-pilot?id=' ~ pilot.ID_utilisateur : 'dashboard/admin/create-pilot' }}" method="POST">
 
         <div class="label-row">   
             <label>Nom</label>
@@ -19,7 +19,7 @@
                     <p class="infos infos-error" role="alert">Veuillez renseigner le nom</p>
             {% endif %}
         </div>
-        <input class="form-input" type="text" name="surname" value="{{ pilote.Nom ?? '' }}">
+        <input class="form-input" type="text" name="surname" value="{{ pilot.Nom ?? '' }}">
 
         <div class="label-row">
             <label>Prénom</label>
@@ -27,7 +27,7 @@
                     <p class="infos infos-error" role="alert">Veuillez renseigner le prénom</p>
             {% endif %}
         </div>
-        <input class="form-input" type="text" name="firstname" value="{{ pilote.Prenom ?? '' }}">
+        <input class="form-input" type="text" name="firstname" value="{{ pilot.Prenom ?? '' }}">
 
         <div class="label-row">
             <label>E-mail</label>
@@ -35,7 +35,7 @@
                     <p class="infos infos-error" role="alert">Veuillez renseigner l'e-mail</p>
             {% endif %}
         </div>
-        <input class="form-input" type="email" name="email" value="{{ pilote.Email ?? '' }}">
+        <input class="form-input" type="email" name="email" value="{{ pilot.Email ?? '' }}">
 
         <div class="label-row">
             <label>Mot de passe</label>

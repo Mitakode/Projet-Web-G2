@@ -20,7 +20,7 @@
        - Si is_edit est vrai, on envoie vers la route d'update avec l'ID
        - Sinon, on envoie vers la route de création
     #}
-    <form class="form-test" action="/{{ is_edit ? 'offers/update?id=' ~ offre.ID_offre : 'offers/create' }}" method="POST">
+    <form class="form-test" action="/{{ is_edit ? 'offers/update?id=' ~ offer.ID_offre : 'offers/create' }}" method="POST">
         {% if error is not empty %}
             <p class="infos infos-error" role="alert">Veuillez corriger les champs indiqués.</p>
         {% endif %}
@@ -30,7 +30,7 @@
             <p class="infos infos-error" role="alert">Veuillez renseigner le titre</p>
         {% endif %}
         {# Les attributs 'name' doivent correspondre exactement à ce que le contrôleur attend en $_POST #}
-        <input class="form-input" type="text" name="Titre" value="{{ offre.Titre ?? '' }}" required>
+        <input class="form-input" type="text" name="Titre" value="{{ offer.Titre ?? '' }}" required>
 
         {# Utilisation de la structure en grille pour un affichage propre sur deux colonnes #}
         <div class="form-grid">
@@ -42,9 +42,9 @@
                 {# Liste déroulante générée dynamiquement depuis la base de données via le contrôleur #}
                 <select class="form-input" name="ID_entreprise" required>
                     <option value="">Sélectionnez une entreprise</option>
-                    {% for entreprise in entreprises %}
-                        <option value="{{ entreprise.ID_entreprise }}" {{ offre.ID_entreprise is defined and offre.ID_entreprise == entreprise.ID_entreprise ? 'selected' : '' }}>
-                            {{ entreprise.Nom_entreprise }}
+                    {% for company in companies %}
+                        <option value="{{ company.ID_entreprise }}" {{ offer.ID_entreprise is defined and offer.ID_entreprise == company.ID_entreprise ? 'selected' : '' }}>
+                            {{ company.Nom_entreprise }}
                         </option>
                     {% endfor %}
                 </select>
@@ -52,7 +52,7 @@
 
             <div class="form-column3">
                 <label>Durée (mois)</label>
-                <input class="form-input" type="number" name="Duree" value="{{ offre.Duree ?? '' }}">
+                <input class="form-input" type="number" name="Duree" value="{{ offer.Duree ?? '' }}">
             </div>
             
         </div>
@@ -60,7 +60,7 @@
         <div class="form-grid">
             <div class="form-column3">
                 <label>Rémunération de base (€)</label>
-                <input class="form-input" type="number" step="0.01" name="Base_remuneration" value="{{ offre.Base_remuneration ?? '' }}">
+                <input class="form-input" type="number" step="0.01" name="Base_remuneration" value="{{ offer.Base_remuneration ?? '' }}">
             </div>
             
             <div class="form-column2">
@@ -68,7 +68,7 @@
                    text input au lieu des checkboxes pour les compétences, car la base de données stocke les compétences sous forme de chaîne (VARCHAR "C++, Python").
                 #}
                 <label>Compétences requises (séparées par des virgules)</label>
-                <input class="form-input" type="text" name="Liste_competences" value="{{ offre.Liste_competences ?? '' }}" placeholder="Ex: PHP, Twig, SQL">
+                <input class="form-input" type="text" name="Liste_competences" value="{{ offer.Liste_competences ?? '' }}" placeholder="Ex: PHP, Twig, SQL">
             </div>
         </div>
 
@@ -76,7 +76,7 @@
         {% if 'Description' in error %}
             <p class="infos infos-error" role="alert">Veuillez renseigner la description</p>
         {% endif %}
-        <textarea class="form-textarea" rows="10" name="Description" required>{{ offre.Description ?? '' }}</textarea>
+        <textarea class="form-textarea" rows="10" name="Description" required>{{ offer.Description ?? '' }}</textarea>
 
         <div class="btn-container" style="margin-top: 20px;">
             {# Le texte du bouton s'adapte à l'action en cours #}

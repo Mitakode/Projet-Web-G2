@@ -27,24 +27,24 @@ class DashboardStudentController
         $blockAccess->blockAdminAccess();
 
         // Récupère l'identifiant de l'étudiant connecté
-        $idEtudiant = $_SESSION['user_id'] ?? null;
-        if (!$idEtudiant) {
+        $studentId = $_SESSION['user_id'] ?? null;
+        if (!$studentId) {
             // Redirige vers l'accueil si aucun étudiant n'est connecté
             header('Location: /');
             exit;
         }
 
         // Charge les candidatures et la wishlist
-        $candidatures = $this->model->getCandidatures($idEtudiant);
-        $wishlist = $this->model->getWishlist($idEtudiant);
-        $paginatorCandidatures = new Paginator($candidatures, 5);
+        $applications = $this->model->getCandidatures($studentId);
+        $wishlist = $this->model->getWishlist($studentId);
+        $applicationsPaginator = new Paginator($applications, 5);
         $paginatorWishlist = new Paginator($wishlist, 5, 'pageW');
 
         // Affichage de la vue (Twig) en y injectant les données (page)
         echo $this->twig->render('DashboardStudent.html.twig', [
-            'candidatures' => $paginatorCandidatures->getCurrentPageItems(),
+            'applications' => $applicationsPaginator->getCurrentPageItems(),
             'wishlist'     => $paginatorWishlist->getCurrentPageItems(),
-            'total_pages' => $paginatorCandidatures->getTotalPages(),
+            'total_pages' => $applicationsPaginator->getTotalPages(),
             'current_page' => $_GET['page'] ?? 1,
             'total_pagesW' => $paginatorWishlist->getTotalPages(),
             'current_pageW' => $_GET['pageW'] ?? 1
@@ -59,10 +59,10 @@ class DashboardStudentController
         $blockAccess = new BlockAccess($this->twig);
         $blockAccess->blockPilotAccess();
         $blockAccess->blockAdminAccess();
-        $idEtudiant = $_SESSION['user_id'] ?? null;
-        $idOffre = $_GET['id'] ?? null;
-        if ($idEtudiant && $idOffre) {
-            $this->model->removeFromWishlist($idEtudiant, $idOffre);
+        $studentId = $_SESSION['user_id'] ?? null;
+        $offerId = $_GET['id'] ?? null;
+        if ($studentId && $offerId) {
+            $this->model->removeFromWishlist($studentId, $offerId);
         }
 
         $currentPage = $_GET['page'] ?? 1;

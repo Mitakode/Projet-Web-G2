@@ -28,24 +28,24 @@
                 </thead>
                 <tbody>
                     {# Boucle sur les candidatures récupérées depuis le contrôleur #}
-                    {% for candidature in candidatures %}
+                    {% for application in applications %}
                     <tr>
                         <td>
-                            <a href="/offers/detail?id={{ candidature.ID_offre }}" class="link">
-                                {{ candidature.Titre }}
+                            <a href="/offers/detail?id={{ application.ID_offre }}" class="link">
+                                {{ application.Titre }}
                             </a>
                         </td>
-                        <td>{{ candidature.Nom_entreprise }}</td>
-                        <td>{{ candidature.Date_candidature|date('d/m/Y') }}</td>
+                        <td>{{ application.Nom_entreprise }}</td>
+                        <td>{{ application.Date_candidature|date('d/m/Y') }}</td>
                         
                         <td>
-                            <a href="uploads/{{ candidature.CV }}" rel="nofollow" target="_blank" class="link">
-                                {{ candidature.CV}}
+                            <a href="uploads/{{ application.CV }}" rel="nofollow" target="_blank" class="link">
+                                {{ application.CV}}
                             </a>
                         </td>
                         <td>
-                            <a href="uploads/{{ candidature.Lettre_motivation }}" rel="nofollow" target="_blank" class="link">
-                                {{ candidature.Lettre_motivation }}
+                            <a href="uploads/{{ application.Lettre_motivation }}" rel="nofollow" target="_blank" class="link">
+                                {{ application.Lettre_motivation }}
                             </a>
                         </td>
                     </tr>
@@ -85,17 +85,17 @@
                 </thead>
                 <tbody>
                     {# Boucle sur la wishlist récupérée depuis le contrôleur #}
-                    {% for souhait in wishlist %}
+                    {% for wishlistItem in wishlist %}
                     <tr>
                         <td>
-                            <a href="/offers/detail?id={{ souhait.ID_offre }}" class="link">
-                                {{ souhait.Titre }}
+                            <a href="/offers/detail?id={{ wishlistItem.ID_offre }}" class="link">
+                                {{ wishlistItem.Titre }}
                             </a>
                         </td>
-                        <td>{{ souhait.Nom_entreprise }}</td>
+                        <td>{{ wishlistItem.Nom_entreprise }}</td>
                         <td class="btn-table">
                             {# Lien dynamique vers l'action de suppression dans le routeur #}
-                                     <a href="/dashboard/student/remove-wishlist?id={{ souhait.ID_offre }}&page={{ current_page }}&pageW={{ current_pageW }}" 
+                                     <a href="/dashboard/student/remove-wishlist?id={{ wishlistItem.ID_offre }}&page={{ current_page }}&pageW={{ current_pageW }}" 
                                class="btn-action poubelle" 
                                onclick="return confirm('Retirer cette offre de la wishlist ?')">
                                 <i class="fa-solid fa-trash"></i>
