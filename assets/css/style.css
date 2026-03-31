@@ -526,6 +526,7 @@ input, select, textarea, .frame {
     width: 100%;
     height: 150px; /* Hauteur fixe pour les textarea */
     box-sizing: border-box; /* Très important pour que le padding ne déforme pas la largeur */
+    resize: vertical; /* Empêche le redimensionnement horizontal */
 }
 
 
