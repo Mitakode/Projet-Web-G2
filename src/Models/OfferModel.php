@@ -4,15 +4,16 @@ namespace App\Models;
 
 class OfferModel extends Model
 {
-    // Le constructeur appelle celui du parent (Model) pour initialiser la connexion à la BDD
+    /**
+     * Builds the offer model and reuses the shared database adapter
+     */
     public function __construct(Database $connection)
     {
         parent::__construct($connection);
     }
 
     /**
-     * Récupère une offre spécifique par son ID.
-     * Utilise une jointure (JOIN) pour récupérer également le nom de l'entreprise associée.
+     * Returns one offer by id with company and application metadata
      */
     public function getOfferById($id)
     {
@@ -41,13 +42,12 @@ class OfferModel extends Model
 
         $stmt = $this->connection->getConnection()->prepare($sql);
         $stmt->execute($params);
-        // Retourne un seul enregistrement sous forme de tableau associatif
+                // Return a single record as an associative array
         return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 
     /**
-     * Recherche des offres en fonction d'un mot-clé.
-     * La jointure permet d'afficher le nom de l'entreprise dans la liste des résultats.
+         * Searches offers using optional keyword company type and duration filters
      */
     public function searchOffers($keyword = "", $company = "", $type = "", $duration = "")
     {
@@ -71,10 +71,10 @@ class OfferModel extends Model
             $params = ['userId' => $_SESSION['user_id']];
         }
         $sql .= " WHERE 1=1";
-// "1=1" est une astuce pour pouvoir ajouter facilement des "AND" dynamiquement
+        // Keep a stable base condition to append dynamic AND clauses
 
 
-// Si un mot-clé est tapé, on cherche dans le titre, la description et les compétences
+        // Search in title description and skills when a keyword is provided
         if (!empty($keyword)) {
             $sql .= " AND (Offre.Titre LIKE :key OR Offre.Description LIKE :key OR Offre.Liste_competences LIKE :key)";
             $params['key'] = '%' . $keyword . '%';
@@ -104,12 +104,12 @@ class OfferModel extends Model
 
         $stmt = $this->connection->getConnection()->prepare($sql);
         $stmt->execute($params);
-// Retourne toutes les offres correspondantes
+        // Return all matching offers
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     /**
-     * Insère une nouvelle offre dans la base de données.
+     * Creates a new offer record
      */
     public function createOffer($data)
     {
@@ -117,7 +117,7 @@ class OfferModel extends Model
     }
 
     /**
-     * Met à jour une offre existante ciblée par son ID.
+     * Updates an existing offer by id
      */
     public function updateOffer($id, $data)
     {
@@ -125,14 +125,16 @@ class OfferModel extends Model
     }
 
     /**
-     * Supprime une offre de la base de données via son ID.
+     * Deletes an offer by id
      */
     public function deleteOffer($id)
     {
         return $this->connection->deleteRecord($id);
     }
 
-
+    /**
+     * Adds an offer to a student wishlist
+     */
     public function addWishlist($offerId, $studentId)
     {
         $sql = "INSERT INTO Souhaite (ID_utilisateur, ID_offre) VALUES (:studentId, :offerId)";
@@ -141,6 +143,9 @@ class OfferModel extends Model
         return $stmt->execute($params);
     }
 
+    /**
+     * Returns wishlist linkage for one offer and one student
+     */
     public function isInWishlist($offerId, $studentId)
     {
         $sql = "SELECT * FROM Souhaite WHERE ID_offre = :idOffre AND ID_utilisateur = :studentId";
@@ -150,6 +155,9 @@ class OfferModel extends Model
         return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Returns application linkage for one offer and one student
+     */
     public function hasApplied($offerId, $studentId)
     {
         $sql = "SELECT * FROM Postule WHERE ID_offre = :idOffre AND ID_utilisateur = :studentId";
@@ -159,6 +167,9 @@ class OfferModel extends Model
         return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Creates a student application with uploaded document paths
+     */
     public function addPostule($offerId, $studentId, $cvPath, $letterPath)
     {
         $sql = "INSERT INTO Postule (ID_utilisateur, ID_offre, CV, Lettre_motivation, Date_candidature) "

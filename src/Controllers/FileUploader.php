@@ -8,19 +8,28 @@ class FileUploader
     private $uploadDir = 'uploads/';
     private $allowedType = 'application/pdf';
     private $message = "";
-    private $maxSize = 4194304; // 4 Mo en octets
+    private $maxSize = 4194304; // 4 MB in bytes
     private $newFileName = null;
 
+    /**
+     * Stores uploaded file metadata for later validation and move
+     */
     public function __construct(array $file)
     {
         $this->file = $file;
     }
 
+    /**
+     * Overrides the final filename used when moving the uploaded file
+     */
     public function setFileName(string $newName): void
     {
         $this->newFileName = $newName;
     }
 
+    /**
+     * Validates upload status mime type and file size limits
+     */
     public function validate(): bool
     {
         if ($this->file['error'] !== UPLOAD_ERR_OK) {
@@ -42,6 +51,9 @@ class FileUploader
         return true;
     }
 
+    /**
+     * Moves the uploaded file to the target directory and returns its path
+     */
     public function upload(): ?string
     {
         $fileName = $this->newFileName ?? basename($this->file['name']);
@@ -55,6 +67,9 @@ class FileUploader
         }
     }
 
+    /**
+     * Returns the last validation or upload message
+     */
     public function getMessage(): string
     {
         return $this->message;

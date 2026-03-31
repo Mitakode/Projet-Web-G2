@@ -4,11 +4,17 @@ namespace App\Models;
 
 class HomepageModel extends Model
 {
+    /**
+     * Builds the homepage model with the shared database adapter
+     */
     public function __construct(Database $connection)
     {
         parent::__construct($connection);
     }
 
+    /**
+     * Counts the number of students
+     */
     public function countStudent()
     {
         $sql = "SELECT COUNT(ID_utilisateur) AS count_etudiant FROM Etudiant";
@@ -18,6 +24,9 @@ class HomepageModel extends Model
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Counts the number of offers
+     */
     public function countOffer()
     {
         $sql = "SELECT COUNT(ID_offre)  AS count_offre FROM Offre";
@@ -27,6 +36,9 @@ class HomepageModel extends Model
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Computes the average number of applications per offer
+     */
     public function avgApply()
     {
         $sql = "SELECT AVG(Nb_Candidatures) AS moyenne_candidature "
@@ -38,6 +50,9 @@ class HomepageModel extends Model
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Returns the top three offers by wishlist count
+     */
     public function topOffers()
     {
         $sql = "SELECT COUNT(*) AS Nb_wishlist, o.ID_offre, o.Titre "
@@ -51,6 +66,9 @@ class HomepageModel extends Model
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Returns duration distribution metrics for offers
+     */
     public function timeDistribution()
     {
         $sql = "SELECT * FROM 

@@ -6,11 +6,17 @@ class FooterPageController
 {
     private $twig;
 
+    /**
+     * Builds the footer page controller with Twig rendering access
+     */
     public function __construct($twig)
     {
         $this->twig = $twig;
     }
 
+    /**
+     * Renders one static footer page based on the requested page type
+     */
     public function page(string $pageType)
     {
         $content = $this->getPageContent($pageType);
@@ -20,6 +26,9 @@ class FooterPageController
         ]);
     }
 
+    /**
+     * Returns the title and body content for a footer page key
+     */
     private function getPageContent(string $pageType): array
     {
         $cguBody = <<<'HTML'

@@ -2,12 +2,14 @@
     var initialized = false;
     var queryPopupShown = false;
 
+    // Displays a basic alert with title and optional body text
     function showAlert(title, message)
     {
         const text = message || '';
         alert(title + '\n\n' + text);
     }
 
+    // Validates application files before submitting the apply form
     function initApplyForm()
     {
         var applyForm = document.getElementById('apply');
@@ -59,6 +61,7 @@
         });
     }
 
+    // Validates company contact format on company forms
     function initCompanyForm()
     {
         var contactInput = document.querySelector('input[name="contactCompany"]');
@@ -81,6 +84,7 @@
         });
     }
 
+    // Exposes a rating prompt helper and redirects to rating endpoint
     function initCompanyRating()
     {
         window.ouvrirPopupNote = function (idEntreprise, nomEntreprise) {
@@ -118,6 +122,7 @@
         };
     }
 
+    // Shows popup feedback based on the popup query parameter
     function showPopupFromQuery()
     {
         if (queryPopupShown) {
@@ -183,14 +188,17 @@
         }
     }
 
+    // Shows a success popup message
     window.showSuccessPopup = function (message, duration) {
         showAlert('✅ Succès', message || '✅ Opération effectuée avec succès.');
     };
 
+    // Shows an error popup message
     window.showErrorPopup = function (message, duration) {
         showAlert('❌ Erreur', message || '❌ Une erreur est survenue.');
     };
 
+    // Initializes popup related behaviors once
     function initPopups()
     {
         if (initialized) {
@@ -202,7 +210,7 @@
         initCompanyForm();
         initCompanyRating();
 
-        // Les popups liées à la redirection doivent s'afficher après chargement complet.
+        // Redirection driven popups should appear after full page load
         if (document.readyState === 'complete') {
             showPopupFromQuery();
         } else {

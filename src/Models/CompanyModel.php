@@ -4,16 +4,25 @@ namespace App\Models;
 
 class CompanyModel extends Model
 {
+    /**
+     * Builds the company model with the shared database adapter
+     */
     public function __construct(Database $connection)
     {
         parent::__construct($connection);
     }
 
+    /**
+     * Returns one company by its identifier
+     */
     public function getCompanyById($id)
     {
         return $this->connection->getRecord($id);
     }
 
+    /**
+     * Searches companies with optional keyword and student rating context
+     */
     public function searchCompanies($keyword = "", $currentUserId = null)
     {
         $sql = "SELECT Entreprise.*, AVG(Evalue.Note_entreprise) as Moyenne_Note";
@@ -46,26 +55,38 @@ class CompanyModel extends Model
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Creates a new company record
+     */
     public function createCompany($data)
     {
         return $this->connection->insertRecord($data);
     }
 
+    /**
+     * Updates an existing company record
+     */
     public function updateCompany($id, $data)
     {
         return $this->connection->updateRecord($id, $data);
     }
 
+    /**
+     * Deletes a company record by id
+     */
     public function deleteCompany($id)
     {
         return $this->connection->deleteRecord($id);
     }
 
+    /**
+     * Creates or updates a company rating for one user
+     */
     public function rateCompany($companyId, $idUtilisateur, $rating)
     {
         $pdo = $this->connection->getConnection();
 
-        // Vérifier si une note existe déjà pour cet utilisateur et cette entreprise
+        // Check whether this user has already rated this company
         $checkSql = "SELECT COUNT(*) as count FROM Evalue "
             . "WHERE ID_entreprise = :id_entreprise "
             . "AND ID_utilisateur = :id_utilisateur";
@@ -78,7 +99,7 @@ class CompanyModel extends Model
         $existing = $result['count'] > 0;
 
         if ($existing) {
-            // Mettre à jour la note existante
+            // Update the existing rating
             $updateSql = "UPDATE Evalue SET Note_entreprise = :note "
                 . "WHERE ID_entreprise = :id_entreprise "
                 . "AND ID_utilisateur = :id_utilisateur";
@@ -89,7 +110,7 @@ class CompanyModel extends Model
                 ':id_utilisateur' => $idUtilisateur
             ]);
         } else {
-            // Créer une nouvelle note
+            // Create a new rating
             $insertSql = "INSERT INTO Evalue (ID_entreprise, ID_utilisateur, Note_entreprise) "
                 . "VALUES (:id_entreprise, :id_utilisateur, :note)";
             $insertStmt = $pdo->prepare($insertSql);

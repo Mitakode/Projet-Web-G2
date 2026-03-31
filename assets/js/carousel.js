@@ -1,59 +1,55 @@
-// Ceci est une fonction auto - exécutable.Les fonctions auto - exécutables
-// sont des fonctions qui s'exécutent immédiatement après leur déclaration,
-// sans avoir besoin d'être appelées.Les accolades immédiatement après la 
-// déclaration de la fonction et les parenthèses à la fin de la déclaration 
-// définissent la fonction et permettent de l'exécuter immédiatement.
+// Self invoking function that runs as soon as the file is loaded
+// Keeps carousel variables scoped and avoids leaking globals
 (function () {
-    // Utilisation de la directive "use strict" pour activer le mode strict en JavaScript
-    // Cela implique une meilleure gestion des erreurs et une syntaxe plus stricte pour le code
+    // Enable strict mode for safer JavaScript behavior
     "use strict";
-    // Récupère les boutons de navigation
+    // Read navigation buttons
     const prev = document.querySelector('#prev');
     const next = document.querySelector('#next');
-    // Récupère tous les éléments de type "slide"
+    // Read all slide elements
     const $slides = document.querySelectorAll('.slide');
-    // Initialisation de la variable pour les "dots"
+    // Store pagination dots once they are created
     let $dots;
-    // Initialisation du slide courant à 1
+    // Start on the first visible slide
     let currentSlide = 1;
-    // Fonction pour afficher un slide spécifique en utilisant un index
+    // Moves the carousel to the requested slide index
     function slideTo(index) {
-        // Vérifie si l'index est valide (compris entre 0 et le nombre de slides - 1)
+        // Wrap around when the index is outside valid bounds
         currentSlide = index >= $slides.length || index < 1 ? 0 : index;
-        // Boucle sur tous les éléments de type "slide" pour les déplacer
+        // Translate each slide according to the current index
         $slides.forEach($elt => $elt.style.transform = `translateX(-${currentSlide * 100}%)`);
-        // Boucle sur tous les "dots" pour mettre à jour la couleur par la classe "active" ou "inactive"
+        // Update dot state to match the active slide
         $dots.forEach(($elt, key) => $elt.classList = `dot ${key === currentSlide? 'active': 'inactive'}`);
     }
-    // Boucle pour créer les "dots" en fonction du nombre de slides
+    // Create one dot per slide
     for (let i = 1; i <= $slides.length; i++) {
         let dotClass = i == currentSlide ? 'active' : 'inactive';
         let $dot = `<span data-slidId="${i}" class="dot ${dotClass}"></span>`;
         document.querySelector('.carousel-dots').innerHTML += $dot;
     }
-    // Récupère tous les "dots"
+    // Cache generated dots
     $dots = document.querySelectorAll('.dot');
-    // Boucle pour ajouter des écouteurs d'événement "click" sur chaque "dot"
+    // Bind click navigation on dots
     $dots.forEach(($elt, key) => $elt.addEventListener('click', () => slideTo(key)));
-    // Ajout d'un écouteur d'événement "click" sur le bouton "prev" pour afficher le slide précédent
+    // Bind previous button
     prev.addEventListener('click', () => slideTo(--currentSlide))
-    // Ajout d'un écouteur d'événement "click" sur le bouton "next" pour afficher le slide suivant
+    // Bind next button
     next.addEventListener('click', () => slideTo(++currentSlide))
-    // Boucle sur tous les éléments de type "slide" pour ajouter des écouteurs d'événement toucher
+    // Bind touch gestures for swipe navigation
     $slides.forEach($elt => {
         let startX;
         let endX;
-        // Enregistre la position initiale du toucher lorsque l'utilisateur touche un slide
+        // Save touch start position
         $elt.addEventListener('touchstart', (event) => {
             startX = event.touches[0].clientX;
         });
-        // Enregistre la position finale du toucher lorsque l'utilisateur relâche son doigt
+        // Save touch end position and detect swipe direction
         $elt.addEventListener('touchend', (event) => {
             endX = event.changedTouches[0].clientX;
-            // Si la position initiale est plus grande que la position finale, affiche le prochain slide
+            // Swipe left moves to next slide
             if (startX > endX) {
                 slideTo(currentSlide + 1);
-                // Si la position initiale est plus petite que la position finale, affiche le slide précédent
+                // Swipe right moves to previous slide
             } else if (startX < endX) {
                 slideTo(currentSlide - 1);
             }

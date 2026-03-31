@@ -8,6 +8,9 @@ use App\Models\SqlDatabase;
 
 class CompanyModelTest extends TestCase
 {
+    /**
+     * Verifies that a company can be fetched by id
+     */
     public function testGetCompanyById()
     {
 
@@ -27,12 +30,15 @@ class CompanyModelTest extends TestCase
         $this->assertEquals('Microsoft', $company['Nom_entreprise']);
     }
 
+    /**
+     * Verifies that company creation delegates to insertRecord
+     */
     public function testCreateCompany()
     {
 
         $connection = $this->createMock(SqlDatabase::class);
 
-        // Simulation du contenu de la base de données
+        // Simulate database insertion result
         $connection->method('insertRecord')->willReturn(true);
 
         $connection->expects($this->once())
@@ -54,6 +60,9 @@ class CompanyModelTest extends TestCase
         $this->assertTrue($result);
     }
 
+    /**
+     * Verifies that company update delegates to updateRecord
+     */
     public function testUpdateCompany()
     {
 
@@ -67,6 +76,9 @@ class CompanyModelTest extends TestCase
         $this->assertTrue($result);
     }
 
+    /**
+     * Verifies that company deletion delegates to deleteRecord
+     */
     public function testDeleteCompany()
     {
 
@@ -85,6 +97,9 @@ class CompanyModelTest extends TestCase
         $this->assertTrue($result);
     }
 
+    /**
+     * Verifies that company search returns expected mocked rows
+     */
     public function testSearchCompanies()
     {
 
@@ -108,6 +123,9 @@ class CompanyModelTest extends TestCase
         $this->assertEquals('Microsoft', $companies[0]['Nom_entreprise']);
     }
 
+    /**
+     * Verifies that company rating returns success through mocked PDO chain
+     */
     public function testRateCompany()
     {
 
@@ -117,7 +135,7 @@ class CompanyModelTest extends TestCase
 
         $connection->method('getConnection')->willReturn($pdoMock);
 
-        // On simule toute la chaîne PDO (prepare -> execute -> fetch)
+        // Simulate complete PDO chain prepare execute and fetch
         $pdoMock->method('prepare')->willReturn($stmtMock);
         $stmtMock->method('execute')->willReturn(true);
         $stmtMock->method('fetch')->willReturn(['count' => 0]);

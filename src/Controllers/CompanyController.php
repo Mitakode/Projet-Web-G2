@@ -10,15 +10,21 @@ class CompanyController
     private $twig;
     private $model;
 
+    /**
+     * Builds the company controller with rendering and data dependencies
+     */
     public function __construct($twig, $model)
     {
         $this->twig = $twig;
         $this->model = $model;
     }
 
+    /**
+     * Displays the company list with filters and pagination
+     */
     public function list()
     {
-        // Récupérer les filtres depuis l'URL
+        // Read filters from the query string
         $search = $_GET['recherche'] ?? '';
         $currentUserId = (
             isset($_SESSION['user_role'])
@@ -27,11 +33,11 @@ class CompanyController
         )
             ? $_SESSION['user_id']
             : null;
-        // Demander les données filtrées au modèle
+        // Load filtered records from the model
         $allCompanies = $this->model->searchCompanies($search, $currentUserId);
-        // Gérer la pagination
+        // Prepare pagination
         $paginator = new Paginator($allCompanies, 10);
-        // Envoyer le tout à la vue Twig
+        // Render the page
         echo $this->twig->render('Companies.html.twig', [
             'companies_page' => $paginator->getCurrentPageItems(),
             'total_pages'      => $paginator->getTotalPages(),
@@ -40,6 +46,9 @@ class CompanyController
         ]);
     }
 
+    /**
+     * Handles company creation and validates submitted fields
+     */
     public function create()
     {
         $blockAccess = new BlockAccess($this->twig);
@@ -93,6 +102,9 @@ class CompanyController
         ]);
     }
 
+    /**
+     * Handles company edition for an existing record
+     */
     public function update()
     {
         $blockAccess = new BlockAccess($this->twig);
@@ -122,6 +134,9 @@ class CompanyController
         ]);
     }
 
+    /**
+     * Deletes a company and redirects with contextual popup feedback
+     */
     public function delete()
     {
         $blockAccess = new BlockAccess($this->twig);
@@ -147,6 +162,9 @@ class CompanyController
         exit;
     }
 
+    /**
+     * Stores or updates the current student rating for a company
+     */
     public function rate()
     {
         $blockAccess = new BlockAccess($this->twig);
@@ -163,14 +181,14 @@ class CompanyController
             exit;
         }
 
-        // verifier que la note est entre 1 et 10
+        // Validate that the rating stays between 1 and 10
         $rating = intval($rating);
         if ($rating < 1 || $rating > 10) {
             header('Location: /companies');
             exit;
         }
 
-        // save la note
+        // Save the rating
         $this->model->rateCompany($companyId, $_SESSION['user_id'], $rating);
 
         $redirectParams = http_build_query([

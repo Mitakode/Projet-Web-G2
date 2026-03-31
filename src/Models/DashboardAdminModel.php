@@ -6,6 +6,9 @@ class DashboardAdminModel extends Model
 {
     private $pdo;
 
+    /**
+     * Builds the admin dashboard model and stores a direct PDO handle
+     */
     public function __construct(Database $connection)
     {
         parent::__construct($connection);
@@ -13,7 +16,7 @@ class DashboardAdminModel extends Model
     }
 
     /**
-     * Récupère un étudiant avec ses informations de promotion et de pilote
+     * Returns one student with promotion and pilot references
      */
     public function getStudentById($id)
     {
@@ -27,7 +30,7 @@ class DashboardAdminModel extends Model
     }
 
     /**
-     * Récupère les candidatures d'un étudiant avec les informations des offres
+     * Returns all applications for one student with offer details
      */
     public function getStudentApplications($studentId)
     {
@@ -43,7 +46,7 @@ class DashboardAdminModel extends Model
     }
 
     /**
-     * Récupère un pilote par son identifiant
+     * Returns one pilot by id
      */
     public function getPilotById($id)
     {
@@ -57,7 +60,7 @@ class DashboardAdminModel extends Model
     }
 
     /**
-     * Récupère la liste de tous les pilotes
+     * Returns all pilot accounts
      */
     public function getAllPilots()
     {
@@ -69,7 +72,7 @@ class DashboardAdminModel extends Model
     }
 
     /**
-     * Recherche les étudiants selon les filtres transmis
+     * Searches students with optional surname name and promotion filters
      */
     public function searchStudents($surname = "", $name = "", $promotion = "")
     {
@@ -106,7 +109,7 @@ class DashboardAdminModel extends Model
     }
 
     /**
-     * Crée un compte étudiant dans Utilisateur puis Etudiant
+     * Creates a student account across Utilisateur then Etudiant tables
      */
     public function createStudent($userData, $studentData)
     {
@@ -133,7 +136,7 @@ class DashboardAdminModel extends Model
     }
 
     /**
-     * Met à jour les informations d'un étudiant
+     * Updates student data in both Utilisateur and Etudiant tables
      */
     public function updateStudent($id, $userData, $studentData)
     {
@@ -159,7 +162,7 @@ class DashboardAdminModel extends Model
     }
 
     /**
-     * Supprime un étudiant et ses données liées
+     * Deletes a student and all related records
      */
     public function deleteStudent($id)
     {
@@ -182,7 +185,7 @@ class DashboardAdminModel extends Model
     }
 
     /**
-     * Vérifie si un pilote a encore des étudiants rattachés
+     * Checks whether a pilot still has linked students
      */
     public function pilotHasStudents($pilotId)
     {
@@ -192,7 +195,7 @@ class DashboardAdminModel extends Model
     }
 
     /**
-     * Supprime un pilote de la base
+     * Deletes a pilot account from database tables
      */
     public function deletePilot($id)
     {
@@ -211,7 +214,7 @@ class DashboardAdminModel extends Model
     }
 
     /**
-     * Recherche les pilotes selon les filtres transmis
+     * Searches pilots with optional surname and name filters
      */
     public function searchPilots($surnameP = "", $nameP = "")
     {
@@ -236,7 +239,7 @@ class DashboardAdminModel extends Model
     }
 
     /**
-     * Crée un compte pilote dans Utilisateur puis Pilote
+     * Creates a pilot account in Utilisateur then Pilote
      */
     public function createPilot($userData, $pilotData)
     {
@@ -260,7 +263,7 @@ class DashboardAdminModel extends Model
     }
 
     /**
-     * Met à jour les informations d'un pilote
+     * Updates pilot user information
      */
     public function updatePilot($id, $userData)
     {

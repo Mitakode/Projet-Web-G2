@@ -7,12 +7,18 @@ class AuthController
     private $twig;
     private $pdo;
 
+    /**
+     * Builds the auth controller with Twig rendering and PDO access
+     */
     public function __construct($twig, $pdo)
     {
         $this->twig = $twig;
         $this->pdo  = $pdo;
     }
 
+    /**
+     * Handles login and initializes the authenticated session
+     */
     public function login()
     {
         $error = null;
@@ -22,12 +28,12 @@ class AuthController
             exit;
         }
 
-        // on traite le résultat du form de connexion
+        // Process the login form submission
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = trim($_POST['email'] ?? '');
             $password = $_POST['password'] ?? '';
 
-            // recherche l'utilisateur par email
+            // Look up the user by email
             $stmt = $this->pdo->prepare(
                 "SELECT * FROM Utilisateur WHERE Email = ? LIMIT 1"
             );
@@ -41,10 +47,10 @@ class AuthController
             } else {
                 $id = $user['ID_utilisateur'];
 
-                // détermine le rôle
+                // Detect the user role
                 $role = $this->detectRole($id);
 
-                // enregistre la session de façon sécurisée en remplaçant l'ancienne
+                // Regenerate the session id to prevent session fixation
                 session_regenerate_id(true);
                 $_SESSION['user_id']   = $id;
                 $_SESSION['user_role'] = $role;
@@ -59,7 +65,9 @@ class AuthController
         echo $this->twig->render('Login.html.twig', ['error' => $error]);
     }
 
-    // détecte le rôle de l'utilisateur en testant chaque table avec l'ID_utilisateur
+    /**
+     * Detects the user role by checking each role table with the same user id
+     */
     private function detectRole(int $id): string
     {
         $stmt = $this->pdo->prepare(
@@ -75,6 +83,9 @@ class AuthController
         return $result['role'];
     }
 
+    /**
+     * Redirects authenticated users to the role specific dashboard
+     */
     public function dashboard($dashboardAdminController, $dashboardStudentController)
     {
         $blockAccess = new BlockAccess($this->twig);
@@ -91,6 +102,9 @@ class AuthController
         }
     }
 
+    /**
+     * Logs out the current user and destroys the active session
+     */
     public function logout()
     {
         $_SESSION = [];
@@ -99,6 +113,9 @@ class AuthController
         exit;
     }
 
+    /**
+     * Verifies a plain password against the stored password hash
+     */
     private function verifyPassword(array $user, string $plainPassword): bool
     {
         $storedPassword = $user['Mot_de_passe'] ?? '';

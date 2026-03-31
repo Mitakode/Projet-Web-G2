@@ -10,6 +10,9 @@ class DashboardStudentController
     private $twig;
     private $model;
 
+    /**
+     * Builds the student dashboard controller
+     */
     public function __construct($twig, $model)
     {
         $this->twig = $twig;
@@ -17,30 +20,30 @@ class DashboardStudentController
     }
 
     /**
-     * Prépare et affiche les données du dashboard étudiant
+     * Prepares and renders student dashboard data
      */
     public function index()
     {
-        // Vérifie les droits d'accès de l'étudiant
+        // Enforce role based access
         $blockAccess = new BlockAccess($this->twig);
         $blockAccess->blockPilotAccess();
         $blockAccess->blockAdminAccess();
 
-        // Récupère l'identifiant de l'étudiant connecté
+        // Read the current student id from the session
         $studentId = $_SESSION['user_id'] ?? null;
         if (!$studentId) {
-            // Redirige vers l'accueil si aucun étudiant n'est connecté
+            // Redirect to home if no student is connected
             header('Location: /');
             exit;
         }
 
-        // Charge les candidatures et la wishlist
+        // Load applications and wishlist
         $applications = $this->model->getCandidatures($studentId);
         $wishlist = $this->model->getWishlist($studentId);
         $applicationsPaginator = new Paginator($applications, 5);
         $paginatorWishlist = new Paginator($wishlist, 5, 'pageW');
 
-        // Affichage de la vue (Twig) en y injectant les données (page)
+        // Render paginated dashboard sections
         echo $this->twig->render('DashboardStudent.html.twig', [
             'applications' => $applicationsPaginator->getCurrentPageItems(),
             'wishlist'     => $paginatorWishlist->getCurrentPageItems(),
@@ -52,7 +55,7 @@ class DashboardStudentController
     }
 
     /**
-     * Supprime une offre de la wishlist de l'étudiant connecté
+     * Removes one offer from the connected student wishlist
      */
     public function removeWishlist()
     {
@@ -68,7 +71,7 @@ class DashboardStudentController
         $currentPage = $_GET['page'] ?? 1;
         $currentPageW = $_GET['pageW'] ?? 1;
 
-        // Conserve la pagination après suppression
+        // Keep pagination state after deletion
         $redirectUrl = '/dashboard/student?page='
             . urlencode((string) $currentPage)
             . '&pageW='

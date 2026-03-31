@@ -4,7 +4,7 @@ namespace App\Models;
 
 use PDO;
 
-// On utilise la classe PDO native de PHP
+// Uses PHP native PDO class
 
 class SqlDatabase implements Database
 {
@@ -13,7 +13,7 @@ class SqlDatabase implements Database
     private $primaryKey;
 
     /**
-     * Le constructeur reçoit l'instance PDO et le nom de la table
+     * Builds the SQL adapter with PDO table name and primary key
      */
     public function __construct($pdo, $tableName, $primaryKey = 'id')
     {
@@ -22,23 +22,29 @@ class SqlDatabase implements Database
         $this->primaryKey = $primaryKey;
     }
 
+    /**
+     * Returns the underlying PDO connection
+     */
     public function getConnection()
     {
         return $this->pdo;
     }
 
+    /**
+     * Returns all rows from the configured table
+     */
     public function getAllRecords()
     {
-        // On récupère tout dans la table spécifiée
+        // Fetch every row from the configured table
         $stmt = $this->pdo->query("SELECT * FROM {$this->tableName}");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
     /**
-     * Récupère un enregistrement spécifique par ID.
+     * Returns one record by primary key value
      * @param int $id
-     * @return array|null Enregistrement trouvé ou null
+     * @return array|null Found record or null
      */
     public function getRecord($id)
     {
@@ -48,13 +54,13 @@ class SqlDatabase implements Database
     }
 
     /**
-     * Insère un nouvel enregistrement
+     * Inserts a new record
      * @param array $record
-     * @return int ID du nouvel enregistrement
+     * @return int Inserted record id
      */
     public function insertRecord($record)
     {
-        // Préparation dynamique des colonnes (ex: task, status)
+        // Build dynamic column and placeholder lists
         $columns = implode(', ', array_keys($record));
         $placeholders = implode(', ', array_fill(0, count($record), '?'));
 
@@ -66,10 +72,10 @@ class SqlDatabase implements Database
     }
 
     /**
-     * Met à jour un enregistrement existant
+     * Updates an existing record
      * @param int $id
      * @param array $record
-     * @return bool True si succès, False sinon
+     * @return bool True on success false otherwise
      */
     public function updateRecord($id, $record)
     {
@@ -80,24 +86,24 @@ class SqlDatabase implements Database
         $sql = "UPDATE {$this->tableName} SET " . implode(', ', $sets) . " WHERE {$this->primaryKey} = ?";
 
         $params = array_values($record);
-        $params[] = $id; // L'ID pour le WHERE
+        $params[] = $id; // Append id used by the WHERE clause
 
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute($params);
     }
 
     /**
-     * Supprime un enregistrement spécifique par son ID
-     * @param int $id L'identifiant de la ligne à supprimer
-     * @return bool True si la suppression a réussi, False sinon
+     * Deletes a specific record by id
+     * @param int $id Id of the row to delete
+     * @return bool True on success false otherwise
      */
     public function deleteRecord($id)
     {
-        // On prépare la requête pour éviter les injections SQL
+        // Prepare the query to keep SQL injection protection
         $sql = "DELETE FROM {$this->tableName} WHERE {$this->primaryKey} = ?";
         $stmt = $this->pdo->prepare($sql);
 
-        // On exécute en passant l'ID
+        // Execute with the requested id
         return $stmt->execute([$id]);
     }
 }
