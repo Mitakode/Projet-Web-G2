@@ -5,7 +5,7 @@
     box-sizing: border-box;
 }
 
-/*  ==================================== COLOR VARIABLES ====================================    */
+/*  ======================================================================== COLOR VARIABLES ========================================================================    */
 
 :root {
     --green1: #bdf290;
@@ -40,7 +40,7 @@ html {
     scroll-behavior: smooth;
 }
 
-/* ==================================== GLOBAL STYLE ==================================== */
+/* ======================================================================== GLOBAL STYLE ======================================================================== */
 
 body {
     font-family: 'Poppins', sans-serif;
@@ -63,6 +63,13 @@ main {
     /* Centre tout horizontalement */
 }
 
+main.list-page {
+    flex: 1;
+    width: 90%;      /* Prend presque toute la largeur */
+    margin: 20px auto;
+    display: block;   /* Permet aux cartes de s'empiler et s'étirer */
+}
+
 h1{
     font-size: 2rem;
     color: var(--text-color);
@@ -79,7 +86,12 @@ h2{
 
 
 
-/* ==================================== HEADER FOOTER ==================================== */
+
+
+/* ======================================================================== HEADER FOOTER ======================================================================== */
+
+
+
 
 header {
     width: 100%;
@@ -171,6 +183,7 @@ header nav a.nav-link {
     font-size: 1.1rem;
 }
 
+/* -------------------------------- FOOTER -------------------------------- */
 footer {
     font-size: 12px;
     width: 100%;
@@ -202,7 +215,15 @@ footer a:hover {
     color: var(--green-piston);
 }
 
-/* ==================================== BUTTONS ==================================== */
+
+
+
+
+/* ======================================================================== BUTTONS ======================================================================== */
+
+
+
+
 
 .btn-container {
     height: 100%;
@@ -305,11 +326,6 @@ footer a:hover {
 .etoile i { color: var(--text-color-light) !important; }
 .etoile.active i { color: #fbbf24 !important; }
 
-.rating-table{
-    display: flex;
-    align-items: center !important;
-}
-
 
 .user-rating {
     display: inline-block;
@@ -352,9 +368,27 @@ footer a:hover {
     border-radius: 10px;
 }
 
-/* ==================================== MAIN SEARCH BAR ==================================== */
 
-/* Global */
+.btn-add {
+    background-color: var(--green-piston);
+    color: white;
+    padding: 6px 14px;
+    margin: 10px;
+    border-radius: 10px;
+    font-size: 1.8rem;
+    display: flex;
+    border: none;
+    cursor: pointer;
+}
+
+
+.btn-submit {
+  margin-top: 12px;
+}
+
+/* ======================================================================== SEARCH BARS ======================================================================== */
+
+/* Main Search bar */
 .search-section {
     width: 100%;
     text-align: center;
@@ -390,8 +424,6 @@ footer a:hover {
     color: var(--text-color);
     transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
-
-/* Search bar */
 
 .search-bar-wrapper {
     display: flex;
@@ -440,519 +472,8 @@ footer a:hover {
     box-shadow: 0 0 0 2px rgba(161, 222, 100, 0.25);
 }
 
-/* ==================================== INFOS AREA (Accueil and boxes) ==================================== */
 
-.info-grid {
-    display: flex;
-    width: 100%;
-    justify-content: space-between; /* Espace les boîtes au maximum */
-    gap: 30px; /* Définit l'espace précis entre les deux */
-    margin-top: 20px;
-}
-
-.info-column{
-    display: flex;
-    flex-direction: column;
-    width: 48%; /* Chaque colonne prend 48% de la largeur pour laisser un peu d'espace entre les deux */
-}
-
-.info-column2{
-    display: flex;
-    flex-direction: column;
-    width: 67%; /* Chaque colonne prend 67% de la largeur pour laisser un peu d'espace entre les deux */
-}
-
-.info-column3{
-    display: flex;
-    flex-direction: column;
-    width: 27%; /* Chaque colonne prend 27% de la largeur pour laisser un peu d'espace entre les deux */
-}
-
-.info-box {
-    background-color: var(--white);
-    text-align: justify;
-    border-radius: 25px;
-    padding: 30px;
-    margin-bottom: 20px;
-    box-sizing: border-box;
-    border: 1px solid #ececec;
-    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.06);
-    position: relative;
-    overflow: hidden;
-}
-
-.info-box::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--green-piston) 0%, #8ccf4c 100%);
-}
-
-.ib2{
-    align-items: flex-start;
-    padding: 8px 25px;
-}
-
-
-/* ==================================== FORMS ==================================== */
-
-label{
-    display: block;
-    margin-bottom: 10px;
-    color: var(--text-color);
-}
-
-input, select, textarea, .frame {
-    border: none;
-    border-radius: 10px;
-}
-
-.form-input {
-    background-color: var(--content-gray);
-    padding: 12px 15px; /* Un peu plus d'espace interne */
-    margin-bottom: 25px;
-    width: 100%;
-    box-sizing: border-box; /* Très important pour que le padding ne déforme pas la largeur */
-    transition: all 0.2s ease;
-}
-
-.form-textarea {
-    background-color: var(--content-gray);
-    padding: 12px 15px; /* Un peu plus d'espace interne */
-    margin-bottom: 25px;
-    width: 100%;
-    height: 150px; /* Hauteur fixe pour les textarea */
-    box-sizing: border-box; /* Très important pour que le padding ne déforme pas la largeur */
-    resize: vertical; /* Empêche le redimensionnement horizontal */
-}
-
-
-input:focus, select:focus, textarea:focus {
-    outline: 2px solid var(--green-piston);
-    background-color: var(--white);
-}
-
-input:hover, select:hover, textarea:hover {
-    background-color: var(--gray-dark);
-    border:none;
-}
-
-.infos{
-    text-align: center;
-}
-
-.label-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 12px;
-}
-
-.label-row label {
-    margin-bottom: 10px;
-}
-
-.infos.infos-error {
-    color: #c62828;
-    text-align: right;
-    margin: 0 0 10px 0;
-    font-size: 0.95rem;
-    white-space: nowrap;
-}
-
-.form-test{
-    background-color: var(--white);
-    padding: 10px;
-    margin: 20px auto;
-    width: 80%;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    gap: 5px; /* Espace entre les champs du formulaire */
-}
-
-.apply-form {
-    background-color: var(--surface-soft-green);
-    padding: 20px;
-    margin: 14px 0 0 0;
-    width: 100%;
-    gap: 12px;
-    border-radius: 10px;
-    border: 1px solid #dfe8d5;
-}
-
-.frame{
-    background-color: var(--white);
-    border-radius: 10px;
-    border: 1px solid #ececec;
-    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.06);
-    padding: 30px;
-    margin: 40px auto 50px auto;
-    width: 60%;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column; /* Espace entre les champs du formulaire */
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.2s ease, box-shadow 0.25s ease;
-}
-
-.frame::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 5px;
-    background: linear-gradient(90deg, var(--green-piston) 0%, #8ccf4c 100%);
-}
-
-.frame:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.08);
-}
-
-.frame2 {
-    background-color: var(--white);
-    border-radius: 12px;
-    border: 1px solid #ececec;
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.05);
-    padding: 28px;
-    width: 100%;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    overflow: hidden;
-}
-
-.frame2::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--green-piston) 0%, #8ccf4c 100%);
-}
-
-.form-grid{
-    display: flex;
-    width: 100%;
-    justify-content: space-between; /* Espace les boîtes au maximum */
-    gap: 20px;
-    margin-top: 20px;
-    align-items: stretch; /* Les colonnes s'étirent à la même hauteur */
-}
-
-.form-column{
-    display: flex;
-    flex-direction: column;
-    width: 45%; /* Chaque colonne prend 40% de la largeur pour laisser un peu d'espace entre les deux */
-}
-
-.form-column2{
-    display: flex;
-    flex-direction: column;
-    width: 62%;
-}
-
-
-.form-column3{
-    display: flex;
-    flex-direction: column;
-    width: 33%;
-    min-height: 100%;
-}
-
-.form-column100{
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-}
-
-.skills-selector {
-    font-size: 1rem;
-}
-
-.skills-list {
-    background-color: var(--content-gray);
-    border-radius: 10px;
-    padding: 10px;
-    margin-bottom: 25px;
-    margin-top: 10px;
-    max-height: 130px;
-    overflow-y: auto;  /* Ajoute le scroll vertical si besoin */
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    text-align: left;
-}
-
-.skills-list label {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-    font-size: 0.9rem;
-}
-
-.skills-list label:hover {
-    background-color: var(--gray-dark);
-    border-radius: 5px;
-}
-
-
-/* ==================================== OFFER DETAILS PAGE (+UPLOAD FILE) ==================================== */
-
-.offer-container {
-    width: 100%;
-    max-width: 1180px;
-}
-
-.offer-header{
-    background-color: var(--white);
-    display: flex;
-    justify-content: space-between; /* Pousse les éléments aux extrémités */
-    align-items: center;
-    padding: 18px 18px;
-    width: 100%;
-    margin-bottom: 20px;
-    border: 1px solid var(--border-soft);
-    border-radius: 14px;
-    box-shadow: var(--shadow-soft);
-    position: relative;
-    overflow: hidden;
-}
-
-.offer-header::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--green-piston) 0%, #8ccf4c 100%);
-}
-
-h1.offer, h2.offer{
-    font-size: 1.45rem;
-    text-align: left;
-}
-
-h1.offer {
-    font-size: clamp(1.4rem, 2.2vw, 2rem);
-    margin: 0;
-}
-
-h2.offer {
-    margin: 0;
-    color: #1f2937;
-    font-weight: 600;
-}
-
-
-ul.skills
-{
-    list-style: none;
-    margin-bottom: 20px;
-}
-ul.skills li
-{
-    font-size: 1rem;
-    border: 1px solid var(--border-soft);
-    background-color: var(--white);
-    display: inline-block;
-    padding: 7px 12px;
-    margin-right: 7px;
-    margin-bottom: 7px;
-    border-radius: 999px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-}
-
-.infos-offre {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(220px, 1fr));
-    gap: 10px;
-    text-align: left;
-    width: 100%;
-    margin-bottom: 20px;
-    line-height: 1.2em;
-    font-weight: 600;
-}
-
-.infos-offre p {
-    margin: 0;
-    background: var(--surface-soft);
-    border: 1px solid var(--border-soft);
-    border-radius: 10px;
-    padding: 10px 12px;
-}
-
-.offer-description {
-    text-align: justify;
-    line-height: 1.45;
-    font-size: 1.03rem;
-    margin-bottom: 20px;
-}
-
-.offer-remuneration {
-    margin-top: 6px;
-    background: var(--surface-soft-green);
-    border: 1px solid #dfe8d5;
-    border-radius: 12px;
-    padding: 14px;
-}
-
-.offer-remuneration h2 {
-    margin-bottom: 6px;
-}
-
-.offer-salary {
-    font-size: clamp(1.4rem, 2vw, 1.8rem);
-    font-weight: 700;
-    color: #1f2937;
-}
-
-.input-file {
-  display: none;
-}
-
-.file-label {
-  background-color: var(--white);
-  color: var(--text-color);
-  border-color: #dfe8d5;
-  font-size: 0.95rem;
-  padding: 11px 16px;
-  border-radius: 8px;
-  border-width: 1px;
-  border-style: solid;
-  cursor: pointer;
-  display: block;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  text-align: center;
-}
-
-.file-label:hover {
-  background-color: #f0f5ea;
-  border-color: #cbf6a6;
-  color: var(--text-color-strong);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(161, 222, 100, 0.15);
-}
-
-.file-input-group {
-  margin-top: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.file-input-group:first-of-type {
-  margin-top: 8px;
-}
-
-.btn-submit {
-  margin-top: 12px;
-}
-
-.small-text{
-    text-align: justify;
-    font-size: 0.95rem;
-    margin: 0 0 8px 0;
-    color: var(--text-color);
-    line-height: 1.4;
-    font-weight: 500;
-}
-
-.file-name{
-    font-size: 0.9rem;
-    color: var(--text-color-light);
-    margin-bottom: 16px;
-    font-style: italic;
-    margin-top: 6px;
-}
-
-.file-name2{
-    font-size: 0.9rem;
-    color: var(--text-color-light);
-    margin-bottom: 16px;
-    font-style: italic;
-    margin-top: 6px;
-}
-
-
-/* ==================================== DASHBOARDS ==================================== */
-
-.main-title {
-    margin-top: 20px;
-    margin-bottom: 30px;
-    font-weight: 500;
-}
-
-.dashboards-section {
-    width: 100%;
-    margin-bottom: 40px;
-    background-color: var(--white);
-    border-radius: 15px;
-    padding: 20px;
-    border: 1px solid #ececec;
-    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.05);
-    position: relative;
-    overflow: hidden;
-}
-
-.dashboards-section::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--green-piston) 0%, #8ccf4c 100%);
-}
-
-.access-page {
-    max-width: 680px;
-    margin: 30px auto 50px auto;
-    padding: 28px;
-    text-align: center;
-}
-
-.access-title {
-    margin-top: 0;
-    margin-bottom: 16px;
-}
-
-.access-message {
-    font-size: 1.05rem;
-    line-height: 1.5;
-    margin-bottom: 10px;
-    max-width: 560px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.access-redirect-text {
-    color: #4b5563;
-    margin-bottom: 20px;
-}
-
-.access-cta {
-    margin: 0 auto;
-}
-
-.section-title {
-    font-size: 1.1rem;
-    margin-bottom: 15px;
-    text-align: left;
-    width: 100%;
-}
-
+/* Dashboard Admin Search Bar */
 .search-container {
     display: flex;
     justify-content: space-between;
@@ -960,7 +481,7 @@ ul.skills li
     margin-bottom: 10px;
 }
 
-.search-items{
+.search-item{
     display: flex;
     gap: 10px;
 }
@@ -1037,730 +558,8 @@ ul.skills li
     line-height: 1;
 }
 
-.box-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px; /* Espace entre les blocs */
-}
+/* ======================================================================== CAROUSEL ======================================================================== */
 
-
-.admin-item {
-    width: 100%;
-    background-color: #f9fbf7;
-    border-radius: 10px;
-    border: 1px solid #ebebeb;
-    border-collapse: collapse; /* Important pour garder l'arrondi */
-    border-spacing: 0;
-    overflow: hidden;
-}
-
-.admin-item td {
-    border: none;
-    padding: 20px 25px;
-    vertical-align: middle;
-}
-
-.user-name {
-    width:45%;
-    font-size: 1.1rem;
-    color: #666; /* Ajustez selon votre variable --text-color-light */
-    text-align: left;
-}
-
-.user-promotion {
-    width:10%;
-    font-size: 1.1rem;
-    color: #666; /* Ajustez selon votre variable --text-color-light */
-    text-align: left;
-}
-
-.stats {
-    width: 40%;
-    text-align: right;
-    font-size: 0.95rem;
-    white-space: nowrap; /* Évite que le texte ne revienne à la ligne */
-}
-
-.dashboard-title {
-    font-size: 1.4rem;
-    color: #555;
-    margin-bottom: 15px;
-    text-align: left;
-}
-
-.table-container {
-    width: 100%;
-    overflow-x: auto;
-}
-
-.student-dashboard .box-list {
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-}
-
-.student-dashboard .company-table {
-    margin-bottom: 0;
-}
-
-.student-dashboard .company-table th,
-.student-dashboard .company-table td {
-    vertical-align: middle;
-}
-
-.student-dashboard .company-table td .link {
-    overflow-wrap: anywhere;
-    word-break: break-word;
-}
-
-.admin-dashboard .box-list {
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-}
-
-.admin-dashboard .box-list > .link {
-    display: block;
-}
-
-.admin-dashboard .company-table {
-    margin-bottom: 0;
-}
-
-.admin-dashboard .company-table td {
-    vertical-align: middle;
-}
-
-.admin-dashboard .user-stats {
-    word-break: break-word;
-    width: 35%;
-}
-
-.admin-dashboard .company-table.admin td.btn-table {
-    width: 144px;
-    min-width: 144px;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: transparent;
-}
-
-table thead {
-    font-size: 1.1rem;
-}
-
-/* ==================================== CONTENT LISTS ==================================== */
-
-.table-container tbody tr:nth-child(even) {
-    background-color: #f6f8f4;
-}
-
-/* 1. Mise en page du conteneur principal */
-main.list-page {
-    flex: 1;
-    width: 90%;      /* Prend presque toute la largeur */
-    margin: 20px auto;
-    display: block;   /* Permet aux cartes de s'empiler et s'étirer */
-}
-
-
-.btn-add {
-    background-color: var(--green-piston);
-    color: white;
-    padding: 6px 14px;
-    margin: 10px;
-    border-radius: 10px;
-    font-size: 1.8rem;
-    display: flex;
-    border: none;
-    cursor: pointer;
-}
-
-.add-link {
-    text-decoration: none;
-    color: var(--white);
-}
-
-.link {
-    text-decoration: none;
-    color: var(--text-color);
-}
-
-.company-table {
-    width: 100%;
-    margin: 0 auto 20px auto; /* Centre le tableau et ajoute de l'espace en bas */
-    border-collapse: collapse;
-    background-color: var(--white);
-    border-radius: 12px;
-    overflow: hidden;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    box-shadow: 0 12px 24px rgba(0,0,0,0.05);
-    border: 1px solid #ececec;
-}
-
-.company-table td, .company-table th {
-    padding: 10px 20px;
-    text-align: left;
-    border: none; /* On retire les bordures internes */
-}
-
-.company-table.offer td, .company-table.offer th{
-    width: 100%;
-}
-
-.company-table.admin td {
-    vertical-align: middle;
-}
-
-.company-table.admin td.btn-table {
-    width: 90px;
-    min-width: 90px;
-    padding: 10px 0;
-}
-
-
-.company-name {
-    width:80%;
-    font-size: 1.3rem;
-    color: var(--text-color-strong);
-}
-
-.offer-name{
-    font-weight: bold;
-    width:80%;
-    font-size: 1.4rem;
-    color: var(--text-color-strong);
-}
-
-.company-rating {
-    text-align: right;
-    color: var(--text-color-light);
-    width: 28%;
-    min-width: 180px;
-}
-
-
-.company-table td.company-rating + td.btn-table {
-    width: 120px;
-    min-width: 120px;
-    padding: 12px 0;
-}
-
-
-.offer-company{
-    text-align: left;
-    color: var(--text-color-light);
-    width: 28%;
-    min-width: 180px;
-}
-
-.infos-table {
-    display: flex;
-}
-
-.company-info {
-    font-size: 0.9rem;
-    color: var(--text-color-light);
-    padding-top: 0;
-    font-style: italic;
-}
-
-.company-description {
-    font-size: 1rem;
-    line-height: 1.5;
-    color: var(--text-color);
-    padding-bottom: 20px;
-}
-
-
-/* ==================================== PAGINATION ==================================== */
-
-.pagination {
-    text-align: center;
-    margin-top: 30px;
-}
-
-.pagination a {
-    width: 35px;
-    height: 35px;
-    margin: 0 4px;
-    text-decoration: none;
-    border-radius: 4px;
-    background: var(--white);
-    color: var(--deconnexion-color);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 1;
-    transition: all 0.3s; /* Petit bonus pour la fluidité */
-}
-
-/* On cible la classe .active générée par Twig */
-.pagination a.active {
-    background: var(--green-piston);
-    color: var(--white);
-    font-weight: bold; /* Optionnel : pour mieux la voir */
-}
-
-/* On garde le hover pour les autres pages */
-.pagination a:hover {
-    background: var(--green-piston);
-    color: var(--white);
-}
-
-/* Garder le style pour le tag strong si tu l'utilises ailleurs */
-.pagination strong {
-    background: var(--green-piston);
-    color: var(--white);
-    width: 50px;
-    height: 50px;
-    margin: 0 4px;
-    border-radius: 4px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 1;
-}
-
-/*dozkdzk */
-
-.h1-student{
-    font-size: 1.8rem;
-    margin-bottom: 10px;
-    align-self: flex-start; /* Aligne le titre à gauche */
-}
-
-.h2-student{
-    font-size: 1.1rem;
-    text-align: left;
-    margin-bottom: 0;
-}
-
-.h3-student{
-    font-size: 1.3rem;
-    margin-bottom: 20px;
-    font-weight: 500;
-}
-
-/* ==================================== FOOTER PAGES ==================================== */
-
-.legal-frame {
-    width: min(920px, 92%);
-    padding: 38px 42px;
-    border: 1px solid #ececec;
-    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.06);
-    position: relative;
-    overflow: hidden;
-}
-
-.legal-frame::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 5px;
-    background: linear-gradient(90deg, var(--green-piston) 0%, #8ccf4c 100%);
-}
-
-.legal-frame h2 {
-    font-size: clamp(1.7rem, 2.5vw, 2.2rem);
-    margin-bottom: 28px;
-    letter-spacing: -0.02em;
-}
-
-.legal-content {
-    font-size: 1.08rem;
-    line-height: 1.72;
-    color: #2f2f2f;
-}
-
-.legal-content h3 {
-    margin: 24px 0 8px;
-    font-size: 1.75rem;
-    line-height: 1.2;
-    letter-spacing: -0.015em;
-    color: #1f2937;
-}
-
-.legal-content p {
-    margin: 0 0 14px;
-    text-wrap: pretty;
-}
-
-.legal-content strong {
-    color: #111827;
-}
-
-.legal-content a {
-    color: #2f6f16;
-    text-underline-offset: 3px;
-}
-
-.legal-content a:hover {
-    color: #1f4f0e;
-}
-
-
-
-/* ==================================== Responsive Design ==================================== */
-
-/* --- 3. Responsive (STx 10) --- */
-@media (max-width: 768px) {
-    header {
-        height: auto;
-        min-height: 58px;
-        padding: 8px 14px;
-        position: relative;
-        z-index: 20;
-    }
-
-    .logo-group {
-        flex: 1;
-        min-width: 0;
-    }
-
-    .logo-link {
-        height: 36px;
-        gap: 8px;
-    }
-
-    .logo-icon {
-        height: 100%;
-    }
-
-    .logo-text {
-        height: 90%;
-        max-width: 130px;
-        object-fit: contain;
-    }
-
-    .burger-btn {
-        display: inline-flex;
-        flex-shrink: 0;
-    }
-
-    header nav {
-        position: absolute;
-        top: calc(100% + 8px);
-        left: 12px;
-        right: 12px;
-        height: auto;
-        flex-direction: column;
-        align-items: stretch;
-        gap: 8px;
-        padding: 12px;
-        background: var(--white);
-        border: 1px solid #e7e7e7;
-        border-radius: 14px;
-        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.08);
-        opacity: 0;
-        transform: translateY(-8px);
-        pointer-events: none;
-        transition: opacity 0.2s ease, transform 0.2s ease;
-    }
-
-    body.menu-open header nav {
-        opacity: 1;
-        transform: translateY(0);
-        pointer-events: auto;
-    }
-
-    header nav a.nav-link {
-        height: auto;
-        padding: 10px 12px;
-        border-radius: 10px;
-        background: #f8fafc;
-    }
-
-    header nav .btn-container {
-        width: 100%;
-        height: auto;
-    }
-
-    header nav .btn-container .btn {
-        width: 100%;
-        margin: 0;
-        justify-content: center;
-    }
-
-    .footer-grid{
-        flex-direction: column; /* Espace entre les deux colonnes */
-        align-items: center !important; /* Centre les colonnes horizontalement */}
-
-    .filters-container{
-        flex-direction: column;
-    }
-    .filter-item {
-        width: 100%;
-    }
-    .info-grid {
-        flex-direction: column; /* Sur mobile, elles se remettent l'une sous l'autre */
-        align-items: center;
-    }
-    .info-column{
-        width:100%
-    }
-    .info-box {
-        width: 100%;
-    }
-
-    .frame{
-        width:90%;
-    }
-
-    .legal-frame {
-        padding: 24px 20px;
-    }
-
-    .legal-frame h2 {
-        margin-bottom: 20px;
-    }
-
-    .legal-content {
-        font-size: 1rem;
-        line-height: 1.62;
-    }
-
-    .legal-content h3 {
-        font-size: 1.45rem;
-        margin: 20px 0 8px;
-    }
-
-    .search-bar-admin {
-        flex-direction: row;
-        flex-wrap: wrap;
-        padding: 10px;
-        gap: 8px;
-    }
-
-    .search-bar-admin input[type="text"] {
-        flex: 1 1 100%;
-        min-width: 0;
-        width: 100%;
-    }
-
-    .search-input{
-        flex: 1 1 100%;
-        min-width: 0;
-        width: 100%; 
-    }
-
-
-    .search-bar-admin .search-btn,
-    .search-bar-admin .btn-add {
-        flex: 1 1 calc(50% - 4px);
-        width: calc(50% - 4px);
-        height: 46px;
-        justify-content: center;
-    }
-
-    .search-bar-admin input{
-            padding: 6px 7px;
-    }
-
-    .search-container{
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    .search-items{
-        width: 100%;
-        justify-content: space-between;
-        padding: 0 10px;
-    }
-
-    .form-grid {
-        flex-direction: column; /* Sur mobile, elles se remettent l'une sous l'autre */
-        align-items: center;
-        gap: 20px;
-    }
-    .form-column,
-    .form-column2,
-    .form-column3 {
-        width: 100%;
-    }
-    .form-input{
-        width: 100%;
-    }
-    .infos-offre{
-        grid-template-columns: 1fr;
-        gap: 8px;
-    }
-    .offer-header{
-        justify-content: flex-start;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-        padding: 14px;
-    }
-
-    .student-dashboard {
-        align-items: stretch;
-    }
-
-    .student-dashboard .main-title {
-        margin-bottom: 22px;
-        font-size: 1.75rem;
-        text-align: center;
-    }
-
-    .student-dashboard .dashboards-section {
-        padding: 14px;
-        margin-bottom: 24px;
-    }
-
-    .student-dashboard .dashboard-title {
-        font-size: 1.9rem;
-        margin-bottom: 12px;
-    }
-
-    .student-dashboard .box-list {
-        border-radius: 10px;
-    }
-
-    .student-dashboard .company-table {
-        min-width: 660px;
-        border-radius: 10px;
-    }
-
-    .student-dashboard .company-table th,
-    .student-dashboard .company-table td {
-        padding: 10px 12px;
-        font-size: 0.98rem;
-    }
-
-    .student-dashboard .company-table.admin td.btn-table {
-        width: 74px;
-        min-width: 74px;
-        padding-right: 12px;
-        text-align: center;
-    }
-
-    .student-dashboard .pagination {
-        margin-top: 18px;
-    }
-
-    .admin-dashboard {
-        align-items: stretch;
-    }
-
-    .admin-dashboard .main-title {
-        margin-bottom: 22px;
-        font-size: 1.75rem;
-        text-align: center;
-    }
-
-    .admin-dashboard .dashboards-section {
-        padding: 14px;
-        margin-bottom: 24px;
-    }
-
-    .admin-dashboard .dashboard-title {
-        font-size: 1.9rem;
-        margin-bottom: 12px;
-    }
-
-    .admin-dashboard .box-list {
-        border-radius: 10px;
-        gap: 10px;
-    }
-
-    .admin-dashboard .company-table {
-        min-width: 740px;
-        border-radius: 10px;
-    }
-
-    .admin-dashboard .company-table td {
-        padding: 10px 12px;
-        font-size: 0.98rem;
-    }
-
-    .admin-dashboard .user-name {
-        min-width: 220px;
-    }
-
-    .admin-dashboard .user-promotion {
-        min-width: 120px;
-    }
-
-    .admin-dashboard .stats {
-        min-width: 220px;
-        text-align: left;
-        white-space: normal;
-    }
-
-    .admin-dashboard .user-stats {
-        min-width: 250px;
-    }
-
-    .admin-dashboard .pagination {
-        margin-top: 18px;
-    }
-
-    .company-table td.company-rating + td.btn-table{
-        width: 64px;
-        min-width: 64px;
-        padding-right: 5px;
-    }
-
-    .company-rating{
-        width: 80px;
-        min-width: 80px;
-    }
-
-    .company-name{
-        width: 70%;
-    }
-
-    .company-description{
-        width: 100%;
-    }
-
-    .offer-description{
-        width: 100%;
-    }
-
-    .offer-name{
-        width: 110%;
-    }
-
-    .offer-company{
-        width: 100%;
-        min-width: 120px;
-    }
-
-    .infos-table {
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .btn-table {
-        flex-direction: column;
-        width: 64px;
-        min-width: 64px;
-    }
-
-    .btn-table .btn-action + .btn-action {
-        margin-left: 5px;
-    }
-
-    .btn-table a{
-        width : 38px;
-        height: 38px;
-    }
-
-    .admin-dashboard .company-table.admin td.btn-table {
-        flex-direction: row;
-        min-width: 114px;
-    }
-
-    .rating-table{
-        flex-direction: column;
-    }
-}
 
 .container {
     overflow: hidden;
@@ -1977,7 +776,1202 @@ main.list-page {
     box-shadow: 0 0 0 4px rgba(100, 116, 139, 0.2);
 }
 
+
+/* ======================================================================== INFOS AREAS (Homepage and boxes) ======================================================================== */
+
+.info-grid {
+    display: flex;
+    width: 100%;
+    justify-content: space-between; /* Espace les boîtes au maximum */
+    gap: 30px; /* Définit l'espace précis entre les deux */
+    margin-top: 20px;
+}
+
+.info-column{
+    display: flex;
+    flex-direction: column;
+    width: 48%; /* Chaque colonne prend 48% de la largeur pour laisser un peu d'espace entre les deux */
+}
+
+.info-box {
+    background-color: var(--white);
+    text-align: justify;
+    border-radius: 25px;
+    padding: 30px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    border: 1px solid #ececec;
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.06);
+    position: relative;
+    overflow: hidden;
+}
+
+.info-box::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--green-piston) 0%, #8ccf4c 100%);
+}
+
+.ib2{
+    align-items: flex-start;
+    padding: 8px 25px;
+}
+
+
+/* ======================================================================== FORMS ======================================================================== */
+
+label{
+    display: block;
+    margin-bottom: 10px;
+    color: var(--text-color);
+}
+
+input, select, textarea, .frame {
+    border: none;
+    border-radius: 10px;
+}
+
+.form-input {
+    background-color: var(--content-gray);
+    padding: 12px 15px; /* Un peu plus d'espace interne */
+    margin-bottom: 25px;
+    width: 100%;
+    box-sizing: border-box; /* Très important pour que le padding ne déforme pas la largeur */
+    transition: all 0.2s ease;
+}
+
+.form-textarea {
+    background-color: var(--content-gray);
+    padding: 12px 15px; /* Un peu plus d'espace interne */
+    margin-bottom: 25px;
+    width: 100%;
+    height: 150px; /* Hauteur fixe pour les textarea */
+    box-sizing: border-box; /* Très important pour que le padding ne déforme pas la largeur */
+    resize: vertical; /* Empêche le redimensionnement horizontal */
+}
+
+
+input:focus, select:focus, textarea:focus {
+    outline: 2px solid var(--green-piston);
+    background-color: var(--white);
+}
+
+input:hover, select:hover, textarea:hover {
+    background-color: var(--gray-dark);
+    border:none;
+}
+
+.infos{
+    text-align: center;
+}
+
+.label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+}
+
+.label-row label {
+    margin-bottom: 10px;
+}
+
+.infos.infos-error {
+    color: #c62828;
+    text-align: right;
+    margin: 0 0 10px 0;
+    font-size: 0.95rem;
+    white-space: nowrap;
+}
+
+.form-test{
+    background-color: var(--white);
+    padding: 10px;
+    margin: 20px auto;
+    width: 80%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* Espace entre les champs du formulaire */
+}
+
+.apply-form {
+    background-color: var(--surface-soft-green);
+    padding: 20px;
+    margin: 14px 0 0 0;
+    width: 100%;
+    gap: 12px;
+    border-radius: 10px;
+    border: 1px solid #dfe8d5;
+}
+
+.frame{
+    background-color: var(--white);
+    border-radius: 10px;
+    border: 1px solid #ececec;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.06);
+    padding: 30px;
+    margin: 40px auto 50px auto;
+    width: 60%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column; /* Espace entre les champs du formulaire */
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.25s ease;
+}
+
+.frame::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--green-piston) 0%, #8ccf4c 100%);
+}
+
+.frame:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.08);
+}
+
+.frame2 {
+    background-color: var(--white);
+    border-radius: 12px;
+    border: 1px solid #ececec;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.05);
+    padding: 28px;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+.frame2::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--green-piston) 0%, #8ccf4c 100%);
+}
+
+.form-grid{
+    display: flex;
+    width: 100%;
+    justify-content: space-between; /* Espace les boîtes au maximum */
+    gap: 20px;
+    margin-top: 20px;
+    align-items: stretch; /* Les colonnes s'étirent à la même hauteur */
+}
+
+.form-column{
+    display: flex;
+    flex-direction: column;
+    width: 45%; /* Chaque colonne prend 40% de la largeur pour laisser un peu d'espace entre les deux */
+}
+
+.form-column2{
+    display: flex;
+    flex-direction: column;
+    width: 62%;
+}
+
+
+.form-column3{
+    display: flex;
+    flex-direction: column;
+    width: 33%;
+    min-height: 100%;
+}
+
+.form-column100{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.skills-selector {
+    font-size: 1rem;
+}
+
+.skills-list {
+    background-color: var(--content-gray);
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 25px;
+    margin-top: 10px;
+    max-height: 130px;
+    overflow-y: auto;  /* Ajoute le scroll vertical si besoin */
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    text-align: left;
+}
+
+.skills-list label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.skills-list label:hover {
+    background-color: var(--gray-dark);
+    border-radius: 5px;
+}
+
+
+/* ======================================================================== OFFER DETAILS PAGE (+UPLOAD FILE) ======================================================================== */
+
+.offer-container {
+    width: 100%;
+    max-width: 1180px;
+}
+
+.offer-header{
+    background-color: var(--white);
+    display: flex;
+    justify-content: space-between; /* Pousse les éléments aux extrémités */
+    align-items: center;
+    padding: 18px 18px;
+    width: 100%;
+    margin-bottom: 20px;
+    border: 1px solid var(--border-soft);
+    border-radius: 14px;
+    box-shadow: var(--shadow-soft);
+    position: relative;
+    overflow: hidden;
+}
+
+.offer-header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--green-piston) 0%, #8ccf4c 100%);
+}
+
+h1.offer, h2.offer{
+    font-size: 1.45rem;
+    text-align: left;
+}
+
+h1.offer {
+    font-size: clamp(1.4rem, 2.2vw, 2rem);
+    margin: 0;
+}
+
+h2.offer {
+    margin: 0;
+    color: #1f2937;
+    font-weight: 600;
+}
+
+
+ul.skills
+{
+    list-style: none;
+    margin-bottom: 20px;
+}
+ul.skills li
+{
+    font-size: 1rem;
+    border: 1px solid var(--border-soft);
+    background-color: var(--white);
+    display: inline-block;
+    padding: 7px 12px;
+    margin-right: 7px;
+    margin-bottom: 7px;
+    border-radius: 999px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.infos-offre {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
+    gap: 10px;
+    text-align: left;
+    width: 100%;
+    margin-bottom: 20px;
+    line-height: 1.2em;
+    font-weight: 600;
+}
+
+.infos-offre p {
+    margin: 0;
+    background: var(--surface-soft);
+    border: 1px solid var(--border-soft);
+    border-radius: 10px;
+    padding: 10px 12px;
+}
+
+.offer-description {
+    text-align: justify;
+    line-height: 1.45;
+    font-size: 1.03rem;
+    margin-bottom: 20px;
+}
+
+.offer-remuneration {
+    margin-top: 6px;
+    background: var(--surface-soft-green);
+    border: 1px solid #dfe8d5;
+    border-radius: 12px;
+    padding: 14px;
+}
+
+.offer-remuneration h2 {
+    margin-bottom: 6px;
+}
+
+.offer-salary {
+    font-size: clamp(1.4rem, 2vw, 1.8rem);
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.input-file {
+  display: none;
+}
+
+.file-label {
+  background-color: var(--white);
+  color: var(--text-color);
+  border-color: #dfe8d5;
+  font-size: 0.95rem;
+  padding: 11px 16px;
+  border-radius: 8px;
+  border-width: 1px;
+  border-style: solid;
+  cursor: pointer;
+  display: block;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.file-label:hover {
+  background-color: #f0f5ea;
+  border-color: #cbf6a6;
+  color: var(--text-color-strong);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(161, 222, 100, 0.15);
+}
+
+.file-input-group {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.file-input-group:first-of-type {
+  margin-top: 8px;
+}
+
+.small-text{
+    text-align: justify;
+    font-size: 0.95rem;
+    margin: 0 0 8px 0;
+    color: var(--text-color);
+    line-height: 1.4;
+    font-weight: 500;
+}
+
+.file-name,
+.file-name2{
+    font-size: 0.9rem;
+    color: var(--text-color-light);
+    margin-bottom: 16px;
+    font-style: italic;
+    margin-top: 6px;
+}
+
+
+/* ======================================================================== DASHBOARDS ======================================================================== */
+
+.main-title {
+    margin-top: 20px;
+    margin-bottom: 30px;
+    font-weight: 500;
+}
+
+.dashboards-section {
+    width: 100%;
+    margin-bottom: 40px;
+    background-color: var(--white);
+    border-radius: 15px;
+    padding: 20px;
+    border: 1px solid #ececec;
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+.dashboards-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--green-piston) 0%, #8ccf4c 100%);
+}
+
+.access-page {
+    max-width: 680px;
+    margin: 30px auto 50px auto;
+    padding: 28px;
+    text-align: center;
+}
+
+.access-title {
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+
+.access-message {
+    font-size: 1.05rem;
+    line-height: 1.5;
+    margin-bottom: 10px;
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.access-redirect-text {
+    color: #4b5563;
+    margin-bottom: 20px;
+}
+
+.access-cta {
+    margin: 0 auto;
+}
+
+.section-title {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    text-align: left;
+    width: 100%;
+}
+
+.box-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Espace entre les blocs */
+}
+
+
+.admin-item {
+    width: 100%;
+    background-color: #f9fbf7;
+    border-radius: 10px;
+    border: 1px solid #ebebeb;
+    border-collapse: collapse; /* Important pour garder l'arrondi */
+    border-spacing: 0;
+    overflow: hidden;
+}
+
+.admin-item td {
+    border: none;
+    padding: 20px 25px;
+    vertical-align: middle;
+}
+
+.user-name {
+    width:45%;
+    font-size: 1.1rem;
+    color: #666; /* Ajustez selon votre variable --text-color-light */
+    text-align: left;
+}
+
+.user-promotion {
+    width:10%;
+    font-size: 1.1rem;
+    color: #666; /* Ajustez selon votre variable --text-color-light */
+    text-align: left;
+}
+
+.stats {
+    width: 40%;
+    text-align: right;
+    font-size: 0.95rem;
+    white-space: nowrap; /* Évite que le texte ne revienne à la ligne */
+}
+
+.dashboard-title {
+    font-size: 1.4rem;
+    color: #555;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.student-dashboard .box-list {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.student-dashboard .company-table {
+    margin-bottom: 0;
+}
+
+.student-dashboard .company-table th,
+.student-dashboard .company-table td {
+    vertical-align: middle;
+}
+
+.student-dashboard .company-table td .link {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.admin-dashboard .box-list {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.admin-dashboard .box-list > .link {
+    display: block;
+}
+
+.admin-dashboard .company-table {
+    margin-bottom: 0;
+}
+
+.admin-dashboard .company-table td {
+    vertical-align: middle;
+}
+
+.admin-dashboard .user-stats {
+    word-break: break-word;
+    width: 35%;
+}
+
+.admin-dashboard .company-table.admin td.btn-table {
+    width: 144px;
+    min-width: 144px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: transparent;
+}
+
+table thead {
+    font-size: 1.1rem;
+}
+
+
+
+/* ======================================================================== CONTENT LISTS ======================================================================== */
+
+
+.table-container tbody tr:nth-child(even) {
+    background-color: #f6f8f4;
+}
+
+.add-link {
+    text-decoration: none;
+    color: var(--white);
+}
+
+.link {
+    text-decoration: none;
+    color: var(--text-color);
+}
+
+.company-table {
+    width: 100%;
+    margin: 0 auto 20px auto; /* Centre le tableau et ajoute de l'espace en bas */
+    border-collapse: collapse;
+    background-color: var(--white);
+    border-radius: 12px;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-shadow: 0 12px 24px rgba(0,0,0,0.05);
+    border: 1px solid #ececec;
+}
+
+.company-table td, .company-table th {
+    padding: 10px 20px;
+    text-align: left;
+    border: none; /* On retire les bordures internes */
+}
+
+.company-table.offer td, .company-table.offer th{
+    width: 100%;
+}
+
+.company-table.admin td {
+    vertical-align: middle;
+}
+
+.company-table.admin td.btn-table {
+    width: 90px;
+    min-width: 90px;
+    padding: 10px 0;
+}
+
+
+.company-name {
+    width:80%;
+    font-size: 1.3rem;
+    color: var(--text-color-strong);
+}
+
+.offer-name{
+    font-weight: bold;
+    width:80%;
+    font-size: 1.4rem;
+    color: var(--text-color-strong);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
+.company-rating {
+    text-align: right;
+    color: var(--text-color-light);
+    width: 28%;
+    min-width: 180px;
+}
+
+.company-table td.company-rating + td.btn-table {
+    width: 120px;
+    min-width: 120px;
+    padding: 12px 0;
+}
+
+
+.offer-company{
+    text-align: left;
+    color: var(--text-color-light);
+    width: 28%;
+    min-width: 180px;
+}
+
+.infos-table {
+    display: flex;
+}
+
+.company-info {
+    font-size: 0.9rem;
+    color: var(--text-color-light);
+    padding-top: 0;
+    font-style: italic;
+}
+
+.company-description {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--text-color);
+    padding-bottom: 20px;
+}
+
+.rating-table{
+    display: flex;
+    align-items: center !important;
+}
+
+
+
+/* ======================================================================== PAGINATION ======================================================================== */
+
+.pagination {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.pagination a {
+    width: 35px;
+    height: 35px;
+    margin: 0 4px;
+    text-decoration: none;
+    border-radius: 4px;
+    background: var(--white);
+    color: var(--deconnexion-color);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    transition: all 0.3s; /* Petit bonus pour la fluidité */
+}
+
+/* On cible la classe .active générée par Twig */
+.pagination a.active {
+    background: var(--green-piston);
+    color: var(--white);
+    font-weight: bold; /* Optionnel : pour mieux la voir */
+}
+
+/* On garde le hover pour les autres pages */
+.pagination a:hover {
+    background: var(--green-piston);
+    color: var(--white);
+}
+
+/* Garder le style pour le tag strong si tu l'utilises ailleurs */
+.pagination strong {
+    background: var(--green-piston);
+    color: var(--white);
+    width: 50px;
+    height: 50px;
+    margin: 0 4px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+
+/* ======================================================================== FOOTER PAGES ======================================================================== */
+
+.legal-frame {
+    width: min(920px, 92%);
+    padding: 38px 42px;
+    border: 1px solid #ececec;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.06);
+    position: relative;
+    overflow: hidden;
+}
+
+.legal-frame::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--green-piston) 0%, #8ccf4c 100%);
+}
+
+.legal-frame h2 {
+    font-size: clamp(1.7rem, 2.5vw, 2.2rem);
+    margin-bottom: 28px;
+    letter-spacing: -0.02em;
+}
+
+.legal-content {
+    font-size: 1.08rem;
+    line-height: 1.72;
+    color: #2f2f2f;
+}
+
+.legal-content h3 {
+    margin: 24px 0 8px;
+    font-size: 1.75rem;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    color: #1f2937;
+}
+
+.legal-content p {
+    margin: 0 0 14px;
+    text-wrap: pretty;
+}
+
+.legal-content strong {
+    color: #111827;
+}
+
+.legal-content a {
+    color: #2f6f16;
+    text-underline-offset: 3px;
+}
+
+.legal-content a:hover {
+    color: #1f4f0e;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ======================================================================== Responsive Design ======================================================================== */
+
+
 @media (max-width: 768px) {
+    header {
+        height: auto;
+        min-height: 58px;
+        padding: 8px 14px;
+        position: relative;
+        z-index: 20;
+    }
+
+    .logo-group {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .logo-link {
+        height: 36px;
+        gap: 8px;
+    }
+
+    .logo-icon {
+        height: 100%;
+    }
+
+    .logo-text {
+        height: 90%;
+        max-width: 130px;
+        object-fit: contain;
+    }
+
+    .burger-btn {
+        display: inline-flex;
+        flex-shrink: 0;
+    }
+
+    header nav {
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 12px;
+        right: 12px;
+        height: auto;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+        padding: 12px;
+        background: var(--white);
+        border: 1px solid #e7e7e7;
+        border-radius: 14px;
+        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.08);
+        opacity: 0;
+        transform: translateY(-8px);
+        pointer-events: none;
+        transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    body.menu-open header nav {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+    }
+
+    header nav a.nav-link {
+        height: auto;
+        padding: 10px 12px;
+        border-radius: 10px;
+        background: #f8fafc;
+    }
+
+    header nav .btn-container {
+        width: 100%;
+        height: auto;
+    }
+
+    header nav .btn-container .btn {
+        width: 100%;
+        margin: 0;
+        justify-content: center;
+    }
+
+    .footer-grid{
+        flex-direction: column; /* Espace entre les deux colonnes */
+        align-items: center !important; /* Centre les colonnes horizontalement */}
+
+    .filters-container{
+        flex-direction: column;
+    }
+    .filter-item {
+        width: 100%;
+    }
+    .info-grid {
+        flex-direction: column; /* Sur mobile, elles se remettent l'une sous l'autre */
+        align-items: center;
+    }
+    .info-column{
+        width:100%
+    }
+    .info-box {
+        width: 100%;
+    }
+
+    .frame{
+        width:90%;
+    }
+
+    .legal-frame {
+        padding: 24px 20px;
+    }
+
+    .legal-frame h2 {
+        margin-bottom: 20px;
+    }
+
+    .legal-content {
+        font-size: 1rem;
+        line-height: 1.62;
+    }
+
+    .legal-content h3 {
+        font-size: 1.45rem;
+        margin: 20px 0 8px;
+    }
+
+    .search-bar-admin {
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 10px;
+        gap: 8px;
+    }
+
+    .search-bar-admin input[type="text"] {
+        flex: 1 1 100%;
+        min-width: 0;
+        width: 100%;
+    }
+
+    .search-input{
+        flex: 1 1 100%;
+        min-width: 0;
+        width: 100%; 
+    }
+
+
+    .search-bar-admin .search-btn,
+    .search-bar-admin .btn-add {
+        flex: 1 1 calc(50% - 4px);
+        width: calc(50% - 4px);
+        height: 46px;
+        justify-content: center;
+    }
+
+    .search-bar-admin input{
+            padding: 6px 7px;
+    }
+
+    .search-container{
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .search-item {
+        width: 100%;
+        justify-content: space-between;
+        padding: 0 10px;
+    }
+
+    .form-grid {
+        flex-direction: column; /* Sur mobile, elles se remettent l'une sous l'autre */
+        align-items: center;
+        gap: 20px;
+    }
+    .form-column,
+    .form-column2,
+    .form-column3 {
+        width: 100%;
+    }
+    .form-input{
+        width: 100%;
+    }
+    .infos-offre{
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    .offer-header{
+        justify-content: flex-start;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        padding: 14px;
+    }
+
+    .student-dashboard {
+        align-items: stretch;
+    }
+
+    .student-dashboard .main-title {
+        margin-bottom: 22px;
+        font-size: 1.75rem;
+        text-align: center;
+    }
+
+    .student-dashboard .dashboards-section {
+        padding: 14px;
+        margin-bottom: 24px;
+    }
+
+    .student-dashboard .dashboard-title {
+        font-size: 1.9rem;
+        margin-bottom: 12px;
+    }
+
+    .student-dashboard .box-list {
+        border-radius: 10px;
+    }
+
+    .student-dashboard .company-table {
+        min-width: 660px;
+        border-radius: 10px;
+    }
+
+    .student-dashboard .company-table th,
+    .student-dashboard .company-table td {
+        padding: 10px 12px;
+        font-size: 0.98rem;
+    }
+
+    .student-dashboard .company-table.admin td.btn-table {
+        width: 74px;
+        min-width: 74px;
+        padding-right: 12px;
+        text-align: center;
+    }
+
+    .student-dashboard .pagination {
+        margin-top: 18px;
+    }
+
+    .admin-dashboard {
+        align-items: stretch;
+    }
+
+    .admin-dashboard .main-title {
+        margin-bottom: 22px;
+        font-size: 1.75rem;
+        text-align: center;
+    }
+
+    .admin-dashboard .dashboards-section {
+        padding: 14px;
+        margin-bottom: 24px;
+    }
+
+    .admin-dashboard .dashboard-title {
+        font-size: 1.9rem;
+        margin-bottom: 12px;
+    }
+
+    .admin-dashboard .box-list {
+        border-radius: 10px;
+        gap: 10px;
+    }
+
+    .admin-dashboard .company-table {
+        min-width: 740px;
+        border-radius: 10px;
+    }
+
+    .admin-dashboard .company-table td {
+        padding: 10px 12px;
+        font-size: 0.98rem;
+    }
+
+    .admin-dashboard .user-name {
+        min-width: 220px;
+    }
+
+    .admin-dashboard .user-promotion {
+        min-width: 120px;
+    }
+
+    .admin-dashboard .stats {
+        min-width: 220px;
+        text-align: left;
+        white-space: normal;
+    }
+
+    .admin-dashboard .user-stats {
+        min-width: 250px;
+    }
+
+    .admin-dashboard .pagination {
+        margin-top: 18px;
+    }
+
+    .company-table td.company-rating + td.btn-table{
+        width: 64px;
+        min-width: 64px;
+        padding-right: 5px;
+    }
+
+    .company-rating{
+        width: 80px;
+        min-width: 80px;
+    }
+
+    .company-name{
+        width: 70%;
+    }
+
+    .company-description{
+        width: 100%;
+    }
+
+    .offer-description{
+        width: 100%;
+    }
+
+    .offer-name{
+        width: 110%;
+    }
+
+    .offer-company{
+        width: 100%;
+        min-width: 120px;
+    }
+
+    .infos-table {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .btn-table {
+        flex-direction: column;
+        width: 64px;
+        min-width: 64px;
+    }
+
+    .btn-table .btn-action + .btn-action {
+        margin-left: 5px;
+    }
+
+    .btn-table a{
+        width : 38px;
+        height: 38px;
+    }
+
+    .admin-dashboard .company-table.admin td.btn-table {
+        flex-direction: row;
+        min-width: 114px;
+    }
+
+    .rating-table{
+        flex-direction: column;
+    }
+
     .carousel {
         padding-bottom: 74px;
     }
@@ -2018,14 +2012,23 @@ main.list-page {
     }
 
     .wishlist-item {
-        padding: 12px 14px;
+        height: 100%;
+        word-wrap: break-word;
+        overflow-wrap: break-word; 
+        white-space: normal;
+    }
+
+    .wishlist-item span{
+        word-wrap: break-word;
     }
 
     .wishlist-item span:first-child {
         max-width: calc(100% - 52px);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
 
     .chart-container {
@@ -2102,151 +2105,6 @@ main.list-page {
     }
 }
 
-@media (max-width: 640px) {
-    .carousel {
-        padding-bottom: 68px;
-    }
-
-    .carousel-inner,
-    .slide {
-        min-height: 390px;
-    }
-
-    .slide h3 {
-        font-size: 1.45rem;
-    }
-
-    .wishlist-item {
-        font-size: 0.96rem;
-    }
-
-    .chart-row label {
-        width: 64px;
-        font-size: 0.9rem;
-    }
-
-    .bar-bg {
-        height: 38px;
-    }
-
-    .slide-duration .chart-container {
-        height: 350px;
-        align-items: end;
-        gap: 6px;
-    }
-
-    .slide-duration .chart-row {
-        height: 100%;
-    }
-
-    .slide-duration .chart-row label {
-        width: auto;
-        font-size: 0.95rem;
-        white-space: nowrap;
-    }
-
-    .slide-duration .bar-bg {
-        width: 48px;
-        height: 100%;
-    }
-}
-
-a:focus-visible,
-button:focus-visible,
-input:focus-visible,
-select:focus-visible,
-textarea:focus-visible,
-.btn-action:focus-visible,
-.burger-btn:focus-visible {
-    outline: none;
-    box-shadow: var(--focus-ring);
-}
-
-@media (max-width: 1024px) {
-    main {
-        max-width: 94%;
-        padding: 16px;
-    }
-
-    .frame,
-    .legal-frame {
-        width: 82%;
-    }
-
-    .info-grid {
-        gap: 20px;
-    }
-}
-
-@media (max-width: 640px) {
-    body {
-        font-size: 1rem;
-    }
-
-    main {
-        max-width: 96%;
-        padding: 12px;
-    }
-
-    h1 {
-        font-size: 1.7rem;
-    }
-
-    h2 {
-        font-size: 1.3rem;
-    }
-
-    .frame,
-    .legal-frame {
-        width: 94%;
-        padding: 20px;
-    }
-
-    .btn {
-        padding: 9px 24px;
-    }
-
-    .company-table td,
-    .company-table th {
-        padding: 10px 12px;
-    }
-
-    .student-dashboard .main-title {
-        font-size: 1.6rem;
-    }
-
-    .student-dashboard .dashboard-title {
-        font-size: 1.8rem;
-    }
-
-    .student-dashboard .company-table {
-        min-width: 620px;
-    }
-
-    .student-dashboard .company-table th,
-    .student-dashboard .company-table td {
-        padding: 9px 10px;
-        font-size: 0.95rem;
-    }
-
-    .admin-dashboard .main-title {
-        font-size: 1.6rem;
-    }
-
-    .admin-dashboard .dashboard-title {
-        font-size: 1.8rem;
-    }
-
-    .admin-dashboard .company-table {
-        min-width: 680px;
-    }
-
-    .admin-dashboard .company-table td {
-        padding: 9px 10px;
-        font-size: 0.95rem;
-    }
-}
-
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
         animation-duration: 0.01ms !important;
@@ -2255,3 +2113,5 @@ textarea:focus-visible,
         scroll-behavior: auto !important;
     }
 }
+
+
