@@ -53,7 +53,7 @@ class OfferModel extends Model
     {
         $sql = "SELECT Offre.*, Entreprise.Nom_entreprise " ;
         $params = [];
-        
+
         if (($_SESSION['user_role'] === 'etudiant')) {
             $sql .= ", IF(Souhaite.ID_utilisateur IS NOT NULL, 1, 0) AS is_in_wishlist, IF(Postule.ID_utilisateur IS NOT NULL, 1, 0) AS has_applied ";
         }
