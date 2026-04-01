@@ -99,7 +99,9 @@ class OfferController
         $alreadyApplied = $this->model->hasApplied($offerId, $studentId);
 
         if ($alreadyApplied && isset($alreadyApplied['ID_offre']) && $alreadyApplied['ID_offre']) {
-            header('Location: /offers/detail?id=' . urlencode((string) $offerId) . '&popup=already_applied');
+            header(
+                'Location: /offers/detail?id=' . urlencode((string) $offerId) . '&popup=already_applied'
+            );
             exit;
         } else {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -107,7 +109,9 @@ class OfferController
                 $coverLetterPresent = isset($_FILES['lettre']);
 
                 if (!$cvPresent || !$coverLetterPresent) {
-                    header('Location: /offers/detail?id=' . urlencode((string) $offerId) . '&popup=application_send_error');
+                    header(
+                        'Location: /offers/detail?id=' . urlencode((string) $offerId) . '&popup=application_send_error'
+                    );
                     exit;
                 } else {
                     // Read student names to generate readable file names
@@ -150,7 +154,10 @@ class OfferController
                         $errorMsg = !$cvValid ? $uploaderCV->getMessage() : '';
                         $errorMsg .= !$coverLetterValid ? $uploaderLettre->getMessage() : '';
                         // Redirect with a detailed upload error
-                        header('Location: /offers/detail?id=' . urlencode((string) $offerId) . '&popup=error&msg=' . urlencode($errorMsg));
+                        header(
+                            'Location: /offers/detail?id=' . urlencode((string) $offerId) .
+                            '&popup=error&msg=' . urlencode($errorMsg)
+                        );
                         exit;
                     }
                 }
